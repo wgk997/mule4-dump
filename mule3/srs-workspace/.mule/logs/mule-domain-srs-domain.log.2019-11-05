@@ -1,0 +1,73 @@
+INFO  2019-11-05 15:27:33,975 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ New domain 'srs-domain'                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-05 15:27:33,975 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing domain 'srs-domain'                         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-05 15:27:34,083 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-11-05 15:27:34,177 [main] org.mule.config.spring.MuleDomainContext: Refreshing org.mule.config.spring.MuleDomainContext@10876a6: startup date [Tue Nov 05 15:27:34 CST 2019]; root of context hierarchy
+INFO  2019-11-05 15:27:35,126 [main] org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule: Loading properties file from class path resource [srs-domain-app-dev.properties]
+INFO  2019-11-05 15:27:35,688 [main] org.mule.config.spring.processors.ContextExclusiveInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-11-05 15:27:36,199 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx2.log
+INFO  2019-11-05 15:27:36,211 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx2.log
+INFO  2019-11-05 15:27:36,455 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-05 15:27:36,458 [main] org.mule.config.spring.SpringXmlDomainConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlDomainConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='mule-domain-config.xml'}]"
+INFO  2019-11-05 15:27:36,460 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-11-05 15:27:36,460 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-11-05 15:27:36,500 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on http://0.0.0.0:8081
+INFO  2019-11-05 15:27:36,589 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-11-05 15:27:36,616 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: srs-domain                                            *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-11-05 16:37:52,527 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Stopping domain 'srs-domain'                             +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-05 16:37:52,531 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Stopped listener on http://0.0.0.0:8081
+INFO  2019-11-05 16:37:52,531 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Stopping ResourceManager
+INFO  2019-11-05 16:37:52,531 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Stopped ResourceManager
+INFO  2019-11-05 16:37:52,536 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Disposing RegistryBroker
+INFO  2019-11-05 16:37:52,547 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.MuleDomainContext: Closing org.mule.config.spring.MuleDomainContext@10876a6: startup date [Tue Nov 05 15:27:34 CST 2019]; root of context hierarchy
+INFO  2019-11-05 16:37:52,550 [Mule.app.deployer.monitor.1.thread.1] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application "srs-domain" shut down normally on: 11/5/19 4:37 PM    *
+* Up for: 0 days, 1 hours, 10 mins, 16.91 sec                        *
+**********************************************************************
+INFO  2019-11-05 16:37:52,554 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ New domain 'srs-domain'                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-05 16:37:52,555 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.MuleSharedDomainClassLoader: Using domain dir /Users/asapkota/AnypointStudio6/srs-workspace/.mule/domains/srs-domain for domain srs-domain
+INFO  2019-11-05 16:37:57,637 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing domain 'srs-domain'                         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-05 16:37:57,646 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-11-05 16:37:57,653 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.MuleDomainContext: Refreshing org.mule.config.spring.MuleDomainContext@76bbe855: startup date [Tue Nov 05 16:37:57 CST 2019]; root of context hierarchy
+INFO  2019-11-05 16:37:57,939 [Mule.app.deployer.monitor.1.thread.1] org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule: Loading properties file from class path resource [srs-domain-app-dev.properties]
+INFO  2019-11-05 16:37:57,979 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.processors.ContextExclusiveInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-11-05 16:37:58,083 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx2.log
+INFO  2019-11-05 16:37:58,085 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx2.log
+INFO  2019-11-05 16:37:58,119 [Mule.app.deployer.monitor.1.thread.1] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-05 16:37:58,127 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.SpringXmlDomainConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlDomainConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='mule-domain-config.xml'}]"
+INFO  2019-11-05 16:37:58,128 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-11-05 16:37:58,128 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-11-05 16:37:58,140 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on http://0.0.0.0:8081
+INFO  2019-11-05 16:37:58,159 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-11-05 16:37:58,161 [Mule.app.deployer.monitor.1.thread.1] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: srs-domain                                            *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Wrapper Manager                                                  *
+**********************************************************************

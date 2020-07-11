@@ -1,0 +1,39 @@
+#%RAML 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/67b060ba-8524-4277-8ec4-80c82221e090/customers-system-api # 
+title: Smart Templates Experience API
+version: v1
+
+uses:
+  orderTemplate: schemas/order-templates-response-data-type.raml
+traits: 
+  error: !include exchange_modules/ddd895c2-997c-428f-a94f-3aac313f956c/error-result/1.0.1/error-response-trait.raml
+  clientId: !include exchange_modules/ddd895c2-997c-428f-a94f-3aac313f956c/security/1.0.0/client-id-secret-trait.raml
+  correlationGuid: !include exchange_modules/ddd895c2-997c-428f-a94f-3aac313f956c/correlation-guid/1.0.1/correlation-guid-trait.raml
+
+types:
+  orderTemplateResponse:
+    type: orderTemplate.order-templates-response-type
+
+/templates:
+  is: [clientId, correlationGuid, error]
+  get:
+    description: Get list of suggested order templates from aws service
+    queryParameters:
+      customerId:
+        type: integer
+        description: SRS internal CustId
+        required: false
+      customerCode:
+        type: string
+        description: SRS internal CustCd
+        required: false
+      branchId:
+        type: integer
+        description: SRS internal BranchId
+        required: true
+    responses:
+      200:
+        body:
+          application/json:
+            type: orderTemplateResponse
+            examples: !include examples/order-templates-response-example.raml

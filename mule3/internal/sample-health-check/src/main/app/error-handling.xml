@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <choice-exception-strategy name="Global_Choice_Exception_Strategy">
+        <catch-exception-strategy when="#[exception.causedBy(org.mule.module.apikit.exception.NotFoundException)]" doc:name="404">
+            <set-property propertyName="http.status" value="#[404]" doc:name="Set HTTP Status"/>
+            <flow-ref name="error-handlingSub_Flow" doc:name="Flow Reference: error-handlingSub_Flow"/>
+        </catch-exception-strategy>
+        <catch-exception-strategy when="#[exception.causedBy(org.mule.module.apikit.exception.MethodNotAllowedException)]" doc:name="405">
+            <set-property propertyName="http.status" value="#[405]" doc:name="Set HTTP Status"/>
+
+            <flow-ref name="error-handlingSub_Flow" doc:name="Flow Reference: error-handlingSub_Flow"/>
+        </catch-exception-strategy>
+        <catch-exception-strategy when="#[exception.causedBy(org.mule.module.apikit.exception.UnsupportedMediaTypeException)]" doc:name="415">
+            <set-property propertyName="http.status" value="#[415]" doc:name="Set HTTP Status"/>
+
+            <flow-ref name="error-handlingSub_Flow" doc:name="Flow Reference: error-handlingSub_Flow"/>
+        </catch-exception-strategy>
+        <catch-exception-strategy when="#[exception.causedBy(org.mule.module.apikit.exception.NotAcceptableException)]" doc:name="406">
+            <set-property propertyName="http.status" value="#[406]" doc:name="Set HTTP Status"/>
+            <flow-ref name="error-handlingSub_Flow" doc:name="Flow Reference: error-handlingSub_Flow"/>
+        </catch-exception-strategy>
+        <catch-exception-strategy when="#[exception.causedBy(org.mule.module.apikit.exception.BadRequestException)]" doc:name="400">
+            <set-property propertyName="http.status" value="#[400]" doc:name="Set HTTP Status"/>
+            <flow-ref name="error-handlingSub_Flow" doc:name="Flow Reference: error-handlingSub_Flow"/>
+        </catch-exception-strategy>
+        <catch-exception-strategy  doc:name="Catch All">
+            <set-property propertyName="http.status" value="#[500]" doc:name="Set HTTP Status"/>
+            <flow-ref name="error-handlingSub_Flow" doc:name="Flow Reference: error-handlingSub_Flow"/>
+        </catch-exception-strategy>
+    </choice-exception-strategy>
+    <sub-flow name="error-handlingSub_Flow">
+        <set-variable variableName="exceptionMessage" value="#[exception.?message or exception]" doc:name="Set ExceptionMessage"/>
+        <dw:transform-message doc:name="Prepare Exception Response">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	statusCode: outboundProperties."http.status",
+	error:{
+		errorType: "mule3 error",
+		errorMessage: flowVars.exceptionMessage
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </sub-flow>
+</mule>

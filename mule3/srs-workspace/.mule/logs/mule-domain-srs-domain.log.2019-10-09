@@ -1,0 +1,78 @@
+INFO  2019-10-09 09:39:11,856 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ New domain 'srs-domain'                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-10-09 09:39:11,856 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing domain 'srs-domain'                         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-10-09 09:39:11,997 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-10-09 09:39:12,122 [main] org.mule.config.spring.MuleDomainContext: Refreshing org.mule.config.spring.MuleDomainContext@45c8d09f: startup date [Wed Oct 09 09:39:12 CDT 2019]; root of context hierarchy
+INFO  2019-10-09 09:39:13,192 [main] org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule: Loading properties file from class path resource [srs-domain-app-dev.properties]
+INFO  2019-10-09 09:39:13,709 [main] org.mule.config.spring.processors.ContextExclusiveInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+WARN  2019-10-09 09:39:13,874 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+WARN  2019-10-09 09:39:13,874 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+WARN  2019-10-09 09:39:13,923 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+WARN  2019-10-09 09:39:13,923 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+INFO  2019-10-09 09:39:14,176 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx2.log
+INFO  2019-10-09 09:39:14,187 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx2.log
+INFO  2019-10-09 09:39:14,433 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-10-09 09:39:14,436 [main] org.mule.config.spring.SpringXmlDomainConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlDomainConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='mule-domain-config.xml'}]"
+INFO  2019-10-09 09:39:14,437 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-10-09 09:39:14,437 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-10-09 09:39:14,477 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on http://0.0.0.0:8081
+INFO  2019-10-09 09:39:14,557 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-10-09 09:39:14,583 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: srs-domain                                            *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-10-09 09:45:28,832 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: No listener found for request: (GET)/products/branch/5
+INFO  2019-10-09 09:45:28,832 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: Available listeners are: [(*)/products-system-api/*]
+INFO  2019-10-09 09:45:38,920 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: No listener found for request: (GET)/api/products/branch/5
+INFO  2019-10-09 09:45:38,920 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: Available listeners are: [(*)/products-system-api/*]
+INFO  2019-10-09 09:47:26,298 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: No listener found for request: (GET)/products/branch/5
+INFO  2019-10-09 09:47:26,298 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: Available listeners are: [(*)/products-system-api/*]
+INFO  2019-10-09 09:47:35,798 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: No listener found for request: (POST)/price
+INFO  2019-10-09 09:47:35,798 [[srs-domain].srsDomainHTTPListenerConfig.worker.01] org.mule.module.http.internal.listener.HttpListenerRegistry: Available listeners are: [(*)/products-system-api/*]
+INFO  2019-10-09 09:55:22,031 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ New domain 'srs-domain'                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-10-09 09:55:22,032 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing domain 'srs-domain'                         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-10-09 09:55:22,152 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-10-09 09:55:22,254 [main] org.mule.config.spring.MuleDomainContext: Refreshing org.mule.config.spring.MuleDomainContext@43effd89: startup date [Wed Oct 09 09:55:22 CDT 2019]; root of context hierarchy
+INFO  2019-10-09 09:55:23,187 [main] org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule: Loading properties file from class path resource [srs-domain-app-dev.properties]
+INFO  2019-10-09 09:55:23,730 [main] org.mule.config.spring.processors.ContextExclusiveInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+WARN  2019-10-09 09:55:23,902 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+WARN  2019-10-09 09:55:23,902 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+WARN  2019-10-09 09:55:23,954 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+WARN  2019-10-09 09:55:23,954 [main] org.mule.expression.DefaultExpressionManager: Expression string is not an expression.  Use isExpression(String) to validate first
+INFO  2019-10-09 09:55:24,247 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx2.log
+INFO  2019-10-09 09:55:24,258 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx2.log
+INFO  2019-10-09 09:55:24,512 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-10-09 09:55:24,515 [main] org.mule.config.spring.SpringXmlDomainConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlDomainConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='mule-domain-config.xml'}]"
+INFO  2019-10-09 09:55:24,516 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-10-09 09:55:24,516 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-10-09 09:55:24,554 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on http://0.0.0.0:8081
+INFO  2019-10-09 09:55:24,634 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-10-09 09:55:24,664 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: srs-domain                                            *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-10-09 15:20:15,033 [[srs-domain].srsDomainHTTPListenerConfig.worker.03] org.mule.module.http.internal.listener.HttpListenerRegistry: No listener found for request: (POST)/orders-process-api/order
+INFO  2019-10-09 15:20:15,034 [[srs-domain].srsDomainHTTPListenerConfig.worker.03] org.mule.module.http.internal.listener.HttpListenerRegistry: Available listeners are: [(*)/products-system-api/*]
+INFO  2019-10-09 15:21:35,372 [[srs-domain].srsDomainHTTPListenerConfig.worker.04] org.mule.module.http.internal.listener.HttpListenerRegistry: No listener found for request: (POST)/orders-process-api/order
+INFO  2019-10-09 15:21:35,372 [[srs-domain].srsDomainHTTPListenerConfig.worker.04] org.mule.module.http.internal.listener.HttpListenerRegistry: Available listeners are: [(*)/products-system-api/*]

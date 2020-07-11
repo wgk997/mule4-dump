@@ -1,0 +1,50 @@
+INFO  2019-11-15 11:12:25,342 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'wv-service-api'                        +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-15 11:12:25,442 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-11-15 11:12:25,519 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-11-15 11:12:25,727 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-11-15 11:12:25,727 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-11-15 11:12:25,762 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@59a67c3a: startup date [Fri Nov 15 11:12:25 CST 2019]; root of context hierarchy
+INFO  2019-11-15 11:12:26,625 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+WARN  2019-11-15 11:12:27,412 [main] org.mule.module.ognl.expression.OgnlExpressionEvaluator: OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+INFO  2019-11-15 11:12:27,724 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/wv-service-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/wv-service-api/queue-tx-log/tx2.log
+INFO  2019-11-15 11:12:27,737 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/wv-service-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/wv-service-api/queue-xa-tx-log/tx2.log
+INFO  2019-11-15 11:12:32,820 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-11-15 11:12:32,823 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: wv-soap-exposeFlow
+INFO  2019-11-15 11:12:32,823 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@6a15b73
+INFO  2019-11-15 11:12:32,846 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: wv-soap-exposeFlow.stage1
+INFO  2019-11-15 11:12:33,048 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/wv-service-api/wv-soap-expose.xml'}]"
+INFO  2019-11-15 11:12:33,048 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/wv-service-api/wv-soap-expose.xml'}]"
+INFO  2019-11-15 11:12:33,051 [main] com.mulesoft.module.policies.lifecyle.GateKeeper: GateKeeper Mode: DISABLED
+INFO  2019-11-15 11:12:33,053 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'wv-service-api'                            +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-15 11:12:33,063 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-11-15 11:12:33,063 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-11-15 11:12:33,115 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on http://0.0.0.0:8085
+INFO  2019-11-15 11:12:33,117 [main] org.mule.module.s3.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (0) used in this application 
+                             +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-15 11:12:33,118 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-11-15 11:12:33,121 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: wv-soap-exposeFlow
+INFO  2019-11-15 11:12:33,122 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: wv-soap-exposeFlow.stage1
+INFO  2019-11-15 11:12:33,172 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-11-15 11:12:33,329 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: wv-service-api                                        *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-11-15 11:12:44,892 [[wv-service-api].HTTP_Listener_Configuration.worker.01] org.mule.api.processor.LoggerMessageProcessor: {NullPayload}
+INFO  2019-11-15 11:12:53,635 [[wv-service-api].HTTP_Listener_Configuration.worker.01] org.mule.api.processor.LoggerMessageProcessor: {NullPayload}
+INFO  2019-11-15 11:41:02,748 [[wv-service-api].HTTP_Listener_Configuration.worker.01] org.mule.api.processor.LoggerMessageProcessor: {NullPayload}

@@ -1,0 +1,30 @@
+WARN  2019-12-23 09:34:38,810 [[srs-domain].http.listener(3) SelectorRunner] org.mule.module.http.internal.listener.grizzly.ResponseCompletionHandler: HTTP response sending task failed with error: Broken pipe
+INFO  2019-12-23 10:09:23,611 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ New domain 'srs-domain'                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-23 10:09:23,612 [main] org.mule.module.launcher.domain.DefaultMuleDomain: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing domain 'srs-domain'                         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-23 10:09:23,742 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-12-23 10:09:23,867 [main] org.mule.config.spring.MuleDomainContext: Refreshing org.mule.config.spring.MuleDomainContext@675ffd1d: startup date [Mon Dec 23 10:09:23 CST 2019]; root of context hierarchy
+INFO  2019-12-23 10:09:24,876 [main] org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule: Loading properties file from class path resource [srs-domain-app-dev.properties]
+INFO  2019-12-23 10:09:25,422 [main] org.mule.config.spring.processors.ContextExclusiveInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-12-23 10:09:25,976 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-tx-log/tx2.log
+INFO  2019-12-23 10:09:25,994 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/srs-domain/queue-xa-tx-log/tx2.log
+INFO  2019-12-23 10:09:26,283 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-12-23 10:09:26,286 [main] org.mule.config.spring.SpringXmlDomainConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlDomainConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='mule-domain-config.xml'}]"
+INFO  2019-12-23 10:09:26,288 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-12-23 10:09:26,288 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-12-23 10:09:26,342 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on http://0.0.0.0:8085
+INFO  2019-12-23 10:09:26,419 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-12-23 10:09:26,444 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: srs-domain                                            *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Wrapper Manager                                                  *
+**********************************************************************

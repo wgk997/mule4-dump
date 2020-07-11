@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.dfwairport.mule.apps</groupId>
+    <artifactId>UnicenterSystemAPI</artifactId>
+    <version>${theVersion}</version>
+    <packaging>mule</packaging>
+    <name>Mule Application</name>
+
+    <properties>
+        <theVersion>1.0.0</theVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <mule.version>3.9.3</mule.version>
+        <mule.tools.version>1.2</mule.tools.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <!-- Mainly used for generating API flows from the latest version, does NOT mean this project contains only this version -->
+        <api.current.version>v1</api.current.version>
+        <jaxb.source.generated>${project.build.directory}/generated-test-sources/jaxb</jaxb.source.generated>
+        <jaxb.source.generated.ourservice>${jaxb.source.generated}/ourservice</jaxb.source.generated.ourservice>
+        <jaxb.source.generated.unicenter>${jaxb.source.generated}/unicenter</jaxb.source.generated.unicenter>
+        <groovy.src.dir>${basedir}/src/main/groovy</groovy.src.dir>
+        <groovy.test.dir>${basedir}/src/test/groovy</groovy.test.dir>
+        <http.listener.config.name>DFW_HTTP_Listener_Configuration</http.listener.config.name>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>dfw-libs-local</id>
+            <name>DFW MuleSoft Releases Repository</name>
+            <url>http://aodbprdc.dfw.dfwairport.com:8888/artifactory/libs-release-local/</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <!-- Shouldn't need this at all but Maven decided to break the Internet with 3.0.0-M1 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.mule.tools.maven</groupId>
+                <artifactId>mule-app-maven-plugin</artifactId>
+                <version>${mule.tools.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <copyToAppsDirectory>true</copyToAppsDirectory>
+                    <inclusions>
+                        <inclusion>
+                            <groupId>com.mulesoft.security</groupId>
+                            <artifactId>mule-module-security-property-placeholder</artifactId>
+                        </inclusion>
+                        <inclusion>
+                            <groupId>org.mule.modules</groupId>
+                            <artifactId>mule-module-apikit-soap</artifactId>
+                        </inclusion>
+                    </inclusions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.11</version>
+                <executions>
+                    <execution>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/app/</directory>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/api/</directory>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/wsdl/</directory>
+                                </resource>
+                                <resource>
+                                    <directory>mappings/</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${groovy.src.dir}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-test-source</id>
+                        <!-- Would normally be generate-test-sources but Studio's built in Maven plugin will not execute that and we need our test folders to be marked as source folders by Studio -->
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${groovy.test.dir}</source>                                
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Groovy/Eclipse compiler is old and didn't like trait/delegate/closure usage -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${groovy.src.dir}"/>
+                                <taskdef classname="org.codehaus.groovy.ant.Groovyc" name="groovyc">
+                                    <classpath refid="maven.compile.classpath"/>
+                                </taskdef>
+                                <mkdir dir="${project.build.outputDirectory}"/>
+                                <groovyc destdir="${project.build.outputDirectory}" listfiles="true" srcdir="${groovy.src.dir}/">
+                                    <classpath refid="maven.compile.classpath"/>
+                                </groovyc>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${groovy.test.dir}"/>
+                                <taskdef classname="org.codehaus.groovy.ant.Groovyc" name="groovyc">
+                                    <classpath refid="maven.test.classpath"/>
+                                </taskdef>
+                                <mkdir dir="${project.build.testOutputDirectory}"/>
+                                <groovyc destdir="${project.build.testOutputDirectory}" listfiles="true" srcdir="${groovy.test.dir}/">
+                                    <classpath refid="maven.test.classpath"/>
+                                </groovyc>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.avioconsulting.mule</groupId>
+                <artifactId>apikit-flow-generator-maven-plugin</artifactId>
+                <version>6.5.0.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+                <configuration>
+                    <!-- XMLBeans and DFW infor schemas have performance issues when running tests with assertions enabled -->
+                    <enableAssertions>false</enableAssertions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.14.0</version>
+                <executions>
+                    <execution>
+                        <id>create_our_service</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <schemaDirectory>${basedir}/src/main/wsdl</schemaDirectory>
+                            <schemaIncludes>
+                                <include>CreateUnicenterIncident.wsdl</include>
+                                <include>CreateUnicenterRequest.wsdl</include>
+                                <include>CreateUnicenterChangeOrder.wsdl</include>
+                                <include>CreateOnlineFormsChangeOrder.wsdl</include>
+                            </schemaIncludes>
+                            <generateDirectory>${jaxb.source.generated.ourservice}</generateDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unicenter_service</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <schemaDirectory>${basedir}/src/main/resources/references</schemaDirectory>
+                            <schemaIncludes>
+                                <include>Unicenter_R12.6_WebService.wsdl</include>
+                            </schemaIncludes>
+                            <generateDirectory>${jaxb.source.generated.unicenter}</generateDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <bindingDirectory>${basedir}/src/test/resources</bindingDirectory>
+                    <!-- By default, plugin will add to compile source but since we're using JAXB classes
+                     mainly as inputs to the Groovy testing framework, we only want to use them in test
+                     and not end up inside the Mule ZIP -->
+                    <addCompileSourceRoot>false</addCompileSourceRoot>
+                    <addTestCompileSourceRoot>true</addTestCompileSourceRoot>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- Mule Dependencies -->
+    <dependencies>
+        <!-- Xml configuration -->
+        <dependency>
+            <groupId>com.mulesoft.muleesb</groupId>
+            <artifactId>mule-core-ee</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Xml configuration -->
+        <dependency>
+            <groupId>com.mulesoft.muleesb.modules</groupId>
+            <artifactId>mule-module-spring-config-ee</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Mule Transports -->
+        <dependency>
+            <groupId>org.mule.transports</groupId>
+            <artifactId>mule-transport-file</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.transports</groupId>
+            <artifactId>mule-transport-http</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.muleesb.transports</groupId>
+            <artifactId>mule-transport-jdbc-ee</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.muleesb.transports</groupId>
+            <artifactId>mule-transport-jms-ee</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.transports</groupId>
+            <artifactId>mule-transport-vm</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.security</groupId>
+            <artifactId>mule-module-security-property-placeholder</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <!-- Mule Modules -->
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-scripting</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-xml</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-http</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-spring-config</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Auto discovery will be common -->
+        <dependency>
+            <groupId>com.mulesoft.anypoint</groupId>
+            <artifactId>api-gateway-client</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- for testing -->
+        <!-- Needs to go above munit dependencies - https://stackoverflow.com/questions/7869711/getting-nosuchmethoderror-org-hamcrest-matcher-describemismatch-when-running -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.avioconsulting.mule</groupId>
+            <artifactId>testing</artifactId>
+            <version>1.0.27</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dfwairport.mule.domains</groupId>
+            <artifactId>dfwairport</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-apikit-soap</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <!-- Address SOAP issues -->
+        <dependency>
+            <groupId>com.dfwairport.mule.soap</groupId>
+            <artifactId>cxf-validator</artifactId>
+            <version>1.0.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dfwairport.mule.exceptionstrategies</groupId>
+            <artifactId>standard-email</artifactId>
+            <version>1.0.22</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-ws</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.weave</groupId>
+            <artifactId>mule-plugin-weave</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- We assert email exception handler was run during our tests -->
+        <dependency>
+            <groupId>org.mule.transports</groupId>
+            <artifactId>mule-transport-email</artifactId>
+            <version>${mule.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Just using this library to force Mule exceptions to propagate down the flow stack. Not using the queue
+         portions of it. -->
+        <dependency>
+            <groupId>com.avioconsulting.mule</groupId>
+            <artifactId>queue-error-strategies</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>Central</id>
+            <name>Central</name>
+            <url>http://repo1.maven.org/maven2/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>dfw-libs-local</id>
+            <name>DFW Libs Local Repository</name>
+            <url>http://aodbprdc.dfw.dfwairport.com:8888/artifactory/libs-release-local/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>dfw-mulesoft-releases</id>
+            <name>DFW MuleSoft Releases Repository</name>
+            <url>http://aodbprdc.dfw.dfwairport.com:8888/artifactory/mule-releases/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>dfw-mule-exchange</id>
+            <name>DFW Artifactory Anypoint Exchange Mirror</name>
+            <url>http://aodbprdc.dfw.dfwairport.com:8888/artifactory/dfw-anypoint-exchange-mirror/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>dfw-mule-ee-releases</id>
+            <name>DFW MuleEE Releases Repository</name>
+            <url>http://aodbprdc.dfw.dfwairport.com:8888/artifactory/mule-ee/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>dfw-mulesoft-releases</id>
+            <name>DFW MuleSoft Releases Repository</name>
+            <layout>default</layout>
+            <url>http://aodbprdc.dfw.dfwairport.com:8888/artifactory/mule-releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>dfw-libs-local</id>
+            <name>DFW Libs Local Repository</name>
+            <url>http://aodbprdc.dfw.dfwairport.com:8888/artifactory/libs-release-local/</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

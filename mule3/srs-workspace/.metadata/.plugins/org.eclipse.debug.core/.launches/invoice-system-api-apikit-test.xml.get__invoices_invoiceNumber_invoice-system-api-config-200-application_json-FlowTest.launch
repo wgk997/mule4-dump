@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.munit.launchconfig">
+<listAttribute key="Mpath">
+<listEntry value="/Users/asapkota/AnypointStudio6/srs/srs-invoices-system-api/src/test/munit/invoice-system-api-apikit-test.xml"/>
+</listAttribute>
+<stringAttribute key="Ppath" value="/Users/asapkota/AnypointStudio6/srs/srs-invoices-system-api"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.3.9.3.ee"/>
+<listAttribute key="mule-project-names">
+<listEntry value="invoices-system-api"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="invoice-system-api-apikit-test.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="invoices-system-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=&#10;-DmunitProjectName=invoices-system-api"/>
+<stringAttribute key="resource" value="invoice-system-api-apikit-test.xml"/>
+<stringAttribute key="test_name" value="get:/invoices/invoiceNumber:invoice-system-api-config-200-application/json-FlowTest"/>
+</launchConfiguration>

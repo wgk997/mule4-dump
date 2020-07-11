@@ -1,0 +1,49 @@
+#%RAML 1.0 Trait
+uses:
+  errorResponse: schemas/error-response-library.raml
+responses: 
+  400:
+    description: Bad request
+    body: 
+      application/json:
+        type: errorResponse.error
+        example: !include examples/bad-request-example.raml
+  404:
+    description: Data not found
+    body:
+      application/json:
+        type: errorResponse.error
+        example: !include examples/resource-not-found-example.raml
+  405:
+    description: Method not allowed
+    body:
+      application/json:
+        type: errorResponse.error
+        example: !include examples/method-not-allowed-example.raml
+  406:
+    description: Not acceptable
+    body:
+      application/json:
+        type: errorResponse.error
+        example: !include examples/data-not-found-example.raml
+  415:
+    description: Unsupported media type
+    body:
+      application/json:
+        type: errorResponse.error
+        example: !include examples/unsupported-type-example.raml
+  500:
+    description: Internal Server Error
+    body:
+      application/json:
+        type: errorResponse.error
+        example: !include examples/internal-server-error-example.raml
+  503:
+    description: Service Unavailable
+    body:
+      application/json:
+        type: errorResponse.error
+        example: !include examples/unavailable-example.raml    
+      
+    
+  

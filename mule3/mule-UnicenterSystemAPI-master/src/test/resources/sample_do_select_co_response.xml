@@ -1,0 +1,29 @@
+<DoSelectResponse xmlns="http://www.ca.com/UnicenterServicePlus/ServiceDesk"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <DoSelectResult>
+        <UDSObjectList xmlns="">
+            <UDSObject>
+
+                <Handle>
+                    chg:2390666
+                </Handle>
+                <Attributes>
+
+                    <chg_ref_num DataType="2002">123</chg_ref_num>
+
+                    <summary DataType="2002">sample summary</summary>
+
+                    <description DataType="2002">sample description</description>
+
+                    <status DataType="2005">CL</status>
+
+                    <category DataType="2005">RqstPDAOFA</category>
+
+                </Attributes>
+
+            </UDSObject>
+
+        </UDSObjectList>
+
+    </DoSelectResult>
+</DoSelectResponse>

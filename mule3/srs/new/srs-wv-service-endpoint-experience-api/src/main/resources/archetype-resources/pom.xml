@@ -1,0 +1,333 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${groupId}</groupId>	
+	<artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <packaging>mule</packaging>   
+	<name>${artifactId}</name>
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		#if($deployTo == 'cloudhub')
+			<mule.version>3.9.2</mule.version>
+		#end
+		#if($deployTo == 'arm')
+			<mule.version>3.9.1</mule.version>
+		#end
+    	<mule.tools.version>1.2</mule.tools.version>
+		<munit.version>1.3.9</munit.version>    	<mule.munit.support.version>3.9.1</mule.munit.support.version>   
+    	<cloudhub.app.prefix>srs-</cloudhub.app.prefix>
+    </properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-app-maven-plugin</artifactId>
+				<version>${mule.tools.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+                    <copyToAppsDirectory>true</copyToAppsDirectory>
+				<inclusions>
+                        <inclusion>
+                            <groupId>com.mulesoft.security</groupId>
+                            <artifactId>mule-module-security-property-placeholder</artifactId>
+                        </inclusion>
+                    </inclusions>
+                </configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>add-resource</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/main/app/</directory>
+								</resource>
+								<resource>
+									<directory>src/main/api/</directory>
+								</resource>
+								<resource>
+									<directory>mappings/</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		<plugin>
+                <groupId>com.mulesoft.munit.tools</groupId>
+                <artifactId>munit-maven-plugin</artifactId>
+                <version>${munit.version}</version>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <coverage>
+                        <runCoverage>true</runCoverage>
+                        <formats>
+                            <format>html</format>
+                        </formats>
+                    </coverage>
+                </configuration>
+            </plugin>
+            
+            #if($deployTo == 'cloudhub')
+            <plugin>
+               <groupId>org.mule.tools.maven</groupId>
+               <artifactId>mule-maven-plugin</artifactId>
+               <version>2.2.1</version>
+               <configuration>
+                 <workerType>Micro</workerType>
+                 <workers>1</workers>
+                 <deploymentType>cloudhub</deploymentType>
+                 <muleVersion>${mule.version}</muleVersion>
+                 <!-- Anypoint Platform credentials -->
+                 <username>${env.deploy.username}</username>
+                 <password>${env.deploy.password}</password>
+                 <redeploy>true</redeploy>                 
+                 <environment>${ch.env.name}</environment> <!-- PROD, QA or DEV -->
+                 <applicationName>${cloudhub.app.prefix}${project.artifactId}${appExt}</applicationName> <!-- application name displayed in Runtime manager -->
+          		<properties>
+          		    <application.name>${application.name}</application.name> <!-- Must correspond with name of API defined within API Manager, used in autodiscovery -->
+          		    <api.version>${api.version}</api.version> <!-- Must correspond with the version of the API defined within API Manager, used in autodiscovery -->
+            		<env>${env}</env> <!-- dev, qa, or prod. Used to identify which properties file used at runtime -->
+            		<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+            		<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+          		</properties>
+               </configuration>
+               <executions>
+                 <execution>
+                   <id>deploy-cloudhub</id>
+                   <phase>deploy</phase>
+                   <goals>
+                     <goal>deploy</goal>
+                   </goals>
+                 </execution>
+               </executions>
+            </plugin>
+           #end           
+           #if($deployTo == 'arm')
+           <plugin>
+               <groupId>org.mule.tools.maven</groupId>
+               <artifactId>mule-maven-plugin</artifactId>
+               <version>2.2.1</version>
+               <configuration>
+                 <deploymentType>arm</deploymentType>
+                 <!-- Anypoint Platform credentials -->
+                 <username>${env.deploy.username}</username>
+                 <password>${env.deploy.password}</password>                 
+                 <target>${arm.server}</target>  <!-- Name of cluster found in ARM -->
+                 <targetType>${arm.target.type}</targetType>
+                 <environment>${arm.env}</environment> <!-- PROD, QA, or DEV -->
+                 <applicationName>${cloudhub.app.prefix}${project.artifactId}${appExt}</applicationName>  <!-- application name displayed in Runtime manager -->
+                </configuration>
+               <executions>
+                 <execution>
+                   <id>deploy-onpremise</id>
+                   <phase>deploy</phase>
+                   <goals>
+                     <goal>deploy</goal>
+                   </goals>
+                 </execution>
+               </executions>
+            </plugin>
+           #end
+    </plugins>
+    <testResources>
+      <testResource>
+        <directory>src/test/munit</directory>
+      </testResource>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+        </testResources>
+    </build>
+
+  <!-- Mule Dependencies -->
+  <dependencies>
+    <!-- Xml configuration -->
+    <dependency>
+          <groupId>com.mulesoft.muleesb</groupId>
+      <artifactId>mule-core-ee</artifactId>
+      <version>${mule.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Xml configuration -->
+    <dependency>
+      <groupId>com.mulesoft.muleesb.modules</groupId>
+      <artifactId>mule-module-spring-config-ee</artifactId>
+      <version>${mule.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Mule Transports -->
+    <dependency>
+      <groupId>org.mule.transports</groupId>
+      <artifactId>mule-transport-file</artifactId>
+      <version>${mule.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mule.transports</groupId>
+      <artifactId>mule-transport-http</artifactId>
+      <version>${mule.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+        	<groupId>com.mulesoft.muleesb.transports</groupId>
+			<artifactId>mule-transport-jdbc-ee</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+        	<groupId>com.mulesoft.muleesb.transports</groupId>
+			<artifactId>mule-transport-jms-ee</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.transports</groupId>
+			<artifactId>mule-transport-vm</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+          <groupId>com.microsoft.sqlserver</groupId>
+          <artifactId>mssql-jdbc</artifactId>
+          <version>6.2.2.jre8</version>
+        </dependency>
+		<!-- Mule Modules -->
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-scripting</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-xml</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- for testing -->
+		<dependency>
+			<groupId>org.mule.tests</groupId>
+			<artifactId>mule-tests-functional</artifactId>
+			<version>${mule.version}</version>
+			<scope>test</scope>
+		</dependency>
+	<dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-apikit</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    <dependency>
+            <groupId>com.mulesoft.munit</groupId>
+            <artifactId>mule-munit-support</artifactId>
+            <version>${mule.munit.support.version}</version>
+            <scope>test</scope>
+        </dependency>
+    <dependency>
+            <groupId>com.mulesoft.munit</groupId>
+            <artifactId>munit-runner</artifactId>
+            <version>${munit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-db</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-spring-config</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-http</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+            <groupId>com.mulesoft.security</groupId>
+            <artifactId>mule-module-security-property-placeholder</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+    <dependency>
+            <groupId>com.mulesoft.weave</groupId>
+            <artifactId>mule-plugin-weave</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    <dependency>
+            <groupId>com.mulesoft.anypoint</groupId>
+            <artifactId>api-gateway-client</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+	<repositories>
+          <repository>
+            <id>Central</id>
+            <name>Central</name>
+            <url>http://repo1.maven.org/maven2/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>http://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
+        </repository>
+    	 <repository>
+ 				<id>mulesoft-ee-releases</id>
+ 				<name>MuleEE Releases Repository</name>
+ 				<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+				<layout>default</layout>
+ 				<releases>
+ 				</releases>
+ 				<snapshots>
+ 				</snapshots>
+ 			</repository>
+ 		</repositories>    
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-release</id>
+            <name>mulesoft release repository</name>
+            <layout>default</layout>
+            <url>http://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+		<pluginRepository>
+ 				<id>mule-public</id>
+ 				<url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+ 			</pluginRepository>
+    </pluginRepositories>
+</project>

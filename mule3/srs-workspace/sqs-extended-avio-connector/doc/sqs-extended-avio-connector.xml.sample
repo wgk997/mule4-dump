@@ -1,0 +1,3 @@
+<!-- BEGIN_INCLUDE(sqs-extended-avio:greet) -->
+    <sqs-extended-avio:greet config-ref="" friend="#[map-payload:friend]" />
+<!-- END_INCLUDE(sqs-extended-avio:greet) -->

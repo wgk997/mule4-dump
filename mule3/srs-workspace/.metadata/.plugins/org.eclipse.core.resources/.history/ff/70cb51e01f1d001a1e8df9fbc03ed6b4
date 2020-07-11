@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+	<flow name="imageSystemAPIMainFlow">
+	   <logger message="Started Processing Request for Image System API Flow, Correlation GUID: #[flowVars.correlationGuid]" level="INFO" category="${log.category}" doc:name="Log Start"/>
+		<dw:transform-message doc:name="Set Inputs">
+			<dw:set-variable variableName="imageHex"><![CDATA[%dw 1.0
+%output application/java
+---
+payload.imageHex]]></dw:set-variable>
+			<dw:set-variable variableName="imageName"><![CDATA[%dw 1.0
+%output application/java
+---
+payload.agilitySOId ++ ".jpg"]]></dw:set-variable>
+		</dw:transform-message>
+		<flow-ref name="convertHexToImageByteArray" doc:name="convertHexToImageByteArray" />
+		<flow-ref name="saveImageToS3Flow" doc:name="saveImageToS3Flow"/>
+        <set-payload value="#[payload[1]]" mimeType="image/jpeg" doc:name="Set Image as Response Payload" doc:description="From scatter gather from saveImageToS3Flow, an array of two data is returned back. First index contains S3 response and second index contains the image itself."/>
+        <logger message="Completed Processing Request for Convert Hex to Image ByteArray Flow, Correlation GUID: #[flowVars.correlationGuid]" level="INFO" category="${log.category}" doc:name="Log End"/>
+	</flow>
+	<flow name="convertHexToImageByteArray">
+	   <logger message="Started Processing Request for convertHexToImageByteArrayFlow, Ready to invoke hexToImage method, Correlation GUID: #[flowVars.correlationGuid]" level="INFO" category="${log.category}" doc:name="Log Start"/>
+		
+		<invoke object-ref="HexToImage" method="hexToImage"
+			methodArguments="#[flowVars.imageHex]" doc:name="Invoke hexToImage"
+			doc:description="Invokes hexToImage method to convert input hex to a jpg image." />
+        <logger message="Completed Processing Request for convertHexToImageByteArray Flow, Correlation GUID: #[flowVars.correlationGuid]" level="INFO" category="${log.category}" doc:name="Log End"/>	
+	</flow>
+	<flow name="saveImageToS3Flow">
+	   <logger message="Started Processing Request for saveImageToS3 Flow, Ready to save image to S3 bucket. Correlation GUID: #[flowVars.correlationGuid]" level="INFO" category="${log.category}" doc:name="Log Start"/>
+		<object-to-byte-array-transformer
+			mimeType="image/jpeg" doc:name="Object to Byte Array" />
+		<scatter-gather doc:name="Scatter-Gather">
+            <processor-chain>
+                <s3:create-object config-ref="Amazon_S3__Configuration" bucketName="${amazon.s3.bucket.name}" key="#[flowVars.imageName]" doc:name="Save Image to Amazon S3"/>
+                <logger message="#[flowVars.correlationGuid]: Inside saveImageToS3Flow. Image saved to S3 bucket." level="INFO" doc:name="Log Current Status" category="${log.catefory}"/>
+            </processor-chain>
+			<logger level="INFO" doc:name="Log Current Status" message="#[flowVars.correlationGuid]: Inside saveImageToS3Flow. Image Byte Array returned to the parent flow." category="${log.catefory}"/>
+		</scatter-gather>
+		<logger message="Completed Processing Request for saveImageToS3 Flow, Correlation GUID: #[flowVars.correlationGuid]" level="INFO" category="${log.category}" doc:name="Log End"/>
+	</flow>
+</mule>

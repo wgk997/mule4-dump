@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.munit.launchconfig">
+<listAttribute key="Mpath">
+<listEntry value="/Users/asapkota/AnypointStudio6/srs/new/srs-smarttemplates-experience-api/src/test/munit/smarttemplates-experience-api-test-suite.xml"/>
+</listAttribute>
+<stringAttribute key="Ppath" value="/Users/asapkota/AnypointStudio6/srs/new/srs-smarttemplates-experience-api"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.3.9.2.ee"/>
+<listAttribute key="mule-project-names">
+<listEntry value="smarttemplates-experience-api"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="smarttemplates-experience-api-test-suite.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="smarttemplates-experience-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=&#10;-DmunitProjectName=smarttemplates-experience-api"/>
+<stringAttribute key="resource" value="smarttemplates-experience-api-test-suite.xml"/>
+</launchConfiguration>

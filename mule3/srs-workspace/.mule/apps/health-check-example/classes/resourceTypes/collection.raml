@@ -1,0 +1,20 @@
+#%RAML 1.0 ResourceType
+    description: Collection of available <<resourcePathName>> in Library
+    get:
+      description: Collection of available <<resourcePathName>> in Library
+      responses:
+        200:
+          body:
+            application/json:
+
+    post:
+      description: |
+        Add new <<resourcePathName>> to Library.
+      body:
+        application/json:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                { "message": "The<<resourcePathName>> has been properly entered" }  collection-item:

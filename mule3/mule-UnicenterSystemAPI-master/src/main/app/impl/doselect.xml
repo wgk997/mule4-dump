@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <flow name="doselectFlow">
+        <dw:transform-message doc:name="Get Special Flags for Do Select">
+            <dw:set-variable variableName="specialFlags"><![CDATA[%dw 1.0
+%output application/java
+%namespace oracle http://xmlns.oracle.com/CreateUnicenterRequest
+%var request = payload.oracle#CreateUnicenterRequestProcessRequest
+---
+{
+	impact: request.oracle#impact,
+	priority: request.oracle#priority,
+	severity: request.oracle#severity,
+	urgency: request.oracle#urgency
+	// don't want empty or null user values to be looked up
+	// ideally we'd use filter here but it seems to cause DW to return an array rather than a hash map
+} mapObject ({ ($$): $ } when $ != null and $ != '' otherwise {}) ]]></dw:set-variable>
+        </dw:transform-message>
+        <foreach collection="#[flowVars.specialFlags]" doc:name="For Each">
+            <enricher target="#[flowVars.specialFlags[flowVars.key]]"
+                      doc:name="Message Enricher"
+                      doc:description="By targeting the flow var we are iterating on, we can effectively replace the labels we are looking up with codes for each key">
+                <processor-chain doc:name="Processor Chain">
+                    <logger message="#[flowVars.logPrefix] Creating do select request for #[flowVars.key]"
+                            level="INFO" doc:name="Logger"/>
+                    <set-variable variableName="objectType" value="#[flowVars.key]" doc:name="objectType"/>
+                    <set-variable variableName="specialFlag" value="#[payload]"
+                                  doc:name="Grab special flag for iteration for do select"/>
+                    <dw:transform-message doc:name="Build Request for Do Select">
+                        <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%namespace oracle http://xmlns.oracle.com/CreateUnicenterRequest
+---
+{
+	ns0#DoSelect: {
+		ns0#SID: flowVars.sessionId,
+		ns0#objectType: flowVars.objectType[0..2],
+		ns0#whereClause: "sym = '" ++ flowVars.specialFlag ++ "'",
+		ns0#maxRows: 1,
+		ns0#attributes: {
+			ns0#string: 'enum'
+		}
+	}
+} ]]></dw:set-payload>
+                    </dw:transform-message>
+                    <flow-ref name="doselectInvoke" doc:name="doselectInvoke"/>
+                </processor-chain>
+            </enricher>
+        </foreach>
+        <dw:transform-message doc:name="Remove empty/no value flag codes">
+            <dw:input-variable variableName="specialFlags"
+                               mimeType="application/java"/>
+            <dw:set-variable variableName="specialFlags"><![CDATA[%dw 1.0
+%output application/java
+---
+// ideally we'd use filter here but it seems to cause DW to return an array rather than a hash map
+flowVars.specialFlags mapObject ({ ($$): $ } when $ != null otherwise {})
+]]></dw:set-variable>
+        </dw:transform-message>
+    </flow>
+    <flow name="doselectInvoke">
+        <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="DoSelect" doc:name="Do Select"/>
+        <dw:transform-message doc:name="Setup Reply">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+payload.ns0#DoSelectResponse.ns0#DoSelectResult.UDSObjectList.UDSObject.Attributes.enum]]></dw:set-payload>
+        </dw:transform-message>
+        <choice doc:name="Choice the scripting transformer">
+            <when expression="#[payload == null]">
+                <logger message="#[flowVars.logPrefix] No value was found for #[flowVars.objectType] value '#[specialFlag]', ignoring"
+                        level="WARN"
+                        doc:name="Logger"/>
+            </when>
+            <otherwise>
+                <logger message="#[flowVars.logPrefix] Looked up value '#[payload]' for #[flowVars.objectType] value '#[specialFlag]'"
+                        level="INFO"
+                        doc:name="Logger"/>
+            </otherwise>
+        </choice>
+        <catch-exception-strategy logException="true"
+                                  enableNotifications="true">
+            <logger message="#[flowVars.logPrefix] Exception '#[exception.message]' while looking up #[flowVars.objectType] value '#[specialFlag]', ignoring"
+                    level="WARN"
+                    doc:name="Logger"/>
+            <set-payload value="#[null]"
+                         doc:name="Set null payload"
+                         doc:description="Otherwise we'll return our input as the payload"/>
+        </catch-exception-strategy>
+    </flow>
+</mule>

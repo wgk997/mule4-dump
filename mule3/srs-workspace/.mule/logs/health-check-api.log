@@ -1,0 +1,108 @@
+2019-12-31 13:11:18,174 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'health-check-api'                      +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-12-31 13:11:18,269 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising RegistryBroker
+2019-12-31 13:11:18,333 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Starting discovery of extensions
+2019-12-31 13:11:18,391 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Discovered 1 extensions
+2019-12-31 13:11:18,391 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Registering extension validation (version 3.9)
+2019-12-31 13:11:18,546 [main] INFO  org.mule.config.spring.MuleArtifactContext - Refreshing org.mule.config.spring.MuleArtifactContext@73511076: startup date [Tue Dec 31 13:11:18 CST 2019]; root of context hierarchy
+2019-12-31 13:11:19,722 [main] INFO  org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker - Loading properties file from class path resource [health-check-api-dev.properties]
+2019-12-31 13:11:20,221 [main] INFO  org.mule.config.spring.processors.NoDevkitInjectorProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-12-31 13:11:21,255 [main] WARN  org.mule.module.ognl.expression.OgnlExpressionEvaluator - OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+2019-12-31 13:11:21,425 [main] INFO  org.mule.api.security.tls.TlsProperties - Loading configuration file: tls-default.conf
+2019-12-31 13:11:21,501 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/health-check-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/health-check-api/queue-tx-log/tx2.log
+2019-12-31 13:11:21,510 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/health-check-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/health-check-api/queue-xa-tx-log/tx2.log
+2019-12-31 13:11:21,570 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising model: _muleSystemModel
+2019-12-31 13:11:21,572 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: healthAppFlow
+2019-12-31 13:11:21,573 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3f3a6091
+2019-12-31 13:11:21,574 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5b4d9bda
+2019-12-31 13:11:21,574 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@467a2584
+2019-12-31 13:11:21,574 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@121dce2
+2019-12-31 13:11:21,583 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: healthAppFlow.stage1
+2019-12-31 13:11:21,594 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: DB
+2019-12-31 13:11:21,594 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@571db8b4
+2019-12-31 13:11:21,594 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@65a2755e
+2019-12-31 13:11:21,594 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@2b3242a5
+2019-12-31 13:11:21,594 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@11120583
+2019-12-31 13:11:21,596 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: DB.stage1
+2019-12-31 13:11:21,597 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: S3
+2019-12-31 13:11:21,597 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3e55d844
+2019-12-31 13:11:21,597 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@1f521c69
+2019-12-31 13:11:21,597 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@2b3abeeb
+2019-12-31 13:11:21,597 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3aeb267
+2019-12-31 13:11:21,599 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: S3.stage1
+2019-12-31 13:11:21,600 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: generic-health-check.xmlFlow
+2019-12-31 13:11:21,600 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@29ba63f0
+2019-12-31 13:11:21,607 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: generic-health-check.xmlFlow.stage1
+2019-12-31 13:11:21,608 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: health-check-api-main
+2019-12-31 13:11:21,608 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=404, exceptions=[org.mule.module.apikit.exception.NotFoundException]}
+2019-12-31 13:11:21,608 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=405, exceptions=[org.mule.module.apikit.exception.MethodNotAllowedException]}
+2019-12-31 13:11:21,609 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=415, exceptions=[org.mule.module.apikit.exception.UnsupportedMediaTypeException]}
+2019-12-31 13:11:21,609 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=406, exceptions=[org.mule.module.apikit.exception.NotAcceptableException]}
+2019-12-31 13:11:21,609 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=400, exceptions=[org.mule.module.apikit.exception.BadRequestException]}
+2019-12-31 13:11:21,611 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: health-check-api-main.stage1
+2019-12-31 13:11:21,611 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: health-check-api-console
+2019-12-31 13:11:21,611 [main] INFO  org.mule.exception.DefaultMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@55a055cc
+2019-12-31 13:11:21,613 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: health-check-api-console.stage1
+2019-12-31 13:11:21,615 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/health/app:health-check-api-config
+2019-12-31 13:11:21,615 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@c89e263
+2019-12-31 13:11:21,615 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@4d5ea776
+2019-12-31 13:11:21,615 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5d68be4f
+2019-12-31 13:11:21,615 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@34eb5d01
+2019-12-31 13:11:21,617 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/health/app:health-check-api-config.stage1
+2019-12-31 13:11:21,618 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/health/check:health-check-api-config
+2019-12-31 13:11:21,618 [main] INFO  org.mule.exception.DefaultMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@1c9975a8
+2019-12-31 13:11:21,620 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/health/check:health-check-api-config.stage1
+2019-12-31 13:11:22,220 [main] INFO  org.mule.module.apikit.Configuration - Building resource URI cache...
+2019-12-31 13:11:22,354 [main] INFO  org.mule.config.spring.SpringXmlConfigurationBuilder - Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/global-config.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/generic-health-check.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/global-exceptions.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/health-check-api.xml'}]"
+2019-12-31 13:11:22,354 [main] INFO  org.mule.config.builders.AutoConfigurationBuilder - Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/global-config.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/generic-health-check.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/global-exceptions.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/health-check-api/health-check-api.xml'}]"
+2019-12-31 13:11:22,359 [main] INFO  com.mulesoft.module.policies.lifecyle.GateKeeper - GateKeeper Mode: DISABLED
+2019-12-31 13:11:22,361 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'health-check-api'                          +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-12-31 13:11:22,370 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Starting ResourceManager
+2019-12-31 13:11:22,370 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Started ResourceManager
+2019-12-31 13:11:22,412 [main] INFO  org.mule.module.http.internal.listener.DefaultHttpListenerConfig - Listening for requests on https://0.0.0.0:8082
+2019-12-31 13:11:22,415 [main] INFO  org.mule.modules.security.placeholder.agents.DefaultSplashScreenAgent - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Secure Property Placeholder 1.8.3 (DevKit 3.5.2 Build                        +
++ UNNAMED.2039.0541b23)+                                                       +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-12-31 13:11:22,418 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Starting model: _muleSystemModel
+2019-12-31 13:11:22,419 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: healthAppFlow
+2019-12-31 13:11:22,419 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: healthAppFlow.stage1
+2019-12-31 13:11:22,422 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: DB
+2019-12-31 13:11:22,422 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: DB.stage1
+2019-12-31 13:11:22,423 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: S3
+2019-12-31 13:11:22,423 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: S3.stage1
+2019-12-31 13:11:22,424 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: generic-health-check.xmlFlow
+2019-12-31 13:11:22,425 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: generic-health-check.xmlFlow.stage1
+2019-12-31 13:11:22,426 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: health-check-api-main
+2019-12-31 13:11:22,426 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: health-check-api-main.stage1
+2019-12-31 13:11:22,431 [main] INFO  org.mule.module.apikit.Configuration - 
+********************************************************************************
+* APIKit Console URL: https://127.0.0.1:8082/health-check-api/console          *
+********************************************************************************
+2019-12-31 13:11:22,432 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: health-check-api-console
+2019-12-31 13:11:22,432 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: health-check-api-console.stage1
+2019-12-31 13:11:22,666 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/health/app:health-check-api-config
+2019-12-31 13:11:22,666 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/health/app:health-check-api-config.stage1
+2019-12-31 13:11:22,667 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/health/check:health-check-api-config
+2019-12-31 13:11:22,668 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/health/check:health-check-api-config.stage1
+2019-12-31 13:11:22,691 [main] INFO  org.mule.module.management.agent.WrapperManagerAgent - This JVM hasn't been launched by the wrapper, the agent will not run.
+2019-12-31 13:11:22,711 [main] INFO  org.mule.DefaultMuleContext - 
+**********************************************************************
+* Application: health-check-api                                      *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+2019-12-31 13:11:40,434 [[health-check-api].Cloudhub_HTTPS_Listener_Configuration.worker.01] INFO  org.mule.api.processor.LoggerMessageProcessor - -- Processing starts in generic-health-check flow, correlationId: 5fed5440-2c01-11ea-8ae8-a483e701c17b --
+2019-12-31 13:11:41,411 [[health-check-api].Cloudhub_HTTPS_Listener_Configuration.worker.01] INFO  org.mule.api.processor.LoggerMessageProcessor - -- Processing End in generic-health-check flow, correlationId: 5fed5440-2c01-11ea-8ae8-a483e701c17b --

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+<db:generic-config name="ODSAPI_Database_Configuration"
+        url="${odsapi.db.url};databaseName=${odsapi.db.database};user=${odsapi.db.user};password=${odsapi.db.password}"
+        driverClassName="${odsapi.db.driver}" doc:name="Generic Database Configuration" />
+    <http:listener-config name="health-check-api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <apikit:config name="health-check-api-config" raml="health-check-api.raml" consoleEnabled="false" doc:name="Router"/>
+    <http:request-config name="HTTPS_Request_Configuration"  host="0.0.0.0" port="8085" doc:name="HTTP Request Configuration" basePath="branch-system-api" connectionIdleTimeout="100000" responseTimeout="100000"/>
+    <flow name="health-check-api-main">
+        <http:listener config-ref="health-check-api-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <apikit:router config-ref="health-check-api-config" doc:name="APIkit Router"/>
+        <exception-strategy ref="health-check-api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+    </flow>
+   
+    <flow name="get:/health/app:health-check-api-config">
+        <flow-ref name="sample-health-checkFlow" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="bk-healthcheck">
+        <scatter-gather doc:name="Scatter-Gather">
+            <flow-ref name="health-statusFlow" doc:name="health-statusFlow"/>
+            <flow-ref name="db-health-statusFlow" doc:name="db-health-statusFlow"/>
+        </scatter-gather>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+	status: "OK",
+    timestamp: now as :localdatetime,
+    appName: "",
+    hostname: "",
+	systems: payload
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="health-statusFlow">
+        <http:request config-ref="HTTPS_Request_Configuration" path="/branch" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="client_id" value="60dbc897dc7940579f32c1f48578955c"/>
+                <http:header headerName="client_secret" value="700824Ac5F284946A135D402be7ABf93"/>
+                <http:header headerName="guid" value="123"/>
+            </http:request-builder>
+        </http:request>
+        <set-variable variableName="HTTP_RESPONSE" value="#[message.inboundProperties['http.status']]" doc:name="Variable"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+    http: {
+		systemName: "HTTPS",
+		connectionConfig: "0.0.0.0:443",
+		user: "N/A",
+		status: "OK" when (flowVars.HTTP_RESPONSE == 200) otherwise "Not OK",
+		timestamp: now
+	}
+}]]></dw:set-payload>
+            <dw:set-variable variableName="httpPayload"><![CDATA[%dw 1.0
+%output application/java
+---
+{
+	systemName: "HTTPS",
+	connectionConfig: "0.0.0.0:443",
+	user: "N/A",
+	status: "OK",
+	timestamp: now
+}]]></dw:set-variable>
+        </dw:transform-message>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger message="Exception caught while http call" level="INFO" doc:name="Logger"/>
+        </catch-exception-strategy>
+    </flow>
+    <flow name="db-health-statusFlow">
+        <db:select config-ref="ODSAPI_Database_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[Select 1]]></db:parameterized-query>
+        </db:select>
+        <dw:transform-message doc:name="Transform Message" metadata:id="ac3ad70c-72f4-4039-bda3-13d285d81c43">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+    db:{
+		systemName: "SQLServer",
+		connectionConfig: "10.88.151.91:1433",
+		user: "admin",
+		status: "OK",
+		timestamp: now
+	}
+}]]></dw:set-payload>
+            <dw:set-variable variableName="dbPayload"><![CDATA[%dw 1.0
+%output application/java
+---
+{
+	systemName: "SQLServer",
+	connectionConfig: "10.88.151.91:1433",
+	user: "admin",
+	status: "OK",
+	timestamp: now
+}]]></dw:set-variable>
+        </dw:transform-message>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger level="INFO" doc:name="Logger" message="Exception caught while db call"/>
+        </catch-exception-strategy>
+    </flow>
+    <apikit:mapping-exception-strategy name="health-check-api-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>

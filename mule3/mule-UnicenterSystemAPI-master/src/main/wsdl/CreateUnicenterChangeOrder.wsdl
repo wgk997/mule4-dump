@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CreateUnicenterChangeOrder"
+             targetNamespace="http://xmlns.oracle.com/CreateUnicenterChangeOrder"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:client="http://xmlns.oracle.com/CreateUnicenterChangeOrder">
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TYPE DEFINITION - List of services participating in this BPEL process
+    The default output of the BPEL designer uses strings as input and
+    output to the BPEL Process. But you can define or import any XML
+    Schema type and use them as part of the message types.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/CreateUnicenterChangeOrder"
+                    schemaLocation="CreateUnicenterChangeOrder.xsd"/>
+        </schema>
+    </types>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    MESSAGE TYPE DEFINITION - Definition of the message types used as
+    part of the port type defintions
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <message name="CreateUnicenterChangeOrderRequestMessage">
+        <part name="payload" element="client:CreateUnicenterChangeOrderProcessRequest"/>
+    </message>
+    <message name="CreateUnicenterChangeOrderResponseMessage">
+        <part name="payload" element="client:CreateUnicenterChangeOrderProcessResponse"/>
+    </message>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    PORT TYPE DEFINITION - A port type groups a set of operations into
+    a logical service unit.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- portType implemented by the CreateUnicenterChangeOrder BPEL process -->
+    <portType name="CreateUnicenterChangeOrder">
+        <operation name="process">
+            <input message="client:CreateUnicenterChangeOrderRequestMessage"/>
+            <output message="client:CreateUnicenterChangeOrderResponseMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="CreateUnicenterChangeOrderSoapBinding" type="client:CreateUnicenterChangeOrder">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="CreateUnicenterChangeOrder_OSB_Client">
+        <port name="CreateUnicenterChangeOrder_OSB_ClientDirectBindingPort11" binding="client:CreateUnicenterChangeOrderSoapBinding">
+            <soap:address location="http://foobar"/>
+        </port>
+    </service>
+</definitions>

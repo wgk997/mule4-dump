@@ -1,0 +1,27 @@
+<DoSelectResponse xmlns="http://www.ca.com/UnicenterServicePlus/ServiceDesk" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+<DoSelectResult>
+
+<UDSObjectList xmlns="">
+
+<UDSObject>
+
+<Handle>
+
+sev:802
+
+</Handle>
+
+<Attributes>
+
+<enum DataType="2001">code for high</enum>
+
+</Attributes>
+
+</UDSObject>
+
+</UDSObjectList>
+
+</DoSelectResult>
+
+</DoSelectResponse>

@@ -1,0 +1,259 @@
+<mule xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml"
+      xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <apikit-soap:config inboundValidationMessage="${validate.soap.requests}"
+                        name="/CreateUnicenterIncident_OSB_Client/CreateUnicenterIncident_OSB_ClientDirectBindingPort11/api-config"
+                        portName="CreateUnicenterIncident_OSB_ClientDirectBindingPort11"
+                        serviceName="CreateUnicenterIncident_OSB_Client"
+                        wsdlUrl="CreateUnicenterIncident.wsdl"
+                        doc:name="APIkit SOAP: Configuration"/>
+    <apikit-soap:config inboundValidationMessage="${validate.soap.requests}"
+                        name="/CreateUnicenterRequest_OSB_Client/CreateUnicenterRequest_OSB_ClientDirectBindingPort11/api-config"
+                        wsdlUrl="CreateUnicenterRequest.wsdl"
+                        serviceName="CreateUnicenterRequest_OSB_Client"
+                        portName="CreateUnicenterRequest_OSB_ClientDirectBindingPort11"
+                        doc:name="APIkit SOAP: Configuration"/>
+    <apikit-soap:config inboundValidationMessage="${validate.soap.requests}"
+                        name="/CreateUnicenterChangeOrder_OSB_Client/CreateUnicenterChangeOrder_OSB_ClientDirectBindingPort11/api-config"
+                        wsdlUrl="CreateUnicenterChangeOrder.wsdl"
+                        serviceName="CreateUnicenterChangeOrder_OSB_Client"
+                        portName="CreateUnicenterChangeOrder_OSB_ClientDirectBindingPort11"
+                        doc:name="APIkit SOAP: Configuration"/>
+    <apikit-soap:config inboundValidationMessage="${validate.soap.requests}"
+                        name="/CreateOnlineFormsChangeOrder_OSB_Client/CreateOnlineFormsChangeOrder_OSB_ClientDirectBindingPort11/api-config"
+                        wsdlUrl="CreateOnlineFormsChangeOrder.wsdl"
+                        serviceName="CreateOnlineFormsChangeOrder_OSB_Client"
+                        portName="CreateOnlineFormsChangeOrder_OSB_ClientDirectBindingPort11"
+                        doc:name="APIkit SOAP: Configuration"/>
+    <flow name="process:/CreateUnicenterIncident_OSB_Client/CreateUnicenterIncident_OSB_ClientDirectBindingPort11/api-config">
+        <set-variable variableName="requestType" value="incident" doc:name="requestType"/>
+        <flow-ref name="doCreateRequest"
+                  doc:name="doCreateRequest"/>
+    </flow>
+    <flow name="process:/CreateUnicenterRequest_OSB_Client/CreateUnicenterRequest_OSB_ClientDirectBindingPort11/api-config">
+        <set-variable variableName="requestType" value="request" doc:name="requestType"/>
+        <flow-ref name="doCreateRequest"
+                  doc:name="doCreateRequest"/>
+    </flow>
+    <flow name="process:/CreateUnicenterChangeOrder_OSB_Client/CreateUnicenterChangeOrder_OSB_ClientDirectBindingPort11/api-config">
+        <set-variable variableName="requestType" value="changeOrder" doc:name="requestType"/>
+        <flow-ref name="doCreateRequest"
+                  doc:name="doCreateRequest"/>
+    </flow>
+    <flow name="process:/CreateOnlineFormsChangeOrder_OSB_Client/CreateOnlineFormsChangeOrder_OSB_ClientDirectBindingPort11/api-config">
+        <set-variable variableName="requestType" value="onlineFormsChangeOrder" doc:name="requestType"/>
+        <flow-ref name="doCreateRequest" doc:name="doCreateRequest"/>
+    </flow>
+    <flow name="doCreateRequest">
+        <mulexml:dom-to-xml-transformer doc:name="Stream of XML to String of XML"
+                                        doc:description="We have to convert the incoming stream of XML to a String because we&#8217;re going to use the payload twice (once for handles and once for the actual request)"/>
+        <set-variable variableName="originalPayload" mimeType="application/xml" value="#[payload]"
+                      doc:name="Preserve payload"/>
+        <dw:transform-message doc:name="co_number_status">
+            <dw:set-variable variableName="co_number_status"><![CDATA[%dw 1.0
+%output application/java
+%namespace oracle http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+---
+payload.oracle#CreateOnlineFormsChangeOrderProcessRequest.oracle#co_number_status]]></dw:set-variable>
+        </dw:transform-message>
+        <flow-ref name="loginFlow" doc:name="loginFlow"/>
+        <flow-ref name="#[flowVars.requestType + 'Flow']" doc:name="#[flowVars.requestType + 'Flow']"/>
+        <enricher target="#[flowVars.logoutData]" doc:name="Message Enricher">
+            <flow-ref name="logoutFlow" doc:name="logoutFlow"/>
+        </enricher>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <flow-ref name="faultResponseFlow" doc:name="faultResponseFlow"/>
+        </catch-exception-strategy>
+    </flow>
+    <flow name="faultResponseFlow">
+        <dw:transform-message doc:name="Prepare incident exception context"
+                              metadata:id="c6b2558d-6b4d-45bb-b898-2405dae5eb6a">
+            <dw:input-payload/>
+            <dw:set-variable variableName="muleDfwExceptionErrorContext"><![CDATA[%dw 1.0
+%output application/java
+%namespace nsi http://xmlns.oracle.com/CreateUnicenterIncident
+%namespace nsr http://xmlns.oracle.com/CreateUnicenterRequest
+%namespace nsco http://xmlns.oracle.com/CreateUnicenterChangeOrder
+%namespace nsofco http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+%var requestTypeIncident = flowVars.originalPayload.nsi#CreateUnicenterIncidentProcessRequest
+%var requestTypeRequest = flowVars.originalPayload.nsr#CreateUnicenterRequestProcessRequest
+%var requestTypeChangeOrder = flowVars.originalPayload.nsco#CreateUnicenterChangeOrderProcessRequest
+%var requestTypeOnlineFormsChangeOrder = flowVars.originalPayload.nsofco#CreateOnlineFormsChangeOrderProcessRequest
+
+%var context = {
+	incident: "affected end user: " ++ (requestTypeIncident.nsi#affectedEndUser default "no affected end user")
+	++ ", incident area: " ++ (requestTypeIncident.nsi#incidentArea default "no incident area"),
+		
+	request: "requester: " ++ (requestTypeRequest.nsr#requester default "no requester")
+	++ ", affected end user: " ++ (requestTypeRequest.nsr#affected_end_user default "no affected end user") ++ 
+	", request category: "  ++ (requestTypeRequest.nsr#category default "no request category"),
+	
+	changeOrder: "requester: " ++ (requestTypeChangeOrder.nsco#requester default "no requester")
+	++ ", affected end user: " ++ (requestTypeChangeOrder.nsco#affected_end_user default "no affected end user") ++ 
+	", request category: "  ++ (requestTypeChangeOrder.nsco#category default "no request category"),
+	
+	onlineFormsChangeOrder: "requester: " ++ (requestTypeOnlineFormsChangeOrder.nsofco#requester default "no requester")
+	++ ", affected end user: " ++ (requestTypeOnlineFormsChangeOrder.nsofco#affected_end_user default "no affected end user")
+	++ ", request category: " ++ (requestTypeOnlineFormsChangeOrder.nsofco#category default "no request category")
+}
+---
+context[flowVars.requestType] default "Unknown type: " ++ flowVars.requestType]]></dw:set-variable>
+        </dw:transform-message>
+        <flow-ref name="dfw-exception-handler-impl" doc:name="dfw-exception-handler-impl"/>
+        <dw:transform-message doc:name="Setup Reply">
+            <dw:input-payload doc:sample="sample_data/empty.xml"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace nsi http://xmlns.oracle.com/CreateUnicenterIncident
+%namespace nsr http://xmlns.oracle.com/CreateUnicenterRequest
+%namespace nsco http://xmlns.oracle.com/CreateUnicenterChangeOrder
+%namespace nsofco http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+
+%var requestTypeIncident = flowVars.originalPayload.nsi#CreateUnicenterIncidentProcessRequest
+%var requestTypeRequest = flowVars.originalPayload.nsr#CreateUnicenterRequestProcessRequest
+%var requestTypeChangeOrder = flowVars.originalPayload.nsco#CreateUnicenterChangeOrderProcessRequest
+%var requestTypeOnlineFormsChangeOrder = flowVars.originalPayload.nsofco#CreateOnlineFormsChangeOrderProcessRequest
+
+%var instanceIDMapping = {
+	incident: requestTypeIncident.nsi#instanceID default '',		
+	request: requestTypeRequest.nsr#instanceID default '',	
+	changeOrder: requestTypeChangeOrder.nsco#instanceID default '',
+	onlineFormsChangeOrder: requestTypeOnlineFormsChangeOrder.nsofco#instanceID default ''
+}
+
+%var desc = flowVars.desc when flowVars.desc != null otherwise
+			"This request was not created due to the fault exception: " ++ flowVars.exception.message ++ "; The instance ID is: " ++ instanceIDMapping[flowVars.requestType] ++ ", please check the console for more details."
+%var response = {
+	incident: nsi#CreateUnicenterIncidentProcessResponse: {
+		nsi#result: "Error",
+		nsi#desc: desc
+	},
+	request: nsr#CreateUnicenterRequestProcessResponse: {
+		nsr#result: "Error",
+		nsr#desc: desc
+	},
+	changeOrder: nsco#CreateUnicenterChangeOrderProcessResponse: {
+		nsco#result: "Error",
+		nsco#desc: desc
+	},
+	onlineFormsChangeOrder: nsofco#CreateOnlineFormsChangeOrderProcessResponse: {
+		nsofco#result: "Error",
+		nsofco#desc: desc
+	}
+}
+---
+response[flowVars.requestType]]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <catch-exception-strategy name="sharedCatch">
+        <set-variable variableName="soapFaultMessageFromCxfValidator" value="#[exception.message]"
+                      mimeType="application/xml" doc:name="soapFaultMessageFromCxfValidator"/>
+        <dw:transform-message doc:name="desc" metadata:id="f0cafc2d-1306-493b-86ae-92ae7346b7d4">
+            <dw:input-payload doc:sample="/home/sandesh/Desktop/faultExample.xml"/>
+            <dw:set-variable variableName="desc"><![CDATA[%dw 1.0
+%output application/java
+---
+flowVars.soapFaultMessageFromCxfValidator.Envelope.Body.Fault.faultstring]]></dw:set-variable>
+        </dw:transform-message>
+        <flow-ref name="faultResponseFlow" doc:name="faultResponseFlow"/>
+    </catch-exception-strategy>
+    <flow name="api-main-incident">
+        <http:listener
+                path="/createUnicenterIncident/v1/CreateUnicenterIncident_OSB_Client/CreateUnicenterIncident_OSB_ClientDirectBindingPort11"
+                config-ref="DFW_HTTP_Listener_Configuration"
+                doc:name="/CreateUnicenterIncident_OSB_Client/CreateUnicenterIncident_OSB_ClientDirectBindingPort11"/>
+        <set-variable variableName="requestType" value="incident" doc:name="requestType"/>
+        <set-variable variableName="logPrefix"
+                      value="Unicenter Incident Request Mule ID: #[message.rootId]:" doc:name="logPrefix"/>
+        <flow-ref name="fix-empty-elements"
+                  doc:name="fix-empty-elements"/>
+        <processor ref="DFW_CXF_VALIDATOR_I" doc:name="Validate SOAP Request"/>
+        <apikit-soap:router
+                config-ref="/CreateUnicenterIncident_OSB_Client/CreateUnicenterIncident_OSB_ClientDirectBindingPort11/api-config"
+                doc:name="SOAP Router"/>
+        <exception-strategy ref="sharedCatch" doc:name="Reference Exception Strategy"/>
+    </flow>
+
+    <flow name="fix-empty-elements">
+        <choice>
+            <when expression="#[message.inboundProperties.'http.query.params'.containsKey('wsdl') || message.inboundProperties.'http.query.params'.containsKey('xsd')]">
+                <logger message="#[flowVars.logPrefix] Received WSDL/XSD fetch"
+                        level="INFO"
+                        doc:name="Logger"/>
+            </when>
+            <otherwise>
+                <mulexml:xslt-transformer xsl-file="null_fixer.xsl"
+                                          mimeType="application/xml"
+                                          maxIdleTransformers="2"
+                                          maxActiveTransformers="5"
+                                          doc:name="Fix empty elements"/>
+                <logger message="#[flowVars.logPrefix] Received SOAP request and transformed to #[message.payloadAs(java.lang.String)] to handle any empty elements."
+                        level="INFO"
+                        doc:name="Logger"/>
+            </otherwise>
+        </choice>
+    </flow>
+
+    <flow name="api-main-request">
+        <http:listener
+                path="/createUnicenterRequest/v1/CreateUnicenterRequest_OSB_Client/CreateUnicenterRequest_OSB_ClientDirectBindingPort11"
+                config-ref="DFW_HTTP_Listener_Configuration"
+                doc:name="/CreateUnicenterRequest_OSB_Client/CreateUnicenterRequest_OSB_ClientDirectBindingPort11"/>
+        <set-variable variableName="requestType" value="request" doc:name="requestType"/>
+        <set-variable variableName="logPrefix"
+                      value="Unicenter Request Mule ID: #[message.rootId]:" doc:name="logPrefix"/>
+        <logger message="#[flowVars.logPrefix] Received SOAP request"
+                level="INFO" doc:name="Logger"/>
+        <processor ref="DFW_CXF_VALIDATOR_R" doc:name="Validate SOAP Request"/>
+        <apikit-soap:router
+                config-ref="/CreateUnicenterRequest_OSB_Client/CreateUnicenterRequest_OSB_ClientDirectBindingPort11/api-config"
+                doc:name="SOAP Router"/>
+        <exception-strategy ref="sharedCatch" doc:name="Reference Exception Strategy"/>
+    </flow>
+
+    <flow name="api-main-changeOrder">
+        <http:listener
+                path="/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrder_OSB_Client/CreateUnicenterChangeOrder_OSB_ClientDirectBindingPort11"
+                config-ref="DFW_HTTP_Listener_Configuration"
+                doc:name="/CreateUnicenterChangeOrder_OSB_Client/CreateUnicenterChangeOrder_OSB_ClientDirectBindingPort11"/>
+        <set-variable variableName="requestType" value="changeOrder" doc:name="requestType"/>
+        <set-variable variableName="logPrefix"
+                      value="Unicenter Change Order Mule ID: #[message.rootId]:" doc:name="logPrefix"/>
+        <logger message="#[flowVars.logPrefix] Received SOAP request"
+                level="INFO" doc:name="Logger"/>
+        <processor ref="DFW_CXF_VALIDATOR_CO" doc:name="Validate SOAP Request"/>
+        <apikit-soap:router
+                config-ref="/CreateUnicenterChangeOrder_OSB_Client/CreateUnicenterChangeOrder_OSB_ClientDirectBindingPort11/api-config"
+                doc:name="SOAP Router"/>
+        <exception-strategy ref="sharedCatch" doc:name="Reference Exception Strategy"/>
+    </flow>
+
+    <flow name="api-main-onlineFormsChangeOrder">
+        <http:listener
+                path="/createOnlineFormsChangeOrder/v1/CreateOnlineFormsChangeOrder_OSB_Client/CreateOnlineFormsChangeOrder_OSB_ClientDirectBindingPort11"
+                config-ref="DFW_HTTP_Listener_Configuration"
+                doc:name="/CreateOnlineFormsChangeOrder_OSB_Client/CreateOnlineFormsChangeOrder_OSB_ClientDirectBindingPort11"/>
+        <set-variable variableName="requestType" value="onlineFormsChangeOrder" doc:name="requestType"/>
+        <set-variable variableName="logPrefix"
+                      value="Online Forms Change Order Mule ID: #[message.rootId]:" doc:name="logPrefix"/>
+        <logger message="#[flowVars.logPrefix] Received SOAP request"
+                level="INFO" doc:name="Logger"/>
+        <flow-ref name="fix-empty-elements"
+                  doc:name="fix-empty-elements"/>
+        <processor ref="DFW_CXF_VALIDATOR_OFCO" doc:name="Validate SOAP Request"/>
+        <apikit-soap:router
+                config-ref="/CreateOnlineFormsChangeOrder_OSB_Client/CreateOnlineFormsChangeOrder_OSB_ClientDirectBindingPort11/api-config"
+                doc:name="SOAP Router"/>
+        <exception-strategy ref="sharedCatch" doc:name="Reference Exception Strategy"/>
+    </flow>
+</mule>

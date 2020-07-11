@@ -1,0 +1,45 @@
+#%RAML 1.0 DataType
+type: object  
+properties:
+  branchId:
+    type: integer
+    description: branch identifier
+  branchType:
+    type: string
+    description: branch type
+  branchLogo:
+    type: string
+    description: branch logo
+  branchCode:
+    type: string
+    description: branch code
+  branchName:
+    type: string
+    description: name of branch
+  branchAddress:
+    type: string
+    description: branch address
+  branchCityStateZip:
+    type: string
+    description: branch city, state, and zip code
+  branchFax:
+    type: string
+    description: branch fax number
+  branchPhone:
+    type: string  
+    description: branch phone number
+  latitude:
+    type: number
+    description: branch latitude
+    required: false
+  longitude:
+    type: number
+    description: branch longitude
+    required: false
+  businessHours:
+    type: string
+    description: normal business hours
+  saturdayBusinessHours:
+    type: string
+    description: Saturday business hours 
+    

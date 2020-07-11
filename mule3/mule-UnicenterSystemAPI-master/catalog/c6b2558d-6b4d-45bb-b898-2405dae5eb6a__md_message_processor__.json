@@ -1,0 +1,20 @@
+{
+    "inputMessageMetadata": {
+        "flowVariables": {
+            "originalPayload": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "ourSoapRequest"
+            }
+        }
+    },
+    "outputMessageMetadata": {
+        "flowVariables": {
+            "muleDfwExceptionErrorContext": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "string"
+            }
+        }
+    },
+    "id": "c6b2558d-6b4d-45bb-b898-2405dae5eb6a",
+    "version": "5.2.0.0"
+}

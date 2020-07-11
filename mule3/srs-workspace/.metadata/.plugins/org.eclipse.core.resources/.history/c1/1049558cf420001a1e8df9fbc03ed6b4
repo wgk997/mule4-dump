@@ -1,0 +1,205 @@
+@Library('mulesoft.library')
+import com.avioconsulting.jenkins.GitInfo
+import com.avioconsulting.maven.NexusConfig
+import com.avioconsulting.mulesoft.deployment.CloudhubDeploymentConfig
+import com.avioconsulting.maven.Artifact
+import com.avioconsulting.mulesoft.deployment.RuntimeManagerDeploymentConfig
+
+@Library('promote-api-manager')
+import APIIdentification
+import com.avioconsulting.mulesoft.deployment.SqsLoggingConfig
+
+import javax.naming.NamingException
+
+String apiName = 'invoices-system-api'
+String apiLabel = ''
+
+RuntimeManagerDeploymentConfig deployConfig = new RuntimeManagerDeploymentConfig()
+deployConfig.applicationPrefix = 'srs'
+deployConfig.anypointCredentialId = 'anypoint.credentials'
+deployConfig.anypointOrgId = 'ddd895c2-997c-428f-a94f-3aac313f956c'
+deployConfig.businessGroup = 'SRS Distribution'
+
+String developBranch = 'develop'
+String gitCredentialId = 'jenkins.bitbucket.credential'
+Map mvnConfig = [
+    mavenSettingsConfig: 'mule-maven-settings',
+	maven              : 'Maven 3',
+	jdk                : 'jdk1.8'
+]
+
+SqsLoggingConfig sqsConfig = new SqsLoggingConfig()
+sqsConfig.region = 'us-east-1'
+sqsConfig.queueName = 'srs-logs'
+sqsConfig.credentialId = 'aws.sqs.logs.credential'
+
+NexusConfig nexusConfig = new NexusConfig()
+nexusConfig.credentialId = 'nexus.credential'
+nexusConfig.url = 'https://devops.avioconsulting.com/nexus'
+nexusConfig.repository = 'srs-releases'
+
+Map env = [
+        'DEV' : [
+				'crypto.key' : 'mulesoft.crypto.key.dev',
+				'anypoint.client.id' : 'anypoint.clientid.secret.dev',
+				'env.id' : '9e99334c-4022-4720-844c-673afccc83d3',
+				'arm.targetType': 'server',
+				'arm.targetName': '${mule_dev}' //'MULE-DEV-AWS-01'
+        ],
+		'QA' : [
+				'crypto.key' : 'mulesoft.crypto.key.qa',
+				'anypoint.client.id' : 'anypoint.clientid.secret.qa',
+				'env.id' : 'bc2d5c36-6fdf-4d4e-a516-9065fc3ce933',
+				'arm.targetType': 'server',
+				'arm.targetName': '${mule_qa}' //'MULE-QA-AWS-01'
+		],
+		'PROD' : [
+				'crypto.key' : 'mulesoft.crypto.key.prod',
+				'anypoint.client.id' : 'anypoint.clientid.secret.prod',
+				'env.id' : '743e386f-e41e-4c9b-b849-a79261fc5300',
+				'arm.targetType': 'serverGroup',
+				'arm.targetName': '${mule_prod}' //'MULE-PROD-AWS'
+    ]
+]
+String pomTemplate = 'mule3-arm-deployment-template'
+
+Artifact artifact
+String branchName
+muleDomain = 'srs-domain'
+gitBase = 'git@bitbucket.org:srsdistribution'
+gitCredential = 'jenkins-git-key'
+
+def doCheckout(gitCredential, gitBase, gitRepo, branch) {
+  checkout $class: 'GitSCM',
+            branches: [[name: '*/'+ branch]],
+            doGenerateSubmoduleConfigurations: false,
+            // LocalBranch needed to identify name of branch (see below)
+            extensions: [[$class: 'CleanBeforeCheckout'],
+                         [$class: 'PruneStaleBranch'],
+                         [$class: 'LocalBranch'],
+                         [$class: 'RelativeTargetDirectory', 
+                          relativeTargetDir: gitRepo]
+                         ],
+            submoduleCfg: [],
+            userRemoteConfigs: [[credentialsId: gitCredential,
+                                 url: gitBase + '/' + gitRepo + '.git']]
+}
+
+node('mvn') {
+	timestamps {
+		try {
+			stage('Install Domain') {
+              withMaven(mvnConfig) {
+                doCheckout(gitCredential, gitBase, muleDomain, 'master')
+                dir(muleDomain) {
+                    sh 'mvn install'
+                }
+              }
+            }
+			stage('Checkout') {
+				branchName = BRANCH_NAME
+				dir(apiName){
+					GitInfo gitInfo = mulesoft.checkout()
+					artifact = mulesoft.updateVersion(gitInfo, mvnConfig, deployConfig)
+				}
+			}
+			stage('Build and Test') {
+					dir(apiName) {
+                        withMaven(mvnConfig) {
+                            withCredentials([string(credentialsId:env['DEV']['crypto.key'],variable:'CRYPTO_KEY')]) {
+                                mulesoft.quietMaven('clean test -Denv=dev -Dcrypto.key=${CRYPTO_KEY}')
+                            }
+                        }
+					}
+			}
+			stage('Deploy to Nexus') {
+			    withMaven(mvnConfig) {
+					dir(apiName){
+						mulesoft.quietMaven('clean deploy -DskipTests')
+					}
+				}
+				if(branchName == 'master') {
+					mulesoft.sendInfoMessage("${artifact.filename} has been built from master branch, sanity check complete")
+				} else {
+					mulesoft.sendInfoMessage("${artifact.filename} has been built and deployed to nexus successfully")
+				}
+			}
+		} catch (Exception e) {
+			mulesoft.sendErrorMessage("${artifact.filename} failed to build")
+				throw e
+		}
+	}
+}
+
+if(branchName == developBranch) {
+	// Deploy to DEV
+	deployConfig.environment = 'DEV'
+	deployConfig.environmentId = env[deployConfig.environment]['env.id']
+	deployConfig.targetType = env[deployConfig.environment]['arm.targetType']
+	deployConfig.targetName = env[deployConfig.environment]['arm.targetName']
+
+
+	mulesoft.approveDeployment(deployConfig, 5)
+	List<String> apiDetails = []
+	withCredentials([
+			usernamePassword(credentialsId: deployConfig.anypointCredentialId, usernameVariable: 'ANYPOINT_USER', passwordVariable: 'ANYPOINT_PASSWORD')]) {
+		apiDetails = new APIIdentification().autoDiscoveryDev(apiName, "${ANYPOINT_USER}", "${ANYPOINT_PASSWORD}", "${deployConfig.anypointOrgId}", apiLabel)
+	}
+	if(apiDetails.size() < 2) {
+		apiDetails[0] = ''
+		apiDetails[1] = ''
+	}
+
+		mulesoft.deploy(deployConfig, artifact, nexusConfig, mvnConfig, pomTemplate, env[deployConfig.environment]['crypto.key'], env[deployConfig.environment]['anypoint.client.id'], apiDetails[1], apiDetails[0], sqsConfig)
+
+	// Deploy to QA
+	deployConfig.environment = 'QA'
+	mulesoft.approveDeployment(deployConfig, 5)
+	deployConfig.environmentId = env[deployConfig.environment]['env.id']
+	deployConfig.targetType = env[deployConfig.environment]['arm.targetType']
+	deployConfig.targetName = env[deployConfig.environment]['arm.targetName']
+	withCredentials([
+			usernamePassword(credentialsId: deployConfig.anypointCredentialId, usernameVariable: 'ANYPOINT_USER', passwordVariable: 'ANYPOINT_PASSWORD')]) {
+		apiDetails = new APIIdentification().autoDiscoveryQA(apiName, "${ANYPOINT_USER}", "${ANYPOINT_PASSWORD}", "${deployConfig.anypointOrgId}", apiLabel)
+	}
+	if(apiDetails.size() < 2) {
+		apiDetails[0] = ''
+		apiDetails[1] = ''
+	}
+
+		mulesoft.deploy(deployConfig, artifact, nexusConfig, mvnConfig, pomTemplate, env[deployConfig.environment]['crypto.key'], env[deployConfig.environment]['anypoint.client.id'], apiDetails[1], apiDetails[0], sqsConfig)
+
+	if(branchName == developBranch) {
+		// Deploy to PROD
+		deployConfig.environment = 'PROD'
+		deployConfig.environmentId = env[deployConfig.environment]['env.id']
+		deployConfig.targetType = env[deployConfig.environment]['arm.targetType']
+		deployConfig.targetName = env[deployConfig.environment]['arm.targetName']
+		mulesoft.approveDeployment(deployConfig, 5)
+
+		node {
+			stage('Merging and Tag') {
+				//When approved into production, the code will be merged to master, tag it, do a sanity check on master branch.
+				try {
+					GitInfo gitInfo = mulesoft.checkout()
+					artifact = mulesoft.updateVersion(gitInfo, mvnConfig, deployConfig)
+					mulesoft.mergeAndTag(gitInfo.commit, artifact.version, gitCredentialId)
+					mulesoft.sendInfoMessage("Commit merged into master and tagged")
+				} catch (Exception) {
+					mulesoft.sendErrorMessage("Commit failed to merge/tag into master ")
+					throw Exception
+				}
+			}
+		}
+
+		withCredentials([
+				usernamePassword(credentialsId: deployConfig.anypointCredentialId, usernameVariable: 'ANYPOINT_USER', passwordVariable: 'ANYPOINT_PASSWORD')]) {
+			apiDetails = new APIIdentification().autoDiscoveryProd(apiName, "${ANYPOINT_USER}", "${ANYPOINT_PASSWORD}", "${deployConfig.anypointOrgId}", apiLabel)
+		}
+		if(apiDetails.size() < 2) {
+			apiDetails[0] = ''
+			apiDetails[1] = ''
+		}
+		mulesoft.deploy(deployConfig, artifact, nexusConfig, mvnConfig, pomTemplate, env[deployConfig.environment]['crypto.key'], env[deployConfig.environment]['anypoint.client.id'], apiDetails[1], apiDetails[0], sqsConfig)
+	}
+}

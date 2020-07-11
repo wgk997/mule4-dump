@@ -1,0 +1,21 @@
+{
+    "inputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "#_custom_mule_metadata_type_#",
+            "typeId": "sampleRequestToUnicenterRequest"
+        },
+        "flowVariables": {
+            "specialFlags": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "handleMap"
+            },
+            "handleMapping": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "handleMap"
+            }
+        }
+    },
+    "outputMessageMetadata": {},
+    "id": "b1ea5064-743d-48de-bde6-536bf12759fb",
+    "version": "5.2.0.0"
+}

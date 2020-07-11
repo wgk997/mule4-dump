@@ -1,0 +1,98 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd">
+	<apikit:config name="${artifactId}-config" raml="${artifactId}.raml"
+		consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false" />
+	<flow name="${artifactId}-main">
+		<http:listener
+		#if($deployTo == 'cloudhub')
+			config-ref="Cloudhub_Internal_HTTP_Listener_Configuration"
+		#end
+		#if($deployTo == 'arm')
+			config-ref="srsDomainHTTPListenerConfig"
+		#end
+			path="/${symbol_dollar}{api.path}/*" doc:name="HTTP" />
+		<apikit:router config-ref="${artifactId}-config" doc:name="APIkit Router" />
+		<choice-exception-strategy doc:name="Choice Exception Strategy">
+			<catch-exception-strategy
+				when="${symbol_pound}[exception.causedBy(org.mule.extension.validation.api.ValidationException)]"
+				doc:name="Catch Exception Strategy">
+				<flow-ref name="srs-common-exception-strategy-sub-flow"
+					doc:name="Flow Reference" />
+			</catch-exception-strategy>
+			<exception-strategy ref="${artifactId}-apiKitGlobalExceptionMapping"
+				doc:name="Reference Exception Strategy" />
+		</choice-exception-strategy>
+	</flow>
+	<flow name="${artifactId}-console">
+		<http:listener
+		#if($deployTo == 'cloudhub')
+			config-ref="Cloudhub_Internal_HTTP_Listener_Configuration"
+		#end
+		#if($deployTo == 'arm')
+			config-ref="srsDomainHTTPListenerConfig"
+		#end
+			path="/${symbol_dollar}{api.path}/console/*" doc:name="HTTP" />
+		<apikit:console config-ref="${artifactId}-config"
+			doc:name="APIkit Console" />
+	</flow>
+	<apikit:mapping-exception-strategy
+		name="${artifactId}-apiKitGlobalExceptionMapping">
+		<apikit:mapping statusCode="404">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.NotFoundException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{ &quot;code&quot;: &quot;404&quot;, &quot;message&quot;: &quot;Not found&quot;, &quot;errors&quot; : [ { &quot;domain&quot; : &quot;global&quot;, &quot;reason&quot; : &quot;Not Found&quot;, &quot;message&quot; : &quot;Resource not found&quot;, &quot;locationType&quot; : &quot;resource&quot;,
+&quot;location&quot; : &quot;url path&quot;, &quot;extendedHelp&quot;: &quot;&quot;} ] }"
+				doc:name="Set Payload" mimeType="application/json" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="405">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{   &quot;code&quot;: &quot;405&quot;,   &quot;message&quot;: &quot;Method not allowed&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;Method&quot;,       &quot;message&quot; : &quot;HTTP method is not allowed&quot;,       &quot;locationType&quot; : &quot;http method&quot;,       &quot;location&quot; : &quot;http header&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] }"
+				doc:name="Set Payload" mimeType="application/json" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="415">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{   &quot;code&quot;: &quot;415&quot;,   &quot;message&quot;: &quot;Unsupported media type&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;Media type is unsupported&quot;,       &quot;message&quot; : &quot;Payload is not in the format supported by this method on the target resource&quot;,       &quot;locationType&quot; : &quot;Payload&quot;,       &quot;location&quot; : &quot;Payload&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] }"
+				doc:name="Set Payload" mimeType="application/json" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="406">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.NotAcceptableException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{   &quot;code&quot;: &quot;406&quot;,   &quot;message&quot;: &quot;Not acceptable&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;Response is not acceptable&quot;,       &quot;message&quot; : &quot;Response type returned is not provided in client request HTTP header&quot;,       &quot;locationType&quot; : &quot;HTTP header&quot;,       &quot;location&quot; : &quot;Accept&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] }"
+				doc:name="Set Payload" mimeType="application/json" />
+		</apikit:mapping>
+		<apikit:mapping statusCode="400">
+			<apikit:exception
+				value="org.mule.module.apikit.exception.BadRequestException" />
+			<set-property propertyName="Content-Type" value="application/json"
+				doc:name="Property" />
+			<set-payload
+				value="{   &quot;code&quot;: &quot;400&quot;,   &quot;message&quot;: &quot;${symbol_pound}[(exception.cause!=null)?(exception.cause.message):exception]&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;MissingField&quot;,       &quot;message&quot; : &quot;${symbol_pound}[(exception.cause!=null)?(exception.cause.message):exception]&quot;,       &quot;locationType&quot; : &quot;payload&quot;,       &quot;location&quot; : &quot;payload&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] } "
+				doc:name="Set Payload" mimeType="application/json" />
+		</apikit:mapping>
+	</apikit:mapping-exception-strategy>
+</mule>

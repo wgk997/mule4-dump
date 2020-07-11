@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns0:CreateRequestResponse xmlns:ns0="http://www.ca.com/UnicenterServicePlus/ServiceDesk">
+  <ns0:CreateRequestResult>????</ns0:CreateRequestResult>
+  <ns0:newRequestHandle>the handle</ns0:newRequestHandle>
+  <ns0:newRequestNumber></ns0:newRequestNumber>
+</ns0:CreateRequestResponse>

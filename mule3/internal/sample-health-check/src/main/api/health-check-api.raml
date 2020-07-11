@@ -1,0 +1,30 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/8ff5a0a4-d749-4bdf-be07-dcc4f3936b41/ # 
+title: Health Check API
+version: v1
+
+traits:
+  error: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.0/error-responses-trait.raml
+  security: !include traits/client-id-secret-trait.raml
+  guid: !include traits/correlation-guid-trait.raml
+
+/health/app:
+  get:
+    description: Performs the health check of the application
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include types/health-check-response-dataType.raml
+            example: !include examples/health-check-response-example.raml
+
+/health/check:
+  is: [error, security]
+  get:
+    description: Performs a Generic health check of the API2
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include datatypes/generic-health-stats.raml
+            example: !include examples/generic-healthcheck-response.raml

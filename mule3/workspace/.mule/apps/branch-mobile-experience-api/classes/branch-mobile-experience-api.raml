@@ -1,0 +1,193 @@
+#%RAML 1.0
+version: 1.0
+title: Branch Mobile Experience API
+baseUri: https://mocksvc.mulesoft.com/mocks/47216f09-95e5-41c3-8b3b-edb30b462868/api # baseUri: https://srs-branch-mobile-experience-api.cloudhub.io/api
+documentation:
+ - title: Overview
+   content: |
+    API used by applications to:
+    * Retrieve SRS branch information for a given branch postalCode
+    * Retrieve a list of eligible SRS branches for a given customer number
+ - title: Security
+   content: |
+     **Client ID Enforcement**
+
+     The API requires the following fields to be passed within the header of the message
+     * client_id
+     * client_secret
+     These credentials can be obtained by requesting access to this API
+
+traits: 
+  error: !include exchange_modules/ddd895c2-997c-428f-a94f-3aac313f956c/error-result/1.0.1/error-response-trait.raml
+  clientId: !include exchange_modules/ddd895c2-997c-428f-a94f-3aac313f956c/security/1.0.0/client-id-secret-trait.raml
+  correlationGuid: !include exchange_modules/ddd895c2-997c-428f-a94f-3aac313f956c/correlation-guid/1.0.1/correlation-guid-trait.raml
+types:
+  customerBranchListType:
+    type: object
+    properties:
+      branchList:
+        type: array
+        items: !include schemas/customer-branch-data-type.raml
+  branchDetailsType:
+    type: !include schemas/branch-details-data-type.raml
+  brandListType:
+    type: object
+    properties:
+      brandList:
+        type: array
+        items: !include schemas/brand-data-type.raml
+  nearestEligibleBranch: 
+    type: object
+    properties: 
+      customerNearestBranchList:
+        type: array
+        items: !include schemas/nearest-eligible-branch-dataType.raml
+  customerBrandListType:
+    type: object
+    properties:
+      brandList:
+        type: array
+        items: !include schemas/customer-brand-data-type.raml  
+
+/branch/{branchId}:
+  is: [clientId]
+  get:
+    description: Retrieve branch details for given branch Id
+    responses:
+      200:
+        body: 
+          application/json:
+            type: branchDetailsType
+            example: !include examples/branch-details-example.raml
+            
+/branch/customer/{customerNumber}:
+  is: [clientId]
+  get:
+    description: Retrieve list of eligible branches for given customer number
+    queryParameters:
+      shipToSequenceNumber:
+        type: integer
+        required: true
+    responses:  
+      200:             
+        body: 
+          application/json:
+            type: customerBranchListType
+            examples: !include examples/branch-list-response-example.raml
+    is: [error]
+
+/branchList:
+  is: [clientId]
+  get:
+    description: Retrieve branch details for given branch Id
+    responses:
+      200:
+        body: 
+          application/json:
+            type: branchDetailsType[]
+/nearestBranch:
+  is: [clientId]
+  get:
+    description: Retrieve list of branches for given ZipCode or Lat Long and distance MaxMiles
+    queryParameters:
+      zipCode:
+        type: string
+        example: "23412"
+        description: Zip Code
+        required: false       
+      longitude:
+        type: string
+        example: "-96.811608"
+        description: Longitude
+        required: false
+      latitude:
+        type: string
+        example: "33.034224"
+        description: Latitude
+        required: false
+      maxMiles:
+        type: integer
+        example: 25
+        description: Maximum miles from the source  
+        required: false    
+    responses:  
+      200:             
+        body: 
+          application/json:
+            type: customerBranchListType
+            examples: !include examples/branch-list-response-example.raml     
+/brand/customer/{customerNumber}:
+  is: [clientId]
+  get:
+    description: Retrieve list of eligible brands for given customer number
+    responses:  
+      200:             
+        body: 
+          application/json:
+            type: brandListType
+            examples: !include examples/brand-response-example.raml
+    is: [error]
+
+/brand/customer/{customerNumber}/branchList:
+  is: [clientId]
+  get:
+    description: Retrieve list of eligible brands and branches for given customer shipTos
+    queryParameters:
+      shipToSequenceNumbers:
+        type: string
+        description: comma delimited shipTos
+        required: false 
+        example: "1,2,3,4,5"
+    responses:
+      200:
+        body:
+          application/json:
+            type: customerBrandListType
+            examples: !include examples/customer-brand-list-example.raml
+
+/brandList:
+  is: [clientId]
+  get:
+    description: Retrieve list of brand details
+    responses:
+      200:
+        body: 
+          application/json:
+            type: brandListType
+            examples: !include examples/brand-response-example.raml  
+/nearestEligibleBranch:
+  is: [clientId]
+  get:
+    description: Retrieve branch details for the branch closest to given Lat/Long based on CustCd
+    responses: 
+      '200':
+        description: On a successful request returns this status
+        body: 
+          application/json:
+            type: nearestEligibleBranch
+            examples: !include examples/nearest-eligible-branch-example.raml
+    queryParameters: 
+      customerCode:
+        example: "XYZ123"
+        description: code of customer
+        type: string
+        required: true
+      latitude:
+        example: "33.034224"
+        description: Latitude
+        type: string
+        required: true        
+      longitude:
+        example: "-96.811608"
+        description: Longitude
+        type: string
+        required: true          
+      maxMiles:
+        example: 25
+        description: Maximum miles from the source
+        type: integer
+        required: false
+        default: 100    
+
+        
+    

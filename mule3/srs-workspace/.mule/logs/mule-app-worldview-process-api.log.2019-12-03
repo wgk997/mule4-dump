@@ -1,0 +1,487 @@
+INFO  2019-12-03 10:39:46,667 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-process-api'                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 10:39:46,824 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-12-03 10:39:46,925 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-12-03 10:39:47,146 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-12-03 10:39:47,146 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-12-03 10:39:47,203 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@5e5073ab: startup date [Tue Dec 03 10:39:47 CST 2019]; root of context hierarchy
+WARN  2019-12-03 10:39:48,358 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-12-03 10:39:49,018 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 10:39:49,529 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 10:39:49,534 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 10:39:49,551 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+WARN  2019-12-03 10:39:50,864 [main] org.mule.module.ognl.expression.OgnlExpressionEvaluator: OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+INFO  2019-12-03 10:39:50,979 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx2.log
+INFO  2019-12-03 10:39:50,990 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx2.log
+INFO  2019-12-03 10:39:51,095 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-12-03 10:39:51,099 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: process-sqs-message-flow
+INFO  2019-12-03 10:39:51,100 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@206b959c
+INFO  2019-12-03 10:39:51,120 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: process-sqs-message-flow.stage1
+INFO  2019-12-03 10:39:51,308 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: deadletter-error-handlingFlow
+INFO  2019-12-03 10:39:51,308 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@a08e41b
+INFO  2019-12-03 10:39:51,310 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 10:39:51,322 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-12-03 10:39:51,326 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.1
+INFO  2019-12-03 10:39:51,326 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7e9ed4df
+INFO  2019-12-03 10:39:51,328 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.2
+INFO  2019-12-03 10:39:51,328 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@64df8422
+INFO  2019-12-03 10:39:51,330 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.3
+INFO  2019-12-03 10:39:51,331 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3c2f310c
+INFO  2019-12-03 10:39:51,332 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.4
+INFO  2019-12-03 10:39:51,332 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@10280879
+INFO  2019-12-03 10:39:51,334 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.5
+INFO  2019-12-03 10:39:51,334 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@1d9bd4d6
+INFO  2019-12-03 10:39:51,337 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-12-03 10:39:51,539 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-12-03 10:39:51,542 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 10:39:51,542 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 10:39:51,543 [main] com.mulesoft.module.policies.lifecyle.GateKeeper: GateKeeper Mode: DISABLED
+INFO  2019-12-03 10:39:51,545 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-process-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 10:39:51,554 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-12-03 10:39:51,554 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-12-03 10:39:51,562 [main] org.mule.modules.sqs.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon SQS 4.2.1 (DevKit 3.9.4 Build UNNAMED.2810.4347dd1)+                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 10:39:51,565 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-12-03 10:39:51,566 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: process-sqs-message-flow
+INFO  2019-12-03 10:39:51,567 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: process-sqs-message-flow.stage1
+INFO  2019-12-03 10:39:51,581 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: deadletter-error-handlingFlow
+INFO  2019-12-03 10:39:51,581 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 10:39:51,582 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-12-03 10:39:51,582 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.1
+INFO  2019-12-03 10:39:51,584 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.2
+INFO  2019-12-03 10:39:51,585 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.3
+INFO  2019-12-03 10:39:51,586 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.4
+INFO  2019-12-03 10:39:51,587 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.5
+INFO  2019-12-03 10:39:51,588 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-12-03 10:39:51,752 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-12-03 10:39:51,787 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-process-api                                 *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-12-03 10:39:53,206 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: 8e5d42f1-350a-4bad-a98d-54a2fe46f919
+INFO  2019-12-03 10:39:53,207 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: 8e5d42f1-350a-4bad-a98d-54a2fe46f919
+INFO  2019-12-03 10:39:53,297 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: b74a1330-92b0-4c64-af65-c34d222977e8
+INFO  2019-12-03 10:39:53,297 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: b74a1330-92b0-4c64-af65-c34d222977e8
+INFO  2019-12-03 10:39:53,421 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: dc22f45a-2a21-49a8-9c9e-d568f116b276
+INFO  2019-12-03 10:39:53,422 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: 3bf55930-aa6f-4c00-a7b8-dd47b84c408a
+INFO  2019-12-03 10:39:53,422 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: dc22f45a-2a21-49a8-9c9e-d568f116b276
+INFO  2019-12-03 10:39:53,422 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: 3bf55930-aa6f-4c00-a7b8-dd47b84c408a
+INFO  2019-12-03 10:39:54,990 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: dc22f45a-2a21-49a8-9c9e-d568f116b276
+INFO  2019-12-03 10:39:54,990 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: 8e5d42f1-350a-4bad-a98d-54a2fe46f919
+INFO  2019-12-03 10:39:54,990 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: 8e5d42f1-350a-4bad-a98d-54a2fe46f919
+INFO  2019-12-03 10:39:54,990 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: dc22f45a-2a21-49a8-9c9e-d568f116b276
+INFO  2019-12-03 10:39:55,315 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: 3bf55930-aa6f-4c00-a7b8-dd47b84c408a
+INFO  2019-12-03 10:39:55,315 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: 3bf55930-aa6f-4c00-a7b8-dd47b84c408a
+INFO  2019-12-03 10:39:55,598 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: b74a1330-92b0-4c64-af65-c34d222977e8
+INFO  2019-12-03 10:39:55,598 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: b74a1330-92b0-4c64-af65-c34d222977e8
+INFO  2019-12-03 10:39:55,790 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: 8e5d42f1-350a-4bad-a98d-54a2fe46f919
+INFO  2019-12-03 10:39:55,827 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: dc22f45a-2a21-49a8-9c9e-d568f116b276
+INFO  2019-12-03 10:39:56,802 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: b74a1330-92b0-4c64-af65-c34d222977e8
+INFO  2019-12-03 10:39:56,943 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: 8e5d42f1-350a-4bad-a98d-54a2fe46f919
+INFO  2019-12-03 10:39:56,944 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Completed Processing Request for Pocess SQS flow, Correlation Guid: 8e5d42f1-350a-4bad-a98d-54a2fe46f919
+INFO  2019-12-03 10:39:57,039 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: dc22f45a-2a21-49a8-9c9e-d568f116b276
+INFO  2019-12-03 10:39:57,039 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for Pocess SQS flow, Correlation Guid: dc22f45a-2a21-49a8-9c9e-d568f116b276
+INFO  2019-12-03 10:39:57,105 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: 3bf55930-aa6f-4c00-a7b8-dd47b84c408a
+INFO  2019-12-03 10:39:57,135 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: b74a1330-92b0-4c64-af65-c34d222977e8
+INFO  2019-12-03 10:39:57,136 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Completed Processing Request for Pocess SQS flow, Correlation Guid: b74a1330-92b0-4c64-af65-c34d222977e8
+INFO  2019-12-03 10:39:57,285 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: 3bf55930-aa6f-4c00-a7b8-dd47b84c408a
+INFO  2019-12-03 10:39:57,285 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Completed Processing Request for Pocess SQS flow, Correlation Guid: 3bf55930-aa6f-4c00-a7b8-dd47b84c408a
+INFO  2019-12-03 11:06:29,390 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Stopping app 'worldview-process-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 11:06:29,391 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Stopping flow: process-sqs-message-flow
+INFO  2019-12-03 11:06:29,392 [Receiving Thread] org.mule.modules.sqs.SQSConnector: Interrupted while retrieving messages.
+INFO  2019-12-03 11:06:29,392 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: process-sqs-message-flow.stage1
+INFO  2019-12-03 11:06:29,492 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Stopping flow: deadletter-error-handlingFlow
+INFO  2019-12-03 11:06:29,492 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 11:06:29,492 [Receiving Thread] org.mule.modules.sqs.SQSConnector: Interrupted while retrieving messages.
+INFO  2019-12-03 11:06:29,656 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Stopping flow: invoke-errorhandling
+INFO  2019-12-03 11:06:29,656 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: invoke-errorhandling.stage1
+INFO  2019-12-03 11:06:29,660 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: invoke-errorhandling.1
+INFO  2019-12-03 11:06:29,854 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: invoke-errorhandling.2
+INFO  2019-12-03 11:06:30,057 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: invoke-errorhandling.3
+INFO  2019-12-03 11:06:30,259 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: invoke-errorhandling.4
+INFO  2019-12-03 11:06:30,268 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Stopping service: invoke-errorhandling.5
+INFO  2019-12-03 11:06:30,464 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Stopping model: _muleSystemModel
+INFO  2019-12-03 11:06:30,468 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Stopping ResourceManager
+INFO  2019-12-03 11:06:30,468 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Stopped ResourceManager
+INFO  2019-12-03 11:06:30,484 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Disposing app 'worldview-process-api'                    +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 11:06:30,484 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Disposing RegistryBroker
+INFO  2019-12-03 11:06:30,485 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Disposing flow: process-sqs-message-flow
+INFO  2019-12-03 11:06:30,486 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: process-sqs-message-flow.stage1
+INFO  2019-12-03 11:06:30,486 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Disposing flow: deadletter-error-handlingFlow
+INFO  2019-12-03 11:06:30,486 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 11:06:30,486 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Disposing flow: invoke-errorhandling
+INFO  2019-12-03 11:06:30,486 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: invoke-errorhandling.stage1
+INFO  2019-12-03 11:06:30,487 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: invoke-errorhandling.1
+INFO  2019-12-03 11:06:30,487 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: invoke-errorhandling.2
+INFO  2019-12-03 11:06:30,487 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: invoke-errorhandling.3
+INFO  2019-12-03 11:06:30,487 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: invoke-errorhandling.4
+INFO  2019-12-03 11:06:30,487 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Disposing service: invoke-errorhandling.5
+INFO  2019-12-03 11:06:30,488 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Disposing model: _muleSystemModel
+INFO  2019-12-03 11:06:30,562 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.MuleArtifactContext: Closing org.mule.config.spring.MuleArtifactContext@5e5073ab: startup date [Tue Dec 03 10:39:47 CST 2019]; root of context hierarchy
+INFO  2019-12-03 11:06:30,570 [Mule.app.deployer.monitor.1.thread.1] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application "worldview-process-api" shut down normally on:         *
+* 12/3/19 11:06 AM                                                   *
+* Up for: 0 days, 0 hours, 26 mins, 39.22 sec                        *
+**********************************************************************
+INFO  2019-12-03 11:06:30,597 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-process-api'                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 11:06:30,600 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-12-03 11:06:30,603 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-12-03 11:06:30,609 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-12-03 11:06:30,609 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-12-03 11:06:30,610 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@3ccaecff: startup date [Tue Dec 03 11:06:30 CST 2019]; root of context hierarchy
+WARN  2019-12-03 11:06:30,819 [Mule.app.deployer.monitor.1.thread.1] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-12-03 11:06:31,030 [Mule.app.deployer.monitor.1.thread.1] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 11:06:31,040 [Mule.app.deployer.monitor.1.thread.1] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 11:06:31,042 [Mule.app.deployer.monitor.1.thread.1] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 11:06:31,045 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-12-03 11:06:31,341 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx2.log
+INFO  2019-12-03 11:06:31,343 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx2.log
+INFO  2019-12-03 11:06:31,359 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-12-03 11:06:31,360 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: process-sqs-message-flow
+INFO  2019-12-03 11:06:31,360 [Mule.app.deployer.monitor.1.thread.1] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@af28f40
+INFO  2019-12-03 11:06:31,362 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: process-sqs-message-flow.stage1
+INFO  2019-12-03 11:06:31,364 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: deadletter-error-handlingFlow
+INFO  2019-12-03 11:06:31,364 [Mule.app.deployer.monitor.1.thread.1] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6af03e36
+INFO  2019-12-03 11:06:31,366 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 11:06:31,373 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-12-03 11:06:31,376 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.1
+INFO  2019-12-03 11:06:31,376 [Mule.app.deployer.monitor.1.thread.1] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3089ebb5
+INFO  2019-12-03 11:06:31,378 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.2
+INFO  2019-12-03 11:06:31,378 [Mule.app.deployer.monitor.1.thread.1] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7b1d23e
+INFO  2019-12-03 11:06:31,380 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.3
+INFO  2019-12-03 11:06:31,380 [Mule.app.deployer.monitor.1.thread.1] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5d4e6795
+INFO  2019-12-03 11:06:31,382 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.4
+INFO  2019-12-03 11:06:31,382 [Mule.app.deployer.monitor.1.thread.1] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5bb95f9b
+INFO  2019-12-03 11:06:31,384 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.5
+INFO  2019-12-03 11:06:31,384 [Mule.app.deployer.monitor.1.thread.1] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@58cd8cd8
+INFO  2019-12-03 11:06:31,386 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-12-03 11:06:31,404 [Mule.app.deployer.monitor.1.thread.1] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-12-03 11:06:31,408 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 11:06:31,408 [Mule.app.deployer.monitor.1.thread.1] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 11:06:31,410 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-process-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 11:06:31,412 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-12-03 11:06:31,412 [Mule.app.deployer.monitor.1.thread.1] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-12-03 11:06:31,418 [Mule.app.deployer.monitor.1.thread.1] org.mule.modules.sqs.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon SQS 4.2.1 (DevKit 3.9.4 Build UNNAMED.2810.4347dd1)+                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 11:06:31,421 [Mule.app.deployer.monitor.1.thread.1] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-12-03 11:06:31,422 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Starting flow: process-sqs-message-flow
+INFO  2019-12-03 11:06:31,422 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: process-sqs-message-flow.stage1
+INFO  2019-12-03 11:06:31,424 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Starting flow: deadletter-error-handlingFlow
+INFO  2019-12-03 11:06:31,425 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 11:06:31,427 [Mule.app.deployer.monitor.1.thread.1] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-12-03 11:06:31,428 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.1
+INFO  2019-12-03 11:06:31,430 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.2
+INFO  2019-12-03 11:06:31,432 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.3
+INFO  2019-12-03 11:06:31,434 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.4
+INFO  2019-12-03 11:06:31,437 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.5
+INFO  2019-12-03 11:06:31,439 [Mule.app.deployer.monitor.1.thread.1] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-12-03 11:06:31,477 [Mule.app.deployer.monitor.1.thread.1] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-12-03 11:06:31,486 [Mule.app.deployer.monitor.1.thread.1] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-process-api                                 *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-12-03 14:20:55,747 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-process-api'                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:20:55,865 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-12-03 14:20:55,946 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-12-03 14:20:56,143 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-12-03 14:20:56,143 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-12-03 14:20:56,180 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@7fc7c4a: startup date [Tue Dec 03 14:20:56 CST 2019]; root of context hierarchy
+WARN  2019-12-03 14:20:57,084 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-12-03 14:20:57,716 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:20:58,220 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:20:58,225 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:20:58,277 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+WARN  2019-12-03 14:20:59,473 [main] org.mule.module.ognl.expression.OgnlExpressionEvaluator: OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+INFO  2019-12-03 14:20:59,568 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx2.log
+INFO  2019-12-03 14:20:59,577 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx2.log
+INFO  2019-12-03 14:20:59,661 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-12-03 14:20:59,664 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: process-sqs-message-flow
+INFO  2019-12-03 14:20:59,666 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@10e4cc6
+INFO  2019-12-03 14:20:59,680 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: process-sqs-message-flow.stage1
+INFO  2019-12-03 14:20:59,837 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: deadletter-error-handlingFlow
+INFO  2019-12-03 14:20:59,837 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@48cd8e71
+INFO  2019-12-03 14:20:59,840 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 14:20:59,855 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-12-03 14:20:59,859 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.1
+INFO  2019-12-03 14:20:59,859 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@48cbe1c9
+INFO  2019-12-03 14:20:59,861 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.2
+INFO  2019-12-03 14:20:59,861 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@73b10975
+INFO  2019-12-03 14:20:59,863 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.3
+INFO  2019-12-03 14:20:59,863 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3140ad41
+INFO  2019-12-03 14:20:59,865 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.4
+INFO  2019-12-03 14:20:59,865 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6c3a7b84
+INFO  2019-12-03 14:20:59,867 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.5
+INFO  2019-12-03 14:20:59,868 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3fd21272
+INFO  2019-12-03 14:20:59,870 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-12-03 14:21:00,056 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-12-03 14:21:00,059 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 14:21:00,059 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 14:21:00,061 [main] com.mulesoft.module.policies.lifecyle.GateKeeper: GateKeeper Mode: DISABLED
+INFO  2019-12-03 14:21:00,063 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-process-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:21:00,073 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-12-03 14:21:00,073 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-12-03 14:21:00,083 [main] org.mule.modules.sqs.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon SQS 4.2.1 (DevKit 3.9.4 Build UNNAMED.2810.4347dd1)+                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:21:00,086 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-12-03 14:21:00,088 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: process-sqs-message-flow
+INFO  2019-12-03 14:21:00,088 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: process-sqs-message-flow.stage1
+INFO  2019-12-03 14:21:00,097 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: deadletter-error-handlingFlow
+INFO  2019-12-03 14:21:00,097 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 14:21:00,098 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-12-03 14:21:00,099 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.1
+INFO  2019-12-03 14:21:00,100 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.2
+INFO  2019-12-03 14:21:00,102 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.3
+INFO  2019-12-03 14:21:00,103 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.4
+INFO  2019-12-03 14:21:00,104 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.5
+INFO  2019-12-03 14:21:00,105 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-12-03 14:21:00,251 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-12-03 14:21:00,286 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-process-api                                 *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-12-03 14:25:39,510 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-process-api'                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:25:39,615 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-12-03 14:25:39,695 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-12-03 14:25:39,900 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-12-03 14:25:39,900 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-12-03 14:25:39,940 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@3bbf9027: startup date [Tue Dec 03 14:25:39 CST 2019]; root of context hierarchy
+WARN  2019-12-03 14:25:40,803 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-12-03 14:25:41,435 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:25:41,949 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:25:41,953 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:25:41,969 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+WARN  2019-12-03 14:25:43,160 [main] org.mule.module.ognl.expression.OgnlExpressionEvaluator: OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+INFO  2019-12-03 14:25:43,261 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx2.log
+INFO  2019-12-03 14:25:43,271 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx2.log
+INFO  2019-12-03 14:25:43,355 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-12-03 14:25:43,359 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: process-sqs-message-flow
+INFO  2019-12-03 14:25:43,360 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@71098fb3
+INFO  2019-12-03 14:25:43,382 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: process-sqs-message-flow.stage1
+INFO  2019-12-03 14:25:43,536 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: deadletter-error-handlingFlow
+INFO  2019-12-03 14:25:43,536 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5b3a8bea
+INFO  2019-12-03 14:25:43,538 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 14:25:43,550 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-12-03 14:25:43,555 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.1
+INFO  2019-12-03 14:25:43,555 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@1d4531fa
+INFO  2019-12-03 14:25:43,557 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.2
+INFO  2019-12-03 14:25:43,557 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@63d9e1a
+INFO  2019-12-03 14:25:43,559 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.3
+INFO  2019-12-03 14:25:43,559 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@56226064
+INFO  2019-12-03 14:25:43,561 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.4
+INFO  2019-12-03 14:25:43,561 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@277474fc
+INFO  2019-12-03 14:25:43,563 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.5
+INFO  2019-12-03 14:25:43,563 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@60f1f95b
+INFO  2019-12-03 14:25:43,565 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-12-03 14:25:43,743 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-12-03 14:25:43,746 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 14:25:43,746 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 14:25:43,747 [main] com.mulesoft.module.policies.lifecyle.GateKeeper: GateKeeper Mode: DISABLED
+INFO  2019-12-03 14:25:43,749 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-process-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:25:43,757 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-12-03 14:25:43,757 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-12-03 14:25:43,764 [main] org.mule.modules.sqs.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon SQS 4.2.1 (DevKit 3.9.4 Build UNNAMED.2810.4347dd1)+                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:25:43,767 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-12-03 14:25:43,769 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: process-sqs-message-flow
+INFO  2019-12-03 14:25:43,769 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: process-sqs-message-flow.stage1
+INFO  2019-12-03 14:25:43,780 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: deadletter-error-handlingFlow
+INFO  2019-12-03 14:25:43,781 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 14:25:43,782 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-12-03 14:25:43,783 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.1
+INFO  2019-12-03 14:25:43,784 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.2
+INFO  2019-12-03 14:25:43,786 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.3
+INFO  2019-12-03 14:25:43,788 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.4
+INFO  2019-12-03 14:25:43,789 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.5
+INFO  2019-12-03 14:25:43,790 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-12-03 14:25:43,933 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-12-03 14:25:43,966 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-process-api                                 *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-12-03 14:33:34,990 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-process-api'                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:33:35,100 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-12-03 14:33:35,186 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-12-03 14:33:35,400 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-12-03 14:33:35,400 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-12-03 14:33:35,441 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@6240651f: startup date [Tue Dec 03 14:33:35 CST 2019]; root of context hierarchy
+WARN  2019-12-03 14:33:36,351 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-12-03 14:33:37,010 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:33:37,543 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:33:37,547 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-process-api-dev.properties]
+INFO  2019-12-03 14:33:37,567 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+WARN  2019-12-03 14:33:38,779 [main] org.mule.module.ognl.expression.OgnlExpressionEvaluator: OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+INFO  2019-12-03 14:33:38,911 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-tx-log/tx2.log
+INFO  2019-12-03 14:33:38,924 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-process-api/queue-xa-tx-log/tx2.log
+INFO  2019-12-03 14:33:39,011 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-12-03 14:33:39,015 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: process-sqs-message-flow
+INFO  2019-12-03 14:33:39,016 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@22c0344e
+INFO  2019-12-03 14:33:39,032 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: process-sqs-message-flow.stage1
+INFO  2019-12-03 14:33:39,199 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: deadletter-error-handlingFlow
+INFO  2019-12-03 14:33:39,199 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@27aa7294
+INFO  2019-12-03 14:33:39,202 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 14:33:39,215 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-12-03 14:33:39,219 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.1
+INFO  2019-12-03 14:33:39,219 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@4678ec43
+INFO  2019-12-03 14:33:39,222 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.2
+INFO  2019-12-03 14:33:39,222 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@10f192d8
+INFO  2019-12-03 14:33:39,224 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.3
+INFO  2019-12-03 14:33:39,224 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@47fce2c4
+INFO  2019-12-03 14:33:39,227 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.4
+INFO  2019-12-03 14:33:39,227 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@1165a952
+INFO  2019-12-03 14:33:39,229 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.5
+INFO  2019-12-03 14:33:39,229 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@17541204
+INFO  2019-12-03 14:33:39,231 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-12-03 14:33:39,447 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-12-03 14:33:39,450 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 14:33:39,450 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/common-flow.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/deadletter-error-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-process-api/srs-common-exception-strategy.xml'}]"
+INFO  2019-12-03 14:33:39,452 [main] com.mulesoft.module.policies.lifecyle.GateKeeper: GateKeeper Mode: DISABLED
+INFO  2019-12-03 14:33:39,454 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-process-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:33:39,462 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-12-03 14:33:39,462 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-12-03 14:33:39,471 [main] org.mule.modules.sqs.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon SQS 4.2.1 (DevKit 3.9.4 Build UNNAMED.2810.4347dd1)+                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-12-03 14:33:39,474 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-12-03 14:33:39,475 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: process-sqs-message-flow
+INFO  2019-12-03 14:33:39,476 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: process-sqs-message-flow.stage1
+INFO  2019-12-03 14:33:39,487 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: deadletter-error-handlingFlow
+INFO  2019-12-03 14:33:39,487 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: deadletter-error-handlingFlow.stage1
+INFO  2019-12-03 14:33:39,489 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-12-03 14:33:39,489 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.1
+INFO  2019-12-03 14:33:39,491 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.2
+INFO  2019-12-03 14:33:39,494 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.3
+INFO  2019-12-03 14:33:39,495 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.4
+INFO  2019-12-03 14:33:39,496 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.5
+INFO  2019-12-03 14:33:39,497 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-12-03 14:33:39,652 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-12-03 14:33:39,688 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-process-api                                 *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-12-03 14:33:42,008 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: f173bc2d-6f4b-47a0-80eb-909b7f01f23e
+INFO  2019-12-03 14:33:42,009 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: a4bc9307-b70d-4601-b422-628bc81fd7d2
+INFO  2019-12-03 14:33:42,009 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: f173bc2d-6f4b-47a0-80eb-909b7f01f23e
+INFO  2019-12-03 14:33:42,009 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: a4bc9307-b70d-4601-b422-628bc81fd7d2
+INFO  2019-12-03 14:33:42,171 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: c06d96b7-2df7-453a-8ffa-d166da2c0f3b
+INFO  2019-12-03 14:33:42,171 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: c06d96b7-2df7-453a-8ffa-d166da2c0f3b
+INFO  2019-12-03 14:33:42,300 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: 3b84e144-3cad-4c3c-bed9-8183c9b803da
+INFO  2019-12-03 14:33:42,300 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: 3b84e144-3cad-4c3c-bed9-8183c9b803da
+INFO  2019-12-03 14:33:42,638 [[worldview-process-api].process-sqs-message-flow.stage1.06] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:42,638 [[worldview-process-api].process-sqs-message-flow.stage1.06] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:43,972 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: a4bc9307-b70d-4601-b422-628bc81fd7d2
+INFO  2019-12-03 14:33:43,972 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: 3b84e144-3cad-4c3c-bed9-8183c9b803da
+INFO  2019-12-03 14:33:43,972 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: a4bc9307-b70d-4601-b422-628bc81fd7d2
+INFO  2019-12-03 14:33:43,972 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: 3b84e144-3cad-4c3c-bed9-8183c9b803da
+INFO  2019-12-03 14:33:43,989 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: f173bc2d-6f4b-47a0-80eb-909b7f01f23e
+INFO  2019-12-03 14:33:43,989 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: f173bc2d-6f4b-47a0-80eb-909b7f01f23e
+INFO  2019-12-03 14:33:44,045 [[worldview-process-api].process-sqs-message-flow.stage1.06] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:44,045 [[worldview-process-api].process-sqs-message-flow.stage1.06] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:44,433 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: f173bc2d-6f4b-47a0-80eb-909b7f01f23e
+INFO  2019-12-03 14:33:44,433 [[worldview-process-api].process-sqs-message-flow.stage1.06] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:44,433 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: 3b84e144-3cad-4c3c-bed9-8183c9b803da
+INFO  2019-12-03 14:33:44,433 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: a4bc9307-b70d-4601-b422-628bc81fd7d2
+INFO  2019-12-03 14:33:44,600 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: c06d96b7-2df7-453a-8ffa-d166da2c0f3b
+INFO  2019-12-03 14:33:44,600 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: c06d96b7-2df7-453a-8ffa-d166da2c0f3b
+INFO  2019-12-03 14:33:44,693 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: c06d96b7-2df7-453a-8ffa-d166da2c0f3b
+INFO  2019-12-03 14:33:44,836 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: f173bc2d-6f4b-47a0-80eb-909b7f01f23e
+INFO  2019-12-03 14:33:44,837 [[worldview-process-api].process-sqs-message-flow.stage1.02] com.srs.api.process.worldview: Completed Processing Request for Process SQS flow, Correlation Guid: f173bc2d-6f4b-47a0-80eb-909b7f01f23e
+INFO  2019-12-03 14:33:44,842 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: a4bc9307-b70d-4601-b422-628bc81fd7d2
+INFO  2019-12-03 14:33:44,842 [[worldview-process-api].process-sqs-message-flow.stage1.03] com.srs.api.process.worldview: Completed Processing Request for Process SQS flow, Correlation Guid: a4bc9307-b70d-4601-b422-628bc81fd7d2
+INFO  2019-12-03 14:33:44,847 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: 3b84e144-3cad-4c3c-bed9-8183c9b803da
+INFO  2019-12-03 14:33:44,848 [[worldview-process-api].process-sqs-message-flow.stage1.05] com.srs.api.process.worldview: Completed Processing Request for Process SQS flow, Correlation Guid: 3b84e144-3cad-4c3c-bed9-8183c9b803da
+INFO  2019-12-03 14:33:45,055 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: c06d96b7-2df7-453a-8ffa-d166da2c0f3b
+INFO  2019-12-03 14:33:45,056 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for Process SQS flow, Correlation Guid: c06d96b7-2df7-453a-8ffa-d166da2c0f3b
+INFO  2019-12-03 14:33:52,404 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request for process message flow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:52,404 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request Get S3 object subFlow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:52,683 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for get S3 object Subflow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:52,683 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Started Processing Request call WorldView subFlow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:52,772 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Deleting SQS and S3 after successfull call, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:52,916 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:33:52,916 [[worldview-process-api].process-sqs-message-flow.stage1.04] com.srs.api.process.worldview: Completed Processing Request for Process SQS flow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:34:35,553 [[worldview-process-api].process-sqs-message-flow.stage1.06] com.srs.api.process.worldview: Completed Processing Request for call worldview Subflow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7
+INFO  2019-12-03 14:34:35,553 [[worldview-process-api].process-sqs-message-flow.stage1.06] com.srs.api.process.worldview: Completed Processing Request for Process SQS flow, Correlation Guid: 4b5d62f4-8aed-45d4-9027-b90b1c13a5a7

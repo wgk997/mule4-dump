@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;orders-process-api/src/test/resources/orders-process-api-dev.properties&apos; to &apos;orders-process-api-dev.properties.dasdsa&apos;" description="Rename resource &apos;orders-process-api-dev.properties&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/test/resources/orders-process-api-dev.properties" name="orders-process-api-dev.properties.dasdsa" stamp="1573244417620" updateReferences="true"/>
+</session>

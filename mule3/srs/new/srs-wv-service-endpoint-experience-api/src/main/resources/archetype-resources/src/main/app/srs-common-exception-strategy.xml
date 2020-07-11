@@ -1,0 +1,115 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:context="http://www.springframework.org/schema/context" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+
+	<choice-exception-strategy name="global-exception-strategy">
+		<catch-exception-strategy
+			when="${symbol_pound}[exception.causedBy(org.mule.module.db.internal.domain.connection.ConnectionCreationException)]"
+			doc:name="Catch ConnectionCreationException">
+            <flow-ref name="srs-common-exception-strategy-sub-flow" doc:name="srs-common-exception-strategy-sub-flow"/>
+		</catch-exception-strategy>
+		<catch-exception-strategy
+			when="${symbol_pound}[exception.causedBy(org.mule.module.ws.consumer.SoapFaultException)]"
+			doc:name="Catch SoapFaultException">
+            <flow-ref name="srs-common-exception-strategy-sub-flow" doc:name="srs-common-exception-strategy-sub-flow"/>
+		</catch-exception-strategy>
+
+		<catch-exception-strategy
+			when="${symbol_pound}[exception.causedBy(java.net.ConnectException)]"
+			doc:name="Catch ConnectException">
+            <flow-ref name="srs-common-exception-strategy-sub-flow" doc:name="srs-common-exception-strategy-sub-flow"/>
+		</catch-exception-strategy>
+		<catch-exception-strategy doc:name="Catch ValidationException" when="${symbol_pound}[exception.causedBy(org.mule.extension.validation.api.ValidationException)]">
+		    <flow-ref doc:name="srs-common-exception-strategy-sub-flow" name="srs-common-exception-strategy-sub-flow"/>
+		</catch-exception-strategy>
+		<catch-exception-strategy doc:name="CatchAll">
+            <flow-ref name="srs-common-exception-strategy-sub-flow" doc:name="srs-common-exception-strategy-sub-flow"/>
+		</catch-exception-strategy>
+       
+	</choice-exception-strategy>
+    <sub-flow name="srs-common-exception-strategy-sub-flow">
+    <set-variable variableName="exceptionAppName" value="${symbol_pound}[app.name]"
+				doc:name="Set App Name" />
+			<set-variable variableName="exceptionMessage" value="${symbol_pound}[(exception.cause!=null)?(exception.cause.message):exception.toString()]"
+				doc:name="Set Exception Message" />
+        <set-variable variableName="stackTrace" value="${symbol_pound}[(exception!=null)?(exception.getDetailedMessage()):&quot;&quot;]" doc:name="Set stackTrace Message"/>
+        <async doc:name="Async">
+            <flow-ref name="invoke-errorhandling" doc:name="Flow Reference"/>
+        </async>
+			<dw:transform-message doc:name="Transform Message">
+				<dw:set-variable variableName="loggedMessage"><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	"correlationGuid" : flowVars.correlationGuid,
+	"currentTimestamp" : now,
+	"applicationName" : flowVars.exceptionAppName,
+	"errorMessage" : flowVars.exceptionMessage,
+	"clientId" : flowVars.client_id default ""
+}
+]]></dw:set-variable>
+			</dw:transform-message>
+			<logger message="${symbol_pound}[flowVars.loggedMessage]" level="ERROR" doc:name="Logger" />		
+			 
+        <set-property propertyName="http.status" value="500" doc:name="set http.status"/>
+        <set-payload value="{ &quot;code&quot;: 500,  &quot;message&quot;: &quot;${symbol_pound}[flowVars.exceptionMessage]&quot;,  &quot;errors&quot;: [   {    &quot;domain&quot;: &quot;global&quot;,    &quot;reason&quot;: &quot;internalError&quot;,    &quot;message&quot;: &quot;${symbol_pound}[flowVars.exceptionMessage]&quot;   }  ]  } " doc:name="Set Payload" mimeType="application/json"/> 
+    </sub-flow>
+    <flow name="invoke-errorhandling">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:input-payload/>
+            <dw:input-variable variableName="exceptionAppName"/>
+            <dw:input-variable variableName="exceptionMessage"/>
+            <dw:input-variable variableName="stackTrace"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	"correlationGUID" : flowVars.correlationGuid,
+	"applicationName" :  flowVars.exceptionAppName,
+	"message": flowVars.exceptionMessage,
+	"stackTrace": flowVars.stackTrace,
+	"severity" : "ERROR",
+	"timeStamp": now >> "UTC"
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <http:request 
+        #if($deployTo == 'cloudhub')
+        config-ref="HTTP_Request_Configuration"
+        #end
+        #if($deployTo == 'arm')
+        config-ref="Error_Request_Configuration"
+        #end
+        path="${symbol_dollar}{error.http.path}" method="POST" doc:name="Error API">
+            <http:request-builder>
+                <http:header headerName="client_id" value="${symbol_pound}[flowVars.client_id]"/>
+                <http:header headerName="client_secret" value="${symbol_pound}[flowVars.client_secret]"/>
+                <http:header headerName="guid" value="${symbol_pound}[flowVars.correlationGuid]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <sub-flow name="srs-common-correlation-guid">
+               <choice doc:name="Guid in header?">
+            <when expression="${symbol_pound}[message.inboundProperties.guid != null]">
+                <set-variable variableName="correlationGuid" value="${symbol_pound}[message.inboundProperties.guid]" doc:name="set correlationGuid"/>
+            </when>
+            <otherwise>
+                <set-variable variableName="correlationGuid" value="${symbol_pound}[java.util.UUID.randomUUID().toString()] " doc:name="set correlationGuid"/>
+            </otherwise>
+        </choice>
+        <set-variable variableName="client_id" value="${symbol_pound}[message.inboundProperties.client_id]" doc:name="set client_id"/>
+        <set-variable variableName="client_secret" value="${symbol_pound}[message.inboundProperties.client_secret]" doc:name="set client_secret"/>
+    </sub-flow>
+</mule>

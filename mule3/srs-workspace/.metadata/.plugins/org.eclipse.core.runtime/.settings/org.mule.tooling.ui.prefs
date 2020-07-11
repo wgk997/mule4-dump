@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+server_already_running_inform=PROMPT
+tooling_ui_preference_current_ui_plugin_version=6.6.3.201909242003
+warn_server_mismatch_at_launch=NEVER

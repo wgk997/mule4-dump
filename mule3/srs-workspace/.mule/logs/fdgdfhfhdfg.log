@@ -1,0 +1,50 @@
+2019-10-16 14:55:37,155 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'fdgdfhfhdfg'                           +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-10-16 14:55:37,234 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising RegistryBroker
+2019-10-16 14:55:37,304 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Starting discovery of extensions
+2019-10-16 14:55:37,372 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Discovered 1 extensions
+2019-10-16 14:55:37,372 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Registering extension validation (version 3.9)
+2019-10-16 14:55:37,545 [main] INFO  org.mule.config.spring.MuleArtifactContext - Refreshing org.mule.config.spring.MuleArtifactContext@21526f6c: startup date [Wed Oct 16 14:55:37 CDT 2019]; root of context hierarchy
+2019-10-16 14:55:43,239 [main] INFO  org.mule.config.spring.processors.NoDevkitInjectorProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-10-16 14:55:43,727 [main] WARN  org.mule.module.ognl.expression.OgnlExpressionEvaluator - OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+2019-10-16 14:55:43,933 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/fdgdfhfhdfg/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/fdgdfhfhdfg/queue-tx-log/tx2.log
+2019-10-16 14:55:43,941 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/fdgdfhfhdfg/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/fdgdfhfhdfg/queue-xa-tx-log/tx2.log
+2019-10-16 14:55:43,987 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising model: _muleSystemModel
+2019-10-16 14:55:43,989 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: fdgdfhfhdfgFlow
+2019-10-16 14:55:43,989 [main] INFO  org.mule.exception.DefaultMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@670f2466
+2019-10-16 14:55:44,007 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: fdgdfhfhdfgFlow.stage1
+2019-10-16 14:55:44,256 [main] INFO  org.mule.config.spring.SpringXmlConfigurationBuilder - Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/fdgdfhfhdfg/fdgdfhfhdfg.xml'}]"
+2019-10-16 14:55:44,256 [main] INFO  org.mule.config.builders.AutoConfigurationBuilder - Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/fdgdfhfhdfg/fdgdfhfhdfg.xml'}]"
+2019-10-16 14:55:44,259 [main] INFO  com.mulesoft.module.policies.lifecyle.GateKeeper - GateKeeper Mode: DISABLED
+2019-10-16 14:55:44,259 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'fdgdfhfhdfg'                               +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-10-16 14:55:44,266 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Starting ResourceManager
+2019-10-16 14:55:44,266 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Started ResourceManager
+2019-10-16 14:55:44,300 [main] INFO  org.mule.module.http.internal.listener.DefaultHttpListenerConfig - Listening for requests on http://0.0.0.0:8081
+2019-10-16 14:55:44,303 [main] INFO  org.mule.modules.objectstore.generated.agents.DefaultSplashScreenAgent - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ ObjectStore 2.2.3 (DevKit 3.9.5 Build mule-devkit-3.9.5.2814.1e013c2)+       +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-10-16 14:55:44,303 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Starting model: _muleSystemModel
+2019-10-16 14:55:44,304 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: fdgdfhfhdfgFlow
+2019-10-16 14:55:44,304 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: fdgdfhfhdfgFlow.stage1
+2019-10-16 14:55:44,309 [main] INFO  org.mule.modules.objectstore.ObjectStoreConnector - Initializing object store...
+2019-10-16 14:55:44,309 [main] INFO  org.mule.modules.objectstore.ObjectStoreConnector - About to validate parameters
+2019-10-16 14:55:44,310 [main] INFO  org.mule.modules.objectstore.ObjectStoreConnector - Object store successfully acquired.
+2019-10-16 14:55:44,325 [main] INFO  org.mule.module.management.agent.WrapperManagerAgent - This JVM hasn't been launched by the wrapper, the agent will not run.
+2019-10-16 14:55:44,353 [main] INFO  org.mule.DefaultMuleContext - 
+**********************************************************************
+* Application: fdgdfhfhdfg                                           *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   Batch module default engine                                      *
+*   JMX Agent                                                        *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************

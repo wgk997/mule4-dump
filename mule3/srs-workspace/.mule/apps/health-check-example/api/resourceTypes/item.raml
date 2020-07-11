@@ -1,0 +1,16 @@
+#%RAML 1.0 ResourceType
+    description: Entity representing a <<resourcePathName|!singularize>>
+    get:
+      description: |
+        Get details for <<resourcePathName| !singularize>>
+        with <<resourcePathName |!singularize>>Id =
+        {<<resourcePathName|!singularize>>Id}
+      responses:
+        200:
+          body:
+            application/json: 
+        404:
+          body:
+            application/json:
+              example: |
+                {"message": "<<resourcePathName|!singularize>> not found" }

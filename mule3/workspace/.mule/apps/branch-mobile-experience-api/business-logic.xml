@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+   
+   <sub-flow name="brand-list-apiFlow">
+        <flow-ref name="srs-common-correlation-guid" doc:name="srs-common-correlation-guid"/>
+        <logger message="Calling System API for Brand List. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/brandList" method="GET" doc:name="Call Brand List System API">
+            <http:request-builder>
+                <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+
+
+
+            </http:request-builder>
+        </http:request>
+        <logger message="Completed call to system api for brand list for correlation guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:input-payload doc:sample="sample_data/json_1.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Done processing. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+       <sub-flow name="customer-eligible-brands-by-shipTo-apiFlow">
+        <flow-ref name="srs-common-correlation-guid" doc:name="srs-common-correlation-guid"/>
+        <logger message="Calling System API for Customer Eligible Brands by ShipTo. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="#[message.inboundProperties.'http.query.params'.shipToSequenceNumbers == empty]">
+                <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/brand/customer/{customerNumber}/branchList" method="GET" doc:name="Call Customer Eligible Brands by ShipTo System API (no query params)">
+                    <http:request-builder>
+                        <http:uri-param paramName="customerNumber" value="#[message.inboundProperties.'http.uri.params'.customerNumber]"/>
+                        <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                        <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                        <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+
+                    </http:request-builder>
+                </http:request>
+            </when>
+            <otherwise>
+                <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/brand/customer/{customerNumber}/branchList" method="GET" doc:name="Call Customer Eligible Brands by ShipTo System API">
+                    <http:request-builder>
+                        <http:query-param paramName="shipToSequenceNumbers" value="#[message.inboundProperties.'http.query.params'.shipToSequenceNumbers]"/>
+                        <http:uri-param paramName="customerNumber" value="#[message.inboundProperties.'http.uri.params'.customerNumber]"/>
+                        <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                        <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                        <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+                    </http:request-builder>
+                </http:request>
+            </otherwise>
+        </choice>
+        <!--  
+        <set-variable variableName="shipToSequenceNumbersList" value="#[message.inboundProperties.'http.query.params'.shipToSequenceNumbers.split(',')]" doc:name="Set shipToSequenceNumbersList"/>
+        <foreach collection="#[flowVars.shipToSequenceNumbersList]" doc:name="For Each">
+            <validation:is-number value="#[flowVars.shipToSequenceNumbersList[flowVars.counter-1]]" numberType="INTEGER" message="ShipToSequenceNumbers must be comma-delimited integers" doc:name="Validate each ship to is int"/>
+        </foreach>
+        -->
+
+        <logger message="Completed call to system api for Customer Eligible Brands by ShipTo for correlation guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+
+        <logger message="Done processing. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+   <sub-flow name="customer-nearest-eligible-branch-apiFlow">
+        <flow-ref name="srs-common-correlation-guid" doc:name="srs-common-correlation-guid"/>
+        <logger message="Calling System API for Customer Nearest Eligible Branch. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/nearestEligibleBranch" method="GET" doc:name="Call Nearest Eligible Branch System API">
+            <http:request-builder>
+                <http:query-param paramName="customerCode" value="#[message.inboundProperties.'http.query.params'.customerCode]"/>
+                <http:query-param paramName="latitude" value="#[message.inboundProperties.'http.query.params'.latitude]"/>
+                <http:query-param paramName="longitude" value="#[message.inboundProperties.'http.query.params'.longitude]"/>
+                <http:query-param paramName="maxMiles" value="#[(message.inboundProperties.'http.query.params'.maxMiles != null ? message.inboundProperties.'http.query.params'.maxMiles: 100)]"/>
+                <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+
+
+            </http:request-builder>
+        </http:request>
+        <logger message="Completed call to system api fo customer nearest eligible branch for correlation guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:input-payload doc:sample="sample_data/json_1.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Done processing. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+   <flow name="customer-brand-experience-apiFlow">
+        <flow-ref name="srs-common-correlation-guid" doc:name="srs-common-correlation-guid"/>
+        <logger message="Calling System API for Brand List. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/brand/customer/{customerNumber}" method="GET" doc:name="Call Customer Brand System API">
+            <http:request-builder>
+                <http:uri-param paramName="customerNumber" value="#[message.inboundProperties.'http.uri.params'.customerNumber]"/>
+                <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+
+            </http:request-builder>
+        </http:request>
+        <logger message="Completed call to system api fo correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:input-payload doc:sample="sample_data/json.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+brandList: payload.brandList map {
+	  brandId : $.brandId,
+      brandName : $.brandName,
+      branchLogo : $.brandLogoURL  
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Done processing. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="customer-branch-experience-apiFlow">
+        <flow-ref name="srs-common-correlation-guid" doc:name="srs-common-correlation-guid"/>
+        <logger message="Calling System API for Branch List. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/branch/customer/{customerNumber}" method="GET" doc:name="Call Customer Branch System API">
+            <http:request-builder>
+                <http:query-param paramName="shipToSequenceNumber" value="#[message.inboundProperties.'http.query.params'.shipToSequenceNumber]"/>
+                <http:uri-param paramName="customerNumber" value="#[message.inboundProperties.'http.uri.params'.customerNumber]"/>
+                <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+            </http:request-builder>
+        </http:request>
+        <logger message="Completed call to system api fo correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:input-payload doc:sample="sample_data/json.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+branchList: payload.customerBranchList map {
+	  branchId : $.branchId,
+      branchType : $.branchType,
+      branchLogo : $.brandLogoURL,
+      branchCode : $.branchCode,
+      branchName : $.branchName,
+      branchAddress : $.branchAddress,
+      branchCityStateZip: $.branchCityStateZip,
+      branchFax : $.branchFax,
+      branchPhone : $.branchPhone,
+      latitude : $.latitude,
+      longitude : $.longitude,
+      businessHours : $.businessHours,
+      saturdayBusinessHours : $.satBusinessHours
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Done processing. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+    </flow>
+    <sub-flow name="branch-detail-subFlow">
+        <flow-ref name="srs-common-correlation-guid" doc:name="srs-common-correlation-guid"/>
+        <logger message="Calling System API for Branch Details. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/branch" method="GET" doc:name="Call System API">
+            <http:request-builder>
+                <http:query-param paramName="branchId" value="#[message.inboundProperties.'http.uri.params'.branchId]"/>
+                <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+
+            </http:request-builder>
+        </http:request>
+        <logger message="Completed call to system api fo correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:input-payload doc:sample="sample_data/json_1.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+	branchLogo : payload[0].BrandLogoURL default "",
+  branchId: payload[0].BranchId default "",
+  branchCode : payload[0].BranchCd default "",
+  branchName : payload[0].BranchName default "",
+  branchAddress : payload[0].StreetAddr default "",
+  branchCity : payload[0].City default "",
+  branchState : payload[0].StateCd default "",
+  branchZip : payload[0].ZipCd default "",
+  branchCityStateZip: payload[0].City default "" ++ ", " ++ payload[0].StateCd default "" ++ " " ++ payload[0].ZipCd default "",
+  branchFax : payload[0].FAX default "",
+  branchPhone : payload[0].Phone default "",
+  branchManager : payload[0].BMName default "",
+  branchManagerEmail: payload[0].BMEmailAddr default "",
+  businessHours : payload[0].BusinessHours default "",
+  saturdayBusinessHours : payload[0].SatBusinessHours default "",
+  branchRegion : payload[0].RegionName default "",
+  branchRegionId : payload[0].RegionId default "",
+  brandName: payload[0].BrandName default "",  
+  latitude : payload[0].Latitude default "",
+  longitude : payload[0].Longitude default ""
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Done processing. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="branchList-subFlow">
+    	<flow-ref name="srs-common-correlation-guid" doc:name="srs-common-correlation-guid"/>
+        <logger message="Calling System API for Branch List. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTP_Request_Configuration_System_layer" path="/branch" method="GET" doc:name="Call System API">
+            <http:request-builder>
+                <http:header headerName="client_id" value="#[message.inboundProperties['client_id']]"/>
+                <http:header headerName="client_secret" value="#[message.inboundProperties['client_secret']]"/>
+                <http:header headerName="guid" value="#[flowVars.correlationGuid]"/>
+
+
+            </http:request-builder>
+        </http:request>
+        <logger message="Completed call to system api fo correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:input-payload doc:sample="sample_data/json.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+branchList: payload map {
+	branchLogo : $.BrandLogoURL default "",
+	branchId : $.BranchId default "",
+	branchCode : $.BranchCd default "",
+	branchName : $.BranchName default "",
+	branchAddress : $.StreetAddr default "",
+	branchCityStateZip: $.City default "" ++ ", " ++ $.StateCd default "" ++ " " ++ $.ZipCd default "",
+	branchFax : $.FAX default "",
+	branchPhone : $.Phone default "",
+	branchManager : $.BMName default "",
+  	branchManagerEmail: $.BMEmailAddr default "",
+  	businessHours : $.BusinessHours default "",
+  	saturdayBusinessHours : $.SatBusinessHours default "",
+  	branchRegion : $.RegionName default "",
+  	branchRegionId : $.RegionId default "",	
+  	brandName: $.BrandName default "",
+	latitude : $.Latitude default "",
+	longitude : $.Longitude default ""
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Done processing. Correlation Guid: #[flowVars.correlationGuid]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+</mule>

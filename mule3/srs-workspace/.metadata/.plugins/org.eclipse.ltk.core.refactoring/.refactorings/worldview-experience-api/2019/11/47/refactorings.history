@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;deadletter-error-handling.xml&apos; to &apos;worldview-process-api/src/main/app&apos;&#x0A;- Original project: &apos;worldview-experience-api&apos;&#x0A;- Destination element: &apos;worldview-process-api/src/main/app&apos;&#x0A;- Original element: &apos;deadletter-error-handling.xml&apos;&#x0A;- Update references to refactored element" description="Move file" destination="=worldview-process-api/src\/main\/app" element1="src/main/app/deadletter-error-handling.xml" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1574182808748" units="0" version="1.0"/>
+</session>

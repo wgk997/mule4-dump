@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.mule.tooling.maven.muleWithMavenLaunchType">
+<listAttribute key="Mpath"/>
+<stringAttribute key="Ppath" value="/Users/asapkota/AnypointStudio6/srs/new/srs-worldview-process-api"/>
+<stringAttribute key="clear_data" value="NEVER"/>
+<booleanAttribute key="consoleEnabled" value="true"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.3.9.3.ee"/>
+<stringAttribute key="listConflict" value="[- api.path (worldview-process-api , image-system-api) &#10;, - api.path (worldview-process-api , image-system-api) &#10;]"/>
+<listAttribute key="mule-project-names">
+<listEntry value="srs-domain"/>
+<listEntry value="worldview-process-api"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="worldview-process-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Denv=dev -Dcrypto.key=UGo4GiH3gUOk96DK"/>
+<intAttribute key="remote-debug-port" value="6666"/>
+<booleanAttribute key="remote-debug-suspend" value="false"/>
+<booleanAttribute key="runConflictArguments" value="true"/>
+<booleanAttribute key="toogleState" value="false"/>
+</launchConfiguration>

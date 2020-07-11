@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="log.healthcheck.category" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="log.category"/>
+			<item value="generic"/>
+			<item value="generic-stats-flow"/>
+			<item value="health"/>
+			<item value="munit"/>
+			<item value="security"/>
+			<item value="secure"/>
+			<item value="HTTP_Listener_Configuration"/>
+			<item value="healthcheck.flows"/>
+			<item value="s3"/>
+			<item value="mule-module-s3"/>
+			<item value="dir"/>
+			<item value="apiName"/>
+			<item value="domain"/>
+			<item value="invoices"/>
+		</list>
+		<list key="replacehistory">
+			<item value="log.healthcheck.category"/>
+			<item value="log."/>
+			<item value="prod"/>
+			<item value="qa"/>
+			<item value="level=&quot;INFO&quot; category=&quot;${log.category}&quot;"/>
+			<item value="level=&quot;INFO&quot; "/>
+			<item value="level=&quot;INFO&quot; category=&quot;{log.category}&quot;"/>
+			<item value="Log End"/>
+			<item value="Log Start"/>
+			<item value="category=&quot;${log.category}&quot;"/>
+			<item value="category=&quot;{log.category}&quot;"/>
+			<item value="category=&quot;${log.category}&quot; doc:name=&quot;Log End&quot;/&gt;"/>
+			<item value="Correlation GUID:"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="294" key="DIALOG_WIDTH"/>
+		<item value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont" key="DIALOG_FONT_NAME"/>
+		<item value="408" key="DIALOG_HEIGHT"/>
+		<item value="1172" key="DIALOG_X_ORIGIN"/>
+		<item value="224" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

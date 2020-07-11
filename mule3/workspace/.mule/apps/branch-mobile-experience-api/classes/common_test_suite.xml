@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:mock="http://www.mulesoft.org/schema/mule/mock" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <munit:config name="munit" doc:name="MUnit configuration" mock-connectors="false" mock-inbounds="false"/>
+    <spring:beans>
+        <spring:import resource="classpath:branch-mobile-experience-api.xml"/>
+        <spring:import resource="classpath:global.xml"/>
+        <spring:import resource="classpath:srs-common-exception-strategy.xml"/>
+        <spring:import resource="classpath:business-logic.xml"/>
+    </spring:beans>
+    <munit:test name="TestCase_with_new_GUID" description="Test" >
+        <mock:spy messageProcessor=".*:.*" doc:name="Spying GUID">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Check for GUID']"/>
+            </mock:with-attributes>
+            <mock:assertions-before-call>
+                <munit:assert-false condition="#[dw('flowVars.correlationGuid?')]" doc:name="Assert for GUID"/>
+            </mock:assertions-before-call>
+            <mock:assertions-after-call>
+                <munit:assert-true condition="#[dw('flowVars.correlationGuid?')]" doc:name="Assert True"/>
+                <munit:assert-true condition="#[flowVars.correlationGuid != null]" doc:name="Assert on generated GUID"/>
+            </mock:assertions-after-call>
+        </mock:spy>
+        <mock:when messageProcessor=".*:.*" doc:name="Mock System API">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Call System API']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[[]]" mimeType="application/java"/>
+        </mock:when>
+        <mock:when messageProcessor=".*:.*" doc:name="Mock Mapping">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Transform Message']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[]"/>
+        </mock:when>
+        <munit:set payload="#[]" mimeType="application/json" doc:name="Set Message">
+            <munit:inbound-properties>
+                <munit:inbound-property key="http.uri.params" value="['orderId':'1']"/>
+            </munit:inbound-properties>
+        </munit:set>
+        <flow-ref name="branch-detail-subFlow" doc:name="Flow-ref to branch-detail-subFlow"/>
+        <mock:verify-call messageProcessor=".*:.*" doc:name="Verify Call">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['set correlationGuid']"/>
+            </mock:with-attributes>
+        </mock:verify-call>
+    </munit:test>
+    <munit:test name="TestCase_with_provided_GUID" description="MUnit Test" >
+        <mock:spy messageProcessor=".*:.*" doc:name="Spying GUID">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Check for GUID']"/>
+            </mock:with-attributes>
+            <mock:assertions-before-call>
+                <munit:assert-false condition="#[dw('flowVars.correlationGuid?')]" doc:name="Assert for GUID"/>
+            </mock:assertions-before-call>
+            <mock:assertions-after-call>
+                <munit:assert-true condition="#[dw('flowVars.correlationGuid?')]" doc:name="Assert True"/>
+                <munit:assert-on-equals expectedValue="#[1234]" actualValue="#[flowVars.correlationGuid]" doc:name="Assert on provided GUID"/>
+            </mock:assertions-after-call>
+        </mock:spy>
+        <mock:when messageProcessor=".*:.*" doc:name="Mock System API">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Call System API']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[[]]" mimeType="application/java"/>
+        </mock:when>
+        <mock:when messageProcessor=".*:.*" doc:name="Mock Mapping">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Transform Message']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[]"/>
+        </mock:when>
+        <munit:set payload="#[]" doc:name="Set Message">
+            <munit:inbound-properties>
+                <munit:inbound-property key="http.uri.params" value="['orderId':'1']"/>
+                <munit:inbound-property key="guid" value="1234"/>
+            </munit:inbound-properties>
+        </munit:set>
+        <flow-ref name="branch-detail-subFlow" doc:name="Flow-ref to branch-detail-subFlow"/>
+        <mock:verify-call messageProcessor=".*:.*" doc:name="Verify Call to set GUID">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['set correlationGuid']"/>
+            </mock:with-attributes>
+        </mock:verify-call>
+    </munit:test>
+    <munit:test name="TestCase_for_Exception_Strategy" description="MUnit Test">
+        <mock:throw-an exception-ref="#[new java.lang.Exception('Test Exception')]" doc:name="Throw an Exception" whenCalling=".*:.*">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Call System API']"/>
+            </mock:with-attributes>
+        </mock:throw-an>
+        <mock:when messageProcessor=".*:.*" doc:name="Mock External Call to Audit">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Async']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[[]]"/>
+        </mock:when>
+        <flow-ref name="get:/branch/{branchId}:branch-mobile-experience-api-config" doc:name="Flow-ref to get:/branch/{branchId}:branch-mobile-experience-api-config"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-variable variableName="loggedMessage"><![CDATA[%dw 1.0
+%output application/java
+---
+flowVars.loggedMessage]]></dw:set-variable>
+        </dw:transform-message>
+        <munit:assert-true condition="#[flowVars.loggedMessage.correlationGuid != null]" doc:name="Assertion for Correlation GUID"/>
+        <munit:assert-on-equals expectedValue="#[&quot;500&quot;]" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assertion for http Outbound Status"/>
+    </munit:test>
+</mule>

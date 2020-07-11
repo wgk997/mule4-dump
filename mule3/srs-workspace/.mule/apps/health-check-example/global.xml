@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" xmlns:secure-property-placeholder="http://www.mulesoft.org/schema/mule/secure-property-placeholder" xmlns:context="http://www.springframework.org/schema/context" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/secure-property-placeholder http://www.mulesoft.org/schema/mule/secure-property-placeholder/current/mule-secure-property-placeholder.xsd
+http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/schema/mule/api-platform-gw/current/mule-api-platform-gw.xsd">
+ <http:listener-config name="Local_HTTPS_Config" host="${example.api.host}" port="${example.api.port}" basePath="${example.api.basepath}" doc:name="HTTP Listener Configuration"/>
+<http:request-config name="HTTPS_Request_Configuration"  host="${example.api.host}" port="${example.api.port}" doc:name="HTTP Request Configuration" basePath="${example.api.basepath}" connectionIdleTimeout="10000" responseTimeout="10000" />
+<db:generic-config name="ODSAPI_Database_Configuration"
+        url="${odsapi.db.url};databaseName=${odsapi.db.database};user=${odsapi.db.user};password=${odsapi.db.password}"
+        driverClassName="${odsapi.db.driver}" doc:name="Generic Database Configuration" />
+
+    <secure-property-placeholder:config name="Secure_Property_Placeholder" encryptionAlgorithm="Blowfish" key="${crypto.key}" location="health-check-example-${env}.properties" doc:name="Secure Property Placeholder" ignoreResourceNotFound="true"/>
+    <api-platform-gw:api apiName="${api.name}" version="${api.version}" flowRef="health-check-example-main" create="true" doc:name="API Autodiscovery"/>
+    <global-property name="env" value="dev" doc:name="Global Property"/>
+</mule>

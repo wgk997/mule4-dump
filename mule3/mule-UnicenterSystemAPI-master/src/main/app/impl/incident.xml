@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+    <flow name="incidentFlow">
+        <set-variable variableName="flowName" value="createRequestForTypeIncidentFlow" doc:name="flowName"/>
+        <flow-ref name="validateRequiredFieldsAndInvokeFlow" doc:name="validateRequiredFieldsAndInvokeFlow"/>
+    </flow>
+    <flow name="createRequestForTypeIncidentFlow">
+        <dw:transform-message doc:name="Build Create Request For Incident Type"
+                              metadata:id="a17c4a9d-669d-4d4e-9ada-45db63859dd1">
+            <dw:input-payload doc:sample="sample_data/CreateUnicenterIncidentProcessRequest.xml"
+                              mimeType="application/xml"/>
+            <dw:input-variable doc:sample="sample_data/affected_end_user.dwl" mimeType="application/java"
+                               variableName="affectedEndUserHandle"/>
+            <dw:input-variable doc:sample="sample_data/main_user.dwl" mimeType="application/java"
+                               variableName="mainUserHandle"/>
+            <dw:input-variable doc:sample="sample_data/session_id.dwl" mimeType="application/java"
+                               variableName="sessionId"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%namespace oracle http://xmlns.oracle.com/CreateUnicenterIncident
+%var request = payload.oracle#CreateUnicenterIncidentProcessRequest
+%var incidentArea = request.oracle#incidentArea
+%var fuelSystemFuel = request.oracle#FuelSystem_Fuel
+%var fuelSystemMeterReading = request.oracle#FuelSystem_MeterReading
+%var fuelSystemTrakSync = request.oracle#FuelSystem_TrakSync
+%var incidentPropertiesGeneric = request.oracle#Incident_Properties_Generic
+// unicenter expects FLAT key|val pair for attrVals
+%var getAttrVals = (hash)-> hash mapObject {
+	ns0#string: $$,
+	ns0#string: $
+}
+// don't want null values going to Unicenter
+%var getStringList = (items) -> items reduce ((val, acc = {}) -> acc ++ {ns0#string: (val default '-')})
+// for incident_prop1_value, etc.
+%var fiftyIncidentPropKeys = 1 to 50 map ("incident_prop" ++ $ ++ "_value")
+// Looks up the corresponding "key" in genericIncProps. SOA Suite code sends an empty string if no input was supplied
+// so that's what we do
+%var getIncidentPropValueStringList = (genericIncProps) -> getStringList(fiftyIncidentPropKeys map genericIncProps[$])
+
+// We require a good, strongly typed dateTime, but we want to preserve the current Unicenter format
+%var centralTimeZone = "America/Chicago"
+%var castXsdDateTimeToDwDateTime = (input) -> input as :datetime
+// will ensure DST or not that we use the correct time in Dallas (or Fort Worth)
+%var convertToCentralTimeZone = (input) -> input >> centralTimeZone
+%var formatInUnicenterStyle = (input) -> input as :string {format: "MM/dd/yyyy HH:mm"}
+%var getUnicenterFormattedDate = (input) -> formatInUnicenterStyle(convertToCentralTimeZone(castXsdDateTimeToDwDateTime(input)))
+// ADDFUEL_TRANSACTION_DATE is an optional field
+%var getAddFuelTransactionDate = () -> (getUnicenterFormattedDate(fuelSystemFuel.oracle#ADDFUEL_TRANSACTION_DATE)) when fuelSystemFuel.oracle#ADDFUEL_TRANSACTION_DATE != null otherwise '-'
+%var handleMapping = flowVars.handleMapping
+%var mainUserHandle = handleMapping.loggedInUsername
+---
+ns0#CreateRequest: {
+	ns0#SID: flowVars.sessionId,
+	ns0#creatorHandle: mainUserHandle,
+	ns0#template: '',
+	ns0#attrVals: getAttrVals({
+		customer: handleMapping.affectedEndUser default mainUserHandle, // SOA suite uses the logged in user for customer if no affected user was provided
+		category: request.oracle#incidentArea,
+		summary: request.oracle#summary,
+		description: request.oracle#description,
+		// crs:5200 means open
+		status: "crs:5200",
+		// I is for incident
+		type: "I"
+	}),
+	ns0#propertyValues: getStringList([fuelSystemFuel.oracle#ADDFUEL_DEPOTCODE, 
+									  fuelSystemFuel.oracle#ADDFUEL_PUMPCODE,
+               						  fuelSystemFuel.oracle#ADDFUEL_FUELCODE,
+						              fuelSystemFuel.oracle#ADDFUEL_EQUIPMENTCODE,
+						              fuelSystemFuel.oracle#ADDFUEL_PERSONCODE,
+						              fuelSystemFuel.oracle#ADDFUEL_QUANTITY_VALUE,
+						              getAddFuelTransactionDate(),
+						              fuelSystemFuel.oracle#ADDFUEL_PRICE_VALUE
+									  ]) when (incidentArea == 'pcat:2243749') otherwise getStringList([ 
+              fuelSystemMeterReading.oracle#ADDREADING_EQUIPMENTCODE,
+               fuelSystemMeterReading.oracle#ADDREADING_UOM,
+               getUnicenterFormattedDate(fuelSystemMeterReading.oracle#ADDREADING_METER_READING_DATETIME),
+               fuelSystemMeterReading.oracle#ADDREADING_HOURS_METER_READING,
+               fuelSystemMeterReading.oracle#ADDREADING_CURRENT_METER_READING
+       ]) when ( incidentArea == 'pcat:2243751') otherwise getStringList([
+               fuelSystemTrakSync.oracle#TRAK_TYPE,
+               fuelSystemTrakSync.oracle#TRAK_ACTION,
+               fuelSystemTrakSync.oracle#PERSON_CODE,
+               fuelSystemTrakSync.oracle#PERSON_DESCRIPTION,
+               fuelSystemTrakSync.oracle#VEH_CODE,
+               fuelSystemTrakSync.oracle#VEH_DESCRIPTION,
+               fuelSystemTrakSync.oracle#VEH_MAX_FILLUP_MILES,
+               fuelSystemTrakSync.oracle#VEH_TANK_CAPACITY
+       ]) when ( incidentArea == 'pcat:2243752') otherwise getIncidentPropValueStringList(request.oracle#Incident_Properties_Generic),
+       ns0#attributes: {
+       	ns0#string: 'persistent_id'
+       }
+}
+]]></dw:set-payload>
+        </dw:transform-message>
+        <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="CreateRequest" doc:name="Create Request"/>
+        <dw:transform-message doc:name="Setup reply" metadata:id="b0dd387e-2657-4f4b-9234-ab7f35af3aa1">
+            <dw:input-payload doc:sample="sample_data/CreateRequestResponse.xml"/>
+            <dw:input-variable doc:sample="sample_data/string.dwl" mimeType="application/java"
+                               variableName="sessionId"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://xmlns.oracle.com/CreateUnicenterIncident
+%namespace ns01 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%var incidentid = payload.ns01#CreateRequestResponse.ns01#newRequestNumber default ''
+---
+ns0#CreateUnicenterIncidentProcessResponse: {
+	ns0#incidentId: incidentid,
+	ns0#requestHandle: payload.ns01#CreateRequestResponse.ns01#newRequestHandle,
+	ns0#result: 'Success',
+	ns0#desc: "Incident " ++ incidentid ++ " with session-id " ++ flowVars.sessionId ++ " was created successfully.",
+	ns0#sessionId: flowVars.sessionId
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+</mule>

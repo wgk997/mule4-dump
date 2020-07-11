@@ -1,0 +1,27 @@
+#%RAML 1.0
+baseUri: http://localhost:8081/
+
+title: Health Check Example
+version: v1.0
+
+traits:
+  hasClientId: !include traits/hasClientId.raml
+  hasCorrelationId: !include traits/hasCorrelationId.raml
+
+types:
+  example: !include dataTypes/example.raml
+
+resourceTypes:
+  collection: !include resourceTypes/collection.raml
+  item: !include resourceTypes/item.raml
+
+/innerAPI:
+  is: [hasCorrelationId, hasClientId]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: example
+            examples:
+              example: !include examples/exampleResponse.json

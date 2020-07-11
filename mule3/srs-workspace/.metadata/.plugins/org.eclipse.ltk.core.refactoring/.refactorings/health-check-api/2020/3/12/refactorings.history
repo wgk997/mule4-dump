@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;health-check-api/src/main/app/generic-health-check.xml&apos; to &apos;health-check-api.xml&apos;" description="Rename resource &apos;generic-health-check.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/app/generic-health-check.xml" name="health-check-api.xml" stamp="1584369798221" updateReferences="true"/>
+</session>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.munit.launchconfig">
+<listAttribute key="Mpath">
+<listEntry value="/Users/asapkota/AnypointStudio6/internal/health-check-api/src/test/munit/generic-health-check-test-suite.xml"/>
+</listAttribute>
+<stringAttribute key="Ppath" value="/Users/asapkota/AnypointStudio6/internal/health-check-api"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.3.9.3.ee"/>
+<listAttribute key="mule-project-names">
+<listEntry value="health-check-api"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="generic-health-check-test-suite.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="health-check-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=&#10;-DmunitProjectName=health-check-api"/>
+<stringAttribute key="resource" value="generic-health-check-test-suite.xml"/>
+</launchConfiguration>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.munit.launchconfig">
+<listAttribute key="Mpath">
+<listEntry value="/Users/asapkota/AnypointStudio6/srs/srs-deliveries-system-api/src/test/munit/deliveries-system-api-test-suite.xml"/>
+</listAttribute>
+<stringAttribute key="Ppath" value="/Users/asapkota/AnypointStudio6/srs/srs-deliveries-system-api"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.3.9.2.ee"/>
+<listAttribute key="mule-project-names">
+<listEntry value="deliveries-system-api"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="deliveries-system-api-test-suite.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="deliveries-system-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=&#10;-DmunitProjectName=deliveries-system-api"/>
+<stringAttribute key="resource" value="deliveries-system-api-test-suite.xml"/>
+<stringAttribute key="test_name" value="deliveries-system-api-test-suite-create_delivery_status_subflowTest"/>
+</launchConfiguration>

@@ -1,0 +1,436 @@
+INFO  2019-11-21 14:25:27,967 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-experience-api'              +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:25:27,971 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-11-21 14:25:27,975 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-11-21 14:25:27,983 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-11-21 14:25:27,983 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-11-21 14:25:27,984 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@2bf2523f: startup date [Thu Nov 21 14:25:27 CST 2019]; root of context hierarchy
+WARN  2019-11-21 14:25:33,370 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-11-21 14:25:33,460 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:25:33,470 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:25:33,472 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:25:33,475 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-11-21 14:25:33,774 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 14:25:33,793 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx2.log
+INFO  2019-11-21 14:25:33,794 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx2.log
+INFO  2019-11-21 14:25:33,807 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-11-21 14:25:33,809 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: main-flow
+INFO  2019-11-21 14:25:33,811 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.1
+INFO  2019-11-21 14:25:33,812 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@365eaef
+INFO  2019-11-21 14:25:33,814 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.2
+INFO  2019-11-21 14:25:33,814 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5cdf2c83
+INFO  2019-11-21 14:25:33,816 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.3
+INFO  2019-11-21 14:25:33,816 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7bf3bf2e
+INFO  2019-11-21 14:25:33,819 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.4
+INFO  2019-11-21 14:25:33,819 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7843b65e
+INFO  2019-11-21 14:25:33,821 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.5
+INFO  2019-11-21 14:25:33,821 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7271320c
+INFO  2019-11-21 14:25:33,823 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.stage1
+INFO  2019-11-21 14:25:33,826 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: convert-to-xml-flow
+INFO  2019-11-21 14:25:33,826 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5ab7e997
+INFO  2019-11-21 14:25:33,828 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: convert-to-xml-flow.stage1
+INFO  2019-11-21 14:25:33,830 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: add-to-sqs-flow
+INFO  2019-11-21 14:25:33,830 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@2df40273
+INFO  2019-11-21 14:25:33,832 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: add-to-sqs-flow.stage1
+INFO  2019-11-21 14:25:33,832 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-11-21 14:25:33,832 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@7d44e3c7
+INFO  2019-11-21 14:25:33,834 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-11-21 14:25:33,835 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: worldview-experience-api-main
+INFO  2019-11-21 14:25:33,837 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.1
+INFO  2019-11-21 14:25:33,838 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6a0d47e8
+INFO  2019-11-21 14:25:33,847 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.stage1
+INFO  2019-11-21 14:25:33,847 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 14:25:33,847 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@5c940e28
+INFO  2019-11-21 14:25:33,851 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 14:25:34,335 [main] org.mule.module.apikit.Configuration: Building resource URI cache...
+INFO  2019-11-21 14:25:34,342 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 14:25:34,346 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 14:25:34,346 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 14:25:34,349 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-experience-api'                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:25:34,352 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-11-21 14:25:34,352 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-11-21 14:25:34,665 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on https://0.0.0.0:8082
+INFO  2019-11-21 14:25:34,667 [main] org.mule.module.s3.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon S3 4.3.3 (DevKit 3.9.5 Build mule-devkit-3.9.5.2814.1e013c2)+         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:25:34,670 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-11-21 14:25:34,671 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: main-flow
+INFO  2019-11-21 14:25:34,671 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.1
+INFO  2019-11-21 14:25:34,672 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.2
+INFO  2019-11-21 14:25:34,674 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.3
+INFO  2019-11-21 14:25:34,676 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.4
+INFO  2019-11-21 14:25:34,678 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.5
+INFO  2019-11-21 14:25:34,679 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.stage1
+INFO  2019-11-21 14:25:34,681 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: convert-to-xml-flow
+INFO  2019-11-21 14:25:34,681 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: convert-to-xml-flow.stage1
+INFO  2019-11-21 14:25:34,683 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: add-to-sqs-flow
+INFO  2019-11-21 14:25:34,683 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: add-to-sqs-flow.stage1
+INFO  2019-11-21 14:25:34,684 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-11-21 14:25:34,684 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-11-21 14:25:34,686 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: worldview-experience-api-main
+INFO  2019-11-21 14:25:34,686 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.1
+INFO  2019-11-21 14:25:34,688 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.stage1
+INFO  2019-11-21 14:25:34,695 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 14:25:34,696 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 14:25:34,717 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-11-21 14:25:34,721 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-experience-api                              *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-11-21 14:27:58,914 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: 9fca6c54-915c-4dea-966f-d0e80049059e
+INFO  2019-11-21 14:27:58,914 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: 9fca6c54-915c-4dea-966f-d0e80049059e
+INFO  2019-11-21 14:27:58,976 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: 9fca6c54-915c-4dea-966f-d0e80049059e
+INFO  2019-11-21 14:27:58,987 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: 9fca6c54-915c-4dea-966f-d0e80049059e
+INFO  2019-11-21 14:28:00,754 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:28:02,465 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: 9fca6c54-915c-4dea-966f-d0e80049059e
+INFO  2019-11-21 14:28:02,466 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:28:02,529 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: 9fca6c54-915c-4dea-966f-d0e80049059e
+INFO  2019-11-21 14:33:00,717 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: bcacb220-22ba-40ab-9031-09ec3aa63ad4
+INFO  2019-11-21 14:33:00,717 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: bcacb220-22ba-40ab-9031-09ec3aa63ad4
+INFO  2019-11-21 14:33:00,720 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: bcacb220-22ba-40ab-9031-09ec3aa63ad4
+INFO  2019-11-21 14:33:00,720 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: bcacb220-22ba-40ab-9031-09ec3aa63ad4
+INFO  2019-11-21 14:33:01,382 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:33:01,603 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: bcacb220-22ba-40ab-9031-09ec3aa63ad4
+INFO  2019-11-21 14:33:01,604 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:33:01,607 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: bcacb220-22ba-40ab-9031-09ec3aa63ad4
+INFO  2019-11-21 14:45:10,500 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-experience-api'              +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:45:10,504 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-11-21 14:45:10,508 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-11-21 14:45:10,517 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-11-21 14:45:10,517 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-11-21 14:45:10,519 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@cef23a8: startup date [Thu Nov 21 14:45:10 CST 2019]; root of context hierarchy
+WARN  2019-11-21 14:45:15,938 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-11-21 14:45:16,035 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:45:16,046 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:45:16,048 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:45:16,052 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-11-21 14:45:16,380 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 14:45:16,401 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx2.log
+INFO  2019-11-21 14:45:16,402 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx2.log
+INFO  2019-11-21 14:45:16,418 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-11-21 14:45:16,419 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: main-flow
+INFO  2019-11-21 14:45:16,422 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.1
+INFO  2019-11-21 14:45:16,423 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@63437af4
+INFO  2019-11-21 14:45:16,425 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.2
+INFO  2019-11-21 14:45:16,426 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@4c663fda
+INFO  2019-11-21 14:45:16,428 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.3
+INFO  2019-11-21 14:45:16,428 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@40cd02fc
+INFO  2019-11-21 14:45:16,430 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.4
+INFO  2019-11-21 14:45:16,430 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6f45be42
+INFO  2019-11-21 14:45:16,432 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.5
+INFO  2019-11-21 14:45:16,432 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@35c69e6b
+INFO  2019-11-21 14:45:16,435 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.stage1
+INFO  2019-11-21 14:45:16,437 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: convert-to-xml-flow
+INFO  2019-11-21 14:45:16,437 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@da2303c
+INFO  2019-11-21 14:45:16,440 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: convert-to-xml-flow.stage1
+INFO  2019-11-21 14:45:16,441 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: add-to-sqs-flow
+INFO  2019-11-21 14:45:16,441 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@144fc5fa
+INFO  2019-11-21 14:45:16,443 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: add-to-sqs-flow.stage1
+INFO  2019-11-21 14:45:16,443 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-11-21 14:45:16,443 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@3f3abe67
+INFO  2019-11-21 14:45:16,445 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-11-21 14:45:16,446 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: worldview-experience-api-main
+INFO  2019-11-21 14:45:16,448 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.1
+INFO  2019-11-21 14:45:16,448 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@135f760a
+INFO  2019-11-21 14:45:16,456 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.stage1
+INFO  2019-11-21 14:45:16,457 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 14:45:16,457 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@65cb50dc
+INFO  2019-11-21 14:45:16,460 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 14:45:16,987 [main] org.mule.module.apikit.Configuration: Building resource URI cache...
+INFO  2019-11-21 14:45:16,995 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 14:45:16,999 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 14:45:16,999 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 14:45:17,003 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-experience-api'                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:45:17,005 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-11-21 14:45:17,005 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-11-21 14:45:17,306 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on https://0.0.0.0:8082
+INFO  2019-11-21 14:45:17,308 [main] org.mule.module.s3.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon S3 4.3.3 (DevKit 3.9.5 Build mule-devkit-3.9.5.2814.1e013c2)+         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:45:17,311 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-11-21 14:45:17,311 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: main-flow
+INFO  2019-11-21 14:45:17,312 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.1
+INFO  2019-11-21 14:45:17,313 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.2
+INFO  2019-11-21 14:45:17,315 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.3
+INFO  2019-11-21 14:45:17,317 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.4
+INFO  2019-11-21 14:45:17,319 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.5
+INFO  2019-11-21 14:45:17,321 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.stage1
+INFO  2019-11-21 14:45:17,322 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: convert-to-xml-flow
+INFO  2019-11-21 14:45:17,322 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: convert-to-xml-flow.stage1
+INFO  2019-11-21 14:45:17,324 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: add-to-sqs-flow
+INFO  2019-11-21 14:45:17,324 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: add-to-sqs-flow.stage1
+INFO  2019-11-21 14:45:17,325 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-11-21 14:45:17,325 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-11-21 14:45:17,327 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: worldview-experience-api-main
+INFO  2019-11-21 14:45:17,327 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.1
+INFO  2019-11-21 14:45:17,329 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.stage1
+INFO  2019-11-21 14:45:17,336 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 14:45:17,336 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 14:45:17,357 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-11-21 14:45:17,362 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-experience-api                              *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-11-21 14:45:31,376 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: 9aef1040-e29f-428f-b025-daa4cd96560e
+INFO  2019-11-21 14:45:31,376 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: 9aef1040-e29f-428f-b025-daa4cd96560e
+INFO  2019-11-21 14:45:31,416 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: 9aef1040-e29f-428f-b025-daa4cd96560e
+INFO  2019-11-21 14:45:31,427 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: 9aef1040-e29f-428f-b025-daa4cd96560e
+INFO  2019-11-21 14:45:33,184 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:45:34,968 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: 9aef1040-e29f-428f-b025-daa4cd96560e
+INFO  2019-11-21 14:45:34,968 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:45:35,029 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: 9aef1040-e29f-428f-b025-daa4cd96560e
+INFO  2019-11-21 14:53:08,342 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: 23f9e2a5-9c74-448c-b875-97185440eb7d
+INFO  2019-11-21 14:53:08,342 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: 23f9e2a5-9c74-448c-b875-97185440eb7d
+INFO  2019-11-21 14:53:08,345 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: 23f9e2a5-9c74-448c-b875-97185440eb7d
+INFO  2019-11-21 14:53:08,346 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: 23f9e2a5-9c74-448c-b875-97185440eb7d
+INFO  2019-11-21 14:53:08,736 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:53:08,934 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: 23f9e2a5-9c74-448c-b875-97185440eb7d
+INFO  2019-11-21 14:53:08,935 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:53:08,937 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: 23f9e2a5-9c74-448c-b875-97185440eb7d
+INFO  2019-11-21 14:55:12,833 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-experience-api'              +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:55:12,837 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-11-21 14:55:12,839 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-11-21 14:55:12,849 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-11-21 14:55:12,849 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-11-21 14:55:12,850 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@576b385d: startup date [Thu Nov 21 14:55:12 CST 2019]; root of context hierarchy
+WARN  2019-11-21 14:55:18,152 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-11-21 14:55:18,225 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:55:18,235 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:55:18,237 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 14:55:18,241 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-11-21 14:55:18,455 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 14:55:18,469 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx2.log
+INFO  2019-11-21 14:55:18,470 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx2.log
+INFO  2019-11-21 14:55:18,481 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-11-21 14:55:18,482 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: main-flow
+INFO  2019-11-21 14:55:18,484 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.1
+INFO  2019-11-21 14:55:18,485 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7d4e424e
+INFO  2019-11-21 14:55:18,487 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.2
+INFO  2019-11-21 14:55:18,487 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@514f2020
+INFO  2019-11-21 14:55:18,489 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.3
+INFO  2019-11-21 14:55:18,489 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@51f009ef
+INFO  2019-11-21 14:55:18,491 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.4
+INFO  2019-11-21 14:55:18,491 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@70a24463
+INFO  2019-11-21 14:55:18,493 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.5
+INFO  2019-11-21 14:55:18,493 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@748aa7dc
+INFO  2019-11-21 14:55:18,494 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.stage1
+INFO  2019-11-21 14:55:18,497 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: convert-to-xml-flow
+INFO  2019-11-21 14:55:18,497 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@66a50c93
+INFO  2019-11-21 14:55:18,500 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: convert-to-xml-flow.stage1
+INFO  2019-11-21 14:55:18,501 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: add-to-sqs-flow
+INFO  2019-11-21 14:55:18,501 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@4c6fabba
+INFO  2019-11-21 14:55:18,503 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: add-to-sqs-flow.stage1
+INFO  2019-11-21 14:55:18,503 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-11-21 14:55:18,503 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@62ff14cd
+INFO  2019-11-21 14:55:18,505 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-11-21 14:55:18,505 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: worldview-experience-api-main
+INFO  2019-11-21 14:55:18,506 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.1
+INFO  2019-11-21 14:55:18,507 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3c34c491
+INFO  2019-11-21 14:55:18,513 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.stage1
+INFO  2019-11-21 14:55:18,513 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 14:55:18,513 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@48cbe1c9
+INFO  2019-11-21 14:55:18,515 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 14:55:18,892 [main] org.mule.module.apikit.Configuration: Building resource URI cache...
+INFO  2019-11-21 14:55:18,901 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 14:55:18,905 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 14:55:18,905 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 14:55:18,909 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-experience-api'                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:55:18,911 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-11-21 14:55:18,911 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-11-21 14:55:18,947 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on https://0.0.0.0:8082
+INFO  2019-11-21 14:55:18,949 [main] org.mule.module.s3.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon S3 4.3.3 (DevKit 3.9.5 Build mule-devkit-3.9.5.2814.1e013c2)+         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 14:55:18,952 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-11-21 14:55:18,953 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: main-flow
+INFO  2019-11-21 14:55:18,953 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.1
+INFO  2019-11-21 14:55:18,955 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.2
+INFO  2019-11-21 14:55:18,957 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.3
+INFO  2019-11-21 14:55:18,959 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.4
+INFO  2019-11-21 14:55:18,961 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.5
+INFO  2019-11-21 14:55:18,963 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.stage1
+INFO  2019-11-21 14:55:18,965 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: convert-to-xml-flow
+INFO  2019-11-21 14:55:18,965 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: convert-to-xml-flow.stage1
+INFO  2019-11-21 14:55:18,967 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: add-to-sqs-flow
+INFO  2019-11-21 14:55:18,967 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: add-to-sqs-flow.stage1
+INFO  2019-11-21 14:55:18,969 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-11-21 14:55:18,969 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-11-21 14:55:18,971 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: worldview-experience-api-main
+INFO  2019-11-21 14:55:18,971 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.1
+INFO  2019-11-21 14:55:18,973 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.stage1
+INFO  2019-11-21 14:55:18,981 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 14:55:18,981 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 14:55:19,001 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-11-21 14:55:19,007 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-experience-api                              *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-11-21 14:55:41,949 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: 4a1843ff-ec7b-466e-b010-8104d7329d90
+INFO  2019-11-21 14:55:41,949 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: 4a1843ff-ec7b-466e-b010-8104d7329d90
+INFO  2019-11-21 14:55:41,986 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: 4a1843ff-ec7b-466e-b010-8104d7329d90
+INFO  2019-11-21 14:55:41,994 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: 4a1843ff-ec7b-466e-b010-8104d7329d90
+INFO  2019-11-21 14:55:43,472 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:55:44,837 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: 4a1843ff-ec7b-466e-b010-8104d7329d90
+INFO  2019-11-21 14:55:44,837 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 14:55:44,892 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: 4a1843ff-ec7b-466e-b010-8104d7329d90
+INFO  2019-11-21 15:00:59,535 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: 5848dfe8-958a-4027-82c0-8ae40ca1a823
+INFO  2019-11-21 15:00:59,535 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: 5848dfe8-958a-4027-82c0-8ae40ca1a823
+INFO  2019-11-21 15:00:59,538 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: 5848dfe8-958a-4027-82c0-8ae40ca1a823
+INFO  2019-11-21 15:00:59,538 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: 5848dfe8-958a-4027-82c0-8ae40ca1a823
+INFO  2019-11-21 15:00:59,934 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 15:01:00,170 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: 5848dfe8-958a-4027-82c0-8ae40ca1a823
+INFO  2019-11-21 15:01:00,171 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 15:01:00,172 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: 5848dfe8-958a-4027-82c0-8ae40ca1a823
+INFO  2019-11-21 15:03:12,663 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: 2e60ceef-f800-498c-825a-e53d4e5679e7
+INFO  2019-11-21 15:03:12,663 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: 2e60ceef-f800-498c-825a-e53d4e5679e7
+INFO  2019-11-21 15:03:12,664 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: 2e60ceef-f800-498c-825a-e53d4e5679e7
+INFO  2019-11-21 15:03:12,664 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: 2e60ceef-f800-498c-825a-e53d4e5679e7
+INFO  2019-11-21 15:03:13,031 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 15:03:13,235 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: 2e60ceef-f800-498c-825a-e53d4e5679e7
+INFO  2019-11-21 15:03:13,235 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 15:03:13,237 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: 2e60ceef-f800-498c-825a-e53d4e5679e7
+INFO  2019-11-21 15:09:03,013 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'worldview-experience-api'              +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 15:09:03,017 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising RegistryBroker
+INFO  2019-11-21 15:09:03,019 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Starting discovery of extensions
+INFO  2019-11-21 15:09:03,028 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Discovered 1 extensions
+INFO  2019-11-21 15:09:03,028 [main] org.mule.module.extension.internal.manager.DefaultExtensionManager: Registering extension validation (version 3.9)
+INFO  2019-11-21 15:09:03,030 [main] org.mule.config.spring.MuleArtifactContext: Refreshing org.mule.config.spring.MuleArtifactContext@36d39655: startup date [Thu Nov 21 15:09:03 CST 2019]; root of context hierarchy
+WARN  2019-11-21 15:09:08,322 [main] org.mule.transport.http.builder.HttpHeaderDefinitionParser: Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+INFO  2019-11-21 15:09:08,410 [main] org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 15:09:08,420 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 15:09:08,422 [main] org.springframework.context.support.PropertySourcesPlaceholderConfigurer: Loading properties file from class path resource [worldview-experience-api-dev.properties]
+INFO  2019-11-21 15:09:08,426 [main] org.mule.config.spring.processors.NoDevkitInjectorProcessor: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+INFO  2019-11-21 15:09:08,661 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 15:09:08,674 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-tx-log/tx2.log
+INFO  2019-11-21 15:09:08,676 [main] org.mule.util.journal.TransactionJournal: Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/worldview-experience-api/queue-xa-tx-log/tx2.log
+INFO  2019-11-21 15:09:08,688 [main] org.mule.lifecycle.AbstractLifecycleManager: Initialising model: _muleSystemModel
+INFO  2019-11-21 15:09:08,689 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: main-flow
+INFO  2019-11-21 15:09:08,691 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.1
+INFO  2019-11-21 15:09:08,692 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@53f94afe
+INFO  2019-11-21 15:09:08,694 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.2
+INFO  2019-11-21 15:09:08,694 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@52ba21e4
+INFO  2019-11-21 15:09:08,695 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.3
+INFO  2019-11-21 15:09:08,696 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@453e1bba
+INFO  2019-11-21 15:09:08,697 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.4
+INFO  2019-11-21 15:09:08,697 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@2b30b627
+INFO  2019-11-21 15:09:08,699 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.5
+INFO  2019-11-21 15:09:08,699 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@74f92d14
+INFO  2019-11-21 15:09:08,701 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: main-flow.stage1
+INFO  2019-11-21 15:09:08,703 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: convert-to-xml-flow
+INFO  2019-11-21 15:09:08,704 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5c194652
+INFO  2019-11-21 15:09:08,706 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: convert-to-xml-flow.stage1
+INFO  2019-11-21 15:09:08,707 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: add-to-sqs-flow
+INFO  2019-11-21 15:09:08,707 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@38d308e7
+INFO  2019-11-21 15:09:08,709 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: add-to-sqs-flow.stage1
+INFO  2019-11-21 15:09:08,709 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: invoke-errorhandling
+INFO  2019-11-21 15:09:08,709 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@48a21ea6
+INFO  2019-11-21 15:09:08,711 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: invoke-errorhandling.stage1
+INFO  2019-11-21 15:09:08,711 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: worldview-experience-api-main
+INFO  2019-11-21 15:09:08,713 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.1
+INFO  2019-11-21 15:09:08,713 [main] org.mule.exception.CatchMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@243162b1
+INFO  2019-11-21 15:09:08,719 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: worldview-experience-api-main.stage1
+INFO  2019-11-21 15:09:08,720 [main] org.mule.construct.FlowConstructLifecycleManager: Initialising flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 15:09:08,720 [main] org.mule.exception.DefaultMessagingExceptionStrategy: Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@63e648a0
+INFO  2019-11-21 15:09:08,722 [main] org.mule.processor.SedaStageLifecycleManager: Initialising service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 15:09:09,104 [main] org.mule.module.apikit.Configuration: Building resource URI cache...
+INFO  2019-11-21 15:09:09,114 [main] org.mule.api.security.tls.TlsProperties: Loading configuration file: tls-default.conf
+INFO  2019-11-21 15:09:09,117 [main] org.mule.config.spring.SpringXmlConfigurationBuilder: Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 15:09:09,117 [main] org.mule.config.builders.AutoConfigurationBuilder: Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/worldview-experience-api/worldview-experience-api.xml'}]"
+INFO  2019-11-21 15:09:09,121 [main] org.mule.module.launcher.application.DefaultMuleApplication: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'worldview-experience-api'                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 15:09:09,125 [main] org.mule.util.queue.QueueXaResourceManager: Starting ResourceManager
+INFO  2019-11-21 15:09:09,125 [main] org.mule.util.queue.QueueXaResourceManager: Started ResourceManager
+INFO  2019-11-21 15:09:09,159 [main] org.mule.module.http.internal.listener.DefaultHttpListenerConfig: Listening for requests on https://0.0.0.0:8082
+INFO  2019-11-21 15:09:09,162 [main] org.mule.module.s3.generated.agents.DefaultSplashScreenAgent: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Amazon S3 4.3.3 (DevKit 3.9.5 Build mule-devkit-3.9.5.2814.1e013c2)+         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2019-11-21 15:09:09,165 [main] org.mule.lifecycle.AbstractLifecycleManager: Starting model: _muleSystemModel
+INFO  2019-11-21 15:09:09,166 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: main-flow
+INFO  2019-11-21 15:09:09,166 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.1
+INFO  2019-11-21 15:09:09,167 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.2
+INFO  2019-11-21 15:09:09,169 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.3
+INFO  2019-11-21 15:09:09,171 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.4
+INFO  2019-11-21 15:09:09,173 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.5
+INFO  2019-11-21 15:09:09,175 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: main-flow.stage1
+INFO  2019-11-21 15:09:09,178 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: convert-to-xml-flow
+INFO  2019-11-21 15:09:09,178 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: convert-to-xml-flow.stage1
+INFO  2019-11-21 15:09:09,179 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: add-to-sqs-flow
+INFO  2019-11-21 15:09:09,180 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: add-to-sqs-flow.stage1
+INFO  2019-11-21 15:09:09,181 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: invoke-errorhandling
+INFO  2019-11-21 15:09:09,182 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: invoke-errorhandling.stage1
+INFO  2019-11-21 15:09:09,184 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: worldview-experience-api-main
+INFO  2019-11-21 15:09:09,184 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.1
+INFO  2019-11-21 15:09:09,186 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: worldview-experience-api-main.stage1
+INFO  2019-11-21 15:09:09,195 [main] org.mule.construct.FlowConstructLifecycleManager: Starting flow: post:/status:worldview-experience-api-config
+INFO  2019-11-21 15:09:09,195 [main] org.mule.processor.SedaStageLifecycleManager: Starting service: post:/status:worldview-experience-api-config.stage1
+INFO  2019-11-21 15:09:09,216 [main] org.mule.module.management.agent.WrapperManagerAgent: This JVM hasn't been launched by the wrapper, the agent will not run.
+INFO  2019-11-21 15:09:09,222 [main] org.mule.DefaultMuleContext: 
+**********************************************************************
+* Application: worldview-experience-api                              *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   JMX Agent                                                        *
+*   Batch module default engine                                      *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************
+INFO  2019-11-21 15:09:12,979 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request main subflow, Correlation Guid: a98478a1-d47a-45f0-95d6-cf3475f0001e
+INFO  2019-11-21 15:09:12,979 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request for Convert To XML Flow, Correlation GUID: a98478a1-d47a-45f0-95d6-cf3475f0001e
+INFO  2019-11-21 15:09:13,016 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request for Convert To XML Flow, Correlation GUID: a98478a1-d47a-45f0-95d6-cf3475f0001e
+INFO  2019-11-21 15:09:13,023 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Started Processing Request Add to SQS Flow, Correlation Guid: a98478a1-d47a-45f0-95d6-cf3475f0001e
+INFO  2019-11-21 15:09:14,514 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 15:09:15,838 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request Add to SQS Flow, Correlation Guid: a98478a1-d47a-45f0-95d6-cf3475f0001e
+INFO  2019-11-21 15:09:15,838 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.mulesoft.weave.mule.utils.MuleWeaveFactory$: MimeType was not resolved '*/*' delegating to Java.
+INFO  2019-11-21 15:09:15,895 [[worldview-experience-api].Cloudhub_HTTP_Listener_Configuration.worker.01] com.srs.api.experience.worldview: Completed Processing Request main subflow, Correlation Guid: a98478a1-d47a-45f0-95d6-cf3475f0001e

@@ -1,0 +1,158 @@
+2019-11-14 13:36:25,261 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'products-mobile-experience-api'        +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-11-14 13:36:25,504 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising RegistryBroker
+2019-11-14 13:36:25,593 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Starting discovery of extensions
+2019-11-14 13:36:25,671 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Discovered 1 extensions
+2019-11-14 13:36:25,671 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Registering extension validation (version 3.9)
+2019-11-14 13:36:25,724 [main] INFO  org.mule.config.spring.MuleArtifactContext - Refreshing org.mule.config.spring.MuleArtifactContext@732c9b5c: startup date [Thu Nov 14 13:36:25 CST 2019]; root of context hierarchy
+2019-11-14 13:36:26,550 [main] WARN  org.mule.transport.http.builder.HttpHeaderDefinitionParser - Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+2019-11-14 13:36:27,111 [main] INFO  org.springframework.context.support.PropertySourcesPlaceholderConfigurer - Loading properties file from class path resource [products-mobile-experience-api-dev.properties]
+2019-11-14 13:36:27,113 [main] INFO  org.springframework.context.support.PropertySourcesPlaceholderConfigurer - Loading properties file from class path resource [local.properties]
+2019-11-14 13:36:27,114 [main] WARN  org.springframework.context.support.PropertySourcesPlaceholderConfigurer - Could not load properties from class path resource [local.properties]: class path resource [local.properties] cannot be opened because it does not exist
+2019-11-14 13:36:27,121 [main] INFO  org.springframework.context.support.PropertySourcesPlaceholderConfigurer - Loading properties file from class path resource [products-mobile-experience-api-dev.properties]
+2019-11-14 13:36:27,122 [main] INFO  org.springframework.context.support.PropertySourcesPlaceholderConfigurer - Loading properties file from class path resource [local.properties]
+2019-11-14 13:36:27,122 [main] WARN  org.springframework.context.support.PropertySourcesPlaceholderConfigurer - Could not load properties from class path resource [local.properties]: class path resource [local.properties] cannot be opened because it does not exist
+2019-11-14 13:36:27,138 [main] INFO  org.mule.config.spring.processors.NoDevkitInjectorProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-11-14 13:36:28,077 [main] WARN  org.mule.module.ognl.expression.OgnlExpressionEvaluator - OGNL module is deprecated and will be removed in Mule 4.0. Use MEL expressions instead.
+2019-11-14 13:36:28,344 [main] INFO  org.mule.api.security.tls.TlsProperties - Loading configuration file: tls-default.conf
+2019-11-14 13:36:28,357 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/products-mobile-experience-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/products-mobile-experience-api/queue-tx-log/tx2.log
+2019-11-14 13:36:28,365 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/products-mobile-experience-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/products-mobile-experience-api/queue-xa-tx-log/tx2.log
+2019-11-14 13:36:33,467 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising model: _muleSystemModel
+2019-11-14 13:36:33,470 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: products-mobile-experience-api-main
+2019-11-14 13:36:33,477 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: products-mobile-experience-api-main.1
+2019-11-14 13:36:33,485 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@60ae7cf2
+2019-11-14 13:36:33,485 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=404, exceptions=[org.mule.module.apikit.exception.NotFoundException]}
+2019-11-14 13:36:33,486 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=405, exceptions=[org.mule.module.apikit.exception.MethodNotAllowedException]}
+2019-11-14 13:36:33,486 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=415, exceptions=[org.mule.module.apikit.exception.UnsupportedMediaTypeException]}
+2019-11-14 13:36:33,486 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=406, exceptions=[org.mule.module.apikit.exception.NotAcceptableException]}
+2019-11-14 13:36:33,486 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=400, exceptions=[org.mule.module.apikit.exception.BadRequestException]}
+2019-11-14 13:36:33,504 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: products-mobile-experience-api-main.stage1
+2019-11-14 13:36:33,519 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/products/customer/{customerNumber}:products-mobile-experience-api-config
+2019-11-14 13:36:33,522 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.1
+2019-11-14 13:36:33,523 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6fd9dbe6
+2019-11-14 13:36:33,525 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.2
+2019-11-14 13:36:33,525 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@1b444b5
+2019-11-14 13:36:33,527 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.3
+2019-11-14 13:36:33,527 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@cf9bd1e
+2019-11-14 13:36:33,530 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.4
+2019-11-14 13:36:33,530 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6a278584
+2019-11-14 13:36:33,532 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.5
+2019-11-14 13:36:33,532 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@2e85e3f1
+2019-11-14 13:36:33,534 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:33,543 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: post:/products/price:application/json:products-mobile-experience-api-config
+2019-11-14 13:36:33,545 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/products/price:application/json:products-mobile-experience-api-config.1
+2019-11-14 13:36:33,545 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@4d065e1a
+2019-11-14 13:36:33,548 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/products/price:application/json:products-mobile-experience-api-config.2
+2019-11-14 13:36:33,548 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@79b8ecb
+2019-11-14 13:36:33,550 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/products/price:application/json:products-mobile-experience-api-config.3
+2019-11-14 13:36:33,550 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6fc0e448
+2019-11-14 13:36:33,552 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/products/price:application/json:products-mobile-experience-api-config.4
+2019-11-14 13:36:33,552 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@35becbd4
+2019-11-14 13:36:33,554 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/products/price:application/json:products-mobile-experience-api-config.5
+2019-11-14 13:36:33,554 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@4cc4d454
+2019-11-14 13:36:33,556 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/products/price:application/json:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:33,558 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/products/branch/{branchId}:products-mobile-experience-api-config
+2019-11-14 13:36:33,560 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/branch/{branchId}:products-mobile-experience-api-config.1
+2019-11-14 13:36:33,560 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@78b9155e
+2019-11-14 13:36:33,562 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/branch/{branchId}:products-mobile-experience-api-config.2
+2019-11-14 13:36:33,562 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7b3c0ecb
+2019-11-14 13:36:33,564 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/branch/{branchId}:products-mobile-experience-api-config.3
+2019-11-14 13:36:33,564 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@70c31b17
+2019-11-14 13:36:33,566 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/branch/{branchId}:products-mobile-experience-api-config.4
+2019-11-14 13:36:33,566 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3220c28
+2019-11-14 13:36:33,568 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/branch/{branchId}:products-mobile-experience-api-config.5
+2019-11-14 13:36:33,568 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@53ba25ff
+2019-11-14 13:36:33,570 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/branch/{branchId}:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:33,572 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config
+2019-11-14 13:36:33,575 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.1
+2019-11-14 13:36:33,575 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@846b47
+2019-11-14 13:36:33,577 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.2
+2019-11-14 13:36:33,577 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@24b3f778
+2019-11-14 13:36:33,579 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.3
+2019-11-14 13:36:33,579 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@4ef8090b
+2019-11-14 13:36:33,581 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.4
+2019-11-14 13:36:33,581 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@114b203
+2019-11-14 13:36:33,583 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.5
+2019-11-14 13:36:33,584 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@1f68e4e8
+2019-11-14 13:36:33,585 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:33,586 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/products/catalog:products-mobile-experience-api-config
+2019-11-14 13:36:33,587 [main] INFO  org.mule.exception.DefaultMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@772f3a3f
+2019-11-14 13:36:33,589 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/products/catalog:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:33,589 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: post:/products/generic:products-mobile-experience-api-config
+2019-11-14 13:36:33,589 [main] INFO  org.mule.exception.DefaultMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@73a49597
+2019-11-14 13:36:33,591 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/products/generic:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:33,591 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: invoke-errorhandling
+2019-11-14 13:36:33,591 [main] INFO  org.mule.exception.DefaultMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@6cd66f6a
+2019-11-14 13:36:33,593 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: invoke-errorhandling.stage1
+2019-11-14 13:36:34,518 [main] WARN  org.mule.module.apikit.Configuration - Action-Resource-ContentType triplet has no implementation -> post:/products/createPriceSheet:application/json 
+2019-11-14 13:36:34,518 [main] WARN  org.mule.module.apikit.Configuration - Action-Resource pair has no implementation -> get:/products/priceSheet 
+2019-11-14 13:36:34,531 [main] INFO  org.mule.module.apikit.Configuration - Building resource URI cache...
+2019-11-14 13:36:34,691 [main] INFO  org.mule.api.security.tls.TlsProperties - Loading configuration file: tls-default.conf
+2019-11-14 13:36:34,695 [main] INFO  org.mule.config.spring.SpringXmlConfigurationBuilder - Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/products-mobile-experience-api.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/srs-common-exception-strategy.xml'}]"
+2019-11-14 13:36:34,695 [main] INFO  org.mule.config.builders.AutoConfigurationBuilder - Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/products-mobile-experience-api.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/products-mobile-experience-api/srs-common-exception-strategy.xml'}]"
+2019-11-14 13:36:34,701 [main] INFO  com.mulesoft.module.policies.lifecyle.GateKeeper - GateKeeper Mode: DISABLED
+2019-11-14 13:36:34,701 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'products-mobile-experience-api'            +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-11-14 13:36:34,712 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Starting ResourceManager
+2019-11-14 13:36:34,712 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Started ResourceManager
+2019-11-14 13:36:34,761 [main] INFO  org.mule.module.http.internal.listener.DefaultHttpListenerConfig - Listening for requests on http://0.0.0.0:8081
+2019-11-14 13:36:34,763 [main] INFO  org.mule.module.http.internal.listener.DefaultHttpListenerConfig - Listening for requests on https://0.0.0.0:8082
+2019-11-14 13:36:34,772 [main] INFO  org.mule.modules.security.placeholder.agents.DefaultSplashScreenAgent - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (0) used in this application 
+                             +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-11-14 13:36:34,774 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Starting model: _muleSystemModel
+2019-11-14 13:36:34,776 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: products-mobile-experience-api-main
+2019-11-14 13:36:34,777 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: products-mobile-experience-api-main.1
+2019-11-14 13:36:34,780 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: products-mobile-experience-api-main.stage1
+2019-11-14 13:36:34,794 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/products/customer/{customerNumber}:products-mobile-experience-api-config
+2019-11-14 13:36:34,794 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.1
+2019-11-14 13:36:34,796 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.2
+2019-11-14 13:36:34,798 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.3
+2019-11-14 13:36:34,801 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.4
+2019-11-14 13:36:34,803 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.5
+2019-11-14 13:36:34,806 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/customer/{customerNumber}:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:34,808 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: post:/products/price:application/json:products-mobile-experience-api-config
+2019-11-14 13:36:34,808 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/products/price:application/json:products-mobile-experience-api-config.1
+2019-11-14 13:36:34,810 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/products/price:application/json:products-mobile-experience-api-config.2
+2019-11-14 13:36:34,812 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/products/price:application/json:products-mobile-experience-api-config.3
+2019-11-14 13:36:34,815 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/products/price:application/json:products-mobile-experience-api-config.4
+2019-11-14 13:36:34,817 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/products/price:application/json:products-mobile-experience-api-config.5
+2019-11-14 13:36:34,819 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/products/price:application/json:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:34,822 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/products/branch/{branchId}:products-mobile-experience-api-config
+2019-11-14 13:36:34,822 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/branch/{branchId}:products-mobile-experience-api-config.1
+2019-11-14 13:36:34,823 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/branch/{branchId}:products-mobile-experience-api-config.2
+2019-11-14 13:36:34,825 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/branch/{branchId}:products-mobile-experience-api-config.3
+2019-11-14 13:36:34,827 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/branch/{branchId}:products-mobile-experience-api-config.4
+2019-11-14 13:36:34,829 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/branch/{branchId}:products-mobile-experience-api-config.5
+2019-11-14 13:36:34,831 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/branch/{branchId}:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:34,833 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config
+2019-11-14 13:36:34,834 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.1
+2019-11-14 13:36:34,836 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.2
+2019-11-14 13:36:34,838 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.3
+2019-11-14 13:36:34,840 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.4
+2019-11-14 13:36:34,842 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.5
+2019-11-14 13:36:34,844 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/item/{itemCode}/UOMConversion:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:34,845 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/products/catalog:products-mobile-experience-api-config
+2019-11-14 13:36:34,846 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/products/catalog:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:34,848 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: post:/products/generic:products-mobile-experience-api-config
+2019-11-14 13:36:34,848 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/products/generic:products-mobile-experience-api-config.stage1
+2019-11-14 13:36:34,849 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: invoke-errorhandling
+2019-11-14 13:36:34,849 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: invoke-errorhandling.stage1
+2019-11-14 13:36:35,021 [main] INFO  org.mule.module.management.agent.WrapperManagerAgent - This JVM hasn't been launched by the wrapper, the agent will not run.
+2019-11-14 13:36:35,065 [main] INFO  org.mule.DefaultMuleContext - 
+**********************************************************************
+* Application: products-mobile-experience-api                        *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   Batch module default engine                                      *
+*   JMX Agent                                                        *
+*   DevKit Extension Information                                     *
+*   Wrapper Manager                                                  *
+**********************************************************************

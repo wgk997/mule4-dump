@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.mule.tooling.maven.muleWithMavenLaunchType">
+<stringAttribute key="clear_data" value="NEVER"/>
+<booleanAttribute key="consoleEnabled" value="true"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.3.9.2.ee"/>
+<listAttribute key="mule-project-names">
+<listEntry value="directory-process-api"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="directory-process-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Denv=dev -Dcrypto.key=UGo4GiH3gUOk96DK"/>
+<intAttribute key="remote-debug-port" value="6666"/>
+<booleanAttribute key="remote-debug-suspend" value="false"/>
+</launchConfiguration>

@@ -1,0 +1,44 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:secure-property-placeholder="http://www.mulesoft.org/schema/mule/secure-property-placeholder"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/schema/mule/api-platform-gw/current/mule-api-platform-gw.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/secure-property-placeholder http://www.mulesoft.org/schema/mule/secure-property-placeholder/current/mule-secure-property-placeholder.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<api-platform-gw:api apiName="${symbol_dollar}{application.name}"
+		version="${symbol_dollar}{api.version}" flowRef="${artifactId}-main"
+		create="true" doc:name="API Autodiscovery" />
+	
+	<secure-property-placeholder:config
+		name="Secure_Property_Placeholder" encryptionAlgorithm="Blowfish"
+		key="${symbol_dollar}{crypto.key}"
+		#if($deployTo == 'cloudhub')
+		location="${artifactId}-${symbol_dollar}{env}.properties"
+		#end
+		#if($deployTo == 'arm')
+		location="${artifactId}-${env}.properties,srs-domain-app-${env}.properties"
+		#end
+		doc:name="Secure Property Placeholder" ignoreResourceNotFound="true" />
+	
+	#if($deployTo == 'cloudhub')
+	<http:request-config name="HTTP_Request_Configuration"
+		host="${symbol_dollar}{error.http.host}" port="${symbol_dollar}{error.http.port}"
+		doc:name="HTTP Request Configuration" protocol="HTTPS" />
+		
+	<http:listener-config name="Cloudhub_Internal_HTTP_Listener_Configuration"
+		host="0.0.0.0" port="${symbol_dollar}{https.port}" doc:name="HTTP Listener Configuration" />
+	#end
+
+</mule>

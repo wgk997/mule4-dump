@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+    <flow name="requestFlow">
+        <set-variable variableName="flowName" value="createRequestForTypeRequestFlow" doc:name="flowName"/>
+        <flow-ref name="validateRequiredFieldsAndInvokeFlow" doc:name="validateRequiredFieldsAndInvokeFlow"/>
+    </flow>
+    <flow name="createRequestForTypeRequestFlow">
+        <flow-ref name="doselectFlow" doc:name="doselectFlow"/>
+        <dw:transform-message doc:name="Build Create Request for Request Type"
+                              metadata:id="b1ea5064-743d-48de-bde6-536bf12759fb">
+            <dw:input-payload doc:sample="sample_data/unicenterRequestSampleRequest.xml" mimeType="application/xml"/>
+            <dw:input-variable doc:sample="sample_data/affected_end_user.dwl" mimeType="application/java"
+                               variableName="affectedEndUserHandle"/>
+            <dw:input-variable doc:sample="sample_data/main_user.dwl" mimeType="application/java"
+                               variableName="mainUserHandle"/>
+            <dw:input-variable doc:sample="sample_data/session_id.dwl" mimeType="application/java"
+                               variableName="sessionId"/>
+            <dw:input-variable doc:sample="sample_data/string_1.dwl" mimeType="application/java"
+                               variableName="handleMapping"/>
+            <dw:input-variable doc:sample="sample_data/string_3.dwl" mimeType="application/java"
+                               variableName="specialFlags"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%namespace oracle http://xmlns.oracle.com/CreateUnicenterRequest
+%var request = payload.oracle#CreateUnicenterRequestProcessRequest
+// unicenter expects FLAT key|val pair for attrVals
+%var getAttrVals = (hash)-> hash mapObject {
+	//	we don't want to include key names with null values
+	ns0#string: $$ when ($ != null) otherwise null,
+	ns0#string: $
+} filter ($ != null)
+// don't want null values going to Unicenter
+%var getStringList = (items) -> items reduce ((val, acc = {}) -> acc ++ {ns0#string: (val default '')})
+%var getPropertyStringList = (items) -> items reduce ((val, acc = {}) -> acc ++ {ns0#string: (val default '-')})
+// for Q1,A1, etc.
+%var fiftyRequestKeyVals = flatten (1 to 50 map (
+    ["Q" ++ $, "A" ++ $]
+))
+// Looks up the corresponding "key" in genericIncProps. SOA Suite code sends an empty string if no input was supplied
+// so that's what we do
+%var getRequestPropValueStringList = (requestProps) -> getPropertyStringList(fiftyRequestKeyVals map requestProps[$])
+
+%var handleMapping = flowVars.handleMapping
+%var mainUserHandle = handleMapping.loggedInUsername
+
+%var specialFlags = flowVars.specialFlags
+
+%var requestProperties = request.oracle#requestProperties
+// TODO: w/ Mule 4, make this a module and share w/ change order
+%var handleUrl = (desc) -> using (trimmedDesc = trim desc) (('<a href="' ++ trimmedDesc ++ '" target="_blank">' ++ trimmedDesc ++ '</a>') when (trimmedDesc startsWith "http") otherwise desc)
+%var initialDescription = handleUrl(request.oracle#description)
+
+%var getTrimmedRequestProperty = (number, type) -> trim (requestProperties[(type ++ number)] default '')
+// don't want to include empty items, no need for a dash if we only have 1 item
+%var combineQuestionAndAnswer = (q,a) -> ([q,a] filter $ != '') joinBy ' - '
+%var questionAnswerStrings = (1 to 5) map combineQuestionAndAnswer(getTrimmedRequestProperty($, 'Q'), getTrimmedRequestProperty($, 'A'))
+// now we have a list of 5 strings. Each Q&A combination has already been dealt with
+%var questionAnswerStringsFiltered = questionAnswerStrings filter $ != ''
+// acc is the accumulator, it is initially '' but then contains the result of the prior execution
+%var appendedValue = questionAnswerStringsFiltered reduce ((questionAnswerString, acc = '') -> acc ++ "\n" ++ questionAnswerString)
+
+%var finalDescription = (initialDescription ++ appendedValue) when (request.oracle#appendfirst5proptodesc == "Y") otherwise initialDescription
+
+%var category = request.oracle#category //category won't be null or empty at this point. validateRequiredFields will return error response before coming here if category null or empty.
+
+---
+ns0#CreateRequest: {
+	ns0#SID: flowVars.sessionId,
+	ns0#creatorHandle: mainUserHandle,
+	ns0#attrVals: getAttrVals({
+		summary: handleUrl(request.oracle#summary),
+		description: finalDescription,
+		requested_by: handleMapping.requester,
+		customer: handleMapping.affectedEndUser,
+		assignee: handleMapping.assignee,
+		category: category when (category matches /pcat:\d+/) otherwise ("pcat:" ++ category),
+		// crs:5200 means open
+		status: "crs:5200",
+		group: request.oracle#group,
+		// R is for request
+		type: "R",
+		impact: specialFlags.impact,
+		priority: specialFlags.priority,
+		severity: specialFlags.severity,
+		urgency: specialFlags.urgency
+	}),
+	ns0#propertyValues: getRequestPropValueStringList(requestProperties),
+	ns0#template: '',
+	ns0#attributes: {
+		ns0#string: 'persistent_id'
+	}
+}]]></dw:set-payload>
+            <dw:set-variable variableName="category"><![CDATA[%dw 1.0
+%output application/java
+%namespace oracle http://xmlns.oracle.com/CreateUnicenterRequest
+%var request = payload.oracle#CreateUnicenterRequestProcessRequest
+---
+request.oracle#category]]></dw:set-variable>
+        </dw:transform-message>
+        <choice doc:name="Choice">
+            <when expression="#[flowVars.category != 'SIMULATION']">
+                <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="CreateRequest"
+                             doc:name="Create Request"/>
+            </when>
+            <otherwise>
+                <logger message="SIMULATION: The payload would have been: #[message.payloadAs(java.lang.String)]"
+                        level="INFO" doc:name="SIMULATION Log"/>
+            </otherwise>
+        </choice>
+        <dw:transform-message doc:name="Setup reply">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://xmlns.oracle.com/CreateUnicenterRequest
+%namespace ns01 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+ns0#CreateUnicenterRequestProcessResponse: {
+	ns0#sessionId: flowVars.sessionId,
+	ns0#requestNumber: payload.ns01#CreateRequestResponse.ns01#newRequestNumber,
+	ns0#requestHandle: payload.ns01#CreateRequestResponse.ns01#newRequestHandle,
+	ns0#result: "Completed",
+	ns0#desc: "Request was created successfully."
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+</mule>

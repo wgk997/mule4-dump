@@ -1,0 +1,134 @@
+mvnProps = [maven              : 'maven_35',
+            jdk                : 'jdk_18',
+            mavenSettingsConfig: 'dfw_artifactory_maven_config']
+
+// TODO: This will keep 3 < TST builds max. Can be adjusted
+// will not need to cleanup other branches since they should be short lived
+isMasterBranch = env.BRANCH_NAME == 'master'
+if (isMasterBranch) {
+    setBuildCleanupProperty(3)
+}
+version = "1.0.${env.BUILD_NUMBER}"
+applicationName = 'UnicenterSystemAPI'
+fileName = "target/${applicationName}-${version}.zip"
+
+try {
+    timestamps {
+        node {
+            stage('Checkout') {
+                checkoutWithExtensions('CleanCheckout')
+                updateBuildDescription(version)
+            }
+
+            stage('Fetch dependencies') {
+                // Clarifies Maven phases a bit more than pure dependency as you go mode
+                // we disable artifacts here to not clutter up Jenkins since we run Maven again during 'Build and test'
+                withMaven(getMavenPropsWithNoArtifacts(mvnProps)) {
+                    mavenFetchDependencies()
+                }
+            }
+
+            stage('Build and test') {
+                isOnlyPropsChange = isOnlyPropertiesChange()
+                withMaven(mvnProps) {
+                    // only push builds to artifactory that are in the master branch
+                    def phases = isMasterBranch ? 'clean deploy' : 'clean package'
+                    quietMaven "-DtheVersion=${version} ${phases}"
+                }
+                stash includes: fileName, name: 'mule_zip'
+            }
+
+            // don't deploy feature branches
+            if (isMasterBranch) {
+                stage('Deploy DEV') {
+                    milestone()
+                    // jenkins' timestamper plugin does not include dates
+                    echo "Deploying to DEV at ${new Date()}"
+                    withCredentials([usernamePassword(credentialsId: 'anypoint_runtime_mgr_credentials',
+                                                      passwordVariable: 'armPassword',
+                                                      usernameVariable: 'armUser')]) {
+                        muleDeploy(env.armUser,
+                                   env.armPassword,
+                                   'DEV',
+                                   applicationName,
+                                   fileName)
+                    }
+                    updateBuildDescription(version, 'DEV')
+                }
+            }
+        }
+
+        // don't offer to deploy feature branches to >= TST
+        if (isMasterBranch) {
+            stage('Await TST Approval') {
+                // jenkins' timestamper plugin does not include dates
+                echo "awaiting TST approval at ${new Date()}"
+                timeout(time: 30, unit: 'DAYS') {
+                    milestone()
+                    def warning = isOnlyPropsChange ? '(only properties changes in the build)' :
+                            "NOTE: THIS BUILD INCLUDES MORE THAN JUST PROPERTIES CHANGES"
+                    input message: "Deploy to TST? ${warning}"
+                }
+            }
+
+            node {
+                stage('Deploy to TST') {
+                    milestone()
+                    // jenkins' timestamper plugin does not include dates
+                    echo "Deploying to TST at ${new Date()}"
+                    unstash 'mule_zip'
+                    // don't want builds that make it to test to be cleaned out
+                    keepBuild()
+                    withCredentials([usernamePassword(credentialsId: 'anypoint_runtime_mgr_credentials',
+                                                      passwordVariable: 'armPassword',
+                                                      usernameVariable: 'armUser')]) {
+                        muleDeploy(env.armUser,
+                                   env.armPassword,
+                                   'TST',
+                                   applicationName,
+                                   fileName)
+                    }
+                    updateBuildDescription(version, 'TST')
+                }
+            }
+
+            stage('Await PRD Approval') {
+                // jenkins' timestamper plugin does not include dates
+                echo "Awaiting PRD approval at ${new Date()}"
+                timeout(time: 30, unit: 'DAYS') {
+                    milestone()
+                    def warning = isOnlyPropsChange ? '(only properties changes in the build)' :
+                            "NOTE: THIS BUILD INCLUDES MORE THAN JUST PROPERTIES CHANGES"
+                    input message: "Deploy to PRD? ${warning}"
+                }
+            }
+
+            node {
+                stage('Deploy to PRD') {
+                    milestone()
+                    // jenkins' timestamper plugin does not include dates
+                    echo "Deploying to PRD at ${new Date()}"
+                    unstash 'mule_zip'
+                    withCredentials([usernamePassword(credentialsId: 'anypoint_runtime_mgr_credentials',
+                                                      passwordVariable: 'armPassword',
+                                                      usernameVariable: 'armUser')]) {
+                        muleDeploy(env.armUser,
+                                   env.armPassword,
+                                   'PRD',
+                                   applicationName,
+                                   fileName)
+                    }
+                    updateBuildDescription(version, 'PRD')
+                }
+            }
+        }
+    }
+}
+catch (any) {
+    // need to be on a real node to send email
+    node {
+        handleError any
+    }
+    throw any
+}
+

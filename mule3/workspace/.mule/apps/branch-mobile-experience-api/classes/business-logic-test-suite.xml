@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:mock="http://www.mulesoft.org/schema/mule/mock" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd">
+    <munit:config mock-connectors="false" mock-inbounds="false" name="munit" doc:name="MUnit configuration"/>
+    <spring:beans>
+        <spring:import resource="classpath:business-logic.xml"/>
+        <spring:import resource="classpath:branch-mobile-experience-api.xml"/>
+        <spring:import resource="classpath:global.xml"/>
+        <spring:import resource="classpath:srs-common-exception-strategy.xml"/>
+    </spring:beans>
+    <munit:test name="business-logic-test-suite-customer-branch-experience-apiFlowTest" description="Test">
+        <mock:when messageProcessor=".*:.*" doc:name="Mock System API">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Call Customer Branch System API']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[{&quot;customerBranchList&quot;:[{&quot;branchId&quot;:64,&quot;customerId&quot;:92021},{&quot;branchId&quot;:154,&quot;customerId&quot;:92021,&quot;shipToSequenceNumber&quot;:null}]}]" mimeType="application/java"/>
+        </mock:when>
+        <flow-ref name="customer-branch-experience-apiFlow" doc:name="Flow-ref to customer-branch-experience-apiFlow"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <munit:assert-on-equals expectedValue="#[64]" actualValue="#[payload.branchList[0].branchId]" doc:name="Assertion on a key"/>
+        <munit:assert-on-equals expectedValue="#[154]" actualValue="#[payload.branchList[1].branchId]" doc:name="Assertion on a key"/>
+    </munit:test>
+    <munit:test name="business-logic-test-suite-branch-detail-subFlowTest" description="Test">
+        <mock:when messageProcessor=".*:.*" doc:name="Mock System API">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['Call System API']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[[{&quot;BranchTypeName&quot;:&quot;Acquisition&quot;,&quot;ApprovalLevel2&quot;:&quot;mmcdonald&quot;,&quot;BrandLogoURL&quot;: &quot;https://media.srsdistribution.com/Uploads/Brands/SouthernShingles-15.png&quot;,&quot;ADMUserId&quot;:null,&quot;RPMUserId&quot;:null,&quot;FPAName&quot;:&quot;Chris McGowan&quot;,&quot;DeliveryTypeTxt&quot;:null,&quot;DistrictName&quot;:&quot;Mark McDonald&quot;,&quot;BranchName&quot;: &quot;SOUTHERN SHINGLES - HOUSTON&quot;}]]"/>
+        </mock:when>
+        <flow-ref name="branch-detail-subFlow" doc:name="Flow-ref to branch-detail-subFlow"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <munit:assert-on-equals expectedValue="#[&quot;SOUTHERN SHINGLES - HOUSTON&quot;]" actualValue="#[payload.branchName]" doc:name="Assertion on a key"/>
+        <munit:assert-on-equals expectedValue="#[&quot;https://media.srsdistribution.com/Uploads/Brands/SouthernShingles-15.png&quot;]" actualValue="#[payload.branchLogo]" doc:name="Assertion on a key"/>
+    </munit:test>
+</mule>

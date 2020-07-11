@@ -1,0 +1,466 @@
+2019-10-14 08:45:52,217 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'orders-system-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-10-14 08:45:52,229 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising RegistryBroker
+2019-10-14 08:45:52,236 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Starting discovery of extensions
+2019-10-14 08:45:52,284 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Discovered 1 extensions
+2019-10-14 08:45:52,284 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Registering extension validation (version 3.9)
+2019-10-14 08:45:52,289 [main] INFO  org.mule.config.spring.MuleArtifactContext - Refreshing org.mule.config.spring.MuleArtifactContext@3d512652: startup date [Mon Oct 14 08:45:52 CDT 2019]; root of context hierarchy
+2019-10-14 08:46:02,707 [main] WARN  org.mule.transport.http.builder.HttpHeaderDefinitionParser - Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+2019-10-14 08:46:02,849 [main] INFO  org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker - Loading properties file from class path resource [orders-system-api-dev.properties]
+2019-10-14 08:46:02,851 [main] INFO  org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker - Loading properties file from class path resource [srs-domain-app-dev.properties]
+2019-10-14 08:46:02,856 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Disposing RegistryBroker
+2019-10-14 08:46:02,895 [main] ERROR org.mule.config.spring.SpringRegistry - Failed to shut down registry cleanly: org.mule.Registry.Spring
+org.mule.api.lifecycle.LifecycleException: Failed to lookup beans of type interface org.mule.api.construct.FlowConstruct from the Spring registry
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:164) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleManager.fireLifecycle(RegistryLifecycleManager.java:134) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.registry.AbstractRegistry.dispose(AbstractRegistry.java:68) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.registry.AbstractRegistryBroker$2.onTransition(AbstractRegistryBroker.java:69) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.registry.AbstractRegistryBroker$2.onTransition(AbstractRegistryBroker.java:64) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:146) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryBrokerLifecycleManager.fireDisposePhase(RegistryBrokerLifecycleManager.java:82) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.registry.AbstractRegistryBroker.dispose(AbstractRegistryBroker.java:63) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.registry.MuleRegistryHelper.fireLifecycle(MuleRegistryHelper.java:137) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.MuleContextLifecycleManager$MuleContextLifecycleCallback.onTransition(MuleContextLifecycleManager.java:74) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.MuleContextLifecycleManager$MuleContextLifecycleCallback.onTransition(MuleContextLifecycleManager.java:70) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:146) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.MuleContextLifecycleManager.fireLifecycle(MuleContextLifecycleManager.java:62) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.DefaultMuleContext.dispose(DefaultMuleContext.java:452) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.context.DefaultMuleContextFactory.doCreateMuleContext(DefaultMuleContextFactory.java:230) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.context.DefaultMuleContextFactory.createMuleContext(DefaultMuleContextFactory.java:81) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.application.DefaultMuleApplication.init(DefaultMuleApplication.java:210) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.artifact.ArtifactWrapper$2.execute(ArtifactWrapper.java:64) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.artifact.ArtifactWrapper.executeWithinArtifactClassLoader(ArtifactWrapper.java:137) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.artifact.ArtifactWrapper.init(ArtifactWrapper.java:59) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArtifactDeployer.deploy(DefaultArtifactDeployer.java:72) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployArtifact(DefaultArchiveDeployer.java:547) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployArtifact(DefaultArchiveDeployer.java:325) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:185) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:274) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:80) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:577) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DeploymentDirectoryWatcher.deployPackedApps(DeploymentDirectoryWatcher.java:283) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DeploymentDirectoryWatcher.start(DeploymentDirectoryWatcher.java:155) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.MuleDeploymentService.start(MuleDeploymentService.java:135) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.MuleContainer.start(MuleContainer.java:172) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.tooling.server.application.ApplicationDeployer.main(ApplicationDeployer.java:15) ~[tooling-support-3.9.2.jar:?]
+Caused by: org.mule.api.MuleRuntimeException: Failed to lookup beans of type interface org.mule.api.construct.FlowConstruct from the Spring registry
+	at org.mule.config.spring.SpringRegistry.internalLookupByTypeWithoutAncestors(SpringRegistry.java:354) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupEntriesForLifecycle(SpringRegistry.java:368) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupObjectsForLifecycle(SpringRegistry.java:241) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.lookupObjectsForLifecycle(RegistryLifecycleCallback.java:155) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.onTransition(RegistryLifecycleCallback.java:77) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:146) ~[mule-core-3.9.2.jar:3.9.2]
+	... 31 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'insert-order-private-flow': Cannot create inner bean '(inner bean)#19a7906c' of type [org.mule.module.db.internal.processor.StoredProcedureMessageProcessor] while setting bean property 'messageProcessors' with key [1]; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#19a7906c': Cannot create inner bean '(inner bean)#1da5c19d' of type [org.mule.module.db.internal.resolver.database.ConfiguredDbConfigResolver] while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#1da5c19d': Cannot resolve reference to bean 'ODSAPI_Database_Configuration' while setting constructor argument; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'ODSAPI_Database_Configuration' is defined
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:313) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:129) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveManagedList(BeanDefinitionValueResolver.java:382) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:157) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1475) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1220) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:515) ~[mule-module-spring-config-3.9.2.jar:4.1.9.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1067) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.mule.config.spring.SpringRegistry.internalLookupByTypeWithoutAncestors(SpringRegistry.java:348) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupEntriesForLifecycle(SpringRegistry.java:368) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupObjectsForLifecycle(SpringRegistry.java:241) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.lookupObjectsForLifecycle(RegistryLifecycleCallback.java:155) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.onTransition(RegistryLifecycleCallback.java:77) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:146) ~[mule-core-3.9.2.jar:3.9.2]
+	... 31 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#19a7906c': Cannot create inner bean '(inner bean)#1da5c19d' of type [org.mule.module.db.internal.resolver.database.ConfiguredDbConfigResolver] while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#1da5c19d': Cannot resolve reference to bean 'ODSAPI_Database_Configuration' while setting constructor argument; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'ODSAPI_Database_Configuration' is defined
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:313) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:129) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:634) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:140) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1137) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1040) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:129) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveManagedList(BeanDefinitionValueResolver.java:382) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:157) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1475) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1220) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:515) ~[mule-module-spring-config-3.9.2.jar:4.1.9.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1067) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.mule.config.spring.SpringRegistry.internalLookupByTypeWithoutAncestors(SpringRegistry.java:348) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupEntriesForLifecycle(SpringRegistry.java:368) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupObjectsForLifecycle(SpringRegistry.java:241) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.lookupObjectsForLifecycle(RegistryLifecycleCallback.java:155) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.onTransition(RegistryLifecycleCallback.java:77) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:146) ~[mule-core-3.9.2.jar:3.9.2]
+	... 31 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#1da5c19d': Cannot resolve reference to bean 'ODSAPI_Database_Configuration' while setting constructor argument; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'ODSAPI_Database_Configuration' is defined
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:359) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:108) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:634) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:140) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1137) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1040) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:129) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:634) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:140) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1137) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1040) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:129) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveManagedList(BeanDefinitionValueResolver.java:382) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:157) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1475) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1220) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:515) ~[mule-module-spring-config-3.9.2.jar:4.1.9.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1067) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.mule.config.spring.SpringRegistry.internalLookupByTypeWithoutAncestors(SpringRegistry.java:348) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupEntriesForLifecycle(SpringRegistry.java:368) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupObjectsForLifecycle(SpringRegistry.java:241) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.lookupObjectsForLifecycle(RegistryLifecycleCallback.java:155) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.onTransition(RegistryLifecycleCallback.java:77) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:146) ~[mule-core-3.9.2.jar:3.9.2]
+	... 31 more
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'ODSAPI_Database_Configuration' is defined
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanDefinition(DefaultListableBeanFactory.java:683) ~[mule-module-spring-config-3.9.2.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getMergedLocalBeanDefinition(AbstractBeanFactory.java:1168) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:281) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:351) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:108) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:634) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:140) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1137) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1040) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:129) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:634) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:140) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1137) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1040) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:504) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:129) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveManagedList(BeanDefinitionValueResolver.java:382) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:157) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1475) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1220) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:515) ~[mule-module-spring-config-3.9.2.jar:4.1.9.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1067) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.mule.config.spring.SpringRegistry.internalLookupByTypeWithoutAncestors(SpringRegistry.java:348) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupEntriesForLifecycle(SpringRegistry.java:368) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringRegistry.lookupObjectsForLifecycle(SpringRegistry.java:241) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.lookupObjectsForLifecycle(RegistryLifecycleCallback.java:155) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.RegistryLifecycleCallback.onTransition(RegistryLifecycleCallback.java:77) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.lifecycle.AbstractLifecycleManager.invokePhase(AbstractLifecycleManager.java:146) ~[mule-core-3.9.2.jar:3.9.2]
+	... 31 more
+2019-10-14 08:46:02,896 [main] ERROR org.mule.module.launcher.application.DefaultMuleApplication - null
+java.lang.IllegalArgumentException: Empty key
+	at javax.crypto.spec.SecretKeySpec.<init>(SecretKeySpec.java:96) ~[?:1.8.0_191]
+	at org.mule.security.utils.keyfactories.SymmetricEncryptionKeyFactory.buildEncryptionKey(SymmetricEncryptionKeyFactory.java:32) ~[security-api-1.7.1.jar:?]
+	at org.mule.security.utils.keyfactories.SymmetricEncryptionKeyFactory.buildDecryptionKey(SymmetricEncryptionKeyFactory.java:37) ~[security-api-1.7.1.jar:?]
+	at org.mule.security.encryption.binary.jce.JCEEncrypter.decrypt(JCEEncrypter.java:110) ~[security-api-1.7.1.jar:?]
+	at org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule.decrypt(SecurePropertyPlaceholderModule.java:144) ~[mule-module-security-property-placeholder-1.7.1.jar:?]
+	at org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule.convertPropertyValue(SecurePropertyPlaceholderModule.java:159) ~[mule-module-security-property-placeholder-1.7.1.jar:?]
+	at org.springframework.beans.factory.config.PropertyResourceConfigurer.convertProperty(PropertyResourceConfigurer.java:123) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.config.PropertyResourceConfigurer.convertProperties(PropertyResourceConfigurer.java:106) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.beans.factory.config.PropertyResourceConfigurer.postProcessBeanFactory(PropertyResourceConfigurer.java:83) ~[spring-beans-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule.postProcessBeanFactory(SecurePropertyPlaceholderModule.java:181) ~[mule-module-security-property-placeholder-1.7.1.jar:?]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:265) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:162) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:610) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:462) ~[spring-context-4.1.9.RELEASE.jar:4.1.9.RELEASE]
+	at org.mule.config.spring.SpringRegistry.doInitialise(SpringRegistry.java:108) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.registry.AbstractRegistry.initialise(AbstractRegistry.java:104) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringXmlConfigurationBuilder.createSpringRegistry(SpringXmlConfigurationBuilder.java:177) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.spring.SpringXmlConfigurationBuilder.doConfigure(SpringXmlConfigurationBuilder.java:100) ~[mule-module-spring-config-3.9.2.jar:3.9.2]
+	at org.mule.config.builders.AbstractConfigurationBuilder.configure(AbstractConfigurationBuilder.java:43) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.config.builders.AbstractResourceConfigurationBuilder.configure(AbstractResourceConfigurationBuilder.java:69) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.config.builders.AutoConfigurationBuilder.autoConfigure(AutoConfigurationBuilder.java:102) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.config.builders.AutoConfigurationBuilder.doConfigure(AutoConfigurationBuilder.java:54) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.config.builders.AbstractConfigurationBuilder.configure(AbstractConfigurationBuilder.java:43) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.config.builders.AbstractResourceConfigurationBuilder.configure(AbstractResourceConfigurationBuilder.java:69) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.context.DefaultMuleContextFactory$1.configure(DefaultMuleContextFactory.java:89) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.context.DefaultMuleContextFactory.doCreateMuleContext(DefaultMuleContextFactory.java:222) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.context.DefaultMuleContextFactory.createMuleContext(DefaultMuleContextFactory.java:81) ~[mule-core-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.application.DefaultMuleApplication.init(DefaultMuleApplication.java:210) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.artifact.ArtifactWrapper$2.execute(ArtifactWrapper.java:64) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.artifact.ArtifactWrapper.executeWithinArtifactClassLoader(ArtifactWrapper.java:137) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.artifact.ArtifactWrapper.init(ArtifactWrapper.java:59) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArtifactDeployer.deploy(DefaultArtifactDeployer.java:72) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployArtifact(DefaultArchiveDeployer.java:547) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployArtifact(DefaultArchiveDeployer.java:325) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:185) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:274) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:80) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DefaultArchiveDeployer.deployPackagedArtifact(DefaultArchiveDeployer.java:577) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DeploymentDirectoryWatcher.deployPackedApps(DeploymentDirectoryWatcher.java:283) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.DeploymentDirectoryWatcher.start(DeploymentDirectoryWatcher.java:155) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.MuleDeploymentService.start(MuleDeploymentService.java:135) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.module.launcher.MuleContainer.start(MuleContainer.java:172) ~[mule-module-launcher-3.9.2.jar:3.9.2]
+	at org.mule.tooling.server.application.ApplicationDeployer.main(ApplicationDeployer.java:15) ~[tooling-support-3.9.2.jar:?]
+2019-10-14 08:46:02,896 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - App 'orders-system-api' never started, nothing to dispose of
+2019-10-14 09:01:40,592 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'orders-system-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-10-14 09:01:40,604 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising RegistryBroker
+2019-10-14 09:01:40,637 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Starting discovery of extensions
+2019-10-14 09:01:40,686 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Discovered 1 extensions
+2019-10-14 09:01:40,686 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Registering extension validation (version 3.9)
+2019-10-14 09:01:40,691 [main] INFO  org.mule.config.spring.MuleArtifactContext - Refreshing org.mule.config.spring.MuleArtifactContext@3d512652: startup date [Mon Oct 14 09:01:40 CDT 2019]; root of context hierarchy
+2019-11-08 14:05:20,471 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Initializing app 'orders-system-api'                     +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-11-08 14:05:20,475 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising RegistryBroker
+2019-11-08 14:05:20,478 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Starting discovery of extensions
+2019-11-08 14:05:20,485 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Discovered 1 extensions
+2019-11-08 14:05:20,485 [main] INFO  org.mule.module.extension.internal.manager.DefaultExtensionManager - Registering extension validation (version 3.9)
+2019-11-08 14:05:20,486 [main] INFO  org.mule.config.spring.MuleArtifactContext - Refreshing org.mule.config.spring.MuleArtifactContext@73b14865: startup date [Fri Nov 08 14:05:20 CST 2019]; parent: org.mule.config.spring.MuleDomainContext@515ebef3
+2019-11-08 14:05:25,744 [main] WARN  org.mule.transport.http.builder.HttpHeaderDefinitionParser - Schema warning: Use of element <header> is deprecated.  HTTP transport is deprecated and will be removed in Mule 4.0. Use HTTP module instead..
+2019-11-08 14:05:25,832 [main] INFO  org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker - Loading properties file from class path resource [orders-system-api-dev.properties]
+2019-11-08 14:05:25,834 [main] INFO  org.mule.modules.security.placeholder.adapters.SecurePropertyPlaceholderModuleLicenseChecker - Loading properties file from class path resource [srs-domain-app-dev.properties]
+2019-11-08 14:05:25,844 [main] INFO  org.mule.modules.security.placeholder.SecurePropertyPlaceholderModule - Loading properties file from class path resource [srs-domain-app-dev.properties]
+2019-11-08 14:05:25,851 [main] INFO  org.mule.config.spring.processors.NoDevkitInjectorProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-11-08 14:05:26,317 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/orders-system-api/queue-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/orders-system-api/queue-tx-log/tx2.log
+2019-11-08 14:05:26,318 [main] INFO  org.mule.util.journal.TransactionJournal - Using files for tx logs /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/orders-system-api/queue-xa-tx-log/tx1.log and /Users/asapkota/AnypointStudio6/srs-workspace/.mule/./.mule/orders-system-api/queue-xa-tx-log/tx2.log
+2019-11-08 14:05:26,334 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Initialising model: _muleSystemModel
+2019-11-08 14:05:26,336 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: insert-order-private-flow
+2019-11-08 14:05:26,336 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@10d598ca
+2019-11-08 14:05:26,339 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: insert-order-private-flow.stage1
+2019-11-08 14:05:26,342 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: invoke-errorhandling
+2019-11-08 14:05:26,342 [main] INFO  org.mule.exception.DefaultMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.DefaultMessagingExceptionStrategy@1e404eb5
+2019-11-08 14:05:26,345 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: invoke-errorhandling.stage1
+2019-11-08 14:05:26,345 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: orders-system-api-main
+2019-11-08 14:05:26,347 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: orders-system-api-main.1
+2019-11-08 14:05:26,348 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3a1a08af
+2019-11-08 14:05:26,348 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=404, exceptions=[org.mule.module.apikit.exception.NotFoundException]}
+2019-11-08 14:05:26,348 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=405, exceptions=[org.mule.module.apikit.exception.MethodNotAllowedException]}
+2019-11-08 14:05:26,348 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=415, exceptions=[org.mule.module.apikit.exception.UnsupportedMediaTypeException]}
+2019-11-08 14:05:26,348 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=406, exceptions=[org.mule.module.apikit.exception.NotAcceptableException]}
+2019-11-08 14:05:26,348 [main] INFO  org.mule.module.apikit.MappingExceptionListener - Initialising exception listener: MappingExceptionListener{statusCode=400, exceptions=[org.mule.module.apikit.exception.BadRequestException]}
+2019-11-08 14:05:26,352 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: orders-system-api-main.stage1
+2019-11-08 14:05:26,357 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/orders/{orderId}:orders-system-api-config
+2019-11-08 14:05:26,360 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/{orderId}:orders-system-api-config.1
+2019-11-08 14:05:26,360 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@13406026
+2019-11-08 14:05:26,363 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/{orderId}:orders-system-api-config.2
+2019-11-08 14:05:26,363 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@760cffff
+2019-11-08 14:05:26,365 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/{orderId}:orders-system-api-config.3
+2019-11-08 14:05:26,365 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@41e510bd
+2019-11-08 14:05:26,367 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/{orderId}:orders-system-api-config.4
+2019-11-08 14:05:26,367 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@393b6884
+2019-11-08 14:05:26,369 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/{orderId}:orders-system-api-config.5
+2019-11-08 14:05:26,369 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@78d1303f
+2019-11-08 14:05:26,371 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/{orderId}:orders-system-api-config.stage1
+2019-11-08 14:05:26,382 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: post:/orders/list:application/json:orders-system-api-config
+2019-11-08 14:05:26,385 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/list:application/json:orders-system-api-config.1
+2019-11-08 14:05:26,385 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6c83c1d7
+2019-11-08 14:05:26,387 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/list:application/json:orders-system-api-config.2
+2019-11-08 14:05:26,387 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6aa2b1d3
+2019-11-08 14:05:26,389 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/list:application/json:orders-system-api-config.3
+2019-11-08 14:05:26,393 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@74dbfb9b
+2019-11-08 14:05:26,395 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/list:application/json:orders-system-api-config.4
+2019-11-08 14:05:26,396 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7bace2d0
+2019-11-08 14:05:26,398 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/list:application/json:orders-system-api-config.5
+2019-11-08 14:05:26,398 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6ad5458b
+2019-11-08 14:05:26,400 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/list:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:26,401 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: put:/orders:application/json:orders-system-api-config
+2019-11-08 14:05:26,403 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: put:/orders:application/json:orders-system-api-config.1
+2019-11-08 14:05:26,403 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5c7f4753
+2019-11-08 14:05:26,405 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: put:/orders:application/json:orders-system-api-config.2
+2019-11-08 14:05:26,405 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@8f698b9
+2019-11-08 14:05:26,407 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: put:/orders:application/json:orders-system-api-config.3
+2019-11-08 14:05:26,407 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@21a874fa
+2019-11-08 14:05:26,409 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: put:/orders:application/json:orders-system-api-config.4
+2019-11-08 14:05:26,409 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@44ec6a4b
+2019-11-08 14:05:26,411 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: put:/orders:application/json:orders-system-api-config.5
+2019-11-08 14:05:26,411 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@50f67119
+2019-11-08 14:05:26,413 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: put:/orders:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:26,423 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/orders:orders-system-api-config
+2019-11-08 14:05:26,426 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders:orders-system-api-config.1
+2019-11-08 14:05:26,426 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@390878da
+2019-11-08 14:05:26,428 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders:orders-system-api-config.2
+2019-11-08 14:05:26,429 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@85845d6
+2019-11-08 14:05:26,430 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders:orders-system-api-config.3
+2019-11-08 14:05:26,431 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@59acb5d9
+2019-11-08 14:05:26,433 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders:orders-system-api-config.4
+2019-11-08 14:05:26,433 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@200591c8
+2019-11-08 14:05:26,435 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders:orders-system-api-config.5
+2019-11-08 14:05:26,435 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@9005147
+2019-11-08 14:05:26,437 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders:orders-system-api-config.stage1
+2019-11-08 14:05:26,437 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: post:/orders:application/json:orders-system-api-config
+2019-11-08 14:05:26,439 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders:application/json:orders-system-api-config.1
+2019-11-08 14:05:26,439 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@2da11074
+2019-11-08 14:05:26,441 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders:application/json:orders-system-api-config.2
+2019-11-08 14:05:26,441 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@2f8b1f0f
+2019-11-08 14:05:26,443 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders:application/json:orders-system-api-config.3
+2019-11-08 14:05:26,443 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@3fc5cf62
+2019-11-08 14:05:26,445 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders:application/json:orders-system-api-config.4
+2019-11-08 14:05:26,445 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@37d5bef
+2019-11-08 14:05:26,447 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders:application/json:orders-system-api-config.5
+2019-11-08 14:05:26,447 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@1db19522
+2019-11-08 14:05:26,449 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:26,450 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: post:/orders/submit:application/json:orders-system-api-config
+2019-11-08 14:05:26,452 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/submit:application/json:orders-system-api-config.1
+2019-11-08 14:05:26,452 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@19a0dd25
+2019-11-08 14:05:26,454 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/submit:application/json:orders-system-api-config.2
+2019-11-08 14:05:26,454 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@6478cfdd
+2019-11-08 14:05:26,456 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/submit:application/json:orders-system-api-config.3
+2019-11-08 14:05:26,460 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@55675691
+2019-11-08 14:05:26,462 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/submit:application/json:orders-system-api-config.4
+2019-11-08 14:05:26,462 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5c75f343
+2019-11-08 14:05:26,464 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/submit:application/json:orders-system-api-config.5
+2019-11-08 14:05:26,464 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7d47ee57
+2019-11-08 14:05:26,466 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: post:/orders/submit:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:27,130 [main] WARN  org.mule.module.cxf.CxfConfiguration - initializeStaticBusInstance=false is currently deprecated because of security implications. Use it at your own risk.
+2019-11-08 14:05:28,504 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/changeList:orders-system-api-config
+2019-11-08 14:05:28,506 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/changeList:orders-system-api-config.1
+2019-11-08 14:05:28,506 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@66c1db11
+2019-11-08 14:05:28,508 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/changeList:orders-system-api-config.2
+2019-11-08 14:05:28,508 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@39ca21eb
+2019-11-08 14:05:28,510 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/changeList:orders-system-api-config.3
+2019-11-08 14:05:28,510 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@5d65e9d3
+2019-11-08 14:05:28,512 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/changeList:orders-system-api-config.4
+2019-11-08 14:05:28,512 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@7b14a0a4
+2019-11-08 14:05:28,513 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/changeList:orders-system-api-config.5
+2019-11-08 14:05:28,514 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@4e12821a
+2019-11-08 14:05:28,515 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/changeList:orders-system-api-config.stage1
+2019-11-08 14:05:28,516 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Initialising flow: get:/orders/creditAppRelease:orders-system-api-config
+2019-11-08 14:05:28,518 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/creditAppRelease:orders-system-api-config.1
+2019-11-08 14:05:28,518 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@66a0c9b2
+2019-11-08 14:05:28,521 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/creditAppRelease:orders-system-api-config.2
+2019-11-08 14:05:28,521 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@51d9da4f
+2019-11-08 14:05:28,523 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/creditAppRelease:orders-system-api-config.3
+2019-11-08 14:05:28,523 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@56b169d2
+2019-11-08 14:05:28,525 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/creditAppRelease:orders-system-api-config.4
+2019-11-08 14:05:28,525 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@b051f7a
+2019-11-08 14:05:28,527 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/creditAppRelease:orders-system-api-config.5
+2019-11-08 14:05:28,527 [main] INFO  org.mule.exception.CatchMessagingExceptionStrategy - Initialising exception listener: org.mule.exception.CatchMessagingExceptionStrategy@2b2d3732
+2019-11-08 14:05:28,529 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Initialising service: get:/orders/creditAppRelease:orders-system-api-config.stage1
+2019-11-08 14:05:29,219 [main] INFO  org.mule.module.apikit.Configuration - Building resource URI cache...
+2019-11-08 14:05:29,232 [main] WARN  org.mule.module.cxf.CxfConfiguration - initializeStaticBusInstance=false is currently deprecated because of security implications. Use it at your own risk.
+2019-11-08 14:05:29,236 [main] INFO  org.mule.config.spring.SpringXmlConfigurationBuilder - Configured Mule using "org.mule.config.spring.SpringXmlConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/orders-system-api.xml'}]"
+2019-11-08 14:05:29,236 [main] INFO  org.mule.config.builders.AutoConfigurationBuilder - Configured Mule using "org.mule.config.builders.AutoConfigurationBuilder" with configuration resource(s): "[ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/business-logic.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/global.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/srs-common-exception-strategy.xml'}, ConfigResource{resourceName='/Users/asapkota/AnypointStudio6/srs-workspace/.mule/apps/orders-system-api/orders-system-api.xml'}]"
+2019-11-08 14:05:29,237 [main] INFO  org.mule.module.launcher.application.DefaultMuleApplication - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting app 'orders-system-api'                         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-11-08 14:05:29,239 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Starting ResourceManager
+2019-11-08 14:05:29,240 [main] INFO  org.mule.util.queue.QueueXaResourceManager - Started ResourceManager
+2019-11-08 14:05:29,249 [main] INFO  org.mule.modules.objectstore.generated.agents.DefaultSplashScreenAgent - 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ DevKit Extensions (1) used in this application                               +
++ Secure Property Placeholder 1.7.1 (DevKit 3.5.2 Build                        +
++ UNNAMED.2039.0541b23)+                                                       +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2019-11-08 14:05:29,250 [main] INFO  org.mule.lifecycle.AbstractLifecycleManager - Starting model: _muleSystemModel
+2019-11-08 14:05:29,252 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: insert-order-private-flow
+2019-11-08 14:05:29,252 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: insert-order-private-flow.stage1
+2019-11-08 14:05:29,253 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: invoke-errorhandling
+2019-11-08 14:05:29,253 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: invoke-errorhandling.stage1
+2019-11-08 14:05:29,256 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: orders-system-api-main
+2019-11-08 14:05:29,256 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: orders-system-api-main.1
+2019-11-08 14:05:29,259 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: orders-system-api-main.stage1
+2019-11-08 14:05:29,268 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/orders/{orderId}:orders-system-api-config
+2019-11-08 14:05:29,268 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/{orderId}:orders-system-api-config.1
+2019-11-08 14:05:29,269 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/{orderId}:orders-system-api-config.2
+2019-11-08 14:05:29,272 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/{orderId}:orders-system-api-config.3
+2019-11-08 14:05:29,278 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/{orderId}:orders-system-api-config.4
+2019-11-08 14:05:29,280 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/{orderId}:orders-system-api-config.5
+2019-11-08 14:05:29,282 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/{orderId}:orders-system-api-config.stage1
+2019-11-08 14:05:29,283 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: post:/orders/list:application/json:orders-system-api-config
+2019-11-08 14:05:29,283 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/list:application/json:orders-system-api-config.1
+2019-11-08 14:05:29,285 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/list:application/json:orders-system-api-config.2
+2019-11-08 14:05:29,287 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/list:application/json:orders-system-api-config.3
+2019-11-08 14:05:29,289 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/list:application/json:orders-system-api-config.4
+2019-11-08 14:05:29,290 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/list:application/json:orders-system-api-config.5
+2019-11-08 14:05:29,292 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/list:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:29,293 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: put:/orders:application/json:orders-system-api-config
+2019-11-08 14:05:29,293 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: put:/orders:application/json:orders-system-api-config.1
+2019-11-08 14:05:29,295 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: put:/orders:application/json:orders-system-api-config.2
+2019-11-08 14:05:29,297 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: put:/orders:application/json:orders-system-api-config.3
+2019-11-08 14:05:29,298 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: put:/orders:application/json:orders-system-api-config.4
+2019-11-08 14:05:29,300 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: put:/orders:application/json:orders-system-api-config.5
+2019-11-08 14:05:29,301 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: put:/orders:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:29,303 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/orders:orders-system-api-config
+2019-11-08 14:05:29,303 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders:orders-system-api-config.1
+2019-11-08 14:05:29,305 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders:orders-system-api-config.2
+2019-11-08 14:05:29,308 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders:orders-system-api-config.3
+2019-11-08 14:05:29,309 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders:orders-system-api-config.4
+2019-11-08 14:05:29,313 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders:orders-system-api-config.5
+2019-11-08 14:05:29,317 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders:orders-system-api-config.stage1
+2019-11-08 14:05:29,318 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: post:/orders:application/json:orders-system-api-config
+2019-11-08 14:05:29,318 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders:application/json:orders-system-api-config.1
+2019-11-08 14:05:29,320 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders:application/json:orders-system-api-config.2
+2019-11-08 14:05:29,321 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders:application/json:orders-system-api-config.3
+2019-11-08 14:05:29,322 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders:application/json:orders-system-api-config.4
+2019-11-08 14:05:29,323 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders:application/json:orders-system-api-config.5
+2019-11-08 14:05:29,324 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:29,325 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: post:/orders/submit:application/json:orders-system-api-config
+2019-11-08 14:05:29,325 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/submit:application/json:orders-system-api-config.1
+2019-11-08 14:05:29,326 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/submit:application/json:orders-system-api-config.2
+2019-11-08 14:05:29,327 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/submit:application/json:orders-system-api-config.3
+2019-11-08 14:05:29,329 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/submit:application/json:orders-system-api-config.4
+2019-11-08 14:05:29,330 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/submit:application/json:orders-system-api-config.5
+2019-11-08 14:05:29,332 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: post:/orders/submit:application/json:orders-system-api-config.stage1
+2019-11-08 14:05:29,333 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/changeList:orders-system-api-config
+2019-11-08 14:05:29,333 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/changeList:orders-system-api-config.1
+2019-11-08 14:05:29,334 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/changeList:orders-system-api-config.2
+2019-11-08 14:05:29,335 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/changeList:orders-system-api-config.3
+2019-11-08 14:05:29,336 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/changeList:orders-system-api-config.4
+2019-11-08 14:05:29,337 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/changeList:orders-system-api-config.5
+2019-11-08 14:05:29,337 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/changeList:orders-system-api-config.stage1
+2019-11-08 14:05:29,339 [main] INFO  org.mule.construct.FlowConstructLifecycleManager - Starting flow: get:/orders/creditAppRelease:orders-system-api-config
+2019-11-08 14:05:29,339 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/creditAppRelease:orders-system-api-config.1
+2019-11-08 14:05:29,339 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/creditAppRelease:orders-system-api-config.2
+2019-11-08 14:05:29,340 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/creditAppRelease:orders-system-api-config.3
+2019-11-08 14:05:29,341 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/creditAppRelease:orders-system-api-config.4
+2019-11-08 14:05:29,342 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/creditAppRelease:orders-system-api-config.5
+2019-11-08 14:05:29,343 [main] INFO  org.mule.processor.SedaStageLifecycleManager - Starting service: get:/orders/creditAppRelease:orders-system-api-config.stage1
+2019-11-08 14:05:29,345 [main] INFO  org.mule.modules.objectstore.ObjectStoreConnector - Initializing object store...
+2019-11-08 14:05:29,345 [main] INFO  org.mule.modules.objectstore.ObjectStoreConnector - About to validate parameters
+2019-11-08 14:05:29,346 [main] INFO  org.mule.modules.objectstore.ObjectStoreConnector - Object store successfully acquired.
+2019-11-08 14:05:29,375 [main] INFO  org.mule.DefaultMuleContext - 
+**********************************************************************
+* Application: orders-system-api                                     *
+* OS encoding: /, Mule encoding: UTF-8                               *
+*                                                                    *
+* Agents Running:                                                    *
+*   Batch module default engine                                      *
+*   JMX Agent                                                        *
+*   DevKit Extension Information                                     *
+*   JMX Agent                                                        *
+*   Wrapper Manager                                                  *
+**********************************************************************

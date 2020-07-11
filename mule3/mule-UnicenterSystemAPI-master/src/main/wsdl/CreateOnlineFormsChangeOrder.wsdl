@@ -1,0 +1,46 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<definitions name="CreateOnlineFormsChangeOrder"
+             targetNamespace="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder"
+                    schemaLocation="CreateOnlineFormsChangeOrder.xsd"/>
+        </schema>
+    </types>
+
+    <message name="CreateOnlineFormsChangeOrderRequestMessage">
+        <part name="payload" element="client:CreateOnlineFormsChangeOrderProcessRequest"/>
+    </message>
+    <message name="CreateOnlineFormsChangeOrderResponseMessage">
+        <part name="payload" element="client:CreateOnlineFormsChangeOrderProcessResponse"/>
+    </message>
+
+    <portType name="CreateOnlineFormsChangeOrder">
+        <operation name="process">
+            <input message="client:CreateOnlineFormsChangeOrderRequestMessage"/>
+            <output message="client:CreateOnlineFormsChangeOrderResponseMessage"/>
+        </operation>
+    </portType>
+    <binding name="CreateOnlineFormsChangeOrderSoapBinding" type="client:CreateOnlineFormsChangeOrder">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="CreateOnlineFormsChangeOrder_OSB_Client">
+        <port name="CreateOnlineFormsChangeOrder_OSB_ClientDirectBindingPort11"
+              binding="client:CreateOnlineFormsChangeOrderSoapBinding">
+            <soap:address location="http://foobar"/>
+        </port>
+    </service>
+</definitions>

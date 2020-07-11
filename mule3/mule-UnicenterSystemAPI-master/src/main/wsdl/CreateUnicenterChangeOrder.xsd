@@ -1,0 +1,140 @@
+<schema elementFormDefault="qualified"
+        targetNamespace="http://xmlns.oracle.com/CreateUnicenterChangeOrder"
+        xmlns="http://www.w3.org/2001/XMLSchema">
+    <element name="CreateUnicenterChangeOrderProcessRequest">
+        <complexType>
+            <all>
+                <element name="category" type="string"/>
+                <element name="summary" type="string"/>
+                <element name="description" type="string"/>
+                <element name="justification" minOccurs="0" type="string"/>
+                <element name="bpelName" minOccurs="0" type="string"/>
+                <element name="instanceID" minOccurs="0" type="string"/>
+
+                <element name="requester" minOccurs="0" type="string"/>
+                <element name="affected_end_user" minOccurs="0" type="string"/>
+
+                <element name="Generic_Properties" minOccurs="0">
+                    <complexType>
+                        <sequence>
+                            <element name="Q1" minOccurs="0" type="string"/>
+                            <element name="A1" minOccurs="0" type="string"/>
+                            <element name="Q2" minOccurs="0" type="string"/>
+                            <element name="A2" minOccurs="0" type="string"/>
+                            <element name="Q3" minOccurs="0" type="string"/>
+                            <element name="A3" minOccurs="0" type="string"/>
+                            <element name="Q4" minOccurs="0" type="string"/>
+                            <element name="A4" minOccurs="0" type="string"/>
+                            <element name="Q5" minOccurs="0" type="string"/>
+                            <element name="A5" minOccurs="0" type="string"/>
+                            <element name="Q6" minOccurs="0" type="string"/>
+                            <element name="A6" minOccurs="0" type="string"/>
+                            <element name="Q7" minOccurs="0" type="string"/>
+                            <element name="A7" minOccurs="0" type="string"/>
+                            <element name="Q8" minOccurs="0" type="string"/>
+                            <element name="A8" minOccurs="0" type="string"/>
+                            <element name="Q9" minOccurs="0" type="string"/>
+                            <element name="A9" minOccurs="0" type="string"/>
+                            <element name="Q10" minOccurs="0" type="string"/>
+                            <element name="A10" minOccurs="0" type="string"/>
+                            <element name="Q11" minOccurs="0" type="string"/>
+                            <element name="A11" minOccurs="0" type="string"/>
+                            <element name="Q12" minOccurs="0" type="string"/>
+                            <element name="A12" minOccurs="0" type="string"/>
+                            <element name="Q13" minOccurs="0" type="string"/>
+                            <element name="A13" minOccurs="0" type="string"/>
+                            <element name="Q14" minOccurs="0" type="string"/>
+                            <element name="A14" minOccurs="0" type="string"/>
+                            <element name="Q15" minOccurs="0" type="string"/>
+                            <element name="A15" minOccurs="0" type="string"/>
+                            <element name="Q16" minOccurs="0" type="string"/>
+                            <element name="A16" minOccurs="0" type="string"/>
+                            <element name="Q17" minOccurs="0" type="string"/>
+                            <element name="A17" minOccurs="0" type="string"/>
+                            <element name="Q18" minOccurs="0" type="string"/>
+                            <element name="A18" minOccurs="0" type="string"/>
+                            <element name="Q19" minOccurs="0" type="string"/>
+                            <element name="A19" minOccurs="0" type="string"/>
+                            <element name="Q20" minOccurs="0" type="string"/>
+                            <element name="A20" minOccurs="0" type="string"/>
+                            <element name="Q21" minOccurs="0" type="string"/>
+                            <element name="A21" minOccurs="0" type="string"/>
+                            <element name="Q22" minOccurs="0" type="string"/>
+                            <element name="A22" minOccurs="0" type="string"/>
+                            <element name="Q23" minOccurs="0" type="string"/>
+                            <element name="A23" minOccurs="0" type="string"/>
+                            <element name="Q24" minOccurs="0" type="string"/>
+                            <element name="A24" minOccurs="0" type="string"/>
+                            <element name="Q25" minOccurs="0" type="string"/>
+                            <element name="A25" minOccurs="0" type="string"/>
+                            <element name="Q26" minOccurs="0" type="string"/>
+                            <element name="A26" minOccurs="0" type="string"/>
+                            <element name="Q27" minOccurs="0" type="string"/>
+                            <element name="A27" minOccurs="0" type="string"/>
+                            <element name="Q28" minOccurs="0" type="string"/>
+                            <element name="A28" minOccurs="0" type="string"/>
+                            <element name="Q29" minOccurs="0" type="string"/>
+                            <element name="A29" minOccurs="0" type="string"/>
+                            <element name="Q30" minOccurs="0" type="string"/>
+                            <element name="A30" minOccurs="0" type="string"/>
+                            <element name="Q31" minOccurs="0" type="string"/>
+                            <element name="A31" minOccurs="0" type="string"/>
+                            <element name="Q32" minOccurs="0" type="string"/>
+                            <element name="A32" minOccurs="0" type="string"/>
+                            <element name="Q33" minOccurs="0" type="string"/>
+                            <element name="A33" minOccurs="0" type="string"/>
+                            <element name="Q34" minOccurs="0" type="string"/>
+                            <element name="A34" minOccurs="0" type="string"/>
+                            <element name="Q35" minOccurs="0" type="string"/>
+                            <element name="A35" minOccurs="0" type="string"/>
+                            <element name="Q36" minOccurs="0" type="string"/>
+                            <element name="A36" minOccurs="0" type="string"/>
+                            <element name="Q37" minOccurs="0" type="string"/>
+                            <element name="A37" minOccurs="0" type="string"/>
+                            <element name="Q38" minOccurs="0" type="string"/>
+                            <element name="A38" minOccurs="0" type="string"/>
+                            <element name="Q39" minOccurs="0" type="string"/>
+                            <element name="A39" minOccurs="0" type="string"/>
+                            <element name="Q40" minOccurs="0" type="string"/>
+                            <element name="A40" minOccurs="0" type="string"/>
+                            <element name="Q41" minOccurs="0" type="string"/>
+                            <element name="A41" minOccurs="0" type="string"/>
+                            <element name="Q42" minOccurs="0" type="string"/>
+                            <element name="A42" minOccurs="0" type="string"/>
+                            <element name="Q43" minOccurs="0" type="string"/>
+                            <element name="A43" minOccurs="0" type="string"/>
+                            <element name="Q44" minOccurs="0" type="string"/>
+                            <element name="A44" minOccurs="0" type="string"/>
+                            <element name="Q45" minOccurs="0" type="string"/>
+                            <element name="A45" minOccurs="0" type="string"/>
+                            <element name="Q46" minOccurs="0" type="string"/>
+                            <element name="A46" minOccurs="0" type="string"/>
+                            <element name="Q47" minOccurs="0" type="string"/>
+                            <element name="A47" minOccurs="0" type="string"/>
+                            <element name="Q48" minOccurs="0" type="string"/>
+                            <element name="A48" minOccurs="0" type="string"/>
+                            <element name="Q49" minOccurs="0" type="string"/>
+                            <element name="A49" minOccurs="0" type="string"/>
+                            <element name="Q50" minOccurs="0" type="string"/>
+                            <element name="A50" minOccurs="0" type="string"/>
+                        </sequence>
+                    </complexType>
+                </element>
+            </all>
+        </complexType>
+    </element>
+    <element name="CreateUnicenterChangeOrderProcessResponse">
+        <complexType>
+            <sequence>
+                <element name="desc" type="string"/>
+                <element name="result" type="string"/>
+                <element name="conumber" type="string"/>
+                <element name="sessionId" type="string"/>
+                <element name="changeOrderNumber" type="string"/>
+                <element name="changeOrderHandle" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+    <!-- used for var_createChangeOrderAttrValue for attributes and properties -->
+    <element name="string" type="string"/>
+</schema>

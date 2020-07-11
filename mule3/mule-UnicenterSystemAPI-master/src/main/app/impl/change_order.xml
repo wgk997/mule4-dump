@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <flow name="changeOrderFlow">
+        <set-variable variableName="flowName" value="createChangeOrderForTypeChangeOrderFlow" doc:name="flowName"/>
+        <flow-ref name="validateRequiredFieldsAndInvokeFlow" doc:name="validateRequiredFieldsAndInvokeFlow"/>
+    </flow>
+    <flow name="createChangeOrderForTypeChangeOrderFlow">
+        <dw:transform-message doc:name="Build Create Change Order">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%namespace oracle http://xmlns.oracle.com/CreateUnicenterChangeOrder
+%var request = payload.oracle#CreateUnicenterChangeOrderProcessRequest
+// unicenter expects FLAT key|val pair for attrVals
+%var getAttrVals = (hash)-> hash mapObject {
+	// we don't want to include key names with null values
+	ns0#string: $$ when ($ != null) otherwise null,
+	ns0#string: $
+} filter ($ != null)
+// don't want null values going to Unicenter
+%var getPropertyStringList = (items) -> items reduce ((val, acc = {
+}) -> acc ++ {
+	ns0#string: (val default '')
+})
+// for Q1,A1, etc.
+%var fiftyRequestKeyVals = flatten (1 to 50 map (
+    ["Q" ++ $, "A" ++ $]
+))
+// Looks up the corresponding "key" in genericIncProps. SOA Suite code sends an empty string if no input was supplied
+// so that's what we do
+%var getGenericPropValueStringList = (genericProps) -> getPropertyStringList(fiftyRequestKeyVals map genericProps[$])
+%var handleMapping = flowVars.handleMapping
+%var mainUserHandle = handleMapping.loggedInUsername
+// TODO: w/ Mule 4, make this a module and share w/ request
+%var getDescription = (desc) -> using (trimmedDesc = trim desc) (('<a href="' ++ trimmedDesc ++ '" target="_blank">' ++ trimmedDesc ++ '</a>') when (trimmedDesc startsWith "http") otherwise desc)
+---
+ns0#CreateChangeOrder: {
+	ns0#SID: flowVars.sessionId,
+	ns0#creatorHandle: mainUserHandle,
+	ns0#attrVals: getAttrVals({
+		requestor: handleMapping.requester,
+		affected_contact: handleMapping.affectedEndUser,
+		summary: getDescription(request.oracle#summary),
+		description: getDescription(request.oracle#description),
+		category: request.oracle#category,
+		// chgstat:6000 means Open
+		status: "chgstat:6000",
+		justification: request.oracle#justification
+	}),
+	ns0#propertyValues: getGenericPropValueStringList(request.oracle#Generic_Properties),
+	ns0#template: '',
+	ns0#attributes: {
+		ns0#string: 'persistent_id'
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="CreateChangeOrder"
+                     doc:name="Create Change Order"/>
+        <dw:transform-message doc:name="Setup reply">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://xmlns.oracle.com/CreateUnicenterChangeOrder
+%namespace ns01 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%var changeOrderNumber = payload.ns01#CreateChangeOrderResponse.ns01#newChangeNumber default '' //is this default required? What if it is null?
+%var changeOrderHandle = payload.ns01#CreateChangeOrderResponse.ns01#newChangeHandle default ''
+---
+ns0#CreateUnicenterChangeOrderProcessResponse: {
+	ns0#sessionId: flowVars.sessionId,
+	ns0#changeOrderNumber: changeOrderNumber,
+	ns0#changeOrderHandle: changeOrderHandle,
+	ns0#result: 'Success',
+	ns0#desc: "Change Order number " ++ changeOrderNumber ++ " with Change Order handle " ++ changeOrderHandle ++ " was created successfully."
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+</mule>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:mock="http://www.mulesoft.org/schema/mule/mock" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd">
+    <spring:beans>
+        <spring:import resource="classpath:invoices-system-api.xml" />
+        <spring:import resource="classpath:implementation.xml" />
+        <spring:import resource="classpath:srs-common-exception-strategy.xml" />
+       <spring:import resource="classpath:global.xml"/>
+    </spring:beans>
+    <munit:config mock-connectors="false" mock-inbounds="false" doc:name="MUnit configuration"/>
+    <http:request-config name="Munit_HTTP_Request_Configuration" host="localhost" port="8081"  doc:name="HTTP Request Configuration" basePath="/invoices-system-api"/>
+    <munit:test name="get:/invoices/invoiceNumber:invoice-system-api-config-200-application/json-FlowTest" description="Verifying functionality of [get:/invoices/invoiceNumber:invoice-system-api-config-200-application/json]" >
+        <mock:when messageProcessor=".*:.*" doc:name="Mock DB">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['SOInvoiceDetailsList']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[getResource('scaffolder/request/mock-db-get-response').asString()]" mimeType="application/json"/>
+        </mock:when>
+
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="GET" path="/invoices/123456" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/json"/>
+                <http:header headerName="guid" value="2323"/>
+                <http:header headerName="client_secret" value="42423"/>
+                <http:header headerName="client_id" value="2323"/>
+
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(200))]" doc:name="assert that - http.status eq 200" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_200_invoices_{invoicenumber}_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+
+    <munit:test name="get:/invoices/invoiceNumber:invoice-system-api-config-404-application/json-FlowTest" description="Verifying functionality of [get:/invoices/invoiceNumber:invoice-system-api-config-404-application/json]" >
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="GET" path="/invoices/1234/wrong" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/json"/>
+                <http:header headerName="guid" value="1"/>
+                <http:header headerName="client_secret" value="23"/>
+                <http:header headerName="client_id" value="cda"/>
+
+            </http:request-builder>
+            <http:success-status-code-validator values="404" />
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(404))]" doc:name="assert that - http.status eq 404" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_404_invoices_{invoicenumber}_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+    <munit:test name="get:/invoices/invoiceNumber:invoice-system-api-config-405-application/json-FlowTest" description="Verifying functionality of [get:/invoices/invoiceNumber:invoice-system-api-config-405-application/json]">
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="TRACE" path="/invoices/12345" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/json"/>
+                <http:header headerName="guid" value="2121"/>
+                <http:header headerName="client_secret" value="3232"/>
+                <http:header headerName="client_id" value="2323"/>
+
+            </http:request-builder>
+            <http:success-status-code-validator values="405" />
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(405))]" doc:name="assert that - http.status eq 405" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_405_invoices_{invoicenumber}_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+    <munit:test name="get:/invoices/invoiceNumber:invoice-system-api-config-406-application/json-FlowTest" description="Verifying functionality of [get:/invoices/invoiceNumber:invoice-system-api-config-406-application/json]" >
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="GET" path="/invoices/12345" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/wrong"/>
+                <http:header headerName="guid" value="668"/>
+                <http:header headerName="client_secret" value="21212"/>
+                <http:header headerName="client_id" value="2323"/>
+
+            </http:request-builder>
+            <http:success-status-code-validator values="406" />
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(406))]" doc:name="assert that - http.status eq 406" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/get_406_invoices_{invoicenumber}_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+ 
+    </munit:test>
+
+    <munit:test name="post:/invoices/list:application/json:invoice-system-api-config-200-application/json-FlowTest" description="Verifying functionality of [post:/invoices/list:application/json:invoice-system-api-config-200-application/json]" >
+        <mock:when messageProcessor=".*:.*" doc:name="Mock">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['SOInvoiceList']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[{&quot;resultSet1&quot;:[{&quot;BillToZip&quot;:&quot;77041&quot;, &quot;InvoiceDt&quot;:&quot;2018-02-19&quot;, &quot;DueDt&quot;:&quot;2018-04-10&quot;, &quot;ShipViaCd&quot;:&quot;WILL CALL&quot;, &quot;SalesAgent3Cd&quot;:&quot;MPALOMO&quot;, &quot;BillToState&quot;:&quot;TX&quot;, &quot;DiscDt&quot;:&quot;null&quot;, &quot;SalesTypeCd&quot;:&quot;WILLCALL&quot;, &quot;OrderDtm&quot;:&quot;2018-02-16 14:41:38.0&quot;, &quot;CustJobState&quot;:&quot;TX&quot;, &quot;RemitToState&quot;:&quot;TX&quot;, &quot;AgilitySOId&quot;:&quot;10805033&quot;, &quot;CustJobAddress2&quot;:&quot;&quot;, &quot;Overdue&quot;:&quot;Yes&quot;, &quot;PayTermsCd&quot;:&quot;2ND10TH25THC&quot;, &quot;BranchName&quot;:&quot;SOUTHERN SHINGLES - HOUSTON&quot;, &quot;HdrNote&quot;:&quot; &quot;, &quot;RemitToCityStateZip&quot;:&quot;Dallas, TX 75284-2468&quot;, &quot;JobName&quot;:&quot;&quot;, &quot;CustJobAddress1&quot;:&quot;4305 OLEANDER ST &quot;, &quot;DiscAmt&quot;:&quot;0.0000&quot;, &quot;BranchPhone&quot;:&quot;832-300-3770&quot;, &quot;CustCd&quot;:&quot;COR206&quot;, &quot;BillToName&quot;:&quot;COREY CONSTRUCTION LP&quot;, &quot;CustJobCity&quot;:&quot;HOUSTON&quot;, &quot;CustJobCityStateZip&quot;:&quot;HOUSTON, TX 77041&quot;, &quot;BranchZipCd&quot;:&quot;77041&quot;, &quot;InvoiceChargeAmt&quot;:&quot;4.7700&quot;, &quot;BranchCity&quot;:&quot;Houston&quot;, &quot;BillToAddress2&quot;:&quot;&quot;, &quot;ShipToSeqNbr&quot;:&quot;1&quot;, &quot;BranchShortName&quot;:&quot;SS HOUSTON&quot;, &quot;RemitToCity&quot;:&quot;Dallas&quot;, &quot;PaidOrUnpaid&quot;:&quot;Unpaid&quot;, &quot;RefTxt&quot;:&quot;&quot;, &quot;SOStsCd&quot;:&quot;I&quot;, &quot;BranchStateCd&quot;:&quot;TX&quot;, &quot;BranchStreetAddr&quot;:&quot;12406 Taylor Road&quot;, &quot;InvoiceSubtotalAmt&quot;:&quot;0.6700000000000&quot;, &quot;CustJobName&quot;:&quot;COREY CONSTRUCTION LP&quot;, &quot;BillToAddress1&quot;:&quot;12400 TAYLOR ROAD&quot;, &quot;RemitToZip&quot;:&quot;75284-2468&quot;, &quot;ShipmentNbr&quot;:&quot;1&quot;, &quot;OrderedBy&quot;:&quot;&quot;, &quot;BillToAddress3&quot;:&quot;&quot;, &quot;CustJobAddress3&quot;:&quot;&quot;, &quot;BranchFAX&quot;:&quot;832-300-3751&quot;, &quot;SalesAgent1Cd&quot;:&quot;ACOOGAN&quot;, &quot;BranchCd&quot;:&quot;SSHOU&quot;, &quot;TaxAmt&quot;:&quot;0.0500&quot;, &quot;CustJobPhone&quot;:&quot;8323003700&quot;, &quot;SOTypeCd&quot;:&quot;SO&quot;, &quot;InvoiceNbr&quot;:&quot;10805033-001&quot;, &quot;InvoiceAmt&quot;:&quot;5.4900&quot;, &quot;RemitToAddress&quot;:&quot;P.O. Box 842468&quot;, &quot;CustPONbr&quot;:&quot;HOU-2735&quot;, &quot;CustJobZip&quot;:&quot;77041&quot;, &quot;BillToCity&quot;:&quot;HOUSTON&quot;}]}]"/>
+        </mock:when>
+        <set-payload value="#[getResource('scaffolder/request/post_invoices_list_application_json.json').asString()]" doc:name="Set Payload"/>
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="POST" path="/invoices/list" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/json"/>
+                <http:header headerName="Content-Type" value="application/json"/>
+                <http:header headerName="guid" value="2"/>
+                <http:header headerName="client_secret" value="edeq"/>
+                <http:header headerName="client_id" value="32"/>
+            </http:request-builder>
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(200))]" doc:name="assert that - http.status eq 200" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/post_200_invoices_list_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+
+    <munit:test name="post:/invoices/list:application/json:invoice-system-api-config-404-application/json-FlowTest" description="Verifying functionality of [post:/invoices/list:application/json:invoice-system-api-config-404-application/json]" >
+        <set-payload value="#[getResource('scaffolder/request/post_invoices_list_application_json.json').asString()]" doc:name="Set Payload"/>
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="POST" path="/invoices/list/wrong" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/json"/>
+                <http:header headerName="Content-Type" value="application/json"/>
+                <http:header headerName="guid" value="1212"/>
+                <http:header headerName="client_secret" value="3121"/>
+                <http:header headerName="client_id" value="3131"/>
+
+            </http:request-builder>
+            <http:success-status-code-validator values="404" />
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(404))]" doc:name="assert that - http.status eq 404" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/post_404_invoices_list_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+    <munit:test name="post:/invoices/list:application/json:invoice-system-api-config-405-application/json-FlowTest" description="Verifying functionality of [post:/invoices/list:application/json:invoice-system-api-config-405-application/json]" >
+        <set-payload value="#[getResource('scaffolder/request/post_invoices_list_application_json.json').asString()]" doc:name="Set Payload"/>
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="TRACE" path="/invoices/list" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/json"/>
+                <http:header headerName="Content-Type" value="application/json"/>
+                <http:header headerName="guid" value="8998"/>
+                <http:header headerName="client_secret" value="90909"/>
+                <http:header headerName="client_id" value="687"/>
+
+            </http:request-builder>
+            <http:success-status-code-validator values="405" />
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(405))]" doc:name="assert that - http.status eq 405" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/post_405_invoices_list_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+    <munit:test name="post:/invoices/list:application/json:invoice-system-api-config-406-application/json-FlowTest" description="Verifying functionality of [post:/invoices/list:application/json:invoice-system-api-config-406-application/json]" >
+        <set-payload value="#[getResource('scaffolder/request/post_invoices_list_application_json.json').asString()]" doc:name="Set Payload"/>
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="POST" path="/invoices/list" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/wrong"/>
+                <http:header headerName="Content-Type" value="application/json"/>
+                <http:header headerName="guid" value="2323"/>
+                <http:header headerName="client_secret" value="2323"/>
+                <http:header headerName="client_id" value="232"/>
+
+            </http:request-builder>
+            <http:success-status-code-validator values="406" />
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(406))]" doc:name="assert that - http.status eq 406" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/post_406_invoices_list_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+    <munit:test name="post:/invoices/list:application/json:invoice-system-api-config-415-application/json-FlowTest" description="Verifying functionality of [post:/invoices/list:application/json:invoice-system-api-config-415-application/json]" >
+        <set-payload value="#[getResource('scaffolder/request/post_invoices_list_application_json.json').asString()]" doc:name="Set Payload"/>
+        <http:request config-ref="Munit_HTTP_Request_Configuration" method="POST" path="/invoices/list" doc:name="HTTP">
+            <http:request-builder>
+                <http:header headerName="Accept" value="application/json"/>
+                <http:header headerName="Content-Type" value="application/wrong"/>
+                <http:header headerName="guid" value="3232"/>
+                <http:header headerName="client_secret" value="2323"/>
+                <http:header headerName="client_id" value="3434"/>
+
+            </http:request-builder>
+            <http:success-status-code-validator values="415" />
+        </http:request>
+        <object-to-string-transformer doc:name="http response to string" />
+        <munit:assert-true message="The HTTP Status code is not correct!" condition="#[messageInboundProperty('http.status').is(eq(415))]" doc:name="assert that - http.status eq 415" />
+        <munit:assert-on-equals message="The response payload is not correct!" expectedValue="#[getResource('scaffolder/response/post_415_invoices_list_application_json.json').asString().replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" actualValue="#[payload.replaceAll(&quot;\\s+&quot;,&quot;&quot;)]" doc:name="assert that - payload is as expected" />
+    </munit:test>
+
+</mule>

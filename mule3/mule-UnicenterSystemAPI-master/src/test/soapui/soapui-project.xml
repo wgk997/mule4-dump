@@ -1,0 +1,4749 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="32523e58-ed3a-42da-bcc4-e53f091afd9f" activeEnvironment="Default" name="Create Unicenter Incident" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="fe56050a-d6ba-432b-9f9e-0557d1f5fbd3" wsaVersion="NONE" name="CreateUnicenterIncidentSoapBinding" type="wsdl" bindingName="{http://xmlns.oracle.com/CreateUnicenterIncident}CreateUnicenterIncidentSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort?wsdl"><con:part><con:url>https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort?wsdl</con:url><con:content><![CDATA[<definitions name="CreateUnicenterIncident" targetNamespace="http://xmlns.oracle.com/CreateUnicenterIncident" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:jca="http://xmlns.dfwairport.com.com/pcbpel/wsdl/jca/" xmlns:client="http://xmlns.oracle.com/CreateUnicenterIncident" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://xmlns.oracle.com/CreateUnicenterIncident" schemaLocation="https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort?xsd=CreateUnicenterIncident.xsd"/>
+      <import namespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" schemaLocation="https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort?xsd=ws_addressing.xsd"/>
+    </schema>
+  </types>
+  <message name="CreateUnicenterIncidentRequestMessage">
+    <part element="client:CreateUnicenterIncidentProcessRequest" name="payload"></part>
+  </message>
+  <message name="CreateUnicenterIncidentResponseMessage">
+    <part element="client:CreateUnicenterIncidentProcessResponse" name="payload"></part>
+  </message>
+  <portType name="CreateUnicenterIncident">
+    <operation name="process">
+      <input message="client:CreateUnicenterIncidentRequestMessage"></input>
+      <output message="client:CreateUnicenterIncidentResponseMessage"></output>
+    </operation>
+  </portType>
+  <binding name="CreateUnicenterIncidentSoapBinding" type="client:CreateUnicenterIncident">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="process">
+      <soap:operation soapAction="process" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="CreateUnicenterIncidentService">
+    <port binding="client:CreateUnicenterIncidentSoapBinding" name="CreateUnicenterIncidentPort">
+      <soap:address location="https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort"/>
+    </port>
+  </service>
+  <plnk:partnerLinkType name="CreateUnicenterIncident">
+    <plnk:role name="CreateUnicenterIncidentProvider">
+      <plnk:portType name="client:CreateUnicenterIncident"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort?xsd=CreateUnicenterIncident.xsd</con:url><con:content><![CDATA[<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/CreateUnicenterIncident" xmlns:tns="http://xmlns.oracle.com/CreateUnicenterIncident" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="CreateUnicenterIncidentProcessRequest">
+    <complexType>
+      <all>
+        <!--basic Request Detail header information-->
+        <element minOccurs="0" name="requester" type="string"/>
+        <element minOccurs="0" name="affectedEndUser" type="tns:nonEmptyString"/>
+        <element name="incidentArea">
+          <simpleType>
+            <restriction base="string">
+              <pattern value="pcat:\d+"/>
+            </restriction>
+          </simpleType>
+        </element>
+        <element name="summary" type="string"/>
+        <element name="description" type="string"/>
+        <!--Only used for error emails. Create Fuel/others do not supply this-->
+        <element minOccurs="0" name="bpelName" type="string"/>
+        <element name="instanceID" type="string"/>
+        <!--Incident Request Detail for Apps.EAM.Fuel pcat:2243749 TRAK Fuel property information.
+                 Only supplied by the CreateFuel application/service-->
+        <element minOccurs="0" name="FuelSystem_Fuel">
+          <complexType>
+            <all>
+              <!--CreateFuel, when using pcat 2243751 to report meter reading/miles/hour incidents,
+                             only supplies ADDFUEL_EQUIPMENTCODE, so making everything else in here optional-->
+              <!--ADDFUEL_DEPOTCODE, maxLength allowed is 30-->
+              <element minOccurs="0" name="ADDFUEL_DEPOTCODE" type="string"/>
+              <!--ADDFUEL_PUMPID, maxLength allowed is 30-->
+              <element minOccurs="0" name="ADDFUEL_PUMPCODE" type="string"/>
+              <!--ADDFUEL_FUELID, maxLength allowed is 30-->
+              <element minOccurs="0" name="ADDFUEL_FUELCODE" type="string"/>
+              <!--ADDFUEL_VEHICLEID, maxLength allowed is 30-->
+              <element name="ADDFUEL_EQUIPMENTCODE" type="string"/>
+              <!--ADDFUEL_ISSUETO, maxLength allowed is 15-->
+              <element minOccurs="0" name="ADDFUEL_PERSONCODE" type="string"/>
+              <!--ADDFUEL_QUANTITYISSUED-->
+              <element minOccurs="0" name="ADDFUEL_QUANTITY_VALUE" type="decimal"/>
+              <!--ADDFUEL_TRANSACTIONDATE-->
+              <element minOccurs="0" name="ADDFUEL_TRANSACTION_DATE" type="dateTime"/>
+              <!--ADDFUEL_PRICE-->
+              <element minOccurs="0" name="ADDFUEL_PRICE_VALUE" type="decimal"/>
+            </all>
+          </complexType>
+        </element>
+        <!--Schema definition from INFOR-->
+        <!--Incident Request Detail for Apps.EAM.Meter pcat:2243751 TRAK Meter Reading property information-->
+        <element minOccurs="0" name="FuelSystem_MeterReading">
+          <complexType>
+            <all>
+              <!--CreateFuel, when using pcat 2243751 to report meter reading/miles/hour incidents,
+                             does not supply ADDREADING_EQUIPMENTCODE-->
+              <element minOccurs="0" name="ADDREADING_EQUIPMENTCODE" type="string"/>
+              <!--UOM with trigger for meter-code-->
+              <element name="ADDREADING_UOM" type="string"/>
+              <!--Current Meter reading-->
+              <element name="ADDREADING_CURRENT_METER_READING" type="string"/>
+              <!--Current Meter reading Hours-->
+              <element name="ADDREADING_HOURS_METER_READING" type="string"/>
+              <!--Vehicle-Meter-Reading Date-Time format mm/dd/yyyy hh:mm-->
+              <element name="ADDREADING_METER_READING_DATETIME" type="dateTime"/>
+            </all>
+          </complexType>
+        </element>
+        <!--FuelSystem_TrakSync only needed for pcat:2243752-->
+        <element minOccurs="0" name="FuelSystem_TrakSync">
+          <complexType>
+            <sequence>
+              <!--Incident Request Detail for Apps.EAM.TrakSync pcat:2243752 ProcessTrakSync property information-->
+              <!--person or vehicle-->
+              <element name="TRAK_TYPE" type="string"/>
+              <!--+ for active and - for inactive-->
+              <element name="TRAK_ACTION" type="string"/>
+              <!--person code-->
+              <element name="PERSON_CODE" type="string"/>
+              <!--person desc-->
+              <element name="PERSON_DESCRIPTION" type="string"/>
+              <!--vehicle code-->
+              <element name="VEH_CODE" type="string"/>
+              <!--vehicle desc-->
+              <element name="VEH_DESCRIPTION" type="string"/>
+              <!--vehicle fillup miles-->
+              <element name="VEH_MAX_FILLUP_MILES" type="string"/>
+              <!--vehicle tank capacity-->
+              <element name="VEH_TANK_CAPACITY" type="string"/>
+            </sequence>
+          </complexType>
+        </element>
+        <!--Only used if the pcat incident area is unknown to this application-->
+        <element minOccurs="0" name="Incident_Properties_Generic">
+          <complexType>
+            <all>
+              <!--generic incident property 1-->
+              <element name="incident_prop1_key" type="string"/>
+              <element name="incident_prop1_value" type="string"/>
+              <!--generic incident property 2-->
+              <element minOccurs="0" name="incident_prop2_key" type="string"/>
+              <element minOccurs="0" name="incident_prop2_value" type="string"/>
+              <!--generic incident property 3-->
+              <element minOccurs="0" name="incident_prop3_key" type="string"/>
+              <element minOccurs="0" name="incident_prop3_value" type="string"/>
+              <!--generic incident property 4-->
+              <element minOccurs="0" name="incident_prop4_key" type="string"/>
+              <element minOccurs="0" name="incident_prop4_value" type="string"/>
+              <!--generic incident property 5-->
+              <element minOccurs="0" name="incident_prop5_key" type="string"/>
+              <element minOccurs="0" name="incident_prop5_value" type="string"/>
+              <!--generic incident property 6-->
+              <element minOccurs="0" name="incident_prop6_key" type="string"/>
+              <element minOccurs="0" name="incident_prop6_value" type="string"/>
+              <!--generic incident property 7-->
+              <element minOccurs="0" name="incident_prop7_key" type="string"/>
+              <element minOccurs="0" name="incident_prop7_value" type="string"/>
+              <!--generic incident property 8-->
+              <element minOccurs="0" name="incident_prop8_key" type="string"/>
+              <element minOccurs="0" name="incident_prop8_value" type="string"/>
+              <!--generic incident property 9-->
+              <element minOccurs="0" name="incident_prop9_key" type="string"/>
+              <element minOccurs="0" name="incident_prop9_value" type="string"/>
+              <!--generic incident property 10-->
+              <element minOccurs="0" name="incident_prop10_key" type="string"/>
+              <element minOccurs="0" name="incident_prop10_value" type="string"/>
+              <!--generic incident property 11-->
+              <element minOccurs="0" name="incident_prop11_key" type="string"/>
+              <element minOccurs="0" name="incident_prop11_value" type="string"/>
+              <!--generic incident property 12-->
+              <element minOccurs="0" name="incident_prop12_key" type="string"/>
+              <element minOccurs="0" name="incident_prop12_value" type="string"/>
+              <!--generic incident property 13-->
+              <element minOccurs="0" name="incident_prop13_key" type="string"/>
+              <element minOccurs="0" name="incident_prop13_value" type="string"/>
+              <!--generic incident property 14-->
+              <element minOccurs="0" name="incident_prop14_key" type="string"/>
+              <element minOccurs="0" name="incident_prop14_value" type="string"/>
+              <!--generic incident property 15-->
+              <element minOccurs="0" name="incident_prop15_key" type="string"/>
+              <element minOccurs="0" name="incident_prop15_value" type="string"/>
+              <!--generic incident property 16-->
+              <element minOccurs="0" name="incident_prop16_key" type="string"/>
+              <element minOccurs="0" name="incident_prop16_value" type="string"/>
+              <!--generic incident property 17-->
+              <element minOccurs="0" name="incident_prop17_key" type="string"/>
+              <element minOccurs="0" name="incident_prop17_value" type="string"/>
+              <!--generic incident property 18-->
+              <element minOccurs="0" name="incident_prop18_key" type="string"/>
+              <element minOccurs="0" name="incident_prop18_value" type="string"/>
+              <!--generic incident property 19-->
+              <element minOccurs="0" name="incident_prop19_key" type="string"/>
+              <element minOccurs="0" name="incident_prop19_value" type="string"/>
+              <!--generic incident property 20-->
+              <element minOccurs="0" name="incident_prop20_key" type="string"/>
+              <element minOccurs="0" name="incident_prop20_value" type="string"/>
+              <!--generic incident property 21-->
+              <element minOccurs="0" name="incident_prop21_key" type="string"/>
+              <element minOccurs="0" name="incident_prop21_value" type="string"/>
+              <!--generic incident property 22-->
+              <element minOccurs="0" name="incident_prop22_key" type="string"/>
+              <element minOccurs="0" name="incident_prop22_value" type="string"/>
+              <!--generic incident property 23-->
+              <element minOccurs="0" name="incident_prop23_key" type="string"/>
+              <element minOccurs="0" name="incident_prop23_value" type="string"/>
+              <!--generic incident property 24-->
+              <element minOccurs="0" name="incident_prop24_key" type="string"/>
+              <element minOccurs="0" name="incident_prop24_value" type="string"/>
+              <!--generic incident property 25-->
+              <element minOccurs="0" name="incident_prop25_key" type="string"/>
+              <element minOccurs="0" name="incident_prop25_value" type="string"/>
+              <!--generic incident property 26-->
+              <element minOccurs="0" name="incident_prop26_key" type="string"/>
+              <element minOccurs="0" name="incident_prop26_value" type="string"/>
+              <!--generic incident property 27-->
+              <element minOccurs="0" name="incident_prop27_key" type="string"/>
+              <element minOccurs="0" name="incident_prop27_value" type="string"/>
+              <!--generic incident property 28-->
+              <element minOccurs="0" name="incident_prop28_key" type="string"/>
+              <element minOccurs="0" name="incident_prop28_value" type="string"/>
+              <!--generic incident property 29-->
+              <element minOccurs="0" name="incident_prop29_key" type="string"/>
+              <element minOccurs="0" name="incident_prop29_value" type="string"/>
+              <!--generic incident property 30-->
+              <element minOccurs="0" name="incident_prop30_key" type="string"/>
+              <element minOccurs="0" name="incident_prop30_value" type="string"/>
+              <!--generic incident property 31-->
+              <element minOccurs="0" name="incident_prop31_key" type="string"/>
+              <element minOccurs="0" name="incident_prop31_value" type="string"/>
+              <!--generic incident property 32-->
+              <element minOccurs="0" name="incident_prop32_key" type="string"/>
+              <element minOccurs="0" name="incident_prop32_value" type="string"/>
+              <!--generic incident property 33-->
+              <element minOccurs="0" name="incident_prop33_key" type="string"/>
+              <element minOccurs="0" name="incident_prop33_value" type="string"/>
+              <!--generic incident property 34-->
+              <element minOccurs="0" name="incident_prop34_key" type="string"/>
+              <element minOccurs="0" name="incident_prop34_value" type="string"/>
+              <!--generic incident property 35-->
+              <element minOccurs="0" name="incident_prop35_key" type="string"/>
+              <element minOccurs="0" name="incident_prop35_value" type="string"/>
+              <!--generic incident property 36-->
+              <element minOccurs="0" name="incident_prop36_key" type="string"/>
+              <element minOccurs="0" name="incident_prop36_value" type="string"/>
+              <!--generic incident property 37-->
+              <element minOccurs="0" name="incident_prop37_key" type="string"/>
+              <element minOccurs="0" name="incident_prop37_value" type="string"/>
+              <!--generic incident property 38-->
+              <element minOccurs="0" name="incident_prop38_key" type="string"/>
+              <element minOccurs="0" name="incident_prop38_value" type="string"/>
+              <!--generic incident property 39-->
+              <element minOccurs="0" name="incident_prop39_key" type="string"/>
+              <element minOccurs="0" name="incident_prop39_value" type="string"/>
+              <!--generic incident property 40-->
+              <element minOccurs="0" name="incident_prop40_key" type="string"/>
+              <element minOccurs="0" name="incident_prop40_value" type="string"/>
+              <!--generic incident property 41-->
+              <element minOccurs="0" name="incident_prop41_key" type="string"/>
+              <element minOccurs="0" name="incident_prop41_value" type="string"/>
+              <!--generic incident property 42-->
+              <element minOccurs="0" name="incident_prop42_key" type="string"/>
+              <element minOccurs="0" name="incident_prop42_value" type="string"/>
+              <!--generic incident property 43-->
+              <element minOccurs="0" name="incident_prop43_key" type="string"/>
+              <element minOccurs="0" name="incident_prop43_value" type="string"/>
+              <!--generic incident property 44-->
+              <element minOccurs="0" name="incident_prop44_key" type="string"/>
+              <element minOccurs="0" name="incident_prop44_value" type="string"/>
+              <!--generic incident property 45-->
+              <element minOccurs="0" name="incident_prop45_key" type="string"/>
+              <element minOccurs="0" name="incident_prop45_value" type="string"/>
+              <!--generic incident property 46-->
+              <element minOccurs="0" name="incident_prop46_key" type="string"/>
+              <element minOccurs="0" name="incident_prop46_value" type="string"/>
+              <!--generic incident property 47-->
+              <element minOccurs="0" name="incident_prop47_key" type="string"/>
+              <element minOccurs="0" name="incident_prop47_value" type="string"/>
+              <!--generic incident property 48-->
+              <element minOccurs="0" name="incident_prop48_key" type="string"/>
+              <element minOccurs="0" name="incident_prop48_value" type="string"/>
+              <!--generic incident property 49-->
+              <element minOccurs="0" name="incident_prop49_key" type="string"/>
+              <element minOccurs="0" name="incident_prop49_value" type="string"/>
+              <!--generic incident property 50-->
+              <element minOccurs="0" name="incident_prop50_key" type="string"/>
+              <element minOccurs="0" name="incident_prop50_value" type="string"/>
+            </all>
+          </complexType>
+        </element>
+      </all>
+    </complexType>
+  </element>
+  <element name="CreateUnicenterIncidentProcessResponse">
+    <complexType>
+      <sequence>
+        <element name="desc" type="string"/>
+        <element name="result" type="string"/>
+        <element name="sessionId" type="string"/>
+        <element name="incidentId" type="string"/>
+        <element name="requestHandle" type="string"/>
+      </sequence>
+    </complexType>
+  </element>
+  <simpleType name="nonEmptyString">
+    <restriction base="string">
+      <minLength value="1"/>
+      <!--Ensure at least 1 non whitespace character supplied-->
+      <pattern value="\S.*"/>
+    </restriction>
+  </simpleType>
+  <!--used for var_createIncidentValue for attributes and properties
+    <element name="incidentVal" type="string"/>-->
+  <element name="string" type="string"/>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort?xsd=ws_addressing.xsd</con:url><con:content><![CDATA[<!--Legal Disclaimer
+
+The presentation, distribution or other dissemination of the information 
+contained in this document is not a license, either expressly or impliedly, 
+to any intellectual property owned or controlled by BEA or IBM or Microsoft
+and\or any other third party.  BEA and IBM and Microsoft and\or any other
+third party may have patents, patent applications, trademarks, copyrights, 
+or other intellectual property rights covering subject matter in this 
+document.  The furnishing of this document does not give you any license 
+to BEA's and IBM's and Microsoft's or any other third party's patents, 
+trademarks, copyrights, or other intellectual property.
+
+This document and the information contained herein is provided on an "AS IS"
+basis and to the maximum extent permitted by applicable law, BEA and IBM 
+and Microsoft provide the document AS IS AND WITH ALL FAULTS, and hereby 
+disclaims all other warranties and conditions, either express, implied or 
+statutory, including, but not limited to, any (if any) implied warranties, 
+duties or conditions of merchantability, of fitness for a particular 
+purpose, of accuracy or completeness of responses, of results, of 
+workmanlike effort, of lack of viruses, and of lack of negligence, all with
+regard to the document. ALSO, THERE IS NO WARRANTY OR CONDITION OF 
+TITLE, QUIET ENJOYMENT, QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR 
+NON-INFRINGEMENT OF ANY INTELLECTUAL PROPERTY RIGHTS WITH REGARD TO THE 
+DOCUMENT.
+
+IN NO EVENT WILL BEA or IBM or MICROSOFT BE LIABLE TO ANY OTHER PARTY FOR THE
+COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS OF USE, 
+LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, INDIRECT, OR SPECIAL 
+DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY, OR OTHERWISE, ARISING IN ANY 
+WAY OUT OF THIS OR ANY OTHER AGREEMENT RELATING TO THIS DOCUMENT, WHETHER OR 
+NOT SUCH PARTY HAD ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES.
+
+Copyright Notice
+
+Copyright 2003 BEA Systems Inc. and IBM Corporation and Microsoft Corporation. All rights reserved.-->
+<xs:schema blockDefault="#all" elementFormDefault="qualified" targetNamespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing">
+  <!--//////////////////// WS-Addressing ////////////////////-->
+  <!--Endpoint reference-->
+  <xs:element name="EndpointReference" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="EndpointReferenceType">
+    <xs:sequence>
+      <xs:element name="Address" type="wsa:AttributedURI"/>
+      <xs:element minOccurs="0" name="ReferenceProperties" type="wsa:ReferencePropertiesType"/>
+      <xs:element minOccurs="0" name="PortType" type="wsa:AttributedQName"/>
+      <xs:element minOccurs="0" name="ServiceName" type="wsa:ServiceNameType"/>
+      <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax">
+        <xs:annotation>
+          <xs:documentation>If "Policy" elements from namespace "http://schemas.xmlsoap.org/ws/2002/12/policy#policy" are used, they must appear first (before any extensibility elements).</xs:documentation>
+        </xs:annotation>
+      </xs:any>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+  <xs:complexType name="ReferencePropertiesType">
+    <xs:sequence>
+      <xs:any maxOccurs="unbounded" minOccurs="0" processContents="lax"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServiceNameType">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:attribute name="PortName" type="xs:NCName"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!--Message information header blocks-->
+  <xs:element name="MessageID" type="wsa:AttributedURI"/>
+  <xs:element name="RelatesTo" type="wsa:Relationship"/>
+  <xs:element name="To" type="wsa:AttributedURI"/>
+  <xs:element name="Action" type="wsa:AttributedURI"/>
+  <xs:element name="From" type="wsa:EndpointReferenceType"/>
+  <xs:element name="ReplyTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="FaultTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="Recipient" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="Relationship">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="RelationshipType" type="xs:QName" use="optional"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="RelationshipTypeValues">
+    <xs:restriction base="xs:QName">
+      <xs:enumeration value="wsa:Response"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--Common declarations and definitions-->
+  <xs:complexType name="AttributedQName">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="AttributedURI">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://foobar</con:endpoint><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort</con:endpoint></con:endpoints><con:operation id="c32b5751-53af-4f1f-ba09-fd5377b851ca" isOneWay="false" action="process" name="process" bindingOperationName="process" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="31bac735-c12c-4b00-9d01-0091a4fd0c8b" name="Generic Properties"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterIncident">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterIncidentProcessRequest>\r
+         <cre:affectedEndUser>bwied</cre:affectedEndUser>\r
+         <cre:incidentArea>pcat:402109</cre:incidentArea>\r
+         <cre:summary>the summary</cre:summary>\r
+         <cre:description>the description</cre:description>\r
+         <cre:instanceID>?</cre:instanceID>\r
+         <cre:Incident_Properties_Generic>\r
+            <cre:incident_prop1_key>Pwr</cre:incident_prop1_key>\r
+            <cre:incident_prop1_value>Yes</cre:incident_prop1_value>\r
+            <cre:incident_prop2_key>Rbt</cre:incident_prop2_key>\r
+            <cre:incident_prop2_value>Yes</cre:incident_prop2_value>\r
+            <cre:incident_prop3_key>Name</cre:incident_prop3_key>\r
+            <cre:incident_prop3_value>ITS-14758</cre:incident_prop3_value>\r
+            <cre:incident_prop4_key>floppy</cre:incident_prop4_key>\r
+            <cre:incident_prop4_value>No</cre:incident_prop4_value>\r
+            <cre:incident_prop5_key>Priority</cre:incident_prop5_key>\r
+            <cre:incident_prop5_value>2</cre:incident_prop5_value>\r
+         </cre:Incident_Properties_Generic>\r
+      </cre:CreateUnicenterIncidentProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="adb3516a-37a1-4ee2-9c20-5597512b4bcd" name="Create Fuel Issue - Hours/Miles"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<ns0:CreateUnicenterIncidentProcessRequest xmlns:ns0="http://xmlns.oracle.com/CreateUnicenterIncident">
+  <ns0:description>Error in processing entity PromptMachine  Invalid transaction type or you don't have rights to use this function: DFWF. Either the specified Transaction Type is invalid, or you are not authorized to perform this scanner function. Please contact your system administrator.</ns0:description>
+  <ns0:instanceID>ed111a40-ba93-11e8-adb7-0021f6a10209</ns0:instanceID>
+  <ns0:summary>Infor Add-Meter WS call failed for instance#ed111a40-ba93-11e8-adb7-0021f6a10209 in dev</ns0:summary>
+  <ns0:affectedEndUser>wspuser</ns0:affectedEndUser>
+  <ns0:incidentArea>pcat:2243751</ns0:incidentArea>
+  <ns0:FuelSystem_Fuel>
+    <ns0:ADDFUEL_EQUIPMENTCODE>9711.04</ns0:ADDFUEL_EQUIPMENTCODE>
+  </ns0:FuelSystem_Fuel>
+  <ns0:FuelSystem_MeterReading>
+    <ns0:ADDREADING_UOM>?</ns0:ADDREADING_UOM>
+    <ns0:ADDREADING_HOURS_METER_READING>108</ns0:ADDREADING_HOURS_METER_READING>
+    <ns0:ADDREADING_METER_READING_DATETIME>2018-02-17T13:00:00-06:00</ns0:ADDREADING_METER_READING_DATETIME>
+    <ns0:ADDREADING_CURRENT_METER_READING>105</ns0:ADDREADING_CURRENT_METER_READING>
+  </ns0:FuelSystem_MeterReading>
+</ns0:CreateUnicenterIncidentProcessRequest>
+</soap:Body>
+</soap:Envelope>
+]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="3e1f133a-3ea1-4237-b29d-eb052fb2e3f8" name="Create Fuel Issue - Add Fuel Issue"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterIncident/v1/CreateUnicenterIncidentService/CreateUnicenterIncidentPort</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">\r
+   <soap:Body>\r
+      <ns0:CreateUnicenterIncidentProcessRequest xmlns:ns0="http://xmlns.oracle.com/CreateUnicenterIncident">\r
+         <ns0:description>Sandesh Error in processing entity FuelIssue  Fuel is not associated to the selected depot or pump.. Fuel is not associated to the se
+lected depot or pump.</ns0:description>\r
+         <ns0:instanceID>ed111a40-ba93-11e8-adb7-0021f6a10209</ns0:instanceID>\r
+         <ns0:summary>Add-Fuel Infor WS call failed for instance#ed111a40-ba93-11e8-adb7-0021f6a10209 in dev</ns0:summary>\r
+         <ns0:affectedEndUser>wspuser</ns0:affectedEndUser>\r
+         <ns0:incidentArea>pcat:2243749</ns0:incidentArea>\r
+         <ns0:FuelSystem_Fuel/>\r
+         <ns0:FuelSystem_MeterReading/>
+         <ns0:FuelSystem_TrakSync/>
+      </ns0:CreateUnicenterIncidentProcessRequest>\r
+   </soap:Body>\r
+</soap:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" id="6ea10b1e-38d6-4bd9-861b-649d3468b7a4" wsaVersion="NONE" name="CreateUnicenterRequestSoapBinding" type="wsdl" bindingName="{http://xmlns.oracle.com/CreateUnicenterRequest}CreateUnicenterRequestSoapBinding" soapVersion="1_1" anonymous="optional" definition="Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateUnicenterRequest.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateUnicenterRequest.wsdl"><con:part><con:url>file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateUnicenterRequest.wsdl</con:url><con:content><![CDATA[<definitions name="CreateUnicenterRequest" targetNamespace="http://xmlns.oracle.com/CreateUnicenterRequest" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:client="http://xmlns.oracle.com/CreateUnicenterRequest" xmlns:ns1="http://schemas.oracle.com/bpel/extension" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:jca="http://xmlns.dfwairport.com.com/pcbpel/wsdl/jca/" xmlns:ns2="http://www.ca.com/UnicenterServicePlus/ServiceDesk">
+  <plnk:partnerLinkType name="CreateUnicenterRequest">
+    <plnk:role name="CreateUnicenterRequestProvider">
+      <plnk:portType name="client:CreateUnicenterRequest"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://xmlns.oracle.com/CreateUnicenterRequest" schemaLocation="CreateUnicenterRequest.xsd"/>
+    </schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" schemaLocation="ws_addressing.xsd"/>
+    </schema>
+  </types>
+  <message name="CreateUnicenterRequestRequestMessage">
+    <part name="payload" element="client:CreateUnicenterRequestProcessRequest"/>
+  </message>
+  <message name="CreateUnicenterRequestResponseMessage">
+    <part name="payload" element="client:CreateUnicenterRequestProcessResponse"/>
+  </message>
+  <portType name="CreateUnicenterRequest">
+    <operation name="process">
+      <input message="client:CreateUnicenterRequestRequestMessage"/>
+      <output message="client:CreateUnicenterRequestResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="CreateUnicenterRequestSoapBinding" type="client:CreateUnicenterRequest">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="process">
+      <soap:operation style="document" soapAction="process"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="CreateUnicenterRequestService">
+    <port name="CreateUnicenterRequestPort" binding="client:CreateUnicenterRequestSoapBinding">
+      <soap:address location="http://foobar"/>
+    </port>
+  </service>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\Z:\mule-UnicenterSystemAPI\src\main\wsdl\CreateUnicenterRequest.xsd</con:url><con:content><![CDATA[<schema elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/CreateUnicenterRequest" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="CreateUnicenterRequestProcessRequest">
+    <complexType>
+      <all>
+        <element name="bpelName" minOccurs="0" type="string"/>
+        <element name="instanceID" minOccurs="0" type="string"/>
+        <element name="assignee" minOccurs="0" type="string"/>
+        <element name="requester" minOccurs="0" type="string"/>
+        <element name="affected_end_user" type="string"/>
+        <element name="category" type="string"/>
+        <element name="summary" type="string"/>
+        <element name="description" type="string"/>
+        <element name="group" minOccurs="0" type="string"/>
+        <element name="impact" minOccurs="0" type="string"/>
+        <element name="priority" minOccurs="0" type="string"/>
+        <element name="severity" minOccurs="0" type="string"/>
+        <element name="urgency" minOccurs="0" type="string"/>
+        <!--appendfirst5proptodesc not used at all-->
+        <element name="appendfirst5proptodesc" minOccurs="0" type="string"/>
+        <element name="requestProperties">
+          <complexType>
+            <sequence>
+              <element name="Q1" default="" type="string"/>
+              <element name="A1" default="" type="string"/>
+              <element name="Q2" default="" type="string"/>
+              <element name="A2" default="" type="string"/>
+              <element name="Q3" default="" type="string"/>
+              <element name="A3" default="" type="string"/>
+              <element name="Q4" default="" type="string"/>
+              <element name="A4" default="" type="string"/>
+              <element name="Q5" default="" type="string"/>
+              <element name="A5" default="" type="string"/>
+              <element name="Q6" default="" type="string"/>
+              <element name="A6" default="" type="string"/>
+              <element name="Q7" default="" type="string"/>
+              <element name="A7" default="" type="string"/>
+              <element name="Q8" default="" type="string"/>
+              <element name="A8" default="" type="string"/>
+              <element name="Q9" default="" type="string"/>
+              <element name="A9" default="" type="string"/>
+              <element name="Q10" default="" type="string"/>
+              <element name="A10" default="" type="string"/>
+              <element name="Q11" default="" type="string"/>
+              <element name="A11" default="" type="string"/>
+              <element name="Q12" default="" type="string"/>
+              <element name="A12" default="" type="string"/>
+              <element name="Q13" default="" type="string"/>
+              <element name="A13" default="" type="string"/>
+              <element name="Q14" default="" type="string"/>
+              <element name="A14" default="" type="string"/>
+              <element name="Q15" default="" type="string"/>
+              <element name="A15" default="" type="string"/>
+              <element name="Q16" default="" type="string"/>
+              <element name="A16" default="" type="string"/>
+              <element name="Q17" default="" type="string"/>
+              <element name="A17" default="" type="string"/>
+              <element name="Q18" default="" type="string"/>
+              <element name="A18" default="" type="string"/>
+              <element name="Q19" default="" type="string"/>
+              <element name="A19" default="" type="string"/>
+              <element name="Q20" default="" type="string"/>
+              <element name="A20" default="" type="string"/>
+              <element name="Q21" default="" type="string"/>
+              <element name="A21" default="" type="string"/>
+              <element name="Q22" default="" type="string"/>
+              <element name="A22" default="" type="string"/>
+              <element name="Q23" default="" type="string"/>
+              <element name="A23" default="" type="string"/>
+              <element name="Q24" default="" type="string"/>
+              <element name="A24" default="" type="string"/>
+              <element name="Q25" default="" type="string"/>
+              <element name="A25" default="" type="string"/>
+              <element name="Q26" default="" type="string"/>
+              <element name="A26" default="" type="string"/>
+              <element name="Q27" default="" type="string"/>
+              <element name="A27" default="" type="string"/>
+              <element name="Q28" default="" type="string"/>
+              <element name="A28" default="" type="string"/>
+              <element name="Q29" default="" type="string"/>
+              <element name="A29" default="" type="string"/>
+              <element name="Q30" default="" type="string"/>
+              <element name="A30" default="" type="string"/>
+              <element name="Q31" default="" type="string"/>
+              <element name="A31" default="" type="string"/>
+              <element name="Q32" default="" type="string"/>
+              <element name="A32" default="" type="string"/>
+              <element name="Q33" default="" type="string"/>
+              <element name="A33" default="" type="string"/>
+              <element name="Q34" default="" type="string"/>
+              <element name="A34" default="" type="string"/>
+              <element name="Q35" default="" type="string"/>
+              <element name="A35" default="" type="string"/>
+              <element name="Q36" default="" type="string"/>
+              <element name="A36" default="" type="string"/>
+              <element name="Q37" default="" type="string"/>
+              <element name="A37" default="" type="string"/>
+              <element name="Q38" default="" type="string"/>
+              <element name="A38" default="" type="string"/>
+              <element name="Q39" default="" type="string"/>
+              <element name="A39" default="" type="string"/>
+              <element name="Q40" default="" type="string"/>
+              <element name="A40" default="" type="string"/>
+              <element name="Q41" default="" type="string"/>
+              <element name="A41" default="" type="string"/>
+              <element name="Q42" default="" type="string"/>
+              <element name="A42" default="" type="string"/>
+              <element name="Q43" default="" type="string"/>
+              <element name="A43" default="" type="string"/>
+              <element name="Q44" default="" type="string"/>
+              <element name="A44" default="" type="string"/>
+              <element name="Q45" default="" type="string"/>
+              <element name="A45" default="" type="string"/>
+              <element name="Q46" default="" type="string"/>
+              <element name="A46" default="" type="string"/>
+              <element name="Q47" default="" type="string"/>
+              <element name="A47" default="" type="string"/>
+              <element name="Q48" default="" type="string"/>
+              <element name="A48" default="" type="string"/>
+              <element name="Q49" default="" type="string"/>
+              <element name="A49" default="" type="string"/>
+              <element name="Q50" default="" type="string"/>
+              <element name="A50" default="" type="string"/>
+            </sequence>
+          </complexType>
+        </element>
+      </all>
+    </complexType>
+  </element>
+  <element name="CreateUnicenterRequestProcessResponse">
+    <complexType>
+      <sequence>
+        <element name="desc" type="string"/>
+        <element name="result" type="string"/>
+        <element name="sessionId" type="string"/>
+        <element name="requestNumber" type="string"/>
+        <element name="requestHandle" type="string"/>
+      </sequence>
+    </complexType>
+  </element>
+  <!--used for var_createRequestAttrValue for attributes and properties-->
+  <element name="string" type="string"/>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:\Z:\mule-UnicenterSystemAPI\src\main\wsdl\ws_addressing.xsd</con:url><con:content><![CDATA[<!--Legal Disclaimer
+
+The presentation, distribution or other dissemination of the information 
+contained in this document is not a license, either expressly or impliedly, 
+to any intellectual property owned or controlled by BEA or IBM or Microsoft
+and\or any other third party.  BEA and IBM and Microsoft and\or any other
+third party may have patents, patent applications, trademarks, copyrights, 
+or other intellectual property rights covering subject matter in this 
+document.  The furnishing of this document does not give you any license 
+to BEA's and IBM's and Microsoft's or any other third party's patents, 
+trademarks, copyrights, or other intellectual property.
+
+This document and the information contained herein is provided on an "AS IS"
+basis and to the maximum extent permitted by applicable law, BEA and IBM 
+and Microsoft provide the document AS IS AND WITH ALL FAULTS, and hereby 
+disclaims all other warranties and conditions, either express, implied or 
+statutory, including, but not limited to, any (if any) implied warranties, 
+duties or conditions of merchantability, of fitness for a particular 
+purpose, of accuracy or completeness of responses, of results, of 
+workmanlike effort, of lack of viruses, and of lack of negligence, all with
+regard to the document. ALSO, THERE IS NO WARRANTY OR CONDITION OF 
+TITLE, QUIET ENJOYMENT, QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR 
+NON-INFRINGEMENT OF ANY INTELLECTUAL PROPERTY RIGHTS WITH REGARD TO THE 
+DOCUMENT.
+
+IN NO EVENT WILL BEA or IBM or MICROSOFT BE LIABLE TO ANY OTHER PARTY FOR THE
+COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS OF USE, 
+LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, INDIRECT, OR SPECIAL 
+DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY, OR OTHERWISE, ARISING IN ANY 
+WAY OUT OF THIS OR ANY OTHER AGREEMENT RELATING TO THIS DOCUMENT, WHETHER OR 
+NOT SUCH PARTY HAD ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES.
+
+Copyright Notice
+
+Copyright 2003 BEA Systems Inc. and IBM Corporation and Microsoft Corporation. All rights reserved.-->
+<xs:schema targetNamespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" elementFormDefault="qualified" blockDefault="#all" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--//////////////////// WS-Addressing ////////////////////-->
+  <!--Endpoint reference-->
+  <xs:element name="EndpointReference" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="EndpointReferenceType">
+    <xs:sequence>
+      <xs:element name="Address" type="wsa:AttributedURI"/>
+      <xs:element name="ReferenceProperties" type="wsa:ReferencePropertiesType" minOccurs="0"/>
+      <xs:element name="PortType" type="wsa:AttributedQName" minOccurs="0"/>
+      <xs:element name="ServiceName" type="wsa:ServiceNameType" minOccurs="0"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>If "Policy" elements from namespace "http://schemas.xmlsoap.org/ws/2002/12/policy#policy" are used, they must appear first (before any extensibility elements).</xs:documentation>
+        </xs:annotation>
+      </xs:any>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+  <xs:complexType name="ReferencePropertiesType">
+    <xs:sequence>
+      <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServiceNameType">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:attribute name="PortName" type="xs:NCName"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!--Message information header blocks-->
+  <xs:element name="MessageID" type="wsa:AttributedURI"/>
+  <xs:element name="RelatesTo" type="wsa:Relationship"/>
+  <xs:element name="To" type="wsa:AttributedURI"/>
+  <xs:element name="Action" type="wsa:AttributedURI"/>
+  <xs:element name="From" type="wsa:EndpointReferenceType"/>
+  <xs:element name="ReplyTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="FaultTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="Recipient" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="Relationship">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="RelationshipType" type="xs:QName" use="optional"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="RelationshipTypeValues">
+    <xs:restriction base="xs:QName">
+      <xs:enumeration value="wsa:Response"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--Common declarations and definitions-->
+  <xs:complexType name="AttributedQName">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="AttributedURI">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://foobar</con:endpoint><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterRequest/v1/CreateUnicenterRequestService/CreateUnicenterRequestPort</con:endpoint></con:endpoints><con:operation id="03c6b3f0-144d-4fa1-9e1e-d0de228d7c7a" isOneWay="false" action="process" name="process" bindingOperationName="process" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="3d1bd425-61ac-4765-889f-9a97edd80fc7" name="do select test"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterRequest/v1/CreateUnicenterRequestService/CreateUnicenterRequestPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterRequestProcessRequest xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">
+
+
+                <cre:affected_end_user>krodgers</cre:affected_end_user>
+                <cre:assignee>krodgers</cre:assignee>
+			
+                <cre:category>2243895</cre:category>
+
+                <cre:summary>A test for system access. Please ignore</cre:summary>
+
+                <cre:description>A test, please ignore.</cre:description>
+
+                <cre:group/>
+
+			<cre:priority>Priority - 4</cre:priority>
+                <cre:impact>2</cre:impact>
+
+                <cre:severity>3</cre:severity>
+
+                <cre:urgency>3</cre:urgency>
+
+                <cre:appendfirst5proptodesc>N</cre:appendfirst5proptodesc>
+
+                <cre:requestProperties>
+
+                                <cre:Q1>
+
+Is this a test?
+
+                                </cre:Q1>
+
+                                <cre:A1>
+
+Yes it is
+
+                                </cre:A1>
+
+                                <cre:Q2>Should it be ignored?</cre:Q2>
+
+                                <cre:A2>Absolutely</cre:A2>
+
+                                <cre:Q3/>
+
+                                <cre:A3/>
+
+                                <cre:Q4/>
+
+                                <cre:A4/>
+
+                                <cre:Q5/>
+
+                                <cre:A5/>
+
+                                <cre:Q6/>
+
+                                <cre:A6/>
+
+                                <cre:Q7/>
+
+                                <cre:A7/>
+
+                                <cre:Q8/>
+
+                                <cre:A8/>
+
+                                <cre:Q9/>
+
+                                <cre:A9/>
+
+                                <cre:Q10/>
+
+                                <cre:A10/>
+
+                                <cre:Q11/>
+
+                                <cre:A11/>
+
+                                <cre:Q12/>
+
+                                <cre:A12/>
+
+                                <cre:Q13/>
+
+                                <cre:A13/>
+
+                                <cre:Q14/>
+
+                                <cre:A14/>
+
+                                <cre:Q15/>
+
+                                <cre:A15/>
+
+                                <cre:Q16/>
+
+                                <cre:A16/>
+
+                                <cre:Q17/>
+
+                                <cre:A17/>
+
+                                <cre:Q18/>
+
+                                <cre:A18/>
+
+                                <cre:Q19/>
+
+                                <cre:A19/>
+
+                                <cre:Q20/>
+
+                                <cre:A20/>
+
+                                <cre:Q21/>
+
+                                <cre:A21/>
+
+                                <cre:Q22/>
+
+                                <cre:A22/>
+
+                                <cre:Q23/>
+
+                                <cre:A23/>
+
+                                <cre:Q24/>
+
+                                <cre:A24/>
+
+                                <cre:Q25/>
+
+                                <cre:A25/>
+
+                                <cre:Q26/>
+
+                                <cre:A26/>
+
+                                <cre:Q27/>
+
+                                <cre:A27/>
+
+                                <cre:Q28/>
+
+                                <cre:A28/>
+
+                                <cre:Q29/>
+
+                                <cre:A29/>
+
+                                <cre:Q30/>
+
+                                <cre:A30/>
+
+                                <cre:Q31/>
+
+                                <cre:A31/>
+
+                                <cre:Q32/>
+
+                                <cre:A32/>
+
+                                <cre:Q33/>
+
+                                <cre:A33/>
+
+                                <cre:Q34/>
+
+                                <cre:A34/>
+
+                                <cre:Q35/>
+
+                                <cre:A35/>
+
+                                <cre:Q36/>
+
+                                <cre:A36/>
+
+                                <cre:Q37/>
+
+                                <cre:A37/>
+
+                                <cre:Q38/>
+
+                                <cre:A38/>
+
+                                <cre:Q39/>
+
+                                <cre:A39/>
+
+                                <cre:Q40/>
+
+                                <cre:A40/>
+
+                                <cre:Q41/>
+
+                                <cre:A41/>
+
+                                <cre:Q42/>
+
+                                <cre:A42/>
+
+                                <cre:Q43/>
+
+                                <cre:A43/>
+
+                                <cre:Q44/>
+
+                                <cre:A44/>
+
+                                <cre:Q45/>
+
+                                <cre:A45/>
+
+                                <cre:Q46/>
+
+                                <cre:A46/>
+
+                                <cre:Q47/>
+
+                                <cre:A47/>
+
+                                <cre:Q48/>
+
+                                <cre:A48/>
+
+                                <cre:Q49/>
+
+                                <cre:A49/>
+
+                                <cre:Q50/>
+
+                                <cre:A50/>
+
+                </cre:requestProperties>
+
+</cre:CreateUnicenterRequestProcessRequest>
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="d6dbb47d-49c3-4c5e-a93b-71759ca8bdff" name="sample request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterRequest/v1/CreateUnicenterRequestService/CreateUnicenterRequestPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterRequestProcessRequest xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">
+
+
+                <cre:affected_end_user>krodgers</cre:affected_end_user>
+                
+			
+                <cre:category>2243895</cre:category>
+
+                <cre:summary>A test for system access. Please ignore</cre:summary>
+
+                <cre:description>A test, please ignore.</cre:description>
+
+                <cre:group/>
+
+			<cre:priority>Priority - 4</cre:priority>
+                <cre:impact>2</cre:impact>
+
+                <cre:severity>3</cre:severity>
+
+                <cre:urgency>3</cre:urgency>
+
+                <cre:appendfirst5proptodesc>N</cre:appendfirst5proptodesc>
+
+                <cre:requestProperties>
+
+                                <cre:Q1>
+
+Is this a test?
+
+                                </cre:Q1>
+
+                                <cre:A1>
+
+Yes it is
+
+                                </cre:A1>
+
+                                <cre:Q2>Should it be ignored?</cre:Q2>
+
+                                <cre:A2>Absolutely</cre:A2>
+
+                                <cre:Q3/>
+
+                                <cre:A3/>
+
+                                <cre:Q4/>
+
+                                <cre:A4/>
+
+                                <cre:Q5/>
+
+                                <cre:A5/>
+
+                                <cre:Q6/>
+
+                                <cre:A6/>
+
+                                <cre:Q7/>
+
+                                <cre:A7/>
+
+                                <cre:Q8/>
+
+                                <cre:A8/>
+
+                                <cre:Q9/>
+
+                                <cre:A9/>
+
+                                <cre:Q10/>
+
+                                <cre:A10/>
+
+                                <cre:Q11/>
+
+                                <cre:A11/>
+
+                                <cre:Q12/>
+
+                                <cre:A12/>
+
+                                <cre:Q13/>
+
+                                <cre:A13/>
+
+                                <cre:Q14/>
+
+                                <cre:A14/>
+
+                                <cre:Q15/>
+
+                                <cre:A15/>
+
+                                <cre:Q16/>
+
+                                <cre:A16/>
+
+                                <cre:Q17/>
+
+                                <cre:A17/>
+
+                                <cre:Q18/>
+
+                                <cre:A18/>
+
+                                <cre:Q19/>
+
+                                <cre:A19/>
+
+                                <cre:Q20/>
+
+                                <cre:A20/>
+
+                                <cre:Q21/>
+
+                                <cre:A21/>
+
+                                <cre:Q22/>
+
+                                <cre:A22/>
+
+                                <cre:Q23/>
+
+                                <cre:A23/>
+
+                                <cre:Q24/>
+
+                                <cre:A24/>
+
+                                <cre:Q25/>
+
+                                <cre:A25/>
+
+                                <cre:Q26/>
+
+                                <cre:A26/>
+
+                                <cre:Q27/>
+
+                                <cre:A27/>
+
+                                <cre:Q28/>
+
+                                <cre:A28/>
+
+                                <cre:Q29/>
+
+                                <cre:A29/>
+
+                                <cre:Q30/>
+
+                                <cre:A30/>
+
+                                <cre:Q31/>
+
+                                <cre:A31/>
+
+                                <cre:Q32/>
+
+                                <cre:A32/>
+
+                                <cre:Q33/>
+
+                                <cre:A33/>
+
+                                <cre:Q34/>
+
+                                <cre:A34/>
+
+                                <cre:Q35/>
+
+                                <cre:A35/>
+
+                                <cre:Q36/>
+
+                                <cre:A36/>
+
+                                <cre:Q37/>
+
+                                <cre:A37/>
+
+                                <cre:Q38/>
+
+                                <cre:A38/>
+
+                                <cre:Q39/>
+
+                                <cre:A39/>
+
+                                <cre:Q40/>
+
+                                <cre:A40/>
+
+                                <cre:Q41/>
+
+                                <cre:A41/>
+
+                                <cre:Q42/>
+
+                                <cre:A42/>
+
+                                <cre:Q43/>
+
+                                <cre:A43/>
+
+                                <cre:Q44/>
+
+                                <cre:A44/>
+
+                                <cre:Q45/>
+
+                                <cre:A45/>
+
+                                <cre:Q46/>
+
+                                <cre:A46/>
+
+                                <cre:Q47/>
+
+                                <cre:A47/>
+
+                                <cre:Q48/>
+
+                                <cre:A48/>
+
+                                <cre:Q49/>
+
+                                <cre:A49/>
+
+                                <cre:Q50/>
+
+                                <cre:A50/>
+
+                </cre:requestProperties>
+
+</cre:CreateUnicenterRequestProcessRequest>
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="a2eb36da-999d-4544-9ebc-baac627bdc07" name="request with all users"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterRequest/v1/CreateUnicenterRequestService/CreateUnicenterRequestPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterRequestProcessRequest xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">
+
+
+                <cre:affected_end_user>krodgers</cre:affected_end_user>
+                <cre:requester>krodgers</cre:requester>
+                <cre:assignee>krodgers</cre:assignee>
+			
+                <cre:category>2243895</cre:category>
+
+                <cre:summary>A test for system access. Please ignore</cre:summary>
+
+                <cre:description>A test, please ignore.</cre:description>
+
+                <cre:group/>
+
+			<cre:priority>Priority - 4</cre:priority>
+                <cre:impact>2</cre:impact>
+
+                <cre:severity>3</cre:severity>
+
+                <cre:urgency>3</cre:urgency>
+
+                <cre:appendfirst5proptodesc>N</cre:appendfirst5proptodesc>
+
+                <cre:requestProperties>
+
+                                <cre:Q1>
+
+Is this a test?
+
+                                </cre:Q1>
+
+                                <cre:A1>
+
+Yes it is
+
+                                </cre:A1>
+
+                                <cre:Q2>Should it be ignored?</cre:Q2>
+
+                                <cre:A2>Absolutely</cre:A2>
+
+                                <cre:Q3/>
+
+                                <cre:A3/>
+
+                                <cre:Q4/>
+
+                                <cre:A4/>
+
+                                <cre:Q5/>
+
+                                <cre:A5/>
+
+                                <cre:Q6/>
+
+                                <cre:A6/>
+
+                                <cre:Q7/>
+
+                                <cre:A7/>
+
+                                <cre:Q8/>
+
+                                <cre:A8/>
+
+                                <cre:Q9/>
+
+                                <cre:A9/>
+
+                                <cre:Q10/>
+
+                                <cre:A10/>
+
+                                <cre:Q11/>
+
+                                <cre:A11/>
+
+                                <cre:Q12/>
+
+                                <cre:A12/>
+
+                                <cre:Q13/>
+
+                                <cre:A13/>
+
+                                <cre:Q14/>
+
+                                <cre:A14/>
+
+                                <cre:Q15/>
+
+                                <cre:A15/>
+
+                                <cre:Q16/>
+
+                                <cre:A16/>
+
+                                <cre:Q17/>
+
+                                <cre:A17/>
+
+                                <cre:Q18/>
+
+                                <cre:A18/>
+
+                                <cre:Q19/>
+
+                                <cre:A19/>
+
+                                <cre:Q20/>
+
+                                <cre:A20/>
+
+                                <cre:Q21/>
+
+                                <cre:A21/>
+
+                                <cre:Q22/>
+
+                                <cre:A22/>
+
+                                <cre:Q23/>
+
+                                <cre:A23/>
+
+                                <cre:Q24/>
+
+                                <cre:A24/>
+
+                                <cre:Q25/>
+
+                                <cre:A25/>
+
+                                <cre:Q26/>
+
+                                <cre:A26/>
+
+                                <cre:Q27/>
+
+                                <cre:A27/>
+
+                                <cre:Q28/>
+
+                                <cre:A28/>
+
+                                <cre:Q29/>
+
+                                <cre:A29/>
+
+                                <cre:Q30/>
+
+                                <cre:A30/>
+
+                                <cre:Q31/>
+
+                                <cre:A31/>
+
+                                <cre:Q32/>
+
+                                <cre:A32/>
+
+                                <cre:Q33/>
+
+                                <cre:A33/>
+
+                                <cre:Q34/>
+
+                                <cre:A34/>
+
+                                <cre:Q35/>
+
+                                <cre:A35/>
+
+                                <cre:Q36/>
+
+                                <cre:A36/>
+
+                                <cre:Q37/>
+
+                                <cre:A37/>
+
+                                <cre:Q38/>
+
+                                <cre:A38/>
+
+                                <cre:Q39/>
+
+                                <cre:A39/>
+
+                                <cre:Q40/>
+
+                                <cre:A40/>
+
+                                <cre:Q41/>
+
+                                <cre:A41/>
+
+                                <cre:Q42/>
+
+                                <cre:A42/>
+
+                                <cre:Q43/>
+
+                                <cre:A43/>
+
+                                <cre:Q44/>
+
+                                <cre:A44/>
+
+                                <cre:Q45/>
+
+                                <cre:A45/>
+
+                                <cre:Q46/>
+
+                                <cre:A46/>
+
+                                <cre:Q47/>
+
+                                <cre:A47/>
+
+                                <cre:Q48/>
+
+                                <cre:A48/>
+
+                                <cre:Q49/>
+
+                                <cre:A49/>
+
+                                <cre:Q50/>
+
+                                <cre:A50/>
+
+                </cre:requestProperties>
+
+</cre:CreateUnicenterRequestProcessRequest>
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="e529c706-2dfa-4801-8730-2fe927f6683b" name="failure: do select test"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterRequest/v1/CreateUnicenterRequestService/CreateUnicenterRequestPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterRequestProcessRequest xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">
+
+
+                <cre:affected_end_user>krodgers</cre:affected_end_user>
+                <cre:assignee>krodgers</cre:assignee>
+			
+                <cre:category>2243895</cre:category>
+
+                <cre:summary>A test for system access. Please ignore</cre:summary>
+
+                <cre:description>A test, please ignore.</cre:description>
+
+                <cre:group/>
+
+			<cre:priority>1</cre:priority>
+                <cre:impact>2</cre:impact>
+
+                <cre:severity>3</cre:severity>
+
+                <cre:urgency>3</cre:urgency>
+
+                <cre:appendfirst5proptodesc>N</cre:appendfirst5proptodesc>
+
+                <cre:requestProperties>
+
+                                <cre:Q1>
+
+Is this a test?
+
+                                </cre:Q1>
+
+                                <cre:A1>
+
+Yes it is
+
+                                </cre:A1>
+
+                                <cre:Q2>Should it be ignored?</cre:Q2>
+
+                                <cre:A2>Absolutely</cre:A2>
+
+                                <cre:Q3/>
+
+                                <cre:A3/>
+
+                                <cre:Q4/>
+
+                                <cre:A4/>
+
+                                <cre:Q5/>
+
+                                <cre:A5/>
+
+                                <cre:Q6/>
+
+                                <cre:A6/>
+
+                                <cre:Q7/>
+
+                                <cre:A7/>
+
+                                <cre:Q8/>
+
+                                <cre:A8/>
+
+                                <cre:Q9/>
+
+                                <cre:A9/>
+
+                                <cre:Q10/>
+
+                                <cre:A10/>
+
+                                <cre:Q11/>
+
+                                <cre:A11/>
+
+                                <cre:Q12/>
+
+                                <cre:A12/>
+
+                                <cre:Q13/>
+
+                                <cre:A13/>
+
+                                <cre:Q14/>
+
+                                <cre:A14/>
+
+                                <cre:Q15/>
+
+                                <cre:A15/>
+
+                                <cre:Q16/>
+
+                                <cre:A16/>
+
+                                <cre:Q17/>
+
+                                <cre:A17/>
+
+                                <cre:Q18/>
+
+                                <cre:A18/>
+
+                                <cre:Q19/>
+
+                                <cre:A19/>
+
+                                <cre:Q20/>
+
+                                <cre:A20/>
+
+                                <cre:Q21/>
+
+                                <cre:A21/>
+
+                                <cre:Q22/>
+
+                                <cre:A22/>
+
+                                <cre:Q23/>
+
+                                <cre:A23/>
+
+                                <cre:Q24/>
+
+                                <cre:A24/>
+
+                                <cre:Q25/>
+
+                                <cre:A25/>
+
+                                <cre:Q26/>
+
+                                <cre:A26/>
+
+                                <cre:Q27/>
+
+                                <cre:A27/>
+
+                                <cre:Q28/>
+
+                                <cre:A28/>
+
+                                <cre:Q29/>
+
+                                <cre:A29/>
+
+                                <cre:Q30/>
+
+                                <cre:A30/>
+
+                                <cre:Q31/>
+
+                                <cre:A31/>
+
+                                <cre:Q32/>
+
+                                <cre:A32/>
+
+                                <cre:Q33/>
+
+                                <cre:A33/>
+
+                                <cre:Q34/>
+
+                                <cre:A34/>
+
+                                <cre:Q35/>
+
+                                <cre:A35/>
+
+                                <cre:Q36/>
+
+                                <cre:A36/>
+
+                                <cre:Q37/>
+
+                                <cre:A37/>
+
+                                <cre:Q38/>
+
+                                <cre:A38/>
+
+                                <cre:Q39/>
+
+                                <cre:A39/>
+
+                                <cre:Q40/>
+
+                                <cre:A40/>
+
+                                <cre:Q41/>
+
+                                <cre:A41/>
+
+                                <cre:Q42/>
+
+                                <cre:A42/>
+
+                                <cre:Q43/>
+
+                                <cre:A43/>
+
+                                <cre:Q44/>
+
+                                <cre:A44/>
+
+                                <cre:Q45/>
+
+                                <cre:A45/>
+
+                                <cre:Q46/>
+
+                                <cre:A46/>
+
+                                <cre:Q47/>
+
+                                <cre:A47/>
+
+                                <cre:Q48/>
+
+                                <cre:A48/>
+
+                                <cre:Q49/>
+
+                                <cre:A49/>
+
+                                <cre:Q50/>
+
+                                <cre:A50/>
+
+                </cre:requestProperties>
+
+</cre:CreateUnicenterRequestProcessRequest>
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="f666c9b6-9e3e-4350-995a-efbcb5b26cff" name="appendfirst5propdesc"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterRequest/v1/CreateUnicenterRequestService/CreateUnicenterRequestPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterRequestProcessRequest xmlns:cre="http://xmlns.oracle.com/CreateUnicenterRequest">
+
+
+                <cre:affected_end_user>krodgers</cre:affected_end_user>
+                
+			
+                <cre:category>2243895</cre:category>
+
+                <cre:summary>A test for system access. Please ignore</cre:summary>
+
+                <cre:description>A test, please ignore.</cre:description>
+
+                <cre:group/>
+
+			<cre:priority>Priority - 4</cre:priority>
+                <cre:impact>2</cre:impact>
+
+                <cre:severity>3</cre:severity>
+
+                <cre:urgency>3</cre:urgency>
+
+                <cre:appendfirst5proptodesc>Y</cre:appendfirst5proptodesc>
+
+                <cre:requestProperties>
+
+                                <cre:Q1>
+
+Is this a test?
+
+                                </cre:Q1>
+
+                                <cre:A1>
+
+Yes it is
+
+                                </cre:A1>
+
+                                <cre:Q2>Should it be ignored?</cre:Q2>
+
+                                <cre:A2>Absolutely</cre:A2>
+
+                                <cre:Q3>This should not have dash after this</cre:Q3>
+
+                                <cre:A3/>
+
+                                <cre:Q4/>
+
+                                <cre:A4/>
+
+                                <cre:Q5/>
+
+                                <cre:A5/>
+
+                                <cre:Q6/>
+
+                                <cre:A6/>
+
+                                <cre:Q7/>
+
+                                <cre:A7/>
+
+                                <cre:Q8/>
+
+                                <cre:A8/>
+
+                                <cre:Q9/>
+
+                                <cre:A9/>
+
+                                <cre:Q10/>
+
+                                <cre:A10/>
+
+                                <cre:Q11/>
+
+                                <cre:A11/>
+
+                                <cre:Q12/>
+
+                                <cre:A12/>
+
+                                <cre:Q13/>
+
+                                <cre:A13/>
+
+                                <cre:Q14/>
+
+                                <cre:A14/>
+
+                                <cre:Q15/>
+
+                                <cre:A15/>
+
+                                <cre:Q16/>
+
+                                <cre:A16/>
+
+                                <cre:Q17/>
+
+                                <cre:A17/>
+
+                                <cre:Q18/>
+
+                                <cre:A18/>
+
+                                <cre:Q19/>
+
+                                <cre:A19/>
+
+                                <cre:Q20/>
+
+                                <cre:A20/>
+
+                                <cre:Q21/>
+
+                                <cre:A21/>
+
+                                <cre:Q22/>
+
+                                <cre:A22/>
+
+                                <cre:Q23/>
+
+                                <cre:A23/>
+
+                                <cre:Q24/>
+
+                                <cre:A24/>
+
+                                <cre:Q25/>
+
+                                <cre:A25/>
+
+                                <cre:Q26/>
+
+                                <cre:A26/>
+
+                                <cre:Q27/>
+
+                                <cre:A27/>
+
+                                <cre:Q28/>
+
+                                <cre:A28/>
+
+                                <cre:Q29/>
+
+                                <cre:A29/>
+
+                                <cre:Q30/>
+
+                                <cre:A30/>
+
+                                <cre:Q31/>
+
+                                <cre:A31/>
+
+                                <cre:Q32/>
+
+                                <cre:A32/>
+
+                                <cre:Q33/>
+
+                                <cre:A33/>
+
+                                <cre:Q34/>
+
+                                <cre:A34/>
+
+                                <cre:Q35/>
+
+                                <cre:A35/>
+
+                                <cre:Q36/>
+
+                                <cre:A36/>
+
+                                <cre:Q37/>
+
+                                <cre:A37/>
+
+                                <cre:Q38/>
+
+                                <cre:A38/>
+
+                                <cre:Q39/>
+
+                                <cre:A39/>
+
+                                <cre:Q40/>
+
+                                <cre:A40/>
+
+                                <cre:Q41/>
+
+                                <cre:A41/>
+
+                                <cre:Q42/>
+
+                                <cre:A42/>
+
+                                <cre:Q43/>
+
+                                <cre:A43/>
+
+                                <cre:Q44/>
+
+                                <cre:A44/>
+
+                                <cre:Q45/>
+
+                                <cre:A45/>
+
+                                <cre:Q46/>
+
+                                <cre:A46/>
+
+                                <cre:Q47/>
+
+                                <cre:A47/>
+
+                                <cre:Q48/>
+
+                                <cre:A48/>
+
+                                <cre:Q49/>
+
+                                <cre:A49/>
+
+                                <cre:Q50/>
+
+                                <cre:A50/>
+
+                </cre:requestProperties>
+
+</cre:CreateUnicenterRequestProcessRequest>
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" id="3d099575-062c-4ff4-af2c-625e2f3c392a" wsaVersion="NONE" name="CreateUnicenterChangeOrderSoapBinding" type="wsdl" bindingName="{http://xmlns.oracle.com/CreateUnicenterChangeOrder}CreateUnicenterChangeOrderSoapBinding" soapVersion="1_1" anonymous="optional" definition="file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateUnicenterChangeOrder.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateUnicenterChangeOrder.wsdl"><con:part><con:url>file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateUnicenterChangeOrder.wsdl</con:url><con:content><![CDATA[<definitions name="CreateUnicenterChangeOrder" targetNamespace="http://xmlns.oracle.com/CreateUnicenterChangeOrder" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:client="http://xmlns.oracle.com/CreateUnicenterChangeOrder" xmlns:ns1="http://schemas.oracle.com/bpel/extension" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:jca="http://xmlns.dfwairport.com.com/pcbpel/wsdl/jca/">
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	TYPE DEFINITION - List of services participating in this BPEL process
+	The default output of the BPEL designer uses strings as input and 
+	output to the BPEL Process. But you can define or import any XML 
+	Schema type and use them as part of the message types.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://xmlns.oracle.com/CreateUnicenterChangeOrder" schemaLocation="CreateUnicenterChangeOrder.xsd"/>
+    </schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" schemaLocation="ws_addressing.xsd"/>
+    </schema>
+  </types>
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	MESSAGE TYPE DEFINITION - Definition of the message types used as 
+	part of the port type defintions
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <message name="CreateUnicenterChangeOrderRequestMessage">
+    <part name="payload" element="client:CreateUnicenterChangeOrderProcessRequest"/>
+  </message>
+  <message name="CreateUnicenterChangeOrderResponseMessage">
+    <part name="payload" element="client:CreateUnicenterChangeOrderProcessResponse"/>
+  </message>
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	PORT TYPE DEFINITION - A port type groups a set of operations into
+	a logical service unit.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!--portType implemented by the CreateUnicenterChangeOrder BPEL process-->
+  <portType name="CreateUnicenterChangeOrder">
+    <operation name="process">
+      <input message="client:CreateUnicenterChangeOrderRequestMessage"/>
+      <output message="client:CreateUnicenterChangeOrderResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="CreateUnicenterChangeOrderSoapBinding" type="client:CreateUnicenterChangeOrder">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="process">
+      <soap:operation style="document" soapAction="process"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="CreateUnicenterChangeOrderService">
+    <port name="CreateUnicenterChangeOrderPort" binding="client:CreateUnicenterChangeOrderSoapBinding">
+      <soap:address location="http://foobar"/>
+    </port>
+  </service>
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	PARTNER LINK TYPE DEFINITION
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <plnk:partnerLinkType name="CreateUnicenterChangeOrder">
+    <plnk:role name="CreateUnicenterChangeOrderProvider">
+      <plnk:portType name="client:CreateUnicenterChangeOrder"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\Z:\mule-UnicenterSystemAPI\src\main\wsdl\CreateUnicenterChangeOrder.xsd</con:url><con:content><![CDATA[<schema elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/CreateUnicenterChangeOrder" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="CreateUnicenterChangeOrderProcessRequest">
+    <complexType>
+      <all>
+        <element name="category" type="string"/>
+        <element name="summary" type="string"/>
+        <element name="description" type="string"/>
+        <element name="justification" minOccurs="0" type="string"/>
+        <element name="bpelName" minOccurs="0" type="string"/>
+        <element name="instanceID" minOccurs="0" type="string"/>
+        <element name="requester" type="string"/>
+        <element name="affected_end_user" type="string"/>
+        <element name="Generic_Properties">
+          <complexType>
+            <sequence>
+              <element name="Q1" default="" type="string"/>
+              <element name="A1" default="" type="string"/>
+              <element name="Q2" default="" type="string"/>
+              <element name="A2" default="" type="string"/>
+              <element name="Q3" default="" type="string"/>
+              <element name="A3" default="" type="string"/>
+              <element name="Q4" default="" type="string"/>
+              <element name="A4" default="" type="string"/>
+              <element name="Q5" default="" type="string"/>
+              <element name="A5" default="" type="string"/>
+              <element name="Q6" default="" type="string"/>
+              <element name="A6" default="" type="string"/>
+              <element name="Q7" default="" type="string"/>
+              <element name="A7" default="" type="string"/>
+              <element name="Q8" default="" type="string"/>
+              <element name="A8" default="" type="string"/>
+              <element name="Q9" default="" type="string"/>
+              <element name="A9" default="" type="string"/>
+              <element name="Q10" default="" type="string"/>
+              <element name="A10" default="" type="string"/>
+              <element name="Q11" default="" type="string"/>
+              <element name="A11" default="" type="string"/>
+              <element name="Q12" default="" type="string"/>
+              <element name="A12" default="" type="string"/>
+              <element name="Q13" default="" type="string"/>
+              <element name="A13" default="" type="string"/>
+              <element name="Q14" default="" type="string"/>
+              <element name="A14" default="" type="string"/>
+              <element name="Q15" default="" type="string"/>
+              <element name="A15" default="" type="string"/>
+              <element name="Q16" default="" type="string"/>
+              <element name="A16" default="" type="string"/>
+              <element name="Q17" default="" type="string"/>
+              <element name="A17" default="" type="string"/>
+              <element name="Q18" default="" type="string"/>
+              <element name="A18" default="" type="string"/>
+              <element name="Q19" default="" type="string"/>
+              <element name="A19" default="" type="string"/>
+              <element name="Q20" default="" type="string"/>
+              <element name="A20" default="" type="string"/>
+              <element name="Q21" default="" type="string"/>
+              <element name="A21" default="" type="string"/>
+              <element name="Q22" default="" type="string"/>
+              <element name="A22" default="" type="string"/>
+              <element name="Q23" default="" type="string"/>
+              <element name="A23" default="" type="string"/>
+              <element name="Q24" default="" type="string"/>
+              <element name="A24" default="" type="string"/>
+              <element name="Q25" default="" type="string"/>
+              <element name="A25" default="" type="string"/>
+              <element name="Q26" default="" type="string"/>
+              <element name="A26" default="" type="string"/>
+              <element name="Q27" default="" type="string"/>
+              <element name="A27" default="" type="string"/>
+              <element name="Q28" default="" type="string"/>
+              <element name="A28" default="" type="string"/>
+              <element name="Q29" default="" type="string"/>
+              <element name="A29" default="" type="string"/>
+              <element name="Q30" default="" type="string"/>
+              <element name="A30" default="" type="string"/>
+              <element name="Q31" default="" type="string"/>
+              <element name="A31" default="" type="string"/>
+              <element name="Q32" default="" type="string"/>
+              <element name="A32" default="" type="string"/>
+              <element name="Q33" default="" type="string"/>
+              <element name="A33" default="" type="string"/>
+              <element name="Q34" default="" type="string"/>
+              <element name="A34" default="" type="string"/>
+              <element name="Q35" default="" type="string"/>
+              <element name="A35" default="" type="string"/>
+              <element name="Q36" default="" type="string"/>
+              <element name="A36" default="" type="string"/>
+              <element name="Q37" default="" type="string"/>
+              <element name="A37" default="" type="string"/>
+              <element name="Q38" default="" type="string"/>
+              <element name="A38" default="" type="string"/>
+              <element name="Q39" default="" type="string"/>
+              <element name="A39" default="" type="string"/>
+              <element name="Q40" default="" type="string"/>
+              <element name="A40" default="" type="string"/>
+              <element name="Q41" default="" type="string"/>
+              <element name="A41" default="" type="string"/>
+              <element name="Q42" default="" type="string"/>
+              <element name="A42" default="" type="string"/>
+              <element name="Q43" default="" type="string"/>
+              <element name="A43" default="" type="string"/>
+              <element name="Q44" default="" type="string"/>
+              <element name="A44" default="" type="string"/>
+              <element name="Q45" default="" type="string"/>
+              <element name="A45" default="" type="string"/>
+              <element name="Q46" default="" type="string"/>
+              <element name="A46" default="" type="string"/>
+              <element name="Q47" default="" type="string"/>
+              <element name="A47" default="" type="string"/>
+              <element name="Q48" default="" type="string"/>
+              <element name="A48" default="" type="string"/>
+              <element name="Q49" default="" type="string"/>
+              <element name="A49" default="" type="string"/>
+              <element name="Q50" default="" type="string"/>
+              <element name="A50" default="" type="string"/>
+            </sequence>
+          </complexType>
+        </element>
+      </all>
+    </complexType>
+  </element>
+  <element name="CreateUnicenterChangeOrderProcessResponse">
+    <complexType>
+      <sequence>
+        <element name="desc" type="string"/>
+        <element name="result" type="string"/>
+        <element name="conumber" type="string"/>
+        <element name="sessionId" type="string"/>
+        <element name="changeOrderNumber" type="string"/>
+        <element name="changeOrderHandle" type="string"/>
+      </sequence>
+    </complexType>
+  </element>
+  <!--used for var_createChangeOrderAttrValue for attributes and properties-->
+  <element name="string" type="string"/>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:\Z:\mule-UnicenterSystemAPI\src\main\wsdl\ws_addressing.xsd</con:url><con:content><![CDATA[<!--Legal Disclaimer
+
+The presentation, distribution or other dissemination of the information 
+contained in this document is not a license, either expressly or impliedly, 
+to any intellectual property owned or controlled by BEA or IBM or Microsoft
+and\or any other third party.  BEA and IBM and Microsoft and\or any other
+third party may have patents, patent applications, trademarks, copyrights, 
+or other intellectual property rights covering subject matter in this 
+document.  The furnishing of this document does not give you any license 
+to BEA's and IBM's and Microsoft's or any other third party's patents, 
+trademarks, copyrights, or other intellectual property.
+
+This document and the information contained herein is provided on an "AS IS"
+basis and to the maximum extent permitted by applicable law, BEA and IBM 
+and Microsoft provide the document AS IS AND WITH ALL FAULTS, and hereby 
+disclaims all other warranties and conditions, either express, implied or 
+statutory, including, but not limited to, any (if any) implied warranties, 
+duties or conditions of merchantability, of fitness for a particular 
+purpose, of accuracy or completeness of responses, of results, of 
+workmanlike effort, of lack of viruses, and of lack of negligence, all with
+regard to the document. ALSO, THERE IS NO WARRANTY OR CONDITION OF 
+TITLE, QUIET ENJOYMENT, QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR 
+NON-INFRINGEMENT OF ANY INTELLECTUAL PROPERTY RIGHTS WITH REGARD TO THE 
+DOCUMENT.
+
+IN NO EVENT WILL BEA or IBM or MICROSOFT BE LIABLE TO ANY OTHER PARTY FOR THE
+COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS OF USE, 
+LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, INDIRECT, OR SPECIAL 
+DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY, OR OTHERWISE, ARISING IN ANY 
+WAY OUT OF THIS OR ANY OTHER AGREEMENT RELATING TO THIS DOCUMENT, WHETHER OR 
+NOT SUCH PARTY HAD ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES.
+
+Copyright Notice
+
+Copyright 2003 BEA Systems Inc. and IBM Corporation and Microsoft Corporation. All rights reserved.-->
+<xs:schema targetNamespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" elementFormDefault="qualified" blockDefault="#all" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--//////////////////// WS-Addressing ////////////////////-->
+  <!--Endpoint reference-->
+  <xs:element name="EndpointReference" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="EndpointReferenceType">
+    <xs:sequence>
+      <xs:element name="Address" type="wsa:AttributedURI"/>
+      <xs:element name="ReferenceProperties" type="wsa:ReferencePropertiesType" minOccurs="0"/>
+      <xs:element name="PortType" type="wsa:AttributedQName" minOccurs="0"/>
+      <xs:element name="ServiceName" type="wsa:ServiceNameType" minOccurs="0"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>If "Policy" elements from namespace "http://schemas.xmlsoap.org/ws/2002/12/policy#policy" are used, they must appear first (before any extensibility elements).</xs:documentation>
+        </xs:annotation>
+      </xs:any>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+  <xs:complexType name="ReferencePropertiesType">
+    <xs:sequence>
+      <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServiceNameType">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:attribute name="PortName" type="xs:NCName"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!--Message information header blocks-->
+  <xs:element name="MessageID" type="wsa:AttributedURI"/>
+  <xs:element name="RelatesTo" type="wsa:Relationship"/>
+  <xs:element name="To" type="wsa:AttributedURI"/>
+  <xs:element name="Action" type="wsa:AttributedURI"/>
+  <xs:element name="From" type="wsa:EndpointReferenceType"/>
+  <xs:element name="ReplyTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="FaultTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="Recipient" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="Relationship">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="RelationshipType" type="xs:QName" use="optional"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="RelationshipTypeValues">
+    <xs:restriction base="xs:QName">
+      <xs:enumeration value="wsa:Response"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--Common declarations and definitions-->
+  <xs:complexType name="AttributedQName">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="AttributedURI">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://foobar</con:endpoint></con:endpoints><con:operation id="a008d3e9-2d93-44e3-b22e-3d4ecde918ef" isOneWay="false" action="process" name="process" bindingOperationName="process" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="66ab1cc5-74b6-451a-8145-4482cd47029d" name="Sample Change Order Request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:requester>bwied</cre:requester>
+         <cre:affected_end_user>bwied</cre:affected_end_user>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="ce993997-b30e-4705-933b-a398aa102d6f" name="No affected user"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:requester>bwied</cre:requester>
+         <cre:affected_end_user></cre:affected_end_user>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="63a2cbc5-4cd5-496b-a647-d5f96ebdc41e" name="no affected user, self closing tag"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:requester>bwied</cre:requester>
+         <cre:affected_end_user/>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="1c00a084-ad15-459b-b41f-ae48955bc401" name="failure: no affected user, no tag at all"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:requester>bwied</cre:requester>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="19109a1d-68fd-4095-bd9a-b6803483adeb" name="failure: no requester, no tag"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:affected_end_user>bwied</cre:affected_end_user>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="5290bf8f-ceb5-4e93-b944-3278e5e95355" name="failure: no requester, self closing tag"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:affected_end_user>bwied</cre:affected_end_user>
+         <cre:requester/>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="c0c63d4b-7e0d-46a9-a7f9-2b7a8f9ce33a" name="failure: no requester, empty"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:affected_end_user>bwied</cre:affected_end_user>
+         <cre:requester></cre:requester>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="1912966f-eef9-4b82-91d8-d5aee739736b" name="with both requester and affected_end_user"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createUnicenterChangeOrder/v1/CreateUnicenterChangeOrderService/CreateUnicenterChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateUnicenterChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateUnicenterChangeOrderProcessRequest>\r
+         <!--You may enter the following 7 items in any order-->\r
+         <cre:category>chgcat:430200</cre:category>\r
+         <cre:summary>this is test</cre:summary>\r
+         <cre:description>test desc</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <cre:bpelName>OIM</cre:bpelName>
+         <cre:instanceID>1111</cre:instanceID>
+         <cre:affected_end_user>bwied</cre:affected_end_user>
+         <cre:requester>bwied</cre:requester>
+         <cre:Generic_Properties>\r
+            <cre:Q1>question</cre:Q1>\r
+            <cre:A1>answer</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:Generic_Properties>\r
+      </cre:CreateUnicenterChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" id="ab3d9248-16c2-4007-9a8c-e321eef31816" wsaVersion="NONE" name="CreateOnlineFormsChangeOrderSoapBinding" type="wsdl" bindingName="{http://xmlns.oracle.com/CreateOnlineFormsChangeOrder}CreateOnlineFormsChangeOrderSoapBinding" soapVersion="1_1" anonymous="optional" definition="file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateOnlineFormsChangeOrder.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateOnlineFormsChangeOrder.wsdl"><con:part><con:url>file:/Z:/mule-UnicenterSystemAPI/src/main/wsdl/CreateOnlineFormsChangeOrder.wsdl</con:url><con:content><![CDATA[<definitions name="CreateOnlineFormsChangeOrder" targetNamespace="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:client="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder" xmlns:ns1="http://schemas.oracle.com/bpel/extension" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:jca="http://xmlns.dfwairport.com.com/pcbpel/wsdl/jca/" xmlns:ns3="http://www.ca.com/UnicenterServicePlus/ServiceDesk" xmlns:ns2="http://www.example.org">
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder" schemaLocation="CreateOnlineFormsChangeOrder.xsd"/>
+      <import namespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" schemaLocation="ws_addressing.xsd"/>
+    </schema>
+  </types>
+  <message name="CreateOnlineFormsChangeOrderRequestMessage">
+    <part name="payload" element="client:CreateOnlineFormsChangeOrderProcessRequest"/>
+  </message>
+  <message name="CreateOnlineFormsChangeOrderResponseMessage">
+    <part name="payload" element="client:CreateOnlineFormsChangeOrderProcessResponse"/>
+  </message>
+  <portType name="CreateOnlineFormsChangeOrder">
+    <operation name="process">
+      <input message="client:CreateOnlineFormsChangeOrderRequestMessage"/>
+      <output message="client:CreateOnlineFormsChangeOrderResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="CreateOnlineFormsChangeOrderSoapBinding" type="client:CreateOnlineFormsChangeOrder">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="process">
+      <soap:operation style="document" soapAction="process"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="CreateOnlineFormsChangeOrderService">
+    <port name="CreateOnlineFormsChangeOrderPort" binding="client:CreateOnlineFormsChangeOrderSoapBinding">
+      <soap:address location="http://foobar"/>
+    </port>
+  </service>
+  <plnk:partnerLinkType name="CreateOnlineFormsChangeOrder">
+    <plnk:role name="CreateOnlineFormsChangeOrderProvider">
+      <plnk:portType name="client:CreateOnlineFormsChangeOrder"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\Z:\mule-UnicenterSystemAPI\src\main\wsdl\CreateOnlineFormsChangeOrder.xsd</con:url><con:content><![CDATA[<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="CreateOnlineFormsChangeOrderProcessRequest">
+    <complexType>
+      <sequence>
+        <!--change order category type information based on chgcat-->
+        <element name="bpelName" minOccurs="0" type="string"/>
+        <element name="instanceID" minOccurs="0" type="string"/>
+        <element name="assignee" minOccurs="0" type="string"/>
+        <element name="requester" minOccurs="0" type="string"/>
+        <element name="affected_end_user" minOccurs="0" type="string"/>
+        <element name="co_group" minOccurs="0" type="string"/>
+        <element name="co_type" minOccurs="0" type="string"/>
+        <element name="cab_approval" minOccurs="0" type="string"/>
+        <element name="category" minOccurs="0" type="string"/>
+        <element name="summary" minOccurs="0" type="string"/>
+        <element name="description" minOccurs="0" type="string"/>
+        <element name="justification" minOccurs="0" type="string"/>
+        <element name="co_number_status" minOccurs="0" type="string"/>
+        <element name="onlineFormQueries">
+          <!--###### Values for properties set common for all categories #####-->
+          <complexType>
+            <sequence>
+              <element name="Q1" default="" type="string"/>
+              <element name="A1" default="" type="string"/>
+              <element name="Q2" default="" type="string"/>
+              <element name="A2" default="" type="string"/>
+              <element name="Q3" default="" type="string"/>
+              <element name="A3" default="" type="string"/>
+              <element name="Q4" default="" type="string"/>
+              <element name="A4" default="" type="string"/>
+              <element name="Q5" default="" type="string"/>
+              <element name="A5" default="" type="string"/>
+              <element name="Q6" default="" type="string"/>
+              <element name="A6" default="" type="string"/>
+              <element name="Q7" default="" type="string"/>
+              <element name="A7" default="" type="string"/>
+              <element name="Q8" default="" type="string"/>
+              <element name="A8" default="" type="string"/>
+              <element name="Q9" default="" type="string"/>
+              <element name="A9" default="" type="string"/>
+              <element name="Q10" default="" type="string"/>
+              <element name="A10" default="" type="string"/>
+              <element name="Q11" default="" type="string"/>
+              <element name="A11" default="" type="string"/>
+              <element name="Q12" default="" type="string"/>
+              <element name="A12" default="" type="string"/>
+              <element name="Q13" default="" type="string"/>
+              <element name="A13" default="" type="string"/>
+              <element name="Q14" default="" type="string"/>
+              <element name="A14" default="" type="string"/>
+              <element name="Q15" default="" type="string"/>
+              <element name="A15" default="" type="string"/>
+              <element name="Q16" default="" type="string"/>
+              <element name="A16" default="" type="string"/>
+              <element name="Q17" default="" type="string"/>
+              <element name="A17" default="" type="string"/>
+              <element name="Q18" default="" type="string"/>
+              <element name="A18" default="" type="string"/>
+              <element name="Q19" default="" type="string"/>
+              <element name="A19" default="" type="string"/>
+              <element name="Q20" default="" type="string"/>
+              <element name="A20" default="" type="string"/>
+              <element name="Q21" default="" type="string"/>
+              <element name="A21" default="" type="string"/>
+              <element name="Q22" default="" type="string"/>
+              <element name="A22" default="" type="string"/>
+              <element name="Q23" default="" type="string"/>
+              <element name="A23" default="" type="string"/>
+              <element name="Q24" default="" type="string"/>
+              <element name="A24" default="" type="string"/>
+              <element name="Q25" default="" type="string"/>
+              <element name="A25" default="" type="string"/>
+              <element name="Q26" default="" type="string"/>
+              <element name="A26" default="" type="string"/>
+              <element name="Q27" default="" type="string"/>
+              <element name="A27" default="" type="string"/>
+              <element name="Q28" default="" type="string"/>
+              <element name="A28" default="" type="string"/>
+              <element name="Q29" default="" type="string"/>
+              <element name="A29" default="" type="string"/>
+              <element name="Q30" default="" type="string"/>
+              <element name="A30" default="" type="string"/>
+              <element name="Q31" default="" type="string"/>
+              <element name="A31" default="" type="string"/>
+              <element name="Q32" default="" type="string"/>
+              <element name="A32" default="" type="string"/>
+              <element name="Q33" default="" type="string"/>
+              <element name="A33" default="" type="string"/>
+              <element name="Q34" default="" type="string"/>
+              <element name="A34" default="" type="string"/>
+              <element name="Q35" default="" type="string"/>
+              <element name="A35" default="" type="string"/>
+              <element name="Q36" default="" type="string"/>
+              <element name="A36" default="" type="string"/>
+              <element name="Q37" default="" type="string"/>
+              <element name="A37" default="" type="string"/>
+              <element name="Q38" default="" type="string"/>
+              <element name="A38" default="" type="string"/>
+              <element name="Q39" default="" type="string"/>
+              <element name="A39" default="" type="string"/>
+              <element name="Q40" default="" type="string"/>
+              <element name="A40" default="" type="string"/>
+              <element name="Q41" default="" type="string"/>
+              <element name="A41" default="" type="string"/>
+              <element name="Q42" default="" type="string"/>
+              <element name="A42" default="" type="string"/>
+              <element name="Q43" default="" type="string"/>
+              <element name="A43" default="" type="string"/>
+              <element name="Q44" default="" type="string"/>
+              <element name="A44" default="" type="string"/>
+              <element name="Q45" default="" type="string"/>
+              <element name="A45" default="" type="string"/>
+              <element name="Q46" default="" type="string"/>
+              <element name="A46" default="" type="string"/>
+              <element name="Q47" default="" type="string"/>
+              <element name="A47" default="" type="string"/>
+              <element name="Q48" default="" type="string"/>
+              <element name="A48" default="" type="string"/>
+              <element name="Q49" default="" type="string"/>
+              <element name="A49" default="" type="string"/>
+              <element name="Q50" default="" type="string"/>
+              <element name="A50" default="" type="string"/>
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="CreateOnlineFormsChangeOrderProcessResponse">
+    <complexType>
+      <sequence>
+        <element name="desc" minOccurs="0" type="string"/>
+        <element name="result" minOccurs="0" type="string"/>
+        <element name="sessionId" minOccurs="0" type="string"/>
+        <element name="changeOrderNumber" minOccurs="0" type="string"/>
+        <element name="changeOrderHandle" minOccurs="0" type="string"/>
+        <element name="co_status_value" minOccurs="0" type="string"/>
+      </sequence>
+    </complexType>
+  </element>
+  <!--used for var_createChangeOrderAttrValue for attributes and properties-->
+  <element name="string" type="string"/>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:\Z:\mule-UnicenterSystemAPI\src\main\wsdl\ws_addressing.xsd</con:url><con:content><![CDATA[<!--Legal Disclaimer
+
+The presentation, distribution or other dissemination of the information 
+contained in this document is not a license, either expressly or impliedly, 
+to any intellectual property owned or controlled by BEA or IBM or Microsoft
+and\or any other third party.  BEA and IBM and Microsoft and\or any other
+third party may have patents, patent applications, trademarks, copyrights, 
+or other intellectual property rights covering subject matter in this 
+document.  The furnishing of this document does not give you any license 
+to BEA's and IBM's and Microsoft's or any other third party's patents, 
+trademarks, copyrights, or other intellectual property.
+
+This document and the information contained herein is provided on an "AS IS"
+basis and to the maximum extent permitted by applicable law, BEA and IBM 
+and Microsoft provide the document AS IS AND WITH ALL FAULTS, and hereby 
+disclaims all other warranties and conditions, either express, implied or 
+statutory, including, but not limited to, any (if any) implied warranties, 
+duties or conditions of merchantability, of fitness for a particular 
+purpose, of accuracy or completeness of responses, of results, of 
+workmanlike effort, of lack of viruses, and of lack of negligence, all with
+regard to the document. ALSO, THERE IS NO WARRANTY OR CONDITION OF 
+TITLE, QUIET ENJOYMENT, QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR 
+NON-INFRINGEMENT OF ANY INTELLECTUAL PROPERTY RIGHTS WITH REGARD TO THE 
+DOCUMENT.
+
+IN NO EVENT WILL BEA or IBM or MICROSOFT BE LIABLE TO ANY OTHER PARTY FOR THE
+COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS OF USE, 
+LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, INDIRECT, OR SPECIAL 
+DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY, OR OTHERWISE, ARISING IN ANY 
+WAY OUT OF THIS OR ANY OTHER AGREEMENT RELATING TO THIS DOCUMENT, WHETHER OR 
+NOT SUCH PARTY HAD ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES.
+
+Copyright Notice
+
+Copyright 2003 BEA Systems Inc. and IBM Corporation and Microsoft Corporation. All rights reserved.-->
+<xs:schema targetNamespace="http://schemas.xmlsoap.org/ws/2003/03/addressing" elementFormDefault="qualified" blockDefault="#all" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--//////////////////// WS-Addressing ////////////////////-->
+  <!--Endpoint reference-->
+  <xs:element name="EndpointReference" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="EndpointReferenceType">
+    <xs:sequence>
+      <xs:element name="Address" type="wsa:AttributedURI"/>
+      <xs:element name="ReferenceProperties" type="wsa:ReferencePropertiesType" minOccurs="0"/>
+      <xs:element name="PortType" type="wsa:AttributedQName" minOccurs="0"/>
+      <xs:element name="ServiceName" type="wsa:ServiceNameType" minOccurs="0"/>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>If "Policy" elements from namespace "http://schemas.xmlsoap.org/ws/2002/12/policy#policy" are used, they must appear first (before any extensibility elements).</xs:documentation>
+        </xs:annotation>
+      </xs:any>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+  <xs:complexType name="ReferencePropertiesType">
+    <xs:sequence>
+      <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServiceNameType">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:attribute name="PortName" type="xs:NCName"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!--Message information header blocks-->
+  <xs:element name="MessageID" type="wsa:AttributedURI"/>
+  <xs:element name="RelatesTo" type="wsa:Relationship"/>
+  <xs:element name="To" type="wsa:AttributedURI"/>
+  <xs:element name="Action" type="wsa:AttributedURI"/>
+  <xs:element name="From" type="wsa:EndpointReferenceType"/>
+  <xs:element name="ReplyTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="FaultTo" type="wsa:EndpointReferenceType"/>
+  <xs:element name="Recipient" type="wsa:EndpointReferenceType"/>
+  <xs:complexType name="Relationship">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="RelationshipType" type="xs:QName" use="optional"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="RelationshipTypeValues">
+    <xs:restriction base="xs:QName">
+      <xs:enumeration value="wsa:Response"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--Common declarations and definitions-->
+  <xs:complexType name="AttributedQName">
+    <xs:simpleContent>
+      <xs:extension base="xs:QName">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="AttributedURI">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://foobar</con:endpoint></con:endpoints><con:operation id="48abae38-92c4-4631-935b-43059c7e1781" isOneWay="false" action="process" name="process" bindingOperationName="process" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="e9fbb402-5652-4d5e-82b0-96467d7cd18d" name="Sample Request with co_number_status_not_found"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createOnlineFormsChangeOrder/v1/CreateOnlineFormsChangeOrderService/CreateOnlineFormsChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+         <cre:co_number_status>CO91254</cre:co_number_status>\r
+         <cre:onlineFormQueries>\r
+            <cre:Q1/>\r
+            <cre:A1/>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:onlineFormQueries>\r
+      </cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="4e764d93-245d-4bfa-b045-da0d8b8f40e9" name="Sample Request without co_number_status"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createOnlineFormsChangeOrder/v1/CreateOnlineFormsChangeOrderService/CreateOnlineFormsChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+         <cre:assignee>wspuser</cre:assignee>\r
+         <!--Optional:-->\r
+         <cre:requester>wspuser</cre:requester>\r
+         <!--Optional:-->\r
+         <cre:affected_end_user>wspuser</cre:affected_end_user>\r
+         <!--Optional:-->\r
+         <cre:co_group>99783A53A0689D40ABE2C31A038954DB</cre:co_group>\r
+         <!--Optional:-->\r
+         <cre:co_type>200</cre:co_type>\r
+         <!--Optional:-->\r
+         <cre:cab_approval>No</cre:cab_approval>\r
+         <!--Optional:-->\r
+         <cre:category>chgcat:2186898</cre:category>\r
+         <!--Optional:-->\r
+         <cre:summary>sample summary</cre:summary>\r
+         <!--Optional:-->\r
+         <cre:description>sample description</cre:description>\r
+         <!--Optional:-->\r
+         <cre:justification>sample justification</cre:justification>\r
+         <!--Optional:-->\r
+         <cre:co_number_status></cre:co_number_status>\r
+         <cre:onlineFormQueries>\r
+            <cre:Q1>This is Q1</cre:Q1>\r
+            <cre:A1>This is A1</cre:A1>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8>This is A8</cre:A8>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22>This is Q22</cre:Q22>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48>This is A48</cre:A48>
+            <cre:Q49/>
+            <cre:A49>This is A49</cre:A49>\r
+            <cre:Q50>This is Q50</cre:Q50>
+            <cre:A50/>
+         </cre:onlineFormQueries>\r
+      </cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="e894ba5b-d6f7-44c4-91c3-4849e660ad34" name="Sample Request with co_number_status"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createOnlineFormsChangeOrder/v1/CreateOnlineFormsChangeOrderService/CreateOnlineFormsChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+         <cre:co_number_status>CO52414</cre:co_number_status>\r
+         <cre:onlineFormQueries>\r
+            <cre:Q1/>\r
+            <cre:A1/>\r
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>\r
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:Q16/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>\r
+            <cre:Q49/>\r
+            <cre:A49/>\r
+            <cre:Q50/>\r
+            <cre:A50/>\r
+         </cre:onlineFormQueries>\r
+      </cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="3a5ff6ba-3a8a-4fa3-8c58-3ad491f83bcb" name="sample request to unicenter"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/axis/services/USD_WebServiceSoap</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body><ns0:DoSelect xmlns:ns0="http://www.ca.com/UnicenterServicePlus/ServiceDesk">
+  <ns0:SID>2114542601</ns0:SID>
+  <ns0:objectType>chg</ns0:objectType>
+  <ns0:whereClause>chg_ref_num = 'CO52386'</ns0:whereClause>
+  <ns0:maxRows>1</ns0:maxRows>
+  <ns0:attributes>
+    <ns0:string>chg_ref_num</ns0:string>
+    <ns0:string>summary</ns0:string>
+    <ns0:string>description</ns0:string>
+    <ns0:string>status</ns0:string>
+    <ns0:string>category</ns0:string>
+  </ns0:attributes>
+</ns0:DoSelect></soap:Body></soap:Envelope>
+]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="f6d4dccf-fc76-4757-9025-bf1226bcde05" name="unicenter login"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/axis/services/USD_WebServiceSoap</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://www.ca.com/UnicenterServicePlus/ServiceDesk">
+
+   <soapenv:Header/>
+
+   <soapenv:Body>
+
+      <ser:Login>
+
+         <!--Optional:-->
+
+         <ser:username>wspuser</ser:username>
+
+         <!--Optional:-->
+
+         <ser:password>!wsp1user</ser:password>
+
+      </ser:Login>
+
+   </soapenv:Body>
+
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="a365f506-0e0c-4196-8598-268ec556b3d1" name="sample_req_schema_tightening"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dss-dev-vip.dfwairport.com/createOnlineFormsChangeOrder/v1/CreateOnlineFormsChangeOrderService/CreateOnlineFormsChangeOrderPort</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+         
+         <cre:requester>wspuser</cre:requester>\r
+         
+         <cre:onlineFormQueries>\r
+            <cre:Q1/>
+            <cre:A1/>
+            <cre:Q2/>\r
+            <cre:A2/>\r
+            <cre:Q3/>\r
+            <cre:A3/>\r
+            <cre:Q4/>\r
+            <cre:A4/>\r
+            <cre:Q5/>\r
+            <cre:A5/>\r
+            <cre:Q6/>\r
+            <cre:A6/>\r
+            <cre:Q7/>\r
+            <cre:A7/>\r
+            <cre:Q8/>\r
+            <cre:A8/>
+            <cre:Q9/>\r
+            <cre:A9/>\r
+            <cre:Q10/>\r
+            <cre:A10/>\r
+            <cre:Q11/>\r
+            <cre:A11/>\r
+            <cre:Q12/>\r
+            <cre:A12/>\r
+            <cre:Q13/>\r
+            <cre:A13/>\r
+            <cre:Q14/>\r
+            <cre:A14/>\r
+            <cre:Q15/>\r
+            <cre:A15/>\r
+            <cre:A16/>\r
+            <cre:Q17/>\r
+            <cre:A17/>\r
+            <cre:Q18/>\r
+            <cre:A18/>\r
+            <cre:Q19/>\r
+            <cre:A19/>\r
+            <cre:Q20/>\r
+            <cre:A20/>\r
+            <cre:Q21/>\r
+            <cre:A21/>\r
+            <cre:Q22/>\r
+            <cre:A22/>\r
+            <cre:Q23/>\r
+            <cre:A23/>\r
+            <cre:Q24/>\r
+            <cre:A24/>\r
+            <cre:Q25/>\r
+            <cre:A25/>\r
+            <cre:Q26/>\r
+            <cre:A26/>\r
+            <cre:Q27/>\r
+            <cre:A27/>\r
+            <cre:Q28/>\r
+            <cre:A28/>\r
+            <cre:Q29/>\r
+            <cre:A29/>\r
+            <cre:Q30/>\r
+            <cre:A30/>\r
+            <cre:Q31/>\r
+            <cre:A31/>\r
+            <cre:Q32/>\r
+            <cre:A32/>\r
+            <cre:Q33/>\r
+            <cre:A33/>\r
+            <cre:Q34/>\r
+            <cre:A34/>\r
+            <cre:Q35/>\r
+            <cre:A35/>\r
+            <cre:Q36/>\r
+            <cre:A36/>\r
+            <cre:Q37/>\r
+            <cre:A37/>\r
+            <cre:Q38/>\r
+            <cre:A38/>\r
+            <cre:Q39/>\r
+            <cre:A39/>\r
+            <cre:Q40/>\r
+            <cre:A40/>\r
+            <cre:Q41/>\r
+            <cre:A41/>\r
+            <cre:Q42/>\r
+            <cre:A42/>\r
+            <cre:Q43/>\r
+            <cre:A43/>\r
+            <cre:Q44/>\r
+            <cre:A44/>\r
+            <cre:Q45/>\r
+            <cre:A45/>\r
+            <cre:Q46/>\r
+            <cre:A46/>\r
+            <cre:Q47/>\r
+            <cre:A47/>\r
+            <cre:Q48/>\r
+            <cre:A48/>
+            <cre:Q49/>
+            <cre:A49/>
+            <cre:Q50/>
+            <cre:A50/>
+         </cre:onlineFormQueries>\r
+      </cre:CreateOnlineFormsChangeOrderProcessRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="c4487720-e6e2-4817-8ee3-925b1a4e8139" name="schema_tightening_sample request to unicenter"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/axis/services/USD_WebServiceSoap</con:endpoint><con:request><![CDATA[
+<soap:Envelope 
+xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+
+<CreateChangeOrder xmlns="http://www.ca.com/UnicenterServicePlus/ServiceDesk">
+
+<SID>
+
+1588984760
+
+</SID>
+
+<creatorHandle>
+cnt:9345EBF2FA1A92499AC36D1E73C7E09E
+
+</creatorHandle>
+
+<attrVals>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+summary
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Project Deliverable
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+description
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+<a href="https://dfw.appiancloud.com/suite/tempo/records/item/lYBbkZMimT8Y3-DOZzUa8lDkHY-6qi7VarJAIuMP5TdFIaL2V_6UkQtxkeyM5961_QekmGvB6A3LoM9QYYaW5zP4wAXaH6KcvgSJlcxaSUpWbMZN1Cx8Q/view/summary" target="_blank">https://dfw.appiancloud.com/suite/tempo/records/item/lYBbkZMimT8Y3-DOZzUa8lDkHY-6qi7VarJAIuMP5TdFIaL2V_6UkQtxkeyM5961_QekmGvB6A3LoM9QYYaW5zP4wAXaH6KcvgSJlcxaSUpWbMZN1Cx8Q/view/summary</a>
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+requestor
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+cnt:9345EBF2FA1A92499AC36D1E73C7E09E
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+affected_contact
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+cnt:9345EBF2FA1A92499AC36D1E73C7E09E
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+category
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+chgcat:2186898
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+cab_approval
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+0
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+status
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+chgstat:6000
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+group
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+cnt:9345EBF2FA1A92499AC36D1E73C7E09E
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+chgtype
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+chgtype:200
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+justification
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder"/>
+
+</attrVals>
+
+<propertyValues>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Name of the Requestor
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Jason Shelton
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Requestor Phone Number
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+972 973 5358
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Category of Change
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Normal
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Who will perform the work?
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+DBA
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Type of Environment
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Test
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Application Name
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Request for Payment
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Technical Description
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Create new Appian_ERP database user
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Non-Technical Description
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Create new Appian_ERP database user to replace two other separate users.
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+Will this impact normal functional use?
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+No
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+<string xmlns="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+
+-
+
+</string>
+
+</propertyValues>
+
+<template/>
+
+<attributes>
+
+persistent_id
+
+</attributes>
+
+</CreateChangeOrder>
+
+</soap:Body>
+</soap:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call><con:call id="6456c03c-fb8e-4d21-a485-963383ab77ba" name="unicenter getHandle"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/axis/services/USD_WebServiceSoap</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://www.ca.com/UnicenterServicePlus/ServiceDesk">
+
+   <soapenv:Header/>
+
+   <soapenv:Body>
+
+      <ser:GetHandleForUserid>
+
+         <ser:SID>1588984760</ser:SID>
+
+         <!--Optional:-->
+
+         <ser:userID>krodgers</ser:userID>
+
+      </ser:GetHandleForUserid>
+
+   </soapenv:Body>
+
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="process"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

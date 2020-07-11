@@ -1,0 +1,30 @@
+<mule xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+      http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+    <!-- See SharedFlowPropertyStuff for why we are doing this -->
+    <flow name="runLoginFlowWithStringOfXmlTypeIncident">
+        <mulexml:dom-to-xml-transformer/>
+        <set-variable variableName="requestType" value="incident" doc:name="requestType"/>
+        <flow-ref name="loginFlow" doc:name="loginFlow"/>
+    </flow>
+    <flow name="runLoginFlowWithStringOfXmlTypeRequest">
+        <mulexml:dom-to-xml-transformer/>
+        <set-variable variableName="requestType" value="request" doc:name="requestType"/>
+        <flow-ref name="loginFlow" doc:name="loginFlow"/>
+    </flow>
+    <flow name="runLoginFlowWithStringOfXmlTypeChangeOrder">
+        <mulexml:dom-to-xml-transformer/>
+        <set-variable variableName="requestType" value="changeOrder" doc:name="requestType"/>
+        <flow-ref name="loginFlow" doc:name="loginFlow"/>
+    </flow>
+    <flow name="runLoginFlowWithStringOfXmlTypeOnlineFormsChangeOrder">
+        <mulexml:dom-to-xml-transformer/>
+        <set-variable variableName="requestType" value="onlineFormsChangeOrder" doc:name="requestType"/>
+        <flow-ref name="loginFlow" doc:name="loginFlow"/>
+    </flow>
+</mule>

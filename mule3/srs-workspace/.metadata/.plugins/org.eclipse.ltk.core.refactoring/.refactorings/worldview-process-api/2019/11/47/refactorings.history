@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;worldview-process-api/src/main/app/deadletter-error-handling.xml&apos; to &apos;deadletter-error-logic.xml&apos;" description="Rename resource &apos;deadletter-error-handling.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/app/deadletter-error-handling.xml" name="deadletter-error-logic.xml" stamp="1574197575170" updateReferences="true"/>
+</session>

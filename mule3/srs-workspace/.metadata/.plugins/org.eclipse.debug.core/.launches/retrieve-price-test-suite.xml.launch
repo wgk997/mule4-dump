@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.munit.launchconfig">
+<listAttribute key="Mpath">
+<listEntry value="/Users/asapkota/AnypointStudio6/srs/experience/srs-products-mobile-experience-api/src/test/munit/retrieve-price-test-suite.xml"/>
+</listAttribute>
+<stringAttribute key="Ppath" value="/Users/asapkota/AnypointStudio6/srs/experience/srs-products-mobile-experience-api"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.3.9.2.ee"/>
+<listAttribute key="mule-project-names">
+<listEntry value="products-mobile-experience-api"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="retrieve-price-test-suite.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="products-mobile-experience-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=&#10;-DmunitProjectName=products-mobile-experience-api"/>
+<stringAttribute key="resource" value="retrieve-price-test-suite.xml"/>
+</launchConfiguration>

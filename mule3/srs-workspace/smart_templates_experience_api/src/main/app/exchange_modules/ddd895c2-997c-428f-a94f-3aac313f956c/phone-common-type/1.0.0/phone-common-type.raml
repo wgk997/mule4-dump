@@ -1,0 +1,15 @@
+#%RAML 1.0 Library
+types:
+  phones:
+    type: object
+    properties:
+      phoneNumber:
+        type: string
+        required: true
+      type:
+        type: string
+        required: false
+        enum: ["mobile", "business", "home"]
+      extension:
+        type: string  
+        required: false

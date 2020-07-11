@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:secure-property-placeholder="http://www.mulesoft.org/schema/mule/secure-property-placeholder"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw"
+      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-property-placeholder http://www.mulesoft.org/schema/mule/secure-property-placeholder/current/mule-secure-property-placeholder.xsd
+http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/schema/mule/api-platform-gw/current/mule-api-platform-gw.xsd">
+    <!-- There can only be 1 secure-property-placeholder per app. If projects were combined,
+    then this might go in global.xml, but will keep separate for now
+     -->
+    <secure-property-placeholder:config name="Secure_Property_Placeholder"
+                                        key="${crypto.key}"
+                                        ignoreResourceNotFound="true"
+                                        location="api.properties,api.${env}.properties"
+                                        doc:name="Secure Property Placeholder"/>
+    <api-platform-gw:api apiName="${api.autodiscovery.name}"
+                         version="${api.autodiscovery.version}"
+                         flowRef="api-main-incident"
+                         create="false"
+                         doc:name="API Autodiscovery"/>
+    <spring:beans>
+        <!-- Comes from the standard-email dependency in the pom. Will Make an email catch all
+         exception handler the default strategy -->
+        <spring:import resource="classpath:dfw-email-exception-handler.xml"/>
+        <!-- Comes from the queue-error-strategies dependency/library. We are only using the propagate
+         catch side of that library, not the queuing side. -->
+
+        <!--validator processors each latch on to a single SOAP APIKit router, so we need 1 of them per router-->
+        <spring:import resource="classpath:propagate-catch-transaction.xml"/>
+        <spring:bean name="DFW_CXF_VALIDATOR_I"
+                     class="com.dfwairport.mule.soap.ValidatorProcessor"/>
+        <spring:bean name="DFW_CXF_VALIDATOR_R"
+                     class="com.dfwairport.mule.soap.ValidatorProcessor"/>
+        <spring:bean name="DFW_CXF_VALIDATOR_CO"
+                     class="com.dfwairport.mule.soap.ValidatorProcessor"/>
+        <spring:bean name="DFW_CXF_VALIDATOR_OFCO"
+                     class="com.dfwairport.mule.soap.ValidatorProcessor"/>
+    </spring:beans>
+</mule>

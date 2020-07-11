@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"
+      xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <ws:consumer-config name="Unicenter_Web_Service_Consumer"
+                        wsdlLocation="references/Unicenter_R12.6_WebService.wsdl"
+                        service="USD_WebService"
+                        port="USD_WebServiceSoap"
+                        serviceAddress="${unicenter.incident.soap.endpoint}"
+                        doc:name="Unicenter Web Service Consumer"/>
+    <flow name="loginFlow">
+        <enricher target="#[flowVars.sessionId]" doc:name="Message Enricher">
+            <processor-chain doc:name="Processor Chain">
+                <dw:transform-message doc:name="Build login request">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+ns0#Login: {
+	ns0#username: p('unicenter.username'),
+	ns0#password: p('unicenter.password')
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="Login" doc:name="Unicenter Login"/>
+                <dw:transform-message doc:name="Session ID becomes payload">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+payload.ns0#LoginResponse.ns0#SID]]></dw:set-payload>
+                </dw:transform-message>
+            </processor-chain>
+        </enricher>
+        <choice doc:name="co_number_status?">
+            <when expression="#[flowVars.co_number_status != null &amp;&amp; flowVars.co_number_status != &quot;&quot; ]">
+                <logger message="Skip getHandle process" level="INFO" doc:name="Logger"/>
+            </when>
+            <otherwise>
+                <flow-ref name="get-handles" doc:name="get-handles"/>
+            </otherwise>
+        </choice>
+    </flow>
+    <flow name="get-handles">
+        <dw:transform-message doc:name="Get user ids for handle lookup"
+                              metadata:id="1f7219e0-c1a2-49f8-a1c2-4cb566e003af">
+            <dw:input-payload mimeType="application/xml" doc:sample="sample_data/soap_input.xml"/>
+            <dw:input-variable doc:sample="sample_data/sample_request_type.dwl" mimeType="application/java"
+                               variableName="requestType"/>
+            <dw:set-variable variableName="handleMapping"><![CDATA[%dw 1.0
+%output application/java
+
+%namespace ns0 http://xmlns.oracle.com/CreateUnicenterIncident
+%namespace nsr http://xmlns.oracle.com/CreateUnicenterRequest
+%namespace nsc http://xmlns.oracle.com/CreateUnicenterChangeOrder
+%namespace nsof http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+%var requestForIncident = payload.ns0#CreateUnicenterIncidentProcessRequest
+%var requestForRequest = payload.nsr#CreateUnicenterRequestProcessRequest
+%var requestForChangeOrder = payload.nsc#CreateUnicenterChangeOrderProcessRequest
+%var requestForFormsChangeOrder = payload.nsof#CreateOnlineFormsChangeOrderProcessRequest
+
+%var affectedEndUser = {
+	incident: requestForIncident.ns0#affectedEndUser,
+	request: requestForRequest.nsr#affected_end_user,
+	changeOrder: requestForChangeOrder.nsc#affected_end_user,
+	onlineFormsChangeOrder: requestForFormsChangeOrder.nsof#affected_end_user
+}
+%var requester = {
+	incident: null,
+	request: requestForRequest.nsr#requester,
+	changeOrder: requestForChangeOrder.nsc#requester,
+	onlineFormsChangeOrder: requestForFormsChangeOrder.nsof#requester
+}
+%var assignee = {
+	incident: null,
+	request: requestForRequest.nsr#assignee,
+	changeOrder: null,
+	onlineFormsChangeOrder: requestForFormsChangeOrder.nsof#assignee
+}
+---
+{
+	loggedInUsername: p('unicenter.username'),
+	affectedEndUser: trim (affectedEndUser[flowVars.requestType] default ''),
+	requester: trim (requester[flowVars.requestType] default ''),
+	assignee: trim (assignee[flowVars.requestType] default '')
+	// don't want empty user values
+} mapObject ({ ($$): $ } when ($ != null and $ != '') otherwise {}) ]]></dw:set-variable>
+        </dw:transform-message>
+        <foreach doc:name="For Each" collection="#[flowVars.handleMapping]"
+                 doc:description="Functions as an enricher, lets us convert each username to a handle while keeping a map around to reference the handles later on">
+            <logger message="#[flowVars.logPrefix] Getting handle for for #[payload]"
+                    level="INFO" doc:name="Logger"/>
+            <set-variable variableName="userIdForHandleLookup" value="#[payload]"
+                          doc:name="Grab username for iteration for handle lookup"/>
+            <enricher target="#[flowVars.handleMapping[flowVars.key]]" doc:name="Message Enricher"
+                      doc:description="The foreach sets the &#8216;key&#8217; flowVar and the key values come from &quot;Get user ids for handle lookup&quot; DW at the beginning of this flow.">
+                <flow-ref name="getHandleFlow" doc:name="getHandleFlow"/>
+            </enricher>
+        </foreach>
+    </flow>
+    <flow name="getHandleFlow">
+        <dw:transform-message doc:name="Build Handle Request">
+            <dw:input-payload/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+{
+	ns0#GetHandleForUserid: {
+		ns0#SID: flowVars.sessionId,
+		ns0#userID: flowVars.userIdForHandleLookup
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="GetHandleForUserid"
+                     doc:name="GetHandleForUserid"/>
+        <dw:transform-message doc:name="Get handle as string">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+payload.ns0#GetHandleForUseridResponse.ns0#GetHandleForUseridResult]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+</mule>

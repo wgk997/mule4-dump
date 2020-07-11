@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<oracle:CreateOnlineFormsChangeOrderProcessRequest  xmlns:oracle="http://xmlns.oracle.com/CreateOnlineFormsChangeOrder">
+   <!--Optional:-->
+   <oracle:bpelName>bpelName</oracle:bpelName>
+   <!--Optional:-->
+   <oracle:instanceID>iid</oracle:instanceID>
+   <!--Optional:-->
+   <oracle:assignee>assigneesandesh</oracle:assignee>
+   <!--Optional:-->
+   <oracle:requester>?</oracle:requester>
+   <!--Optional:-->
+   <oracle:affected_end_user>affectedsandesh</oracle:affected_end_user>
+   <!--Optional:-->
+   <oracle:co_group>?</oracle:co_group>
+   <!--Optional:-->
+   <oracle:co_type>?</oracle:co_type>
+   <!--Optional:-->
+   <oracle:cab_approval>?</oracle:cab_approval>
+   <!--Optional:-->
+   <oracle:category>cat123</oracle:category>
+   <!--Optional:-->
+   <oracle:summary>?</oracle:summary>
+   <!--Optional:-->
+   <oracle:description>?</oracle:description>
+   <!--Optional:-->
+   <oracle:justification>?</oracle:justification>
+   <!--Optional:-->
+   <oracle:co_number_status>12345</oracle:co_number_status>
+   <oracle:onlineFormQueries>
+      <oracle:Q1>this is question 1</oracle:Q1>
+      <oracle:A1>this is answer 1</oracle:A1>
+      <oracle:Q2>this is question 2</oracle:Q2>
+      <oracle:A2/>
+      <oracle:Q3/>
+      <oracle:A3>this is answer 3</oracle:A3>
+      <oracle:Q4/>
+      <oracle:A4/>
+      <oracle:Q5/>
+      <oracle:A5/>
+      <oracle:Q6/>
+      <oracle:A6/>
+      <oracle:Q7/>
+      <oracle:A7/>
+      <oracle:Q8/>
+      <oracle:A8/>
+      <oracle:Q9/>
+      <oracle:A9/>
+      <oracle:Q10/>
+      <oracle:A10/>
+      <oracle:Q11/>
+      <oracle:A11/>
+      <oracle:Q12/>
+      <oracle:A12/>
+      <oracle:Q13/>
+      <oracle:A13/>
+      <oracle:Q14/>
+      <oracle:A14/>
+      <oracle:Q15>This is question 15</oracle:Q15>
+      <oracle:A15/>
+      <oracle:Q16/>
+      <oracle:A16/>
+      <oracle:Q17/>
+      <oracle:A17/>
+      <oracle:Q18/>
+      <oracle:A18/>
+      <oracle:Q19/>
+      <oracle:A19/>
+      <oracle:Q20/>
+      <oracle:A20/>
+      <oracle:Q21/>
+      <oracle:A21/>
+      <oracle:Q22/>
+      <oracle:A22/>
+      <oracle:Q23/>
+      <oracle:A23/>
+      <oracle:Q24/>
+      <oracle:A24/>
+      <oracle:Q25/>
+      <oracle:A25/>
+      <oracle:Q26/>
+      <oracle:A26/>
+      <oracle:Q27/>
+      <oracle:A27/>
+      <oracle:Q28/>
+      <oracle:A28/>
+      <oracle:Q29>this is question 29</oracle:Q29>
+      <oracle:A29></oracle:A29>
+      <oracle:Q30/>
+      <oracle:A30/>
+      <oracle:Q31/>
+      <oracle:A31/>
+      <oracle:Q32/>
+      <oracle:A32/>
+      <oracle:Q33/>
+      <oracle:A33/>
+      <oracle:Q34/>
+      <oracle:A34/>
+      <oracle:Q35/>
+      <oracle:A35/>
+      <oracle:Q36/>
+      <oracle:A36/>
+      <oracle:Q37/>
+      <oracle:A37/>
+      <oracle:Q38/>
+      <oracle:A38/>
+      <oracle:Q39/>
+      <oracle:A39>this is answer 39</oracle:A39>
+      <oracle:A40>this is answer 40</oracle:A40>
+      <oracle:Q45>this is question 45</oracle:Q45>
+      <oracle:A49>the answer for Q49</oracle:A49>
+      <oracle:A50>the answer for Q50</oracle:A50>
+   </oracle:onlineFormQueries>
+</oracle:CreateOnlineFormsChangeOrderProcessRequest>

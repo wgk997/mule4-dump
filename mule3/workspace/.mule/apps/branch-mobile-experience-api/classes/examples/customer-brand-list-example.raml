@@ -1,0 +1,47 @@
+#%RAML 1.0 NamedExample
+customer-brands-list-example:
+  {
+      "brandList": 
+      [
+        {
+          "brandId" : 19,
+          "brandLogo" : "https://media.srsdistribution.com/Uploads/BrandsByID/19.png",
+          "brandName" : "SUPERIOR DISTRIBUTION",
+          "shipToList":
+          [
+            {
+              "shipToId": 123456,
+              "customerId": 12345,
+              "customerCode": "FIF123",
+              "shipToSequenceId": 1,
+              "customerShipToName": "FIFE CONSTRUCTION LP",
+              "addressLine1": "123 MAIN ST",
+              "addressLine2":"",
+              "addressLine3":"",
+              "city": "MAYBERRY",
+              "state": "NC",
+              "zipCode": "12345",
+              "phone": "1235551212",
+              "branchList": 
+              [
+                {
+                  "branchId" : 99,
+                  "branchType" : "Home Branch",
+                  "branchLogo" : "https://www.example.org/images/logo.png",
+                  "branchCode" : "RFMAY",
+                  "branchName" : "RFD SHINGLES - MAYBERRY",
+                  "branchAddress" : "123 Main St",
+                  "branchCityStateZip": "Mayberry, NC 27031",
+                  "branchFax" : "123-555-1212",
+                  "branchPhone" : "123-555-1213",
+                  "latitude" : -96.682624,
+                  "longitude" : 33.145384,
+                  "businessHours" : "Monday - Friday, 7:00 AM to 5:00 PM",
+                  "saturdayBusinessHours" : "7:00 AM to 1:00 PM"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }

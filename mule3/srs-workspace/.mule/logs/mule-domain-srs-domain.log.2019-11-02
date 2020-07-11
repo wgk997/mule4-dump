@@ -1,0 +1,1 @@
+WARN  2019-11-02 20:05:21,092 [[srs-domain].http.listener(5) SelectorRunner] org.mule.module.http.internal.listener.grizzly.ResponseCompletionHandler: HTTP response sending task failed with error: Broken pipe

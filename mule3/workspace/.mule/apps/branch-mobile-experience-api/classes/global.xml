@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:secure-property-placeholder="http://www.mulesoft.org/schema/mule/secure-property-placeholder" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/schema/mule/api-platform-gw/current/mule-api-platform-gw.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/secure-property-placeholder http://www.mulesoft.org/schema/mule/secure-property-placeholder/current/mule-secure-property-placeholder.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+    <api-platform-gw:api apiName="${application.name}" version="${api.version}" flowRef="branch-mobile-experience-api-main" create="true"  doc:name="API Autodiscovery"/>
+ <http:request-config name="HTTP_Request_Configuration_System_layer" host="${branch.system.host}" port="${branch.system.port}" basePath="${branch.system.basePath}" connectionIdleTimeout="600000" doc:name="HTTP Request Configuration"  responseTimeout="${system.api.call.response.timeout}" protocol="HTTPS"/>
+     <http:request-config name="HTTP_Request_Configuration" host="${error.http.host}" port="${error.http.port}" doc:name="HTTP Request Configuration" protocol="HTTPS"/>
+
+    <!-- Used for experience APIs deployed to Cloudhub -->
+    <http:listener-config name="Cloudhub_HTTP_Listener_Configuration" protocol="HTTPS" host="0.0.0.0" port="${https.port}" doc:name="HTTP Listener Configuration">
+        <tls:context>
+            <tls:key-store type="jks" path="keystore.jks" keyPassword="mule123" password="mule123"/>
+        </tls:context>
+    </http:listener-config>
+    <context:property-placeholder location="branch-mobile-experience-api-${env}.properties"/>
+    
+    <!-- Used for process and system APIs deployed to Cloudhub -->
+
+    
+    
+    <!-- For APIs deployed to on premise runtime and part of the Domain, specify http listener: srsDomainHTTPListenerConfig -->
+    
+    <!-- Used for APIs deployed to On premise runtime and NOT part of the Domain -->
+
+    
+</mule>

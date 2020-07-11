@@ -1,0 +1,11 @@
+{
+    "inputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "#_custom_mule_metadata_type_#",
+            "typeId": "sampleCreateOnlineFormsChangeOrderRequest"
+        }
+    },
+    "outputMessageMetadata": {},
+    "id": "14e7cdbc-f1f4-4803-a4f1-a5c2e479a722",
+    "version": "5.2.0.0"
+}

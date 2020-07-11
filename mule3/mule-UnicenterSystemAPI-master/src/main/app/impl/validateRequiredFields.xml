@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+    <flow name="validateRequiredFieldsAndInvokeFlow">
+        <dw:transform-message doc:name="Check Required Fields">
+            <dw:set-variable variableName="missingRequiredFieldsList"><![CDATA[%dw 1.0
+%output application/java
+%namespace nsi http://xmlns.oracle.com/CreateUnicenterIncident
+%namespace nsr http://xmlns.oracle.com/CreateUnicenterRequest
+%namespace nsco http://xmlns.oracle.com/CreateUnicenterChangeOrder
+%namespace nsofco http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+%var requestTypeIncident = payload.nsi#CreateUnicenterIncidentProcessRequest
+%var requestTypeRequest = payload.nsr#CreateUnicenterRequestProcessRequest
+%var requestTypeChangeOrder = payload.nsco#CreateUnicenterChangeOrderProcessRequest
+%var requestTypeOnlineFormsChangeOrder = payload.nsofco#CreateOnlineFormsChangeOrderProcessRequest
+%var incidentArea = requestTypeIncident.nsi#incidentArea default ''
+%var categoryCO = requestTypeChangeOrder.nsco#category default ''
+%var categoryOFCO = requestTypeOnlineFormsChangeOrder.nsofco#category default ''
+
+%var getMissingRequiredFields = (hashmap) -> hashmap mapObject (
+	{'$$': true} when $ == null or (trim $) == '' otherwise {}
+) pluck $$ as :string
+
+%var missingRequiredFields = {
+	incident: getMissingRequiredFields({
+				incidentArea: incidentArea when incidentArea matches /pcat:\d+/ otherwise ''
+			}),
+	request: getMissingRequiredFields({
+				description: requestTypeRequest.nsr#description,
+				summary: requestTypeRequest.nsr#summary,
+				category: requestTypeRequest.nsr#category
+			}),
+	changeOrder: getMissingRequiredFields({
+				category: categoryCO when categoryCO matches /chgcat:\d+/ otherwise ''
+			}),
+	onlineFormsChangeOrder: getMissingRequiredFields({
+				description: requestTypeOnlineFormsChangeOrder.nsofco#description,
+				summary: requestTypeOnlineFormsChangeOrder.nsofco#summary,
+				category: categoryOFCO when categoryOFCO matches /chgcat:\d+/ otherwise ''
+			})
+}
+---
+//	this would not be necessary if we had a different SOAP operation w/ a different schema dedicated to this purpose
+missingRequiredFields[flowVars.requestType] default ("Unknown request type: " ++ flowVars.requestType)]]></dw:set-variable>
+        </dw:transform-message>
+        <choice doc:name="Any required fields are missing?">
+            <when expression="#[flowVars.missingRequiredFieldsList.isEmpty() == false]">
+                <set-variable variableName="exception"
+                              value="#[groovy: new Exception('Required fields are missing: '+flowVars.missingRequiredFieldsList)]"
+                              doc:name="exception"/>
+                <dw:transform-message doc:name="desc">
+                    <dw:set-variable variableName="desc"><![CDATA[%dw 1.0
+%output application/java
+%namespace nsi http://xmlns.oracle.com/CreateUnicenterIncident
+%var missingFields = flowVars.missingRequiredFieldsList joinBy ","
+%var incidentArea = payload.nsi#CreateUnicenterIncidentProcessRequest.nsi#incidentArea default ''
+
+// here the description seems repetitive, but these will be modified once Kasey verifies these do not affect to the consumers.
+%var finalDesc = {
+	incident: "This Incident was not created, the category pcat value is invalid as " ++ incidentArea ++ " this Create Incident process will stop here. Please check the EM console for more details.",
+	request: "This request was not created. The following required fields are missing or invalid: [" ++ missingFields ++ "]. This process will stop here. Please check the console for more details.",
+	changeOrder: "This change order was not created. The following required fields are missing or invalid: [" ++ missingFields ++ "]. This process will stop here. Please check the console for more details.",
+	onlineFormsChangeOrder: "This change order was not created. The following required fields are missing or invalid: [" ++ missingFields ++ "]. This process will stop here. Please check the console for more details."
+}
+---
+// if this is null, the desc in faultResponseFlow will be default value
+finalDesc[flowVars.requestType] default null]]></dw:set-variable>
+                </dw:transform-message>
+                <flow-ref name="faultResponseFlow" doc:name="faultResponseFlow"/>
+            </when>
+            <otherwise>
+                <flow-ref name="#[flowVars.flowName]" doc:name="#[flowVars.flowName]"/>
+            </otherwise>
+        </choice>
+    </flow>
+</mule>

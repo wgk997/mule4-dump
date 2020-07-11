@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policy xmlns="http://www.mulesoft.org/schema/mule/policy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mule="http://www.mulesoft.org/schema/mule/core" xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/policy http://www.mulesoft.org/schema/mule/policy/current/mule-policy.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/schema/mule/api-platform-gw/current/mule-api-platform-gw.xsd" online="true" requiresContracts="true" id="826237" policyName="Client Id Enforcement" order="1" violationCategory="authentication">
+  <mule:processor-chain xmlns:mule="http://www.mulesoft.org/schema/mule/core" name="826237-build-response">
+    <mule:set-property propertyName="http.status" value="403"/>
+    <mule:set-property propertyName="Content-Type" value="application/json"/>
+    <mule:set-payload value="#[flowVars._invalidClientMessage]"/>
+  </mule:processor-chain>
+  <before>
+    <api-platform-gw:validate-client xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" clientId="#[message.inboundProperties['client_id']]" clientSecret="#[message.inboundProperties['client_secret']]" onUnaccepted="826237-build-response"/>
+  </before>
+  <pointcut>
+    <api-platform-gw:api-pointcut xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" apiName="groupId:f2ea2cb4-c600-4bb5-88e8-e952ff5591ee:assetId:health-check-example" apiVersion="v1.0:15962784"/>
+  </pointcut>
+</policy>

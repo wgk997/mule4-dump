@@ -1,0 +1,77 @@
+#%RAML 1.0 DataType
+displayName: Nearest Eligible Branch Data Type
+type: object
+properties: 
+  branchId: 
+    description: ID of the branch
+    type: integer
+    required: true
+    example: 100
+  branchCd:
+    description: short code of branch
+    type: string
+    required: true
+    example: RFMAY
+  description: 
+    displayName: Description
+    description: Description of the Branch
+    type: string
+    required: true
+    example: SRS DISTRIBUTION
+  brandName:
+    description: Branch of the branch
+    type: string
+    required: true
+    example: SOUTHERN SHINGLES
+  address1:
+    description: Address of the branch
+    type: string
+    required: true
+    example: 5900 Lake Forest Dr
+  city:
+    description: Branch City 
+    type:  string
+    required: true
+    example: McKinney
+  state:
+    description: State Code for the Branch
+    type: string
+    required: true
+    example: TX
+  zip:
+    description: Zip Code for the Branch
+    type: string
+    required: true
+    example: "12345"
+  phone:
+    description: Branch Phone number
+    type: string
+    required: true
+    example: 243-555-8787
+  branchManagerName:
+    description: Branch Manager Name
+    type: string
+    required: true
+    example: Johnny Smith
+  branchManagerEmailAddress:
+    description: Email Address for the branch Manager
+    type: string
+    required: true
+    example: jsmith@srsdistribution.com
+  branchLatitude:
+    description: Latitude for the Branch
+    type: number
+    required: true
+    example: 12.090934
+  branchLongitude:
+    description: Longitude for the Branch
+    type: number
+    required: true
+    example: -12.903457
+  distance: 
+    description: distance from the Branch in miles
+    type: number
+    required: true
+    example: 23.3452
+
+   

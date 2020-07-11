@@ -1,0 +1,4 @@
+authenticated.users=[{"id"\:"4119b0ab-19af-4db0-bf26-267fcc33d544","token"\:"a8859c92-d9e2-4dd5-9c59-d3183a7ef0aa","userId"\:"asapkota-avio","refreshToken"\:"","baseUrl"\:"https\://anypoint.mulesoft.com/"},{"id"\:"938dbd73-3c2b-4746-99d6-ef46ea94ebe8","token"\:"6b4e4c63-3386-42b3-ab83-2912d86a57eb","userId"\:"asapkota-srs","refreshToken"\:"","baseUrl"\:"https\://anypoint.mulesoft.com/"}]
+current.token=a8859c92-d9e2-4dd5-9c59-d3183a7ef0aa
+current.user=asapkota-avio
+eclipse.preferences.version=1

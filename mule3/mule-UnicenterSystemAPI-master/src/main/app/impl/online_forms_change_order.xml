@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata"
+      xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+      xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <flow name="onlineFormsChangeOrderForCoStatusFlow">
+        <dw:transform-message doc:name="Build Do Select Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%namespace oracle http://xmlns.oracle.com/CreateOnlineFormsOrderRequest
+---
+{
+	ns0#DoSelect: {
+		ns0#SID: flowVars.sessionId,
+		ns0#objectType: "chg",
+		ns0#whereClause: "chg_ref_num = '" ++ flowVars.co_number_status ++ "'",
+		ns0#maxRows: 1,
+		ns0#attributes: {
+			ns0#string: 'chg_ref_num',
+			ns0#string: 'summary',
+			ns0#string: 'description',
+			ns0#string: 'status',
+			ns0#string: 'category'
+			
+		}
+	}
+} ]]></dw:set-payload>
+        </dw:transform-message>
+        <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="DoSelect" doc:name="Do Select"/>
+        <dw:transform-message doc:name="DoSelectResponseSuccess">
+            <dw:set-variable variableName="DoSelectResponseSuccess"><![CDATA[%dw 1.0
+%output application/java
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+payload.ns0#DoSelectResponse.ns0#DoSelectResult.UDSObjectList.UDSObject.Attributes]]></dw:set-variable>
+        </dw:transform-message>
+        <choice doc:name="DoSelectResponseSuccess?">
+            <when expression="#[flowVars.DoSelectResponseSuccess != null]">
+                <dw:transform-message doc:name="Setup reply for exist CO status">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+%namespace ns01 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+ns0#CreateOnlineFormsChangeOrderProcessResponse: {
+	ns0#co_status_value: flowVars.DoSelectResponseSuccess.ns01#status,
+	ns0#changeOrderNumber: flowVars.DoSelectResponseSuccess.ns01#chg_ref_num,
+	ns0#sessionId: flowVars.DoSelectResponseSuccess.ns01#category,
+	ns0#result: flowVars.DoSelectResponseSuccess.ns01#summary,
+	ns0#desc: flowVars.DoSelectResponseSuccess.ns01#description
+}]]></dw:set-payload>
+                </dw:transform-message>
+            </when>
+            <otherwise>
+                <dw:transform-message doc:name="Setup reply for missing CO status">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+%namespace ns01 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+---
+ns0#CreateOnlineFormsChangeOrderProcessResponse: {
+	ns0#co_status_value: "Not Found",
+	ns0#changeOrderNumber: flowVars.co_number_status,
+	ns0#sessionId: "",
+	ns0#result: "Change Order not found.",
+	ns0#desc: "USD database does not have any details for CO# " ++ flowVars.co_number_status
+}]]></dw:set-payload>
+                </dw:transform-message>
+            </otherwise>
+        </choice>
+    </flow>
+    <flow name="onlineFormsChangeOrderFlow">
+        <choice doc:name="Does co_number_status exist?">
+            <when expression="#[flowVars.co_number_status != null &amp;&amp; flowVars.co_number_status != &quot;&quot; ]">
+                <flow-ref name="onlineFormsChangeOrderForCoStatusFlow"
+                          doc:name="onlineFormsChangeOrderForCoStatusFlow"/>
+            </when>
+            <otherwise>
+                <set-variable variableName="flowName" value="createOnlineFormsChangeOrderFlow" doc:name="flowName"/>
+                <flow-ref name="validateRequiredFieldsAndInvokeFlow" doc:name="validateRequiredFieldsAndInvokeFlow"/>
+            </otherwise>
+        </choice>
+    </flow>
+    <flow name="createOnlineFormsChangeOrderFlow">
+        <dw:transform-message doc:name="Build Create Change Order" metadata:id="14e7cdbc-f1f4-4803-a4f1-a5c2e479a722">
+            <dw:input-payload doc:sample="sample_data/sampleCreateOnlineFormChangeOrderRequest.xml"
+                              mimeType="application/xml"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%namespace oracle http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+%var request = payload.oracle#CreateOnlineFormsChangeOrderProcessRequest
+// TODO: In Mule 4.x, take advantage of DW importing to share the attrvals code across all of these DWs in the unicenter sys API project
+// unicenter expects FLAT key|val pair for attrVals
+%var getAttrVals = (hash)-> hash mapObject {
+	// we don't want to include key names with null values
+	ns0#string: $$ when ($ != null) otherwise null,
+	ns0#string: $
+} filter ($ != null)
+
+// go from list of string values to a map/object with keys
+%var getPropertyStringList = (items) -> items reduce ((val, acc = {
+}) -> acc ++ using (defaultedVal = '-' when (val == '' or val == null) otherwise val) {
+    // don't want null values going to Unicenter
+	ns0#string: defaultedVal
+})
+
+%var onlineFormQueries = request.oracle#onlineFormQueries
+
+// now we will have all the keys we could possibly want
+%var keysToLookup = flatten ((1 to 50 map (
+    ["Q" ++ $, "A" ++ $]
+)))
+
+// now we will have a list of all questions/answers from the request
+%var resolvedQuestionsAnswerList = keysToLookup map onlineFormQueries[$]
+// just need to turn it into a list of ns0#string elements
+%var propertyVals = getPropertyStringList(resolvedQuestionsAnswerList)
+
+%var handleMapping = flowVars.handleMapping
+%var mainUserHandle = handleMapping.loggedInUsername
+%var coGroup = request.oracle#co_group default ""
+%var coType = request.oracle#co_type default ""
+%var cabApproval = request.oracle#cab_approval default ""
+// TODO: w/ Mule 4, make this a module and share w/ request
+%var handleUrl = (desc) -> using (trimmedDesc = trim desc) (('<a href="' ++ trimmedDesc ++ '" target="_blank">' ++ trimmedDesc ++ '</a>') when (trimmedDesc startsWith "http") otherwise desc)
+---
+ns0#CreateChangeOrder: {
+	ns0#SID: flowVars.sessionId,
+	ns0#creatorHandle: mainUserHandle,
+	ns0#attrVals: getAttrVals({
+		requestor: handleMapping.requester,
+		affected_contact: handleMapping.affectedEndUser,
+		assignee: handleMapping.assignee,
+		category: request.oracle#category,
+		cab_approval: "1" when cabApproval == "Yes" otherwise "0",
+		group: "cnt:" ++ coGroup when (sizeOf coGroup) > 30 otherwise "",
+		chgtype: "cnt:" ++ coType when (sizeOf coType) > 0 otherwise "",
+		justification: request.oracle#justification default "",
+		summary: handleUrl(request.oracle#summary),
+		description: handleUrl(request.oracle#description),
+		// chgstat:6000 means Open
+		status: "chgstat:6000"
+	}),
+	ns0#propertyValues: propertyVals,
+	ns0#template: '',
+	ns0#attributes: {
+		ns0#string: 'persistent_id'
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <ws:consumer config-ref="Unicenter_Web_Service_Consumer" operation="CreateChangeOrder"
+                     doc:name="Create Change Order"/>
+        <dw:transform-message doc:name="Setup reply">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://xmlns.oracle.com/CreateOnlineFormsChangeOrder
+%namespace ns01 http://www.ca.com/UnicenterServicePlus/ServiceDesk
+%var changeOrderNumber = payload.ns01#CreateChangeOrderResponse.ns01#newChangeNumber
+%var changeOrderHandle = payload.ns01#CreateChangeOrderResponse.ns01#newChangeHandle
+---
+ns0#CreateOnlineFormsChangeOrderProcessResponse: {
+	ns0#sessionId: flowVars.sessionId,
+	ns0#changeOrderNumber: changeOrderNumber,
+	ns0#changeOrderHandle: changeOrderHandle,
+	ns0#result: 'Completed',
+	ns0#desc: "Change Order was created successfully."
+}]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+</mule>

@@ -1,0 +1,3448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:mule="http://www.mulesoft.org/schema/mule/core" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.mulesoft.org/schema/mule/devkit" targetNamespace="http://www.mulesoft.org/schema/mule/s3" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"></xs:import>
+  <xs:import namespace="http://www.springframework.org/schema/beans" schemaLocation="http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"></xs:import>
+  <xs:import namespace="http://www.mulesoft.org/schema/mule/core" schemaLocation="http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></xs:import>
+  <xs:element xmlns:mule="http://www.mulesoft.org/schema/mule/core" substitutionGroup="mule:abstract-extension" name="config">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mule:abstractExtensionType">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+          <xs:sequence>
+            <xs:element type="mule:poolingProfileType" minOccurs="0" name="connection-pooling-profile">
+              <xs:annotation>
+                <xs:documentation>Characteristics of the connection pool.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" ref="mule:abstract-reconnection-strategy">
+              <xs:annotation>
+                <xs:documentation>Reconnection strategy that defines how Mule should handle a connection failure.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="required" name="name">
+            <xs:annotation>
+              <xs:documentation>Give a name to this configuration so it can be later referenced by config-ref.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" default="50" name="maxConnections">
+            <xs:annotation>
+              <xs:documentation>Sets the maximum number of allowed open HTTP connections.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="storageUrl">
+            <xs:annotation>
+              <xs:documentation>The URL to connect to in case an S3 compatible storage is used. If blank, the default AWS S3 one will be used.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="ProtocolEnumType" use="optional" default="HTTPS" name="protocol">
+            <xs:annotation>
+              <xs:documentation>The optional communication protocol to use when sending requests to AWS. Communication over HTTPS is the default</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyHost">
+            <xs:annotation>
+              <xs:documentation>The optional proxy port</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="proxyPort">
+            <xs:annotation>
+              <xs:documentation>The optional proxy port</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyUsername">
+            <xs:annotation>
+              <xs:documentation>The optional proxy username</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyPassword">
+            <xs:annotation>
+              <xs:documentation>The optional proxy password</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyDomain">
+            <xs:annotation>
+              <xs:documentation>The optional proxy domain</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyWorkstation">
+            <xs:annotation>
+              <xs:documentation>The optional proxy workstation</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" default="50000" name="socketTimeout">
+            <xs:annotation>
+              <xs:documentation>The amount of time to wait (in milliseconds) for data to be transferred over an established, open connection before the connection is timed out. A value of 0 means infinity,
+and is not recommended.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" default="50000" name="connectionTimeout">
+            <xs:annotation>
+              <xs:documentation>The amount of time to wait (in milliseconds) when initially establishing a connection before giving up and timing out. A value of 0 means infinity, and is not recommended.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="accessKey">
+            <xs:annotation>
+              <xs:documentation>The access key provided by Amazon, needed for non anonymous operations</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="secretKey">
+            <xs:annotation>
+              <xs:documentation>The secrete key provided by Amazon, needed for non anonymous operations</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="sessionToken">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="booleanType" use="optional" name="tryDefaultAWSCredentialsProviderChain">
+            <xs:annotation>
+              <xs:documentation>Set it to true to try first to obtain credentials from AWS environment. See: http://docs.aws.amazon.com/java-sdk/latest/developer-guide/credentials.html#using-the-default-credential-provider-chain</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns:mule="http://www.mulesoft.org/schema/mule/core" substitutionGroup="mule:abstract-extension" name="role-config">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mule:abstractExtensionType">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+          <xs:sequence>
+            <xs:element type="mule:poolingProfileType" minOccurs="0" name="connection-pooling-profile">
+              <xs:annotation>
+                <xs:documentation>Characteristics of the connection pool.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" ref="mule:abstract-reconnection-strategy">
+              <xs:annotation>
+                <xs:documentation>Reconnection strategy that defines how Mule should handle a connection failure.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="required" name="name">
+            <xs:annotation>
+              <xs:documentation>Give a name to this configuration so it can be later referenced by config-ref.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" default="50" name="maxConnections">
+            <xs:annotation>
+              <xs:documentation>Sets the maximum number of allowed open HTTP connections.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="storageUrl">
+            <xs:annotation>
+              <xs:documentation>The URL to connect to in case an S3 compatible storage is used. If blank, the default AWS S3 one will be used.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="ProtocolEnumType" use="optional" default="HTTPS" name="protocol">
+            <xs:annotation>
+              <xs:documentation>The optional communication protocol to use when sending requests to AWS. Communication over HTTPS is the default</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyHost">
+            <xs:annotation>
+              <xs:documentation>The optional proxy port</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="proxyPort">
+            <xs:annotation>
+              <xs:documentation>The optional proxy port</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyUsername">
+            <xs:annotation>
+              <xs:documentation>The optional proxy username</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyPassword">
+            <xs:annotation>
+              <xs:documentation>The optional proxy password</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyDomain">
+            <xs:annotation>
+              <xs:documentation>The optional proxy domain</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" name="proxyWorkstation">
+            <xs:annotation>
+              <xs:documentation>The optional proxy workstation</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" default="50000" name="socketTimeout">
+            <xs:annotation>
+              <xs:documentation>The amount of time to wait (in milliseconds) for data to be transferred over an established, open connection before the connection is timed out. A value of 0 means infinity,
+and is not recommended.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" default="50000" name="connectionTimeout">
+            <xs:annotation>
+              <xs:documentation>The amount of time to wait (in milliseconds) when initially establishing a connection before giving up and timing out. A value of 0 means infinity, and is not recommended.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="accessKey">
+            <xs:annotation>
+              <xs:documentation>The access key provided by Amazon, needed for non anonymous operations</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="secretKey">
+            <xs:annotation>
+              <xs:documentation>The secrete key provided by Amazon, needed for non anonymous operations</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="roleARN">
+            <xs:annotation>
+              <xs:documentation>The Role ARN allows you to cross account access without using security credentials.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="booleanType" use="optional" name="tryDefaultAWSCredentialsProviderChain">
+            <xs:annotation>
+              <xs:documentation>Set it to true to try first to obtain credentials from AWS environment. See: http://docs.aws.amazon.com/java-sdk/latest/developer-guide/credentials.html#using-the-default-credential-provider-chain</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Create-bucketType" substitutionGroup="mule:abstract-message-processor" name="create-bucket">
+    <xs:annotation>
+      <xs:documentation>Creates a new bucket; connector must not be configured as anonymous for this operation to succeed. Bucket names must be unique across all of Amazon S3, that is, among all
+their users. Bucket ownership is similar to the ownership of Internet domain names. Within Amazon S3, only a single user owns each bucket. Once a uniquely named bucket is
+created in Amazon S3, organize and name the objects within the bucket in any way. Ownership of the bucket is retained as long as the owner has an Amazon S3 account. To
+conform with DNS requirements, buckets names must: not contain underscores, be between 3 and 63 characters long, not end with a dash, not contain adjacent periods, not
+contain dashes next to periods and not contain uppercase characters. Do not make bucket create or delete calls in the high availability code path of an application. Create
+or delete buckets in a separate initialization or setup.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Create-bucketType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>The bucket to create. It must not exist yet.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="RegionEnumType" use="optional" default="US_STANDARD" name="region">
+          <xs:annotation>
+            <xs:documentation>the region where to create the new bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="CannedAccessControlListEnumType" use="optional" default="PRIVATE" name="acl">
+          <xs:annotation>
+            <xs:documentation>the access control list of the new bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-bucketType" substitutionGroup="mule:abstract-message-processor" name="delete-bucket">
+    <xs:annotation>
+      <xs:documentation>Deletes the specified bucket. All objects (and all object versions, if versioning was ever enabled) in the bucket must be deleted before the bucket itself can be deleted;
+this restriction can be relaxed by specifying the attribute force="true".</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Delete-bucketType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket to delete</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="booleanType" use="optional" default="false" name="force">
+          <xs:annotation>
+            <xs:documentation>optional true if the bucket must be deleted even if it is not empty, false if operation should fail in such scenario.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-bucket-cors-configurationType" substitutionGroup="mule:abstract-message-processor" name="delete-bucket-cors-configuration">
+    <xs:annotation>
+      <xs:documentation>Deletes the Cross Origin Configuration information set for the bucket. To use this operation, you must have permission to perform the s3:PutCORSConfiguration action. The
+bucket owner has this permission by default and can grant this permission to others.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Delete-bucket-cors-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket to delete Cross Origin Configuration.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-bucket-lifecycle-configurationType" substitutionGroup="mule:abstract-message-processor" name="delete-bucket-lifecycle-configuration">
+    <xs:annotation>
+      <xs:documentation>Deletes the lifecycle configuration from the specified bucket. Amazon S3 removes all the lifecycle configuration rules in the lifecycle subresource associated with the
+bucket. Your objects never expire, and Amazon S3 no longer automatically deletes any objects on the basis of rules contained in the deleted lifecycle configuration.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Delete-bucket-lifecycle-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose lifecycle configuration to delete.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-bucket-policyType" substitutionGroup="mule:abstract-message-processor" name="delete-bucket-policy">
+    <xs:annotation>
+      <xs:documentation>Deletes the bucket's policy. Only the owner of the bucket can delete the bucket policy. Bucket policies provide access control management at the bucket level for both the
+bucket resource and contained object resources.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Delete-bucket-policyType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose policy to delete</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-bucket-tagging-configurationType" substitutionGroup="mule:abstract-message-processor" name="delete-bucket-tagging-configuration">
+    <xs:annotation>
+      <xs:documentation>Deletes the tagging configuration associated with the specified bucket. By default, the bucket owner has this permission and can grant this permission to others.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Delete-bucket-tagging-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose tag to delete.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-bucket-website-configurationType" substitutionGroup="mule:abstract-message-processor" name="delete-bucket-website-configuration">
+    <xs:annotation>
+      <xs:documentation>Removes the website configuration for a bucket; this operation requires the DeleteBucketWebsite permission. By default, only the bucket owner can delete the website
+configuration attached to a bucket. However, bucket owners can grant other users permission to delete the website configuration by writing a bucket policy granting them the
+&lt;code&gt;S3:DeleteBucketWebsite&lt;/code&gt; permission. Calling this operation on a bucket with no website configuration does not fail, but calling this operation a bucket that does
+not exist does.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Delete-bucket-website-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose website configuration to delete</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="List-bucketsType" substitutionGroup="mule:abstract-message-processor" name="list-buckets">
+    <xs:annotation>
+      <xs:documentation>Answers a list of all Amazon S3 buckets that the authenticated sender of the request owns. Users must authenticate with a valid AWS Access Key ID that is registered with
+Amazon S3. Anonymous requests cannot list buckets, and users cannot list buckets that they did not create.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="List-bucketsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="RegionEnumType" use="optional" name="region">
+          <xs:annotation>
+            <xs:documentation>the region from where to list the buckets.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-aclType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-acl">
+    <xs:annotation>
+      <xs:documentation>Answers the access control list of the specified bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-aclType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose acl to retrieve.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-cors-configurationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-cors-configuration">
+    <xs:annotation>
+      <xs:documentation>Answers the cors configuration information set for the bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-cors-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose cors to retrieve.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-lifecycle-configurationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-lifecycle-configuration">
+    <xs:annotation>
+      <xs:documentation>Returns the lifecycle configuration information set on the bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-lifecycle-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose lifecycle configuration information to retrieve.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-policyType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-policy">
+    <xs:annotation>
+      <xs:documentation>Answers the policy for the given bucket. Only the owner of the bucket can retrieve it. If no policy has been set for the bucket, then a null policy text field will be
+returned.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-policyType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose policy to retrieve</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-locationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-location">
+    <xs:annotation>
+      <xs:documentation>Gets the geographical region where Amazon S3 stores the specified bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-locationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>The target bucket name.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-logging-configurationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-logging-configuration">
+    <xs:annotation>
+      <xs:documentation>Answers the logging status of a bucket and the permissions users have to view and modify that status.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-logging-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose logging status to retrieve.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-notification-configurationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-notification-configuration">
+    <xs:annotation>
+      <xs:documentation>Return the notification configuration of a bucket. Currently only topic configuration is supported.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-notification-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose notification configuration to retrieve.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-tagging-configurationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-tagging-configuration">
+    <xs:annotation>
+      <xs:documentation>Return the tag set associated with the bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-tagging-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket whose tagging configuration to retrieve.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-versioning-configurationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-versioning-configuration">
+    <xs:annotation>
+      <xs:documentation>Returns the versioning configuration for the specified bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-versioning-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>The bucket whose versioning configuration will be retrieved.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-bucket-website-configurationType" substitutionGroup="mule:abstract-message-processor" name="get-bucket-website-configuration">
+    <xs:annotation>
+      <xs:documentation>Answers the website of the given bucket. This operation requires the GetBucketWebsite permission. By default, only the bucket owner can read the bucket website
+configuration. However, bucket owners can allow other users to read the website configuration by writing a bucket policy granting them the GetBucketWebsite permission.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-bucket-website-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the target bucket's name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-aclType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-acl">
+    <xs:annotation>
+      <xs:documentation>Set the permissions on an existing bucket using access control lists (ACL)</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GrantObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="OwnerObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="displayName">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="id">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="AccessControlListObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="grants">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="grant">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="GrantObjectType">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="owner">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="OwnerObjectType"></xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Set-bucket-aclType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="acl">
+            <xs:annotation>
+              <xs:documentation>the ACL of a bucket.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="AccessControlListObjectType"></xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-cors-configurationType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-cors-configuration">
+    <xs:annotation>
+      <xs:documentation>Sets the cors configuration for your bucket. If the configuration exists, Amazon S3 replaces it.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="CORSRuleObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="allowed-methods">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="allowed-method">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="AllowedMethodsEnumType"></xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="allowed-origins">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="allowed-origin">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="exposed-headers">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="exposed-header">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="allowed-headers">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="allowed-header">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="id">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="maxAgeSeconds">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Set-bucket-cors-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="cross-origin-configuration-rules">
+            <xs:annotation>
+              <xs:documentation>the cross-origin rules of a bucket.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="cross-origin-configuration-rule">
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="CORSRuleObjectType">
+                        <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-lifecycle-configurationType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-lifecycle-configuration">
+    <xs:annotation>
+      <xs:documentation>Creates a new lifecycle configuration for the bucket or replaces an existing lifecycle configuration.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="BLCRuleObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="id">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="prefix">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="status">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="expirationInDays">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="noncurrentVersionExpirationInDays">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="expirationDate">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="transition-ref">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="noncurrentVersionTransition-ref">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Set-bucket-lifecycle-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="lifecycle-configuration-rules">
+            <xs:annotation>
+              <xs:documentation>the lifecycle configuration rules of a bucket.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="lifecycle-configuration-rule">
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="BLCRuleObjectType">
+                        <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-policyType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-policy">
+    <xs:annotation>
+      <xs:documentation>Sets the bucket's policy, overriding any previously set. Only the owner of the bucket can set a bucket policy. Bucket policies provide access control management at the
+bucket level for both the bucket resource and contained object resources. Only one policy can be specified per-bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Set-bucket-policyType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="policyText">
+          <xs:annotation>
+            <xs:documentation>the policy text</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-logging-configurationType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-logging-configuration">
+    <xs:annotation>
+      <xs:documentation>Set the logging parameters for a bucket and to specify permissions for who can view and modify the logging parameters.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Set-bucket-logging-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="destinationBucketName">
+          <xs:annotation>
+            <xs:documentation>the destination bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="logFilePrefix">
+          <xs:annotation>
+            <xs:documentation>the prefix for the keys that the log files will be stored under.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-notification-configurationType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-notification-configuration">
+    <xs:annotation>
+      <xs:documentation>Sets the notification configuration for the specified bucket. By default, new buckets have no notification configuration set.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Set-bucket-notification-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="topic-configurations">
+            <xs:annotation>
+              <xs:documentation>The request object containing all options for setting the bucket notification configuration.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:choice>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="unbounded" name="topic-configuration">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                          <xs:attribute type="xs:string" name="key"></xs:attribute>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                  <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"></xs:any>
+                </xs:sequence>
+              </xs:choice>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>The name of the Amazon S3 bucket whose notification configuration is being set.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-tagging-configurationType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-tagging-configuration">
+    <xs:annotation>
+      <xs:documentation>Add a set of tags to an existing bucket</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="TagSetObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Set-bucket-tagging-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="tag-sets">
+            <xs:annotation>
+              <xs:documentation>a set of tags</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="tag-set">
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="TagSetObjectType">
+                        <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-website-configurationType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-website-configuration">
+    <xs:annotation>
+      <xs:documentation>Sets the given bucket's website configuration. This operation requires the PutBucketWebsite permission. By default, only the bucket owner can configure the website attached
+to a bucket. However, bucket owners can allow other users to set the website configuration by writing a bucket policy granting them the S3:PutBucketWebsite permission.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="RedirectRuleObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="hostName">
+      <xs:annotation>
+        <xs:documentation>The host name to use in the redirect request</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="replaceKeyPrefixWith">
+      <xs:annotation>
+        <xs:documentation>The object prefix key to use in the redirect request</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="replaceKeyWith">
+      <xs:annotation>
+        <xs:documentation>The specific key to use in the redirect request</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="httpRedirectCode">
+      <xs:annotation>
+        <xs:documentation>The HTTP code to use in the redirect response</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="RoutingRuleConditionObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="keyPrefixEquals">
+      <xs:annotation>
+        <xs:documentation>The object key name prefix when the redirect is applied. For example, to redirect requests for ExamplePage.html, the key prefix will be ExamplePage.html. To redirect request
+for all pages with the prefix docs/, the key prefix will be /docs, which identifies all objects in the docs/ folder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="httpErrorCodeReturnedEquals">
+      <xs:annotation>
+        <xs:documentation>The HTTP error code when the redirect is applied. In the event of an error, if the error code equals this value, then the specified redirect is applied.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="RoutingRuleObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="condition">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="RoutingRuleConditionObjectType"></xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="redirect">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="RedirectRuleObjectType"></xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="BucketWebsiteConfigurationObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="redirect-all-requests-to">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="RedirectRuleObjectType"></xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="routing-rules">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="routing-rule">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="RoutingRuleObjectType">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="indexDocumentSuffix">
+      <xs:annotation>
+        <xs:documentation>The document to serve when a directory is specified (ex: index.html). This path is relative to the requested resource.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="errorDocument">
+      <xs:annotation>
+        <xs:documentation>The complete path to the document to serve for 4xx errors.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Set-bucket-website-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="bucket-website-configuration">
+            <xs:annotation>
+              <xs:documentation>the bucket website configuration</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="BucketWebsiteConfigurationObjectType"></xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-bucket-versioning-configurationType" substitutionGroup="mule:abstract-message-processor" name="set-bucket-versioning-configuration">
+    <xs:annotation>
+      <xs:documentation>Sets the versioning status for the given bucket. A bucket's versioning configuration can be in one of three possible states: Off, Enabled and Suspended. By default, new
+buckets are in the Off state. Once versioning is enabled for a bucket the status can never be reverted to Off.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Set-bucket-versioning-configurationType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="VersioningStatusEnumType" use="optional" default="OFF" name="status">
+          <xs:annotation>
+            <xs:documentation>the version status to set</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Create-objectType" substitutionGroup="mule:abstract-message-processor" name="create-object">
+    <xs:annotation>
+      <xs:documentation>Uploads an object to S3. Supported contents are InputStreams, Strings, byte arrays and Files.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Create-objectType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="user-metadata">
+            <xs:annotation>
+              <xs:documentation>a map of arbitrary object properties keys and values</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:choice>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="unbounded" name="user-metadatum">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                          <xs:attribute type="xs:string" name="key"></xs:attribute>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                  <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"></xs:any>
+                </xs:sequence>
+              </xs:choice>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" default="#[payload]" name="content-ref">
+          <xs:annotation>
+            <xs:documentation>the content to be uploaded to S3, capable of creating a {@link com.amazonaws.services.s3.model.PutObjectRequest}.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="longType" use="optional" name="contentLength">
+          <xs:annotation>
+            <xs:documentation>the content length. If content is a InputStream, this parameter should be specified, as not doing so will introduce a performance loss as the contents will have to be persisted on disk before being uploaded. Otherwise, it is ignored. An exception to this rule are InputStreams returned by Mule Http Connector: if stream has Content-Length information, it will be used. In any case a content length of 0 is interpreted as an unspecified content length</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="contentMd5">
+          <xs:annotation>
+            <xs:documentation>the content md5, encoded in base 64. If content is a file, it is ignored.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="contentType">
+          <xs:annotation>
+            <xs:documentation>the content type of the new object.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="contentDisposition">
+          <xs:annotation>
+            <xs:documentation>the content disposition of the new object.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="CannedAccessControlListEnumType" use="optional" default="PRIVATE" name="acl">
+          <xs:annotation>
+            <xs:documentation>the access control list of the new object</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="StorageClassEnumType" use="optional" default="STANDARD" name="storageClass">
+          <xs:annotation>
+            <xs:documentation>the storage class of the new object</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="encryption">
+          <xs:annotation>
+            <xs:documentation>Encryption method for server-side encryption. Supported value AES256.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="kmsMasterKey">
+          <xs:annotation>
+            <xs:documentation>Encrypt objects uploaded to S3 buckets with AWS KMS master key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-objectType" substitutionGroup="mule:abstract-message-processor" name="delete-object">
+    <xs:annotation>
+      <xs:documentation>Deletes a given object, only the owner of the bucket containing the version can perform this operation. If version is specified, versioning must be enabled, and once
+deleted, there is no method to restore such version. Otherwise, once deleted, the object can only be restored if versioning was enabled when the object was deleted. If
+attempting to delete an object that does not exist, Amazon S3 will return a success message instead of an error message.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Delete-objectType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="versionId">
+          <xs:annotation>
+            <xs:documentation>the specific version of the object to delete, if versioning is enabled.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Delete-objectsType" substitutionGroup="mule:abstract-message-processor" name="delete-objects">
+    <xs:annotation>
+      <xs:documentation>Deletes multiple objects in a single bucket from S3. Version of the keys is optional.
+In some cases, some objects will be successfully deleted, while some attempts will cause an error. If any object in the request cannot be deleted, this method throws a
+{@link com.amazonaws.services.s3.model.MultiObjectDeleteException} with details of the error.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="KeyVersionObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="value">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="version">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Delete-objectsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="keys">
+            <xs:annotation>
+              <xs:documentation>the objects keys, version is optional</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="key">
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="KeyVersionObjectType">
+                        <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the objects bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="List-objectsType" substitutionGroup="mule:abstract-message-processor" name="list-objects">
+    <xs:annotation>
+      <xs:documentation>Lazily lists all objects for a given prefix. As S3 does not limit in any way the number of objects, such listing can retrieve an arbitrary amount of objects, and may need to
+perform extra calls to the api while it is iterated.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="List-objectsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the target bucket's name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="prefix">
+          <xs:annotation>
+            <xs:documentation>the prefix of the objects to be listed. If unspecified, all objects are listed</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="marker">
+          <xs:annotation>
+            <xs:documentation>where in the bucket to begin listing. The list will only include keys that occur lexicographically after the marker</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="delimiter">
+          <xs:annotation>
+            <xs:documentation>causes keys that contain the same string between a prefix and the first occurrence of the delimiter to be rolled up into a single result element. These rolled-up keys are not returned elsewhere in the response. The most commonly used delimiter is "/", which simulates a hierarchical organization similar to a file system directory structure.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="maxKeys">
+          <xs:annotation>
+            <xs:documentation>The maximum number of keys to include in the response. If maxKeys is not specified, Amazon S3 will limit the number of results in the response.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="EncodingTypeEnumType" use="optional" default="NOT_ENCODED" name="encodingType">
+          <xs:annotation>
+            <xs:documentation>The encoding method to be applied on the response.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="List-next-batch-of-objectsType" substitutionGroup="mule:abstract-message-processor" name="list-next-batch-of-objects">
+    <xs:annotation>
+      <xs:documentation>Provides an easy way to continue a truncated object listing and retrieve the next page of results.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="S3ObjectSummaryObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="owner">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="OwnerObjectType"></xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="bucketName">
+      <xs:annotation>
+        <xs:documentation>The name of the bucket in which this object is stored</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="key">
+      <xs:annotation>
+        <xs:documentation>The key under which this object is stored</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="longType" use="optional" name="size">
+      <xs:annotation>
+        <xs:documentation>The size of this object, in bytes</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="lastModified">
+      <xs:annotation>
+        <xs:documentation>The date, according to Amazon S3, when this object was last modified</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="storageClass">
+      <xs:annotation>
+        <xs:documentation>The class of storage used by Amazon S3 to store this object</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="ObjectListingObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="object-summaries">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="object-summary">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="S3ObjectSummaryObjectType">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="common-prefixes">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="common-prefix">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="bucketName">
+      <xs:annotation>
+        <xs:documentation>The name of the Amazon S3 bucket containing the listed objects</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="nextMarker">
+      <xs:annotation>
+        <xs:documentation>The marker to use in order to request the next page of results - only populated if the isTruncated member indicates that this object listing is truncated</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="prefix">
+      <xs:annotation>
+        <xs:documentation>The prefix parameter originally specified by the caller when this object listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="marker">
+      <xs:annotation>
+        <xs:documentation>The marker parameter originally specified by the caller when this object listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="maxKeys">
+      <xs:annotation>
+        <xs:documentation>The maxKeys parameter originally specified by the caller when this object listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="delimiter">
+      <xs:annotation>
+        <xs:documentation>The delimiter parameter originally specified by the caller when this object listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="encodingType">
+      <xs:annotation>
+        <xs:documentation>The encodingType parameter originally specified by the caller when this object listing was returned.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="List-next-batch-of-objectsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="previous-object-listing">
+            <xs:annotation>
+              <xs:documentation>The previous truncated ObjectListing. If a non-truncated ObjectListing is passed in, an empty ObjectListing is returned without ever contacting Amazon S3.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="ObjectListingObjectType"></xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="List-versionsType" substitutionGroup="mule:abstract-message-processor" name="list-versions">
+    <xs:annotation>
+      <xs:documentation>Lazily lists all object versions for a given bucket that has versioning enabled. As S3 does not limit in any way the number of objects, such listing can retrieve an
+arbitrary amount of object versions, and may need to perform extra calls to the api while it is iterated.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="List-versionsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the target bucket's name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="prefix">
+          <xs:annotation>
+            <xs:documentation>optional parameter restricting the response to keys which begin with the specified prefix. You can use prefixes to separate a bucket into different sets of keys in a way similar to how a file system uses folders.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="keyMarker">
+          <xs:annotation>
+            <xs:documentation>where in the sorted list of all versions in the specified bucket to begin returning results. Results are always ordered first lexicographically (i.e. alphabetically) and then from most recent version to least recent version. If a keyMarker is used without a versionIdMarker, results begin immediately after that key's last version. When a keyMarker is used with a versionIdMarker, results begin immediately after the version with the specified key and version ID.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="versionIdMarker">
+          <xs:annotation>
+            <xs:documentation>where in the sorted list of all versions in the specified bucket to begin returning results. Results are always ordered first lexicographically (i.e. alphabetically) and then from most recent version to least recent version. A keyMarker must be specified when specifying a versionIdMarker. Results begin immediately after the version with the specified key and version ID.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="delimiter">
+          <xs:annotation>
+            <xs:documentation>causes keys that contain the same string between the prefix and the first occurrence of the delimiter to be rolled up into a single result element in the {@link VersionListing#getCommonPrefixes()} list. These rolled-up keys are not returned elsewhere in the response. The most commonly used delimiter is "/", which simulates a hierarchical organization similar to a file system directory structure.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="maxResults">
+          <xs:annotation>
+            <xs:documentation>the maximum number of results to include in the response.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="EncodingTypeEnumType" use="optional" default="NOT_ENCODED" name="encodingType">
+          <xs:annotation>
+            <xs:documentation>the encoding method to be applied on the response. An object key can contain any Unicode character; however, XML 1.0 parser cannot parse some characters, such as characters with an ASCII value from 0 to 10. For characters that are not supported in XML 1.0, you can add this parameter to request that Amazon S3 encode the keys in the response.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="List-next-batch-of-versionsType" substitutionGroup="mule:abstract-message-processor" name="list-next-batch-of-versions">
+    <xs:annotation>
+      <xs:documentation>Provides an easy way to continue a truncated VersionListing and retrieve the next page of results.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="S3VersionSummaryObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="owner">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="OwnerObjectType"></xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="bucketName">
+      <xs:annotation>
+        <xs:documentation>The name of the bucket in which this version is stored</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="key">
+      <xs:annotation>
+        <xs:documentation>The key under which this version is stored</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="versionId">
+      <xs:annotation>
+        <xs:documentation>The version ID uniquely identifying this version of an object</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="lastModified">
+      <xs:annotation>
+        <xs:documentation>The date, according to Amazon S3, when this version was last modified</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="longType" use="optional" name="size">
+      <xs:annotation>
+        <xs:documentation>The size of this version, in bytes</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="storageClass">
+      <xs:annotation>
+        <xs:documentation>The class of storage used by Amazon S3 to store this version</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="VersionListingObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="version-summaries">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="version-summary">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="S3VersionSummaryObjectType">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="common-prefixes">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="common-prefix">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" use="optional" name="bucketName">
+      <xs:annotation>
+        <xs:documentation>The name of the Amazon S3 bucket containing the listed versions</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="nextKeyMarker">
+      <xs:annotation>
+        <xs:documentation>The key marker to use in order to request the next page of results - only populated if the isTruncated member indicates that this version listing is truncated</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="nextVersionIdMarker">
+      <xs:annotation>
+        <xs:documentation>The version ID marker to use in order to request the next page of results - only populated if the isTruncated member indicates that this version listing is truncated</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="prefix">
+      <xs:annotation>
+        <xs:documentation>The prefix parameter originally specified by the caller when this version listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="keyMarker">
+      <xs:annotation>
+        <xs:documentation>The key marker parameter originally specified by the caller when this version listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="versionIdMarker">
+      <xs:annotation>
+        <xs:documentation>The version ID marker parameter originally specified by the caller when this version listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="maxKeys">
+      <xs:annotation>
+        <xs:documentation>The maxKeys parameter originally specified by the caller when this version listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="delimiter">
+      <xs:annotation>
+        <xs:documentation>The delimiter parameter originally specified by the caller when this version listing was returned</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="encodingType">
+      <xs:annotation>
+        <xs:documentation>The encodingType parameter originally specified by the caller when this version listing was returned.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="List-next-batch-of-versionsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="previous-version-listing">
+            <xs:annotation>
+              <xs:documentation>The previous truncated VersionListing. If a non-truncated VersionListing is passed in, an empty VersionListing is returned without ever contacting Amazon S3.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="VersionListingObjectType"></xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-object-storage-classType" substitutionGroup="mule:abstract-message-processor" name="set-object-storage-class">
+    <xs:annotation>
+      <xs:documentation>Sets the Amazon S3 storage class for the given object. Changing the storage class of an object in a bucket that has enabled versioning creates a new version of the object
+with the new storage class. The existing version of the object preservers the previous storage class.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Set-object-storage-classType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="StorageClassEnumType" use="optional" default="STANDARD" name="storageClass">
+          <xs:annotation>
+            <xs:documentation>the storage class to set</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Set-object-aclType" substitutionGroup="mule:abstract-message-processor" name="set-object-acl">
+    <xs:annotation>
+      <xs:documentation>Set the access control list (ACL) permissions for an object that already exists in a bucket</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Set-object-aclType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="acl">
+            <xs:annotation>
+              <xs:documentation>the access control list of the object</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="AccessControlListObjectType"></xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="versionId">
+          <xs:annotation>
+            <xs:documentation>the specific version of the object</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Copy-objectType" substitutionGroup="mule:abstract-message-processor" name="copy-object">
+    <xs:annotation>
+      <xs:documentation>Copies a source object to a new destination; to copy an object, the caller's account must have read access to the source object and write access to the destination bucket.
+By default, all object metadata for the source object are copied to the new destination object, unless new object metadata in the specified is provided. The
+AccessControlList is not copied to the new object, and, unless another ACL specified, PRIVATE is assumed. If no destination bucket is specified, the same that the source
+bucket is used - local copy. Destination object's Content-Type http header would be set with the specified value and if it is passed null, then the default
+MIME type 'application/octet-stream' would be set.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Copy-objectType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="destination-user-metadata">
+            <xs:annotation>
+              <xs:documentation>the new metadata of the destination object, that if specified, overrides that copied from the source object</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:choice>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="unbounded" name="destination-user-metadatum">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                          <xs:attribute type="xs:string" name="key"></xs:attribute>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                  <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"></xs:any>
+                </xs:sequence>
+              </xs:choice>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="sourceBucketName">
+          <xs:annotation>
+            <xs:documentation>the source object's bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="sourceKey">
+          <xs:annotation>
+            <xs:documentation>the source object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="sourceVersionId">
+          <xs:annotation>
+            <xs:documentation>the specific version of the source object to copy, if versioning is enabled. Left unspecified if the latest version is desired, or versioning is not enabled.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="destinationBucketName">
+          <xs:annotation>
+            <xs:documentation>the destination object's bucket. If none provided, a local copy is performed, that is, it is copied within the same bucket.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="destinationKey">
+          <xs:annotation>
+            <xs:documentation>the destination object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="CannedAccessControlListEnumType" use="optional" default="PRIVATE" name="destinationAcl">
+          <xs:annotation>
+            <xs:documentation>the acl of the destination object.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="StorageClassEnumType" use="optional" default="STANDARD" name="destinationStorageClass">
+          <xs:annotation>
+            <xs:documentation>one of {@link StorageClass} enumerated values, defaults to {@link StorageClass#STANDARD}</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="modifiedSince">
+          <xs:annotation>
+            <xs:documentation>The modified constraint that restricts this request to executing only if the object has been modified after the specified date. This constraint is specified but does not match, no copy is performed</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="unmodifiedSince">
+          <xs:annotation>
+            <xs:documentation>The unmodified constraint that restricts this request to executing only if the object has not been modified after this date. This constraint is specified but does not match, no copy is performed</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="encryption">
+          <xs:annotation>
+            <xs:documentation>Encryption method for server-side encryption. Supported value AES256.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="contentType">
+          <xs:annotation>
+            <xs:documentation>the destination object's Content-Type HTTP header</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Create-object-presigned-uriType" substitutionGroup="mule:abstract-message-processor" name="create-object-presigned-uri">
+    <xs:annotation>
+      <xs:documentation>Returns a pre-signed URL for accessing an Amazon S3 object. The pre-signed URL can be shared to other users, allowing access to the resource without providing an account's
+AWS security credentials.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Create-object-presigned-uriType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket involved in this request.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the key of the object involved in this request.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="expiration">
+          <xs:annotation>
+            <xs:documentation>the expiration date at which point the new pre-signed URL will no longer be accepted by Amazon S3.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="contentMd5">
+          <xs:annotation>
+            <xs:documentation>the expected content-md5 header of the request.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="contentType">
+          <xs:annotation>
+            <xs:documentation>the expected content-type of the request.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="HttpMethodEnumType" use="optional" default="PUT" name="method">
+          <xs:annotation>
+            <xs:documentation>the HTTP method (GET, PUT, DELETE, HEAD) to be used in this request.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="SSEAlgorithmEnumType" use="optional" name="sseS3Encryption">
+          <xs:annotation>
+            <xs:documentation>the encryption method (KMS, AES256) to use for the presigned URL.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-object-contentType" substitutionGroup="mule:abstract-message-processor" name="get-object-content">
+    <xs:annotation>
+      <xs:documentation>Gets the content of an object stored in Amazon S3 under the specified bucket and key. Be extremely careful when using this method; the returned Amazon S3 object contains a
+direct stream of data from the HTTP connection. The underlying HTTP connection cannot be closed until the user finishes reading the data and closes the stream. Callers
+should therefore:
+&lt;ul&gt;
+&lt;li&gt;Use the data from the input stream as soon as possible,&lt;/li&gt;
+&lt;li&gt;Close the input stream as soon as possible.&lt;/li&gt;
+&lt;/ul&gt;
+If callers do not follow those rules, then the client can run out of resources if allocating too many open, but unused, HTTP connections.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-object-contentType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="versionId">
+          <xs:annotation>
+            <xs:documentation>the specific version of the object to get its contents, if versioning is enabled, left unspecified if the latest version is desired, or versioning is not enabled.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="modifiedSince">
+          <xs:annotation>
+            <xs:documentation>The modified constraint that restricts this request to executing only if the object has been modified after the specified date.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="unmodifiedSince">
+          <xs:annotation>
+            <xs:documentation>The unmodified constraint that restricts this request to executing only if the object has not been modified after this date.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="mimeType">
+          <xs:annotation>
+            <xs:documentation>Specifies the mimetype of the object</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="encoding">
+          <xs:annotation>
+            <xs:documentation>Specifies the encding used for the ObjectContent</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-objectType" substitutionGroup="mule:abstract-message-processor" name="get-object">
+    <xs:annotation>
+      <xs:documentation>Gets the object stored in Amazon S3 under the specified bucket and key. Returns null if the specified constraints weren't met. To get an object from Amazon S3, the caller
+must have {@link com.amazonaws.services.s3.model.Permission#Read} access to the object. Callers should be very careful when using this method; the returned Amazon S3 object
+contains a direct stream of data from the HTTP connection. The underlying HTTP connection cannot be closed until the user finishes reading the data and closes the stream.
+Regarding conditional get constraints, Amazon S3 will ignore any dates occurring in the future.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-objectType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="versionId">
+          <xs:annotation>
+            <xs:documentation>the specific version of the object to get its contents, if versioning is enabled. Left unspecified if the latest version is desired, or versioning is not enabled.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="modifiedSince">
+          <xs:annotation>
+            <xs:documentation>The modified constraint that restricts this request to executing only if the object has been modified after the specified date.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="unmodifiedSince">
+          <xs:annotation>
+            <xs:documentation>The unmodified constraint that restricts this request to executing only if the object has not been modified after this date.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-object-aclType" substitutionGroup="mule:abstract-message-processor" name="get-object-acl">
+    <xs:annotation>
+      <xs:documentation>Returns the access control list (ACL) of an object. By default, GET returns ACL information about the current version of an object. To return ACL information about a
+different version, use the versionId attribute.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-object-aclType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="versionId">
+          <xs:annotation>
+            <xs:documentation>the object's version id</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Get-object-metadataType" substitutionGroup="mule:abstract-message-processor" name="get-object-metadata">
+    <xs:annotation>
+      <xs:documentation>Gets the metadata for the specified Amazon S3 object without actually fetching the object itself. This is useful in obtaining only the object metadata, and avoids wasting
+bandwidth on fetching the object data.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Get-object-metadataType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the object's bucket</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the object's key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="versionId">
+          <xs:annotation>
+            <xs:documentation>the object metadata for the given bucketName and key</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Initiate-multipart-uploadType" substitutionGroup="mule:abstract-message-processor" name="initiate-multipart-upload">
+    <xs:annotation>
+      <xs:documentation>Initiates a multipart upload and returns an upload ID. This upload ID is used to associate all the parts in the specific multipart upload. You specify this upload ID in each
+of your subsequent upload part requests. You also include this upload ID in the final request to either complete or abort the multipart upload request.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="S3ObjectMetadataObjectType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="user-metadata">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:choice>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="user-metadatum">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                      <xs:attribute type="xs:string" name="key"></xs:attribute>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:sequence>
+              <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"></xs:any>
+            </xs:sequence>
+          </xs:choice>
+          <xs:attribute type="xs:string" use="optional" name="ref">
+            <xs:annotation>
+              <xs:documentation>The reference object for this parameter</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="httpExpiresDate">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="expirationTime">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="expirationTimeRuleId">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="booleanType" use="optional" name="ongoingRestore">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="restoreExpirationTime">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Initiate-multipart-uploadType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="object-metadata">
+            <xs:annotation>
+              <xs:documentation>the additional information about the new object being created, such as content type, content encoding, user metadata, etc.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="S3ObjectMetadataObjectType"></xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket in which to create the new multipart upload.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the key by which to store the new multipart upload.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="CannedAccessControlListEnumType" use="optional" default="PRIVATE" name="acl">
+          <xs:annotation>
+            <xs:documentation>the optional canned Access Control List (ACL) to set permissions for the new object created when the multipart upload is completed.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="StorageClassEnumType" use="optional" default="STANDARD" name="storageClass">
+          <xs:annotation>
+            <xs:documentation>the optional storage class to use when storing this upload's data in S3.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="redirectLocation">
+          <xs:annotation>
+            <xs:documentation>Gets the optional redirect location for the new object.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Upload-partType" substitutionGroup="mule:abstract-message-processor" name="upload-part">
+    <xs:annotation>
+      <xs:documentation>Uploads a part in a multipart upload. You must initiate a multipart upload before you can upload any part.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Upload-partType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket containing the existing, initiated multipart upload, with which this new part will be associated.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the key of the initiated multipart upload.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="uploadId">
+          <xs:annotation>
+            <xs:documentation>the ID of the existing, initiated multipart upload with which this new part will be associated.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="required" name="partNumber">
+          <xs:annotation>
+            <xs:documentation>the part number describing this part's position relative to the other parts in the multipart upload.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="longType" use="required" name="partSize">
+          <xs:annotation>
+            <xs:documentation>the size of this part, in bytes.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="md5Digest">
+          <xs:annotation>
+            <xs:documentation>optional, but recommended, MD5 hash of the content of this part.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="content-ref">
+          <xs:annotation>
+            <xs:documentation>the stream containing the data to upload for the new part.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="file-ref">
+          <xs:annotation>
+            <xs:documentation>the file containing the data to upload.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="longType" use="optional" name="fileOffset">
+          <xs:annotation>
+            <xs:documentation>the optional offset in the specified file, at which to begin uploading data for this part.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="booleanType" use="optional" default="false" name="isLastPart">
+          <xs:annotation>
+            <xs:documentation>true if the creator of this request has indicated this part is the last part being uploaded in a multipart upload.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Upload-part-copyType" substitutionGroup="mule:abstract-message-processor" name="upload-part-copy">
+    <xs:annotation>
+      <xs:documentation>Copies a source object to a part of a multipart upload. To copy an object, the caller's account must have read access to the source object and write access to the
+destination bucket.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Upload-part-copyType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="matching-e-tag-constraints">
+            <xs:annotation>
+              <xs:documentation>perform a copy if the source object entity tag (ETag) matches the specified value.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="matching-e-tag-constraint">
+                  <xs:complexType>
+                    <xs:simpleContent>
+                      <xs:extension base="xs:string">
+                        <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                      </xs:extension>
+                    </xs:simpleContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="sourceBucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket containing the source object to be copied.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="sourceKey">
+          <xs:annotation>
+            <xs:documentation>the source bucket key under which the source object to be copied is stored.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="sourceVersionId">
+          <xs:annotation>
+            <xs:documentation>the version of the source object that was copied, if you have enabled versioning on the source bucket.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="destinationBucketName">
+          <xs:annotation>
+            <xs:documentation>the destination bucket name which will contain the new, copied object.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="destinationKey">
+          <xs:annotation>
+            <xs:documentation>the destination bucket key under which the new, copied object will be stored.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="uploadId">
+          <xs:annotation>
+            <xs:documentation>the ID of the existing, initiated multipart upload with which this new part will be associated.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="required" name="partNumber">
+          <xs:annotation>
+            <xs:documentation>the part number describing this part's position relative to the other parts in the multipart upload.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="modifiedSince">
+          <xs:annotation>
+            <xs:documentation>the optional modified constraint that restricts this request to executing only if the source object has been modified after the specified date.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="dateTimeType" use="optional" name="unmodifiedSince">
+          <xs:annotation>
+            <xs:documentation>the optional unmodified constraint that restricts this request to executing only if the source object has not been modified after the specified date.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="longType" use="optional" name="firstByte">
+          <xs:annotation>
+            <xs:documentation>the optional first byte from the source bucket to start copy from (starts from 0).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="longType" use="optional" name="lastByte">
+          <xs:annotation>
+            <xs:documentation>the optional last byte from the source bucket to copy till.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Abort-multipart-uploadType" substitutionGroup="mule:abstract-message-processor" name="abort-multipart-upload">
+    <xs:annotation>
+      <xs:documentation>Aborts a multipart upload. After a multipart upload is aborted, no additional parts can be uploaded using that upload ID. The storage consumed by any previously uploaded
+parts will be freed. However, if any part uploads are currently in progress, those part uploads may or may not succeed. As a result, it may be necessary to abort a given
+multipart upload multiple times in order to completely free all storage consumed by all parts.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Abort-multipart-uploadType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket containing the multipart upload to abort.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the key of the multipart upload to abort.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="uploadId">
+          <xs:annotation>
+            <xs:documentation>the ID of the upload to abort.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="Complete-multipart-uploadType" substitutionGroup="mule:abstract-message-processor" name="complete-multipart-upload">
+    <xs:annotation>
+      <xs:documentation>Completes a multipart upload by assembling previously uploaded parts.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PartETagObjectType">
+    <xs:sequence></xs:sequence>
+    <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="partNumber">
+      <xs:annotation>
+        <xs:documentation>The part number of the associated part.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute type="xs:string" use="optional" name="ref">
+      <xs:annotation>
+        <xs:documentation>The reference object for this parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Complete-multipart-uploadType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="part-e-tags">
+            <xs:annotation>
+              <xs:documentation>the list of part numbers and ETags that identify the individual parts of the multipart upload to complete.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="part-e-tag">
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension xmlns="http://www.mulesoft.org/schema/mule/s3" base="PartETagObjectType">
+                        <xs:attribute type="xs:string" use="optional" name="value-ref"></xs:attribute>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" use="optional" name="ref">
+                <xs:annotation>
+                  <xs:documentation>The reference object for this parameter</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket containing the multipart upload to complete.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the key under which the multipart upload to complete is stored.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="uploadId">
+          <xs:annotation>
+            <xs:documentation>the ID of the multipart upload to complete.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="List-multipart-uploadsType" substitutionGroup="mule:abstract-message-processor" name="list-multipart-uploads">
+    <xs:annotation>
+      <xs:documentation>Lists in-progress multipart uploads. An in-progress multipart upload is a multipart upload that has been initiated, using the InitiateMultipartUpload request, but has not
+yet been completed or aborted.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="List-multipart-uploadsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket containing the uploads to list.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="delimiter">
+          <xs:annotation>
+            <xs:documentation>the optional delimiter parameter that causes multipart uploads for keys that contain the same string between the prefix and the first occurrence of the delimiter to be combined into a single result element</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="encodingType">
+          <xs:annotation>
+            <xs:documentation>the optional encodingType parameter indicating the encoding method to be applied on the response.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="keyMarker">
+          <xs:annotation>
+            <xs:documentation>the optional key marker indicating where in the results to begin listing.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="maxUploads">
+          <xs:annotation>
+            <xs:documentation>the optional maximum number of uploads to return, or null if no maximum number of uploads has been set for this request.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="prefix">
+          <xs:annotation>
+            <xs:documentation>the optional prefix parameter that restricts the response to multipart uploads for keys that begin with the specified prefix.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="uploadIdMarker">
+          <xs:annotation>
+            <xs:documentation>the optional upload ID marker indicating where in the results to begin listing.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/s3" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="List-partsType" substitutionGroup="mule:abstract-message-processor" name="list-parts">
+    <xs:annotation>
+      <xs:documentation>Lists the parts that have been uploaded for a specific multipart upload.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="List-partsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="bucketName">
+          <xs:annotation>
+            <xs:documentation>the name of the bucket containing the multipart upload whose parts are being listed.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="key">
+          <xs:annotation>
+            <xs:documentation>the key of the associated multipart upload whose parts are being listed.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="uploadId">
+          <xs:annotation>
+            <xs:documentation>the ID of the multipart upload whose parts are being listed.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="optional" name="encodingType">
+          <xs:annotation>
+            <xs:documentation>the optional encodingType parameter indicating the encoding method to be applied on the response.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="maxParts">
+          <xs:annotation>
+            <xs:documentation>the optional maximum number of parts to be returned in the part listing.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/s3" type="integerType" use="optional" name="partNumberMarker">
+          <xs:annotation>
+            <xs:documentation>the optional part number marker indicating where in the results to being listing parts.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="EncodingTypeEnumType">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NOT_ENCODED">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="URL">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="RegionEnumType">
+    <xs:annotation>
+      <xs:documentation>Specifies constants that define Amazon S3 Regions.
+&lt;p&gt;
+Amazon S3 Regions allow the user to choose the geographical region where Amazon S3 will store the buckets the user creates. Choose a Amazon S3 Region to optimize latency,
+minimize costs, or address regulatory requirements.
+&lt;/p&gt;
+&lt;p&gt;
+Objects stored in a Amazon S3 Region never leave that region unless explicitly transferred to another region.
+&lt;/p&gt;
+&lt;p&gt;
+In Amazon S3, all the regions provides
+read-after-write consistency for PUTS of new objects in Amazon
+S3 buckets and eventual consistency for overwrite PUTS and DELETES.
+&lt;/p&gt;</xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="US_STANDARD">
+            <xs:annotation>
+              <xs:documentation>The US Standard Amazon S3 Region. This region is equivalent to 'us-east-1', see
+&lt;a href="https://aws.amazon.com/s3/faqs/"&gt;Amazon Simple Storage Service (S3) FAQs&lt;/a&gt; for more information.
+&lt;p&gt;
+This is the default Amazon S3 Region. All requests sent to &lt;code&gt;s3.amazonaws.com&lt;/code&gt; go
+to this region unless a location constraint is specified when creating a bucket.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="US_EAST_2">
+            <xs:annotation>
+              <xs:documentation>The US-East-2 (Ohio) Region. This region
+uses Amazon S3 servers located in Ohio.
+&lt;p&gt;
+When using buckets in this region, set the client
+endpoint to &lt;code&gt;s3.us-east-2.amazonaws.com&lt;/code&gt; on all requests to these buckets
+to reduce any latency experienced after the first hour of
+creating a bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="US_WEST">
+            <xs:annotation>
+              <xs:documentation>The US-West (Northern California) Amazon S3 Region. This region uses Amazon S3
+servers located in Northern California.
+&lt;p&gt;
+When using buckets in this region, set the client
+endpoint to &lt;code&gt;s3-us-west-1.amazonaws.com&lt;/code&gt; on all requests to these
+buckets to reduce any latency experienced after the first
+hour of creating a bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="US_WEST_2">
+            <xs:annotation>
+              <xs:documentation>The US-West-2 (Oregon) Region. This region uses Amazon S3 servers located
+in Oregon.
+&lt;p&gt;
+When using buckets in this region, set the client
+endpoint to &lt;code&gt;s3-us-west-2.amazonaws.com&lt;/code&gt; on all requests to these buckets
+to reduce any latency experienced after the first hour of
+creating a bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="US_GOVCLOUD">
+            <xs:annotation>
+              <xs:documentation>The US GovCloud Region. This region uses Amazon S3 servers located in the Northwestern
+region of the United States.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="US_GOV_EAST_1">
+            <xs:annotation>
+              <xs:documentation>The US GovCloud (East) Region.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="EU_IRELAND">
+            <xs:annotation>
+              <xs:documentation>The EU (Ireland) Amazon S3 Region. This region uses Amazon S3 servers located
+in Ireland.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="EU_LONDON">
+            <xs:annotation>
+              <xs:documentation>The EU (London) Amazon S3 Region. This region uses Amazon S3 servers located
+in London.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="EU_PARIS">
+            <xs:annotation>
+              <xs:documentation>The EU (Paris) Amazon S3 Region. This region uses Amazon S3 servers located
+in Paris.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="EU_FRANKFURT">
+            <xs:annotation>
+              <xs:documentation>The EU (Frankfurt) Amazon S3 Region. This region uses Amazon S3 servers
+located in Frankfurt.
+&lt;p&gt;
+The EU (Frankfurt) Region requires AWS V4 authentication, therefore when
+accessing buckets inside this region, you need to explicitly configure
+the "eu-central-1" endpoint for the AmazonS3Client in order to enable V4
+signing:
+&lt;/p&gt;
+&lt;pre&gt;
+AmazonS3Client s3 = new AmazonS3Client();
+s3.setRegion(RegionUtils.getRegion(&amp;quot;eu-central-1&amp;quot;));
+&lt;/pre&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="EU_NORTH_1">
+            <xs:annotation>
+              <xs:documentation>The EU (Stockholm) Amazon S3 Region. This region uses Amazon S3 servers
+located in Stockholm.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AP_SINGAPORE">
+            <xs:annotation>
+              <xs:documentation>The Asia Pacific (Singapore) Region. This region uses Amazon S3 servers located
+in Singapore.
+&lt;p&gt;
+When using buckets in this region, set the client
+endpoint to &lt;code&gt;s3-ap-southeast-1.amazonaws.com&lt;/code&gt; on all requests to these buckets
+to reduce any latency experienced after the first hour of
+creating a bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AP_SYDNEY">
+            <xs:annotation>
+              <xs:documentation>The Asia Pacific (Sydney) Region. This region uses Amazon S3 servers
+located in Sydney, Australia.
+&lt;p&gt;
+When using buckets in this region, set the client endpoint to
+&lt;code&gt;s3-ap-southeast-2.amazonaws.com&lt;/code&gt; on all requests to these buckets
+to reduce any latency experienced after the first hour of creating a
+bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AP_TOKYO">
+            <xs:annotation>
+              <xs:documentation>The Asia Pacific (Tokyo) Region. This region uses Amazon S3 servers
+located in Tokyo.
+&lt;p&gt;
+When using buckets in this region, set the client endpoint to
+&lt;code&gt;s3-ap-northeast-1.amazonaws.com&lt;/code&gt; on all requests to these
+buckets to reduce any latency experienced after the first hour of
+creating a bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AP_SEOUL">
+            <xs:annotation>
+              <xs:documentation>The Asia Pacific (Seoul) Region. This region uses Amazon S3 servers
+located in Seoul.
+&lt;p&gt;
+When using buckets in this region, set the client endpoint to
+&lt;code&gt;s3.ap-northeast-2.amazonaws.com&lt;/code&gt; on all requests to these
+buckets to reduce any latency experienced after the first hour of
+creating a bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AP_MUMBAI">
+            <xs:annotation>
+              <xs:documentation>The Asia Pacific (Mumbai) Region. This region uses Amazon S3 servers
+located in Mumbai.
+&lt;p&gt;
+When using buckets in this region, set the client endpoint to
+&lt;code&gt;s3.ap-south-1.amazonaws.com&lt;/code&gt; on all requests to these
+buckets to reduce any latency experienced after the first hour of
+creating a bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SA_SAOPAULO">
+            <xs:annotation>
+              <xs:documentation>The South America (Sao Paulo) Region. This region uses Amazon S3 servers
+located in Sao Paulo.
+&lt;p&gt;
+When using buckets in this region, set the client endpoint to
+&lt;code&gt;s3-sa-east-1.amazonaws.com&lt;/code&gt; on all requests to these buckets
+to reduce any latency experienced after the first hour of creating a
+bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="CA_CENTRAL">
+            <xs:annotation>
+              <xs:documentation>The Canada (Central) Region. This region uses Amazon S3 servers
+located in Canada.
+&lt;p&gt;
+When using buckets in this region, set the client endpoint to
+&lt;code&gt;s3.ca-central-1.amazonaws.com&lt;/code&gt; on all requests to these buckets
+to reduce any latency experienced after the first hour of creating a
+bucket in this region.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="CN_BEIJING">
+            <xs:annotation>
+              <xs:documentation>The China (Beijing) Region. This region uses Amazon S3 servers
+located in Beijing.
+&lt;p&gt;
+When using buckets in this region, you must set the client endpoint to
+&lt;code&gt;s3.cn-north-1.amazonaws.com.cn&lt;/code&gt;.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="CN_NORTHWEST_1">
+            <xs:annotation>
+              <xs:documentation>The China (Ningxia) Region. This region uses Amazon S3 servers
+located in Ningxia.
+&lt;p&gt;
+When using buckets in this region, you must set the client endpoint to
+&lt;code&gt;s3.cn-northwest-1.amazonaws.com.cn&lt;/code&gt;.
+&lt;/p&gt;</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="CannedAccessControlListEnumType">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PRIVATE">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PUBLIC_READ">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PUBLIC_READ_WRITE">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="AUTHENTICATED_READ">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="LOG_DELIVERY_WRITE">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="BUCKET_OWNER_READ">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="BUCKET_OWNER_FULL_CONTROL">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="AllowedMethodsEnumType">
+    <xs:annotation>
+      <xs:documentation>Enumeration of names of the all the allowed methods.</xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="GET">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PUT">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="HEAD">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="POST">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="DELETE">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="HttpMethodEnumType">
+    <xs:annotation>
+      <xs:documentation>Enumeration of valid HTTP methods.</xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="GET">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="POST">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PUT">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="DELETE">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="HEAD">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PATCH">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="ProtocolEnumType">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="HTTP">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="HTTPS">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="VersioningStatusEnumType">
+    <xs:annotation>
+      <xs:documentation>BucketVersioningConfiguration Wrapper.</xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="OFF">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ENABLED">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SUSPENDED">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="StorageClassEnumType">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="STANDARD">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="REDUCED_REDUNDANCY">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="GLACIER">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="SSEAlgorithmEnumType">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AES256">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="KMS">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="OnNoTokenPolicyEnumType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="EXCEPTION"></xs:enumeration>
+          <xs:enumeration value="STOP_FLOW"></xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="integerType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:integer"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="decimalType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:decimal"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="floatType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:float"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="doubleType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:double"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="dateTimeType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:dateTime"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="longType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:long"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="byteType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:byte"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="booleanType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:boolean"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="anyUriType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:anyURI"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="charType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:minLength value="1"></xs:minLength>
+          <xs:maxLength value="1"></xs:maxLength>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+</xs:schema>

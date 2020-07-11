@@ -1,0 +1,20 @@
+#%RAML 1.0 DataType
+type: object
+properties:  
+  systemName:
+    description: Name of the system of the backend system
+    type: string
+  connectionConfig:
+    required: false
+    description: Connection configuration of the backend system, no password
+    type: string
+  status:
+    description: Health status of backend system
+    type: 
+    enum:
+      - OK
+      - ERROR
+      - UNKNOWN
+  timestamp:
+    description: Current timestamp in yyyy-MM-dd HH:mm:ss format
+    type: string

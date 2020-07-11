@@ -1,0 +1,16 @@
+#%RAML 1.0 NamedExample
+{
+  "code": "400",
+  "message": "The user was missing required fields",
+  "errors" : 
+  [
+    { 
+      "domain" : "global",
+      "reason" : "MissingParameter",
+      "message" : "User first name cannot be empty",
+      "locationType" : "parameter",
+      "location" : "firstName",
+      "extendedHelp": "http://docs.domain.ext/users/post" 
+    }
+  ]
+} 

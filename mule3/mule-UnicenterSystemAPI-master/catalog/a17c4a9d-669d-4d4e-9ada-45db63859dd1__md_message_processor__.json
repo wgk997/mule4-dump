@@ -1,0 +1,30 @@
+{
+    "inputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "#_custom_mule_metadata_type_#",
+            "typeId": "ourSoapRequest"
+        },
+        "flowVariables": {
+            "affectedEndUserHandle": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "string"
+            },
+            "mainUserHandle": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "string"
+            },
+            "sessionId": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "string"
+            }
+        }
+    },
+    "outputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "Unicenter_Web_Service_Consumer",
+            "typeId": "CreateRequest"
+        }
+    },
+    "id": "a17c4a9d-669d-4d4e-9ada-45db63859dd1",
+    "version": "5.2.0.0"
+}

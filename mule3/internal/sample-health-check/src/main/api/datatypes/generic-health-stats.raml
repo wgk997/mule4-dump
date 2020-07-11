@@ -1,0 +1,128 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  muleProperties:
+    type: object
+    description: Properties Related to Mule
+    properties:
+      muleRuntime:
+        type: string
+        description: The mule runtime version the application is running on
+        example: "4.2.0"
+      apiName:
+        type: string
+        description: API name the application is part of
+        example: "test-system-api"
+      version:
+        type: string
+        description: Version of the API
+        example: "v1:<discoverId>"
+      server:
+        type: string
+        description: Name of the Server
+        example: "AC0084"
+      ip:
+        type: string
+        description: IP address of the machine
+        example: "172.27.112.1"
+      timeZone:
+        type: string
+        description: Time zone of the server
+        example: "America/Chicago"
+      environment:
+        type: string
+        description: Environment in which the api is running
+        example: "DEV"
+  jvmProperties:
+    type: object
+    description: Properties Related to Java Virtual Machine(JVM)
+    properties:
+      pid:
+        type: string
+        description: The process ID on which the Java Virtual Machine(JVM) is running
+        example: "15516@AC0084"
+      vmName:
+        type: string
+        description: The name of the Java Virtual Machine(JVM)
+        example: "Java HotSpot(TM)64 - Bit Server VM"
+      vmVendor:
+        type: string
+        description: Vendor of the Java Virtual Machine(JVM)
+        example: "Oracle Corporation"
+      vmVersion:
+        type: string
+        description: Build Version of the Java Virtual Machine
+        example: "25.231 - b11"
+      memory:
+        type: object
+        description: Memory usage by the Java Virtual Machine(JVM) . 
+        properties:
+          heapMemoryUsage:
+            type: !include memory-usage.raml
+            description:  <h3> 1. Heap </h3>  The Java virtual machine has a <i>heap</i> that is the runtime  data area from which memory for all class instances and arrays  are allocated.  It is created at the Java virtual machine start-up.  Heap memory for objects is reclaimed by an automatic memory management  system which is known as a <i>garbage collector</i>.   <p>The heap may be of a fixed size or may be expanded and shrunk.  The memory for the heap does not need to be contiguous. Returns the current memory usage of the heap that      is used for object allocation.  The heap consists      of one or more memory pools.  The <tt>used</tt>      and <tt>committed</tt> size of the returned memory      usage is the sum of those values of all heap memory pools      whereas the <tt>init</tt> and <tt>max</tt> size of the      returned memory usage represents the setting of the heap      memory which may not be the sum of those of all heap      memory pools.      <p>      The amount of used memory in the returned memory usage      is the amount of memory occupied by both live objects      and garbage objects that have not been collected, if any.           <p>
+
+            
+          nonHeapMemoryUsage: 
+            type: !include memory-usage.raml
+            description: <h3> 2. Non-Heap Memory</h3>  The Java virtual machine manages memory other than the heap  (referred as <i>non-heap memory</i>).  <p> The Java virtual machine has a <i>method area</i> that is shared  among all threads.  The method area belongs to non-heap memory.  It stores per-class structures  such as a runtime constant pool, field and method data, and the code for  methods and constructors.  It is created at the Java virtual machine start-up.  Returns the current memory usage of non-heap memory that      is used by the Java virtual machine.      The non-heap memory consists of one or more memory pools.      The <tt>used</tt> and <tt>committed</tt> size of the      returned memory usage is the sum of those values of      all non-heap memory pools whereas the <tt>init</tt>      and <tt>max</tt> size of the returned memory usage      represents the setting of the non-heap      memory which may not be the sum of those of all non-heap      memory pools.
+      threadCount:
+        type: object
+        description: No of threads in din different states in  Java Virtual Machine(JVM)
+        properties:
+          activeThreadCount:
+            type : number
+            description: number of active threads in  Java Virtual Machine(JVM)
+            example: 7
+          daemonThreadCount:
+            type : number
+            description: number of daemon threads in  Java Virtual Machine(JVM)
+            example: 3
+      garbageCollection:
+        type: array
+        description: Garbage collection is the process that the Java virtual machine uses to find and reclaim unreachable objects to free up memory space.
+        items:
+          properties:
+            gcName:
+              type : string
+              description: Type of the garbage Collector running in the  Java Virtual Machine(JVM)
+              example: "PS MarkSweep"
+            collectionCount:
+              type : number
+              description: number of collections that have occurred.if this value is  <tt>-1</tt> the collection count is undefined for this collector.
+              example: 0
+            collectionTime:
+              type : number
+              description: approximate accumulated collection elapsed time in milliseconds
+              example: 0
+  osProperties:
+    type: object
+    description: Properties Related to Mule
+    properties:
+      osName:
+        type: string
+        description: The name of the underlying Operating System
+        example: "Windows 10"
+      osVersion:
+        type: string
+        description: Version of the Operating System
+        example: "10.0"
+      osArchitechture:
+        type: string
+        description: Architehture implemented in the operating system
+        example: "amd64"
+      systemLoadAverage:
+        type: number
+        description: Returns the system load average for the last minute.      The system load average is the sum of the number of runnable entities queued to the {@linkplain#getAvailableProcessors available processors} and the number of runnable entities running on the available processors averaged over a period of time. The way in which the load average is calculated is operating system specific but is typically a damped time-dependent average.      <p> If the load average is not available, a negative value is returned. <p>This method is designed to provide a hint about the system load      and may be queried frequently.      The load average may be unavailable on some platform where it is      expensive to implement this method.
+        example: -1.0
+      availableProcessors:
+        type: number
+        description: Returns the number of processors available to the Java virtual machine.            <p> This value may change during a particular invocation of      the virtual machine.
+        example: 7
+  timestamp:
+    type: datetime
+    description: Current Timstamp when the health check was made
+    example: "2019-07-30T09:30:10Z"
+  correlationId:
+    type: string
+    description: universally unique identifier for identifying the request
+    example: "648c5fb2-0d74-11ea-9dab-105bad3268d7"

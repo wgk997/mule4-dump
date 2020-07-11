@@ -1,0 +1,232 @@
+#%RAML 1.0 Library
+types: 
+  order-templates-response-type:
+    type: object
+    properties:
+      BRANCH_USER_ID:
+        type: string
+        required: true
+        description: SRS internal branch and customer ids
+        example: "123_45678"
+      USER_ID: 
+        type: string
+        required: true
+        description: SRS internal customer id
+        example: "45678" 
+      BRANCH_ID: 
+        type: string
+        required: true
+        description: SRS internal branch id
+        example: "123" 
+      TEMPLATES:
+        type: template-model-data-type[]
+        required: true
+        description: list of suggested order templates
+      ITEMS:
+        type: item-data-type[]
+        required: true
+        description: list of suggested items
+  template-model-data-type:
+    properties:
+      TEMPLATE_MODEL:
+        type: string
+        required: true
+        description: name of template model type
+        example: "Order History"
+      TEMPLATES:
+        type: template-data-type[]
+        required: true
+        description: list of templates of given model type
+  template-data-type:
+    properties:               
+      CREATION_TIME: 
+        type: integer
+        required: true
+        description: time of creation
+        example: 1571162065
+      TEMPLATE_NUMBER:
+        type: integer
+        required: true
+        description: sequence number of template for this model
+        example: 1
+      TEMPLATE_KEY:
+        type: string
+        required: true
+        description: template key reference
+        example: "templates/order-history/payloads/123_45678/versions/1234567890/template_1.json"
+      TEMPLATE:
+        type: template-items-data-type
+        required: true
+        description: items suggested for this template
+  template-items-data-type:
+    properties:
+      Shingles:
+        type: string
+        required: true
+        description: generic item code
+        example:
+          "CT LANDMARK AR 3 BD/SQ"
+      'Hip and Ridge':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "CT SHADOW RIDGE AR 30'/BD"
+      Underlayment:
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "TOP SHIELD SECUREGRIP 25 SYNTH UDL 10 SQ/RL"
+      Starter:
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "CT SWIFTSTART STARTER 116'/BD"
+      'Ice and Water':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "RESISTO EAVE PROTECTOR 36 X 65' 2 SQ/RL"
+      Vents:
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "AIR VENT SHINGLEVENT II W/NAILS 12 X 4'"
+      Caulk:
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          ""
+      'Spray Paint':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "TOP SHIELD SHNGL/FLASHG AEROSOL 12.0 OZ"
+      'Drip Edge':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "BERGER F5M ALUMINUM DRIP EDGE 10' .016"
+      'Plastic Caps':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          ""
+      'Other Fasteners':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          ""
+      'Coil Nails':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          ""
+      'Pipe Flashing':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "ALUM PIPE COLLAR PAINTED 1 - 3"
+      'Other Flashing Metal':
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "BERGER DORMER FLASHING 2-5/8 X 3 X 10'"
+      Decking:
+        type:
+          string
+        required: true
+        description: generic item code
+        example: ""
+      W-Valley:
+        type:
+          string
+        required: true
+        description: generic item code
+        example:
+          "QA ALUMINUM W-VALLEY 18 X 10' .022"
+      'Gutter Apron':
+        type:
+          string
+        required: true
+        description: generic item code
+        example: ""
+  item-data-type:
+    properties:
+      CATEGORY_NAME:
+        type:
+          string
+        required: true
+        description: name of item category
+        example:
+          "Pipe Flashing"
+      ITEMS:
+        type: suggested-item-data-type[]
+        required: true
+        description: list of suggested item type and ranking         
+  suggested-item-data-type:
+    properties:
+      ITEM_ID:
+        type:
+          string
+        required: true
+        description: item id
+        example:
+          "12a3b4c5d678e90f12345678gh9012i3"
+      ITEM_GENERIC_DESC:
+        type:
+          string
+        required: true
+        description: item generic description
+        example:
+          "GAF WEATHERWATCH 2 SQ/RL"
+      PROBABILITY:
+        type:
+          string
+        description: probability percentage
+        example:
+          "0.123456789"
+      RANK:
+        type:
+          string
+        required: true
+        description: probability rank among items in list
+        example:
+          "1"
+      ITEM_SOURCE:
+        type:
+          string
+        required: true
+        description: source model name
+        example:
+          "branch-user"
+
+
+
+    
+  

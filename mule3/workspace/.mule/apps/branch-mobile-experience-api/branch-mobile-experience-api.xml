@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <apikit:config name="branch-mobile-experience-api-config" raml="branch-mobile-experience-api.raml" consoleEnabled="false" doc:name="Router" />
+
+    <http:listener-config name="branch-mobile-experience-api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <flow name="branch-mobile-experience-api-main">
+        <http:listener config-ref="Cloudhub_HTTP_Listener_Configuration" path="/api/*" doc:name="HTTP" />
+        <apikit:router config-ref="branch-mobile-experience-api-config" doc:name="APIkit Router" />
+        <exception-strategy ref="branch-mobile-experience-api-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy" />
+    </flow>
+    <flow name="branch-mobile-experience-api-console">
+        <http:listener config-ref="Cloudhub_HTTP_Listener_Configuration" path="/console/*" doc:name="HTTP" />
+        <apikit:console config-ref="branch-mobile-experience-api-config" doc:name="APIkit Console" />
+    </flow>
+    <flow name="get:/brand/customer/{customerNumber}/branchList:branch-mobile-experience-api-config">
+        <flow-ref name="customer-eligible-brands-by-shipTo-apiFlow" doc:name="customer-eligible-brands-by-shipTo-apiFlow"/>
+
+    </flow>
+    <flow name="get:/branch/customer/{customerNumber}:branch-mobile-experience-api-config">
+        <logger message="Started Processing Request Delivery Details for Customer Number #[message.inboundProperties.'http.uri.params'.customerNumber]." level="INFO" doc:name="Started" />
+        <set-variable variableName="customerNumber" value="#[message.inboundProperties['http.uri.params'].customerNumber]" doc:name="Set customerNumber" />
+        <choice doc:name="Demo">
+            <when expression="#[flowVars.customerNumber.equalsIgnoreCase('${demo.customerId}')]">
+                <set-payload value="#[Thread.currentThread().getContextClassLoader().getResourceAsStream('branch-list-response-demo.json')]" mimeType="application/json" doc:name="Return Demo Branch List" />
+            </when>
+            <otherwise>
+                <flow-ref name="customer-branch-experience-apiFlow" doc:name="Flow Reference" />
+            </otherwise>
+        </choice>
+        <exception-strategy ref="global-exception-strategy" doc:name="Reference Exception Strategy" />
+    </flow>
+    <flow name="get:/branch/{branchId}:branch-mobile-experience-api-config">
+        <flow-ref name="branch-detail-subFlow" doc:name="Flow Reference" />
+        <exception-strategy ref="global-exception-strategy" doc:name="Reference Exception Strategy" />
+    </flow>
+    <flow name="get:/branchList:branch-mobile-experience-api-config">
+        <flow-ref name="branchList-subFlow" doc:name="Flow Reference" />
+        <exception-strategy ref="global-exception-strategy" doc:name="Reference Exception Strategy" />
+    </flow>
+    <flow name="get:/nearestBranch:branch-mobile-experience-api-config">
+        <set-payload value="{
+&quot;branchList&quot; : [
+{
+&quot;branchId&quot; : 99,
+&quot;branchType&quot; : &quot;Home Branch&quot;,
+&quot;branchLogo&quot; : &quot;https://www.example.org/images/logo.png&quot;,
+&quot;branchCode&quot; : &quot;RFMAY&quot;,
+&quot;branchName&quot; : &quot;RFD SHINGLES - MAYBERRY&quot;,
+&quot;branchAddress&quot; : &quot;123 Main St&quot;,
+&quot;branchCityStateZip&quot; : &quot;Mayberry, NC 27031&quot;,
+&quot;branchFax&quot; : &quot;123-555-1212&quot;,
+&quot;branchPhone&quot; : &quot;123-555-1213&quot;,
+&quot;latitude&quot; : -96.682624,
+&quot;longitude&quot; : 33.145384,
+&quot;businessHours&quot; : &quot;Monday - Friday, 7:00 AM to 5:00 PM&quot;,
+&quot;saturdayBusinessHours&quot; : &quot;7:00 AM to 1:00 PM&quot;
+}
+]
+}" doc:name="Set Payload" />
+    </flow>
+    <flow name="get:/brand/customer/{customerNumber}:branch-mobile-experience-api-config">
+        <flow-ref name="customer-brand-experience-apiFlow" doc:name="Flow Reference" />
+        <exception-strategy ref="global-exception-strategy" doc:name="Reference Exception Strategy" />
+    </flow>
+    <flow name="get:/brandList:branch-mobile-experience-api-config">
+        <flow-ref name="brand-list-apiFlow" doc:name="Flow Reference" />
+        <exception-strategy ref="global-exception-strategy" doc:name="Reference Exception Strategy" />
+    </flow>
+    <flow name="get:/nearestEligibleBranch:branch-mobile-experience-api-config">
+        <flow-ref name="customer-nearest-eligible-branch-apiFlow" doc:name="Flow Reference" />
+        <exception-strategy ref="global-exception-strategy" doc:name="Reference Exception Strategy" />
+    </flow>
+    <apikit:mapping-exception-strategy name="branch-mobile-experience-api-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{ &quot;code&quot;: &quot;404&quot;, &quot;message&quot;: &quot;Not found&quot;, &quot;errors&quot; : [ { &quot;domain&quot; : &quot;global&quot;, &quot;reason&quot; : &quot;Not Found&quot;, &quot;message&quot; : &quot;Resource not found&quot;, &quot;locationType&quot; : &quot;resource&quot;, &quot;location&quot; : &quot;url path&quot;, &quot;extendedHelp&quot;: &quot;&quot;} ] }" doc:name="Set Payload" mimeType="application/json" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{   &quot;code&quot;: &quot;405&quot;,   &quot;message&quot;: &quot;Method not allowed&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;Method&quot;,       &quot;message&quot; : &quot;HTTP method is not allowed&quot;,       &quot;locationType&quot; : &quot;http method&quot;,       &quot;location&quot; : &quot;http header&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] }" doc:name="Set Payload" mimeType="application/json" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{   &quot;code&quot;: &quot;415&quot;,   &quot;message&quot;: &quot;Unsupported media type&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;Media type is unsupported&quot;,       &quot;message&quot; : &quot;Payload is not in the format supported by this method on the target resource&quot;,       &quot;locationType&quot; : &quot;Payload&quot;,       &quot;location&quot; : &quot;Payload&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] }" doc:name="Set Payload" mimeType="application/json" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{   &quot;code&quot;: &quot;406&quot;,   &quot;message&quot;: &quot;Not acceptable&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;Response is not acceptable&quot;,       &quot;message&quot; : &quot;Response type returned is not provided in client request HTTP header&quot;,       &quot;locationType&quot; : &quot;HTTP header&quot;,       &quot;location&quot; : &quot;Accept&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] }" doc:name="Set Payload" mimeType="application/json" />
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property" />
+            <set-payload value="{   &quot;code&quot;: &quot;400&quot;,   &quot;message&quot;: &quot;#[(exception.cause!=null)?(exception.cause.message):exception]&quot;,   &quot;errors&quot; :    [     {        &quot;domain&quot; : &quot;global&quot;,       &quot;reason&quot; : &quot;MissingField&quot;,       &quot;message&quot; : &quot;#[(exception.cause!=null)?(exception.cause.message):exception]&quot;,       &quot;locationType&quot; : &quot;payload&quot;,       &quot;location&quot; : &quot;payload&quot;,       &quot;extendedHelp&quot;: &quot;&quot;      }   ] } " doc:name="Set Payload" mimeType="application/json" />
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>

@@ -1,0 +1,310 @@
+<schema attributeFormDefault="unqualified"
+        elementFormDefault="qualified"
+        targetNamespace="http://xmlns.oracle.com/CreateUnicenterIncident"
+        xmlns="http://www.w3.org/2001/XMLSchema">
+    <element name="CreateUnicenterIncidentProcessRequest">
+        <complexType>
+            <all>
+                <!-- this is not used anymore but it's in here to avoid breaking legacy consumers -->
+                <element name="input"
+                         minOccurs="0"
+                         type="string"/>
+                <!-- this is not used anymore but it's in here to avoid breaking legacy consumers -->
+                <element name="req"
+                         minOccurs="0"
+                         type="string"/>
+                <!-- this is not used anymore but it's in here to avoid breaking legacy consumers -->
+                <element name="value"
+                         minOccurs="0"
+                         type="string"/>
+                <!-- basic Request Detail header information -->
+                <element name="requester"
+                         type="string"
+                         minOccurs="0"/>
+                <element name="affectedEndUser"
+                         type="string"
+                         minOccurs="0"/>
+                <element name="incidentArea"
+                         type="string"/>
+                <element name="summary"
+                         type="string"/>
+                <element name="description"
+                         type="string"/>
+                <!-- Only used for error emails. Create Fuel/others do not supply this -->
+                <element name="bpelName"
+                         minOccurs="0"
+                         type="string"/>
+                <element name="instanceID"
+                         type="string"
+                         minOccurs="0"/>
+                <!-- Incident Request Detail for Apps.EAM.Fuel pcat:2243749 TRAK Fuel property information.
+                 Only supplied by the CreateFuel application/service
+                 -->
+                <element name="FuelSystem_Fuel"
+                         minOccurs="0">
+                    <complexType>
+                        <all>
+                            <!-- CreateFuel, when using pcat 2243751 to report meter reading/miles/hour incidents,
+                             only supplies ADDFUEL_EQUIPMENTCODE, so making everything else in here optional -->
+
+                            <!--  ADDFUEL_DEPOTCODE, maxLength allowed is 30  -->
+                            <element name="ADDFUEL_DEPOTCODE"
+                                     minOccurs="0"
+                                     type="string"/>
+                            <!--  ADDFUEL_PUMPID, maxLength allowed is 30 -->
+                            <element name="ADDFUEL_PUMPCODE"
+                                     minOccurs="0"
+                                     type="string"/>
+                            <!--  ADDFUEL_FUELID, maxLength allowed is 30 -->
+                            <element name="ADDFUEL_FUELCODE"
+                                     minOccurs="0"
+                                     type="string"/>
+                            <!--  ADDFUEL_VEHICLEID, maxLength allowed is 30 -->
+                            <element name="ADDFUEL_EQUIPMENTCODE"
+                                     type="string"/>
+                            <!--  ADDFUEL_ISSUETO, maxLength allowed is 15 -->
+                            <element name="ADDFUEL_PERSONCODE"
+                                     minOccurs="0"
+                                     type="string"/>
+                            <!--  ADDFUEL_QUANTITYISSUED -->
+                            <element name="ADDFUEL_QUANTITY_VALUE"
+                                     minOccurs="0"
+                                     type="decimal"/>
+                            <!-- ADDFUEL_TRANSACTIONDATE-->
+                            <element name="ADDFUEL_TRANSACTION_DATE"
+                                     minOccurs="0"
+                                     type="dateTime"/>
+                            <!--  ADDFUEL_PRICE -->
+                            <element name="ADDFUEL_PRICE_VALUE"
+                                     minOccurs="0"
+                                     type="decimal"/>
+                        </all>
+                    </complexType>
+                </element>
+                <!-- Schema definition from INFOR -->
+                <!-- Incident Request Detail for Apps.EAM.Meter pcat:2243751 TRAK Meter Reading property information -->
+                <element name="FuelSystem_MeterReading"
+                         minOccurs="0">
+                    <complexType>
+                        <all>
+                            <!-- CreateFuel, when using pcat 2243751 to report meter reading/miles/hour incidents,
+                             does not supply ADDREADING_EQUIPMENTCODE -->
+                            <element name="ADDREADING_EQUIPMENTCODE"
+                                     minOccurs="0"
+                                     type="string"/>
+                            <!-- UOM with trigger for meter-code -->
+                            <element name="ADDREADING_UOM"
+                                     type="string"/>
+                            <!-- Current Meter reading -->
+                            <element name="ADDREADING_CURRENT_METER_READING"
+                                     type="string"/>
+                            <!-- Current Meter reading Hours -->
+                            <element name="ADDREADING_HOURS_METER_READING"
+                                     type="string"/>
+                            <!-- Vehicle-Meter-Reading Date-Time format mm/dd/yyyy hh:mm -->
+                            <element name="ADDREADING_METER_READING_DATETIME"
+                                     type="dateTime"/>
+                        </all>
+                    </complexType>
+                </element>
+                <!-- FuelSystem_TrakSync only needed for pcat:2243752 -->
+                <element name="FuelSystem_TrakSync"
+                         minOccurs="0">
+                    <complexType>
+                        <sequence>
+                            <!-- Incident Request Detail for Apps.EAM.TrakSync pcat:2243752 ProcessTrakSync property information -->
+                            <!-- person or vehicle -->
+                            <element name="TRAK_TYPE" type="string"/>
+                            <!-- + for active and - for inactive -->
+                            <element name="TRAK_ACTION" type="string"/>
+                            <!-- person code -->
+                            <element name="PERSON_CODE" type="string"/>
+                            <!-- person desc -->
+                            <element name="PERSON_DESCRIPTION" type="string"/>
+                            <!-- vehicle code -->
+                            <element name="VEH_CODE" type="string"/>
+                            <!-- vehicle desc -->
+                            <element name="VEH_DESCRIPTION" type="string"/>
+                            <!-- vehicle fillup miles -->
+                            <element name="VEH_MAX_FILLUP_MILES" type="string"/>
+                            <!-- vehicle tank capacity -->
+                            <element name="VEH_TANK_CAPACITY" type="string"/>
+                        </sequence>
+                    </complexType>
+                </element>
+                <!-- Only used if the pcat incident area is unknown to this application -->
+                <element name="Incident_Properties_Generic"
+                         minOccurs="0">
+                    <complexType>
+                        <all>
+                            <!--  generic incident property 1  -->
+                            <element name="incident_prop1_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop1_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 2  -->
+                            <element name="incident_prop2_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop2_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 3  -->
+                            <element name="incident_prop3_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop3_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 4  -->
+                            <element name="incident_prop4_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop4_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 5  -->
+                            <element name="incident_prop5_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop5_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 6  -->
+                            <element name="incident_prop6_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop6_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 7  -->
+                            <element name="incident_prop7_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop7_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 8  -->
+                            <element name="incident_prop8_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop8_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 9  -->
+                            <element name="incident_prop9_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop9_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 10  -->
+                            <element name="incident_prop10_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop10_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 11  -->
+                            <element name="incident_prop11_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop11_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 12  -->
+                            <element name="incident_prop12_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop12_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 13  -->
+                            <element name="incident_prop13_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop13_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 14  -->
+                            <element name="incident_prop14_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop14_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 15  -->
+                            <element name="incident_prop15_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop15_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 16  -->
+                            <element name="incident_prop16_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop16_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 17  -->
+                            <element name="incident_prop17_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop17_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 18  -->
+                            <element name="incident_prop18_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop18_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 19  -->
+                            <element name="incident_prop19_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop19_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 20  -->
+                            <element name="incident_prop20_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop20_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 21  -->
+                            <element name="incident_prop21_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop21_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 22  -->
+                            <element name="incident_prop22_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop22_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 23  -->
+                            <element name="incident_prop23_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop23_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 24  -->
+                            <element name="incident_prop24_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop24_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 25  -->
+                            <element name="incident_prop25_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop25_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 26  -->
+                            <element name="incident_prop26_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop26_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 27  -->
+                            <element name="incident_prop27_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop27_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 28  -->
+                            <element name="incident_prop28_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop28_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 29  -->
+                            <element name="incident_prop29_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop29_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 30  -->
+                            <element name="incident_prop30_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop30_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 31  -->
+                            <element name="incident_prop31_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop31_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 32  -->
+                            <element name="incident_prop32_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop32_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 33  -->
+                            <element name="incident_prop33_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop33_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 34  -->
+                            <element name="incident_prop34_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop34_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 35  -->
+                            <element name="incident_prop35_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop35_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 36  -->
+                            <element name="incident_prop36_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop36_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 37  -->
+                            <element name="incident_prop37_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop37_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 38  -->
+                            <element name="incident_prop38_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop38_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 39  -->
+                            <element name="incident_prop39_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop39_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 40  -->
+                            <element name="incident_prop40_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop40_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 41  -->
+                            <element name="incident_prop41_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop41_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 42  -->
+                            <element name="incident_prop42_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop42_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 43  -->
+                            <element name="incident_prop43_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop43_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 44  -->
+                            <element name="incident_prop44_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop44_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 45  -->
+                            <element name="incident_prop45_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop45_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 46  -->
+                            <element name="incident_prop46_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop46_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 47  -->
+                            <element name="incident_prop47_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop47_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 48  -->
+                            <element name="incident_prop48_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop48_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 49  -->
+                            <element name="incident_prop49_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop49_value" minOccurs="0" type="string"/>
+                            <!--  generic incident property 50  -->
+                            <element name="incident_prop50_key" minOccurs="0" type="string"/>
+                            <element name="incident_prop50_value" minOccurs="0" type="string"/>
+                        </all>
+                    </complexType>
+                </element>
+            </all>
+        </complexType>
+    </element>
+    <element name="CreateUnicenterIncidentProcessResponse">
+        <complexType>
+            <sequence>
+                <element name="desc" type="string"/>
+                <element name="result" type="string"/>
+                <element name="sessionId" type="string"/>
+                <element name="incidentId" type="string"/>
+                <element name="requestHandle" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+    <!-- used for var_createIncidentValue for attributes and properties
+    <element name="incidentVal" type="string"/> -->
+    <element name="string" type="string"/>
+</schema>

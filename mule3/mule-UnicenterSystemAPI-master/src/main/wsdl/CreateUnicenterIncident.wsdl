@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CreateUnicenterIncident"
+             targetNamespace="http://xmlns.oracle.com/CreateUnicenterIncident"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:client="http://xmlns.oracle.com/CreateUnicenterIncident">
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      TYPE DEFINITION - List of services participating in this BPEL process
+      The default output of the BPEL designer uses strings as input and
+      output to the BPEL Process. But you can define or import any XML
+      Schema type and use them as part of the message types.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/CreateUnicenterIncident"
+                    schemaLocation="CreateUnicenterIncident.xsd"/>
+        </schema>
+    </types>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      MESSAGE TYPE DEFINITION - Definition of the message types used as
+      part of the port type defintions
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <message name="CreateUnicenterIncidentRequestMessage">
+        <part name="payload" element="client:CreateUnicenterIncidentProcessRequest"/>
+    </message>
+    <message name="CreateUnicenterIncidentResponseMessage">
+        <part name="payload" element="client:CreateUnicenterIncidentProcessResponse"/>
+    </message>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    PORT TYPE DEFINITION - A port type groups a set of operations into
+    a logical service unit.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- portType implemented by the CreateUnicenterIncident BPEL process -->
+    <portType name="CreateUnicenterIncident">
+        <operation name="process">
+            <input message="client:CreateUnicenterIncidentRequestMessage"/>
+            <output message="client:CreateUnicenterIncidentResponseMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="CreateUnicenterIncidentSoapBinding" type="client:CreateUnicenterIncident">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="CreateUnicenterIncident_OSB_Client">
+        <port name="CreateUnicenterIncident_OSB_ClientDirectBindingPort11" binding="client:CreateUnicenterIncidentSoapBinding">
+            <soap:address location="http://foobar"/>
+        </port>
+    </service>
+</definitions>

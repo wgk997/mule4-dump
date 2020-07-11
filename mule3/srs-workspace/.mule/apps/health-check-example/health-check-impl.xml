@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+    <s3:config name="Amazon_S3__Basic_Configuration" accessKey="${aws.client}" secretKey="${aws.secret}" doc:name="Amazon S3: Basic Configuration"/>
+    <spring:beans>
+        <spring:import resource="classpath:generic-health-check.xml" />
+    </spring:beans>
+    <flow name="api-health-flow">
+        <logger message="Started Processing Request for api health flow" level="INFO" category="${log.category}" doc:name="Log Start"/>
+        <http:request config-ref="HTTPS_Request_Configuration" path="/innerAPI" method="GET" doc:name="call internal API">
+            <http:request-builder>
+                <http:header headerName="client_id" value="bb77bb01f80848feb4352c261f82b7e0"/>
+                <http:header headerName="client_secret" value="9a43e20654be4aa6A3FEb584ef321B5f"/>
+                <http:header headerName="correlation_id" value="123"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+        systemName: "HTTPS",
+        connectionConfig: p('example.api.host') ++ ":" ++ p('example.api.port') ++ "/" ++ p('example.api.basepath'),
+        user : "N/A",
+        status: "OK",
+        timeStamp : now as :string{format: "yyyy-MM-dd HH:mm:ss"}
+}]]></dw:set-payload>
+            <dw:set-variable variableName="httpPayload"><![CDATA[%dw 1.0
+%output application/java
+---
+{
+    systemName: "HTTPS",
+    connectionConfig: "0.0.0.0:443",
+    user: "N/A",
+    status: "OK",
+    timestamp: now
+}]]></dw:set-variable>
+        </dw:transform-message>
+        <logger message="Completed Processing Request for api health flow" level="INFO" category="${log.category}" doc:name="Log End"/>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger message="Exception caught while http call" level="INFO" category="${log.category}" doc:name="Log Error"/>
+            <set-payload value="#[exception.getSummaryMessage()]"  doc:name="Set error message"/>
+            <dw:transform-message doc:name="Transform Message">
+                <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+        systemName: "HTTPS",
+        connectionConfig: p('api.host') ++ ":" ++ p('api.port') ++ "/" ++ p('api.basepath'),
+        user : "N/A",
+        status: "ERROR",
+        exception: payload,
+        timeStamp : now as :string{format: "yyyy-MM-dd HH:mm:ss"}
+}]]></dw:set-payload>
+            </dw:transform-message>
+        </catch-exception-strategy>
+    </flow>
+    <flow name="db-health-flow">
+        <logger message="Started Processing Request for db health " level="INFO" category="${log.category}" doc:name="Log Start"/>
+     <db:select config-ref="ODSAPI_Database_Configuration" doc:name="Database" queryTimeout="2">
+            <db:parameterized-query><![CDATA[Select 1]]></db:parameterized-query>
+        </db:select>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+        systemName: "SQLServer",
+        connectionConfig: p('odsapi.db.url') 
+       					 	++ ";" ++ p('odsapi.db.port') ++ ";" 
+                           ++ ";" ++ p('odsapi.db.database') ++ ";",
+        user: p('odsapi.db.user'),                    
+        status: "OK",
+        timeStamp : now as :string{format: "yyyy-MM-dd HH:mm:ss"}
+}]]></dw:set-payload>
+            <dw:set-variable variableName="dbPayload"><![CDATA[%dw 1.0
+%output application/java
+---
+{
+    systemName: "SQLServer",
+    connectionConfig: "10.88.151.91:1433",
+    user: "admin",
+    status: "OK",
+    timestamp: now
+}]]></dw:set-variable>
+        </dw:transform-message>
+        <logger message="Completed Processing Request for db health" level="INFO" category="${log.category}" doc:name="Log End"/>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger level="INFO" doc:name="Log Error" message="#[exception.getDetailedMessage()]" category="${log.category}"/>
+            <set-payload value="#[exception.getSummaryMessage()]"  doc:name="Set error message"/>
+            <dw:transform-message doc:name="Transform Message">
+                <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+        systemName: "SQLServer",
+        connectionConfig: p('odsapi.db.url') 
+                           ++ ";" ++ p('odsapi.db.database') ++ ";",
+        user: p('odsapi.db.user'),                         
+        status: "ERROR",
+        exception: payload,
+		timeStamp : now as :string{format: "yyyy-MM-dd HH:mm:ss"}
+}]]></dw:set-payload>
+            </dw:transform-message>
+        </catch-exception-strategy>
+    </flow>
+    <flow name="s3-health-flow">
+        <logger message="Started Processing Request for S3 Health Flow" level="INFO" category="${log.category}" doc:name="Log Start"/>
+        <s3:list-buckets config-ref="Amazon_S3__Basic_Configuration" region="US_STANDARD" doc:name="Amazon S3"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+        systemName: "AWS S3",
+        connectionConfig: "N/A",
+        user: "AVIO S3 User",
+        status: "OK",
+        timeStamp : now as :string{format: "yyyy-MM-dd HH:mm:ss"}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="Completed Processing Request for S3 Health Flow" level="INFO" category="${log.category}" doc:name="Log End"/>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger message="Exception caught while S3 call" level="INFO" category="${log.category}" doc:name="Log Error"/>
+            <set-payload value="#[exception.getSummaryMessage()]"  doc:name="Set error message"/>
+            <dw:transform-message doc:name="Transform Message">
+                <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+        systemName: "AWS S3",
+        connectionConfig: "N/A",
+		user: "AVIO S3 User",
+        status: "ERROR",
+        exception: payload,
+        timeStamp : now as :string{format: "yyyy-MM-dd HH:mm:ss"}
+}]]></dw:set-payload>
+            </dw:transform-message>
+        </catch-exception-strategy>
+    </flow>
+    
+</mule>

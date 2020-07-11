@@ -1,0 +1,45 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<definitions name="CreateUnicenterRequest"
+             targetNamespace="http://xmlns.oracle.com/CreateUnicenterRequest"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.oracle.com/CreateUnicenterRequest"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema"
+                xmlns:client="http://xmlns.oracle.com/CreateUnicenterRequest">
+            <import namespace="http://xmlns.oracle.com/CreateUnicenterRequest"
+                    schemaLocation="CreateUnicenterRequest.xsd"/>
+        </schema>
+    </types>
+    <message name="CreateUnicenterRequestRequestMessage">
+        <part name="payload" element="client:CreateUnicenterRequestProcessRequest"/>
+    </message>
+    <message name="CreateUnicenterRequestResponseMessage">
+        <part name="payload" element="client:CreateUnicenterRequestProcessResponse"/>
+    </message>
+    <portType name="CreateUnicenterRequest">
+        <operation name="process">
+            <input message="client:CreateUnicenterRequestRequestMessage"/>
+            <output message="client:CreateUnicenterRequestResponseMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="CreateUnicenterRequestSoapBinding" type="client:CreateUnicenterRequest">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="CreateUnicenterRequest_OSB_Client">
+        <port name="CreateUnicenterRequest_OSB_ClientDirectBindingPort11" binding="client:CreateUnicenterRequestSoapBinding">
+            <soap:address location="http://foobar"/>
+        </port>
+    </service>
+</definitions>

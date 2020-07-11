@@ -1,0 +1,24 @@
+#%RAML 1.0 Library
+types:
+  address:
+    type: object
+    properties:
+      addressLine1:
+        type: string
+        required: false
+      addressLine2:
+        type: string
+        required: false
+      addressLine3:
+        type: string
+        required: false
+      city:
+        type: string
+        required: true
+      state:
+        type: string
+        required: true
+        maxLength: 2
+      zipCode:
+        type: string
+        required: true
