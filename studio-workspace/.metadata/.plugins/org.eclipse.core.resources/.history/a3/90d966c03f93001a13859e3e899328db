@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+
+	<flow name="aepi-medical-alert-sys-api-main" doc:id="360ec8d1-c5e9-4f56-99da-6877ba87ff4c" >
+		<http:listener doc:name="Listener" doc:id="8aeaffe6-3892-4377-a2c0-609416062b35" config-ref="http-listener-config" path="/api/*">
+            <http:response statusCode="#[vars.statusCode default 200]">
+            </http:response>
+            <http:error-response statusCode="#[vars.statusCode default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+            </http:error-response>
+		</http:listener>
+        <set-variable variableName="headerAttributes" value="#[%dw 2.0
+output application/json
+---
+{
+	correlationId: message.attributes.headers.correlation_id,
+	clientId: message.attributes.headers.client_id,
+	clientSecret: message.attributes.headers.client_secret
+}]" doc:name="headerAttributes"/>
+		<set-variable value="aepi-medical-alert-sys-api-main::apiKitRouter" doc:name="currentFlow" doc:id="3e8e3f31-8d25-4f7c-b211-ae3c52530d92" variableName="currentFlow"/>
+		<apikit:router doc:name="APIkit Router" doc:id="e474b7e2-127a-4371-af30-b98e39d0bc3c" config-ref="Router"/>
+	</flow>
+	<flow name="aepi-medical-alert-sys-api-console" doc:id="7d0f944e-387b-4a6f-94c1-de21e517ef93" >
+		<http:listener doc:name="Listener" doc:id="d21e0e9b-9c88-45dd-a6bc-98f84ef8852a" config-ref="http-listener-config" path="/console/*"/>
+		<apikit:console doc:name="APIkit Console" doc:id="16be3bd8-ff97-461c-86df-566605fbfe96" config-ref="Router"/>
+	</flow>
+</mule>

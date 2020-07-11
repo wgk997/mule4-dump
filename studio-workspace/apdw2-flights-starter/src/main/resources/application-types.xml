@@ -1,0 +1,644 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="code" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="airline" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="americanFlightsRestResponseToAllDestinations" format="json">
+      <types:shape format="json-schema" location="schema/json/americanFlightsResponseSchema.json"/>
+    </types:type>
+    <types:type name="findFlightsResponses" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="deltaFindFlightsSoapResponses" format="xml">
+      <types:example format="xml" element="{http://soap.training.mulesoft.com/}findFlightResponse" location="examples/deltaFindFlightsSoapResponse.xml"/>
+    </types:type>
+    <types:type name="unitedFlightsRestResponse" format="json">
+      <types:shape format="weave" example="examples/unitedFlightResponse.json"><![CDATA[%dw 2.0
+type unitedFlightsRestResponse = {|
+  flights: Array<{|
+    code: String, 
+    price: Number {"typeId": "double"}, 
+    origin: String, 
+    destination: String, 
+    departureDate: String, 
+    planeType: String, 
+    airlineName: String, 
+    emptySeats: Number {"typeId": "int"}
+  |}>
+|} {"MetadataFormat": "json",
+"example": "{\"flights\":[{\"code\":\"ER45if\",\"price\":345.99,\"origin\":\"MUA\",\"destination\":\"LAX\",\"departureDate\":\"2018\/02\/11\",\"planeType\":\"Boeing 737\",\"airlineName\":\"United\",\"emptySeats\":52},{\"code\":\"ER45jd\",\"price\":346,\"origin\":\"MUA\",\"destination\":\"LAX\",\"departureDate\":\"2018\/04\/11\",\"planeType\":\"Boeing 777\",\"airlineName\":\"United\",\"emptySeats\":12},{\"code\":\"ER0945\",\"price\":423,\"origin\":\"MUA\",\"destination\":\"LAX\",\"departureDate\":\"2018\/06\/11\",\"planeType\":\"Boeing 707\",\"airlineName\":\"United\",\"emptySeats\":0}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="americanRestResponsesToAllDestinations" format="json">
+      <types:shape format="json-schema" location="schema/json/americanFlightsResponseSchema.json"/>
+    </types:type>
+    <types:type name="deltaFlightRequest" format="xml">
+      <types:example format="xml" element="{http://soap.training.mulesoft.com/}findFlight" location="examples/deltaFindFlightsSoapRequest.xml"/>
+    </types:type>
+    <types:type name="deltaSoapResponsesToAllDestinations" format="xml">
+      <types:example format="xml" element="{http://soap.training.mulesoft.com/}findFlightResponse" location="examples/mockdata/deltaSoapResponsesToAllDestinations.xml"/>
+    </types:type>
+    <types:type name="flights" format="java">
+      <types:shape format="java" element="com.mulesoft.training.FlightArray"/>
+    </types:type>
+    <types:type name="simulate" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="queryParms" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="code-param" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="americanFlightsRestResponse" format="json">
+      <types:shape format="json-schema" location="schema/json/americanFlightsResponseSchema.json"/>
+    </types:type>
+    <types:type name="myType" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="initRequestPayload" format="json">
+      <types:shape format="weave" example="examples/initRequestPayload.json"><![CDATA[%dw 2.0
+type initRequestPayload = {|  |} {"MetadataFormat": "json",
+"example": "{}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="initRequestAttributes" format="json">
+      <types:shape format="weave" example="examples/initRequestAttributes.json"><![CDATA[%dw 2.0
+type initRequestAttributes = {|
+  queryParams: {|
+    code: String, 
+    simulate: String, 
+    airline: String
+  |}
+|} {"MetadataFormat": "json",
+"example": "{\"queryParams\":{\"code\":\"SFO\",\"simulate\":\"true\",\"airline\":\"american\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="americanFlightsInputJson" format="json">
+      <types:shape format="weave" example="examples/americanFlightsInput.json"><![CDATA[%dw 2.0
+type americanFlightsInputJson = Array<{|
+  ID: Number {"typeId": "int"}, 
+  code: String, 
+  price: Number {"typeId": "int"}, 
+  departureDate: String, 
+  origin: String, 
+  destination: String, 
+  emptySeats: Number {"typeId": "int"}, 
+  plane: {|
+    "type": String, 
+    totalSeats: Number {"typeId": "int"}
+  |}
+|}> {"MetadataFormat": "json",
+"example": "[{\"ID\":5,\"code\":\"rree1093\",\"price\":142,\"departureDate\":\"2018-02-11T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":1,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}},{\"ID\":7,\"code\":\"eefd1994\",\"price\":676,\"departureDate\":\"2018-01-01T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":0,\"plane\":{\"type\":\"Boeing 777\",\"totalSeats\":300}},{\"ID\":8,\"code\":\"ffee2000\",\"price\":300,\"departureDate\":\"2018-02-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":30,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}},{\"ID\":9,\"code\":\"eefd3000\",\"price\":900,\"departureDate\":\"2018-02-01T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":0,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}},{\"ID\":11,\"code\":\"rree4567\",\"price\":456,\"departureDate\":\"2018-01-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":100,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}},{\"ID\":1,\"code\":\"rree0001\",\"price\":541,\"departureDate\":\"2018-01-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"LAX\",\"emptySeats\":0,\"plane\":{\"type\":\"Boeing 787\",\"totalSeats\":200}},{\"ID\":3,\"code\":\"ffee0192\",\"price\":300,\"departureDate\":\"2018-01-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"LAX\",\"emptySeats\":0,\"plane\":{\"type\":\"Boeing 777\",\"totalSeats\":300}},{\"ID\":10,\"code\":\"eefd4511\",\"price\":900,\"departureDate\":\"2018-01-15T00:00:00\",\"origin\":\"MUA\",\"destination\":\"LAX\",\"emptySeats\":100,\"plane\":{\"type\":\"Boeing 777\",\"totalSeats\":300}},{\"ID\":2,\"code\":\"eefd0123\",\"price\":300,\"departureDate\":\"2018-01-25T00:00:00\",\"origin\":\"MUA\",\"destination\":\"CLE\",\"emptySeats\":7,\"plane\":{\"type\":\"Boeing 747\",\"totalSeats\":345}},{\"ID\":4,\"code\":\"rree1000\",\"price\":200,\"departureDate\":\"2018-01-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"CLE\",\"emptySeats\":5,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}},{\"ID\":6,\"code\":\"ffee1112\",\"price\":954,\"departureDate\":\"2018-01-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"CLE\",\"emptySeats\":100,\"plane\":{\"type\":\"Boeing 787\",\"totalSeats\":200}}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="scatterGatherResultJson" format="json">
+      <types:shape format="weave" example="examples/scatterGatherResult.json"><![CDATA[%dw 2.0
+type scatterGatherResultJson = {|
+  "0": {|
+    exceptionPayload: Null, 
+    inboundAttachmentNames: Array<Any>, 
+    outboundPropertyNames: Array<Any>, 
+    inboundPropertyNames: Array<Any>, 
+    attributes: {|
+      clientCertificate: Null, 
+      listenerPath: String, 
+      requestPath: String, 
+      queryString: String, 
+      remoteAddress: String, 
+      method: String, 
+      scheme: String, 
+      relativePath: String, 
+      requestUri: String, 
+      localAddress: String, 
+      uriParams: {|  |}, 
+      queryParams: {|
+        code: String, 
+        airline: String
+      |}, 
+      headers: {|
+        host: String, 
+        connection: String, 
+        "upgrade-insecure-requests": String, 
+        "user-agent": String, 
+        accept: String, 
+        "accept-encoding": String, 
+        "accept-language": String, 
+        cookie: String
+      |}, 
+      version: String
+    |}, 
+    outboundAttachmentNames: Array<Any>, 
+    payload: {|
+      flights: Array<{|
+        price: Number {"typeId": "double"}, 
+        flightCode: String, 
+        availableSeats: Number {"typeId": "int"}, 
+        planeType: String, 
+        departureDate: String, 
+        origination: String, 
+        airlineName: String, 
+        destination: String
+      |}>
+    |}
+  |}, 
+  "1": {|
+    exceptionPayload: Null, 
+    inboundAttachmentNames: Array<Any>, 
+    outboundPropertyNames: Array<Any>, 
+    inboundPropertyNames: Array<Any>, 
+    attributes: {|
+      clientCertificate: Null, 
+      listenerPath: String, 
+      requestPath: String, 
+      queryString: String, 
+      remoteAddress: String, 
+      method: String, 
+      scheme: String, 
+      relativePath: String, 
+      requestUri: String, 
+      localAddress: String, 
+      uriParams: {|  |}, 
+      queryParams: {|
+        code: String, 
+        airline: String
+      |}, 
+      headers: {|
+        host: String, 
+        connection: String, 
+        "upgrade-insecure-requests": String, 
+        "user-agent": String, 
+        accept: String, 
+        "accept-encoding": String, 
+        "accept-language": String, 
+        cookie: String
+      |}, 
+      version: String
+    |}, 
+    outboundAttachmentNames: Array<Any>, 
+    payload: {|
+      flights: Array<{|
+        price: Number {"typeId": "double"}, 
+        flightCode: String, 
+        availableSeats: Number {"typeId": "int"}, 
+        planeType: String, 
+        departureDate: String, 
+        origination: String, 
+        airlineName: String, 
+        destination: String
+      |}>
+    |}
+  |}, 
+  "2": {|
+    exceptionPayload: Null, 
+    inboundAttachmentNames: Array<Any>, 
+    outboundPropertyNames: Array<Any>, 
+    inboundPropertyNames: Array<Any>, 
+    attributes: {|
+      clientCertificate: Null, 
+      listenerPath: String, 
+      requestPath: String, 
+      queryString: String, 
+      remoteAddress: String, 
+      method: String, 
+      scheme: String, 
+      relativePath: String, 
+      requestUri: String, 
+      localAddress: String, 
+      uriParams: {|  |}, 
+      queryParams: {|
+        code: String, 
+        airline: String
+      |}, 
+      headers: {|
+        host: String, 
+        connection: String, 
+        "upgrade-insecure-requests": String, 
+        "user-agent": String, 
+        accept: String, 
+        "accept-encoding": String, 
+        "accept-language": String, 
+        cookie: String
+      |}, 
+      version: String
+    |}, 
+    outboundAttachmentNames: Array<Any>, 
+    payload: {|
+      flights: Array<{|
+        airlineName: String, 
+        availableSeats: Number {"typeId": "int"}, 
+        departureDate: String, 
+        destination: String, 
+        flightCode: String, 
+        origination: String, 
+        planeType: String, 
+        price: Number {"typeId": "int"}
+      |}>
+    |}
+  |}
+|} {"MetadataFormat": "json",
+"example": "{\"0\":{\"exceptionPayload\":null,\"inboundAttachmentNames\":[],\"outboundPropertyNames\":[],\"inboundPropertyNames\":[],\"attributes\":{\"clientCertificate\":null,\"listenerPath\":\"\/flights\",\"requestPath\":\"\/flights\",\"queryString\":\"code=SFO&airline=all\",\"remoteAddress\":\"\/127.0.0.1:61252\",\"method\":\"GET\",\"scheme\":\"http\",\"relativePath\":\"\/flights\",\"requestUri\":\"\/flights?code=SFO&airline=all\",\"localAddress\":\"localhost\/127.0.0.1:8081\",\"uriParams\":{},\"queryParams\":{\"code\":\"SFO\",\"airline\":\"all\"},\"headers\":{\"host\":\"localhost:8081\",\"connection\":\"keep-alive\",\"upgrade-insecure-requests\":\"1\",\"user-agent\":\"Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/71.0.3578.98 Safari\/537.36\",\"accept\":\"text\/html,application\/xhtml+xml,application\/xml;q=0.9,image\/webp,image\/apng,*\/*;q=0.8\",\"accept-encoding\":\"gzip, deflate, br\",\"accept-language\":\"en-US,en;q=0.9\",\"cookie\":\"username-localhost-8888=\\\"2|1:0|10:1546922286|23:username-localhost-8888|44:NGQwYjI2ZTcwMTcyNGI4ZGEwZWRlYzZhNzQ2NmNiMGM=|18d05d8d17831708b522556e239113e4f1cfa22d4025ea2d640d7159b49c2aa6\\\"; _xsrf=2|ee2cf2ac|dee0469ac077ff09840d46bd97767239|1546922286; username-localhost-8889=\\\"2|1:0|10:1547145765|23:username-localhost-8889|44:NjI5OTgzMTgwOTk2NDZkNGI1OWQ2MjdkODNhNDUxMjY=|74bcae03b2bfc7d008a840776ebbfba2213a8d612a3aad8e16031b318d931ffe\\\"\"},\"version\":\"HTTP\/1.1\"},\"outboundAttachmentNames\":[],\"payload\":{\"flights\":[{\"price\":400.0,\"flightCode\":\"A1B2C3\",\"availableSeats\":40,\"planeType\":\"BOEING 737\",\"departureDate\":\"Mar 20, 2018\",\"origination\":\"MUA\",\"airlineName\":\"Delta\",\"destination\":\"SFO\"},{\"price\":593.0,\"flightCode\":\"A1BTT4\",\"availableSeats\":30,\"planeType\":\"BOEING 777\",\"departureDate\":\"Feb 12, 2018\",\"origination\":\"MUA\",\"airlineName\":\"Delta\",\"destination\":\"SFO\"},{\"price\":294.0,\"flightCode\":\"A14244\",\"availableSeats\":10,\"planeType\":\"BOEING 787\",\"departureDate\":\"Feb 12, 2018\",\"origination\":\"MUA\",\"airlineName\":\"Delta\",\"destination\":\"SFO\"}]}},\"1\":{\"exceptionPayload\":null,\"inboundAttachmentNames\":[],\"outboundPropertyNames\":[],\"inboundPropertyNames\":[],\"attributes\":{\"clientCertificate\":null,\"listenerPath\":\"\/flights\",\"requestPath\":\"\/flights\",\"queryString\":\"code=SFO&airline=all\",\"remoteAddress\":\"\/127.0.0.1:61252\",\"method\":\"GET\",\"scheme\":\"http\",\"relativePath\":\"\/flights\",\"requestUri\":\"\/flights?code=SFO&airline=all\",\"localAddress\":\"localhost\/127.0.0.1:8081\",\"uriParams\":{},\"queryParams\":{\"code\":\"SFO\",\"airline\":\"all\"},\"headers\":{\"host\":\"localhost:8081\",\"connection\":\"keep-alive\",\"upgrade-insecure-requests\":\"1\",\"user-agent\":\"Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/71.0.3578.98 Safari\/537.36\",\"accept\":\"text\/html,application\/xhtml+xml,application\/xml;q=0.9,image\/webp,image\/apng,*\/*;q=0.8\",\"accept-encoding\":\"gzip, deflate, br\",\"accept-language\":\"en-US,en;q=0.9\",\"cookie\":\"username-localhost-8888=\\\"2|1:0|10:1546922286|23:username-localhost-8888|44:NGQwYjI2ZTcwMTcyNGI4ZGEwZWRlYzZhNzQ2NmNiMGM=|18d05d8d17831708b522556e239113e4f1cfa22d4025ea2d640d7159b49c2aa6\\\"; _xsrf=2|ee2cf2ac|dee0469ac077ff09840d46bd97767239|1546922286; username-localhost-8889=\\\"2|1:0|10:1547145765|23:username-localhost-8889|44:NjI5OTgzMTgwOTk2NDZkNGI1OWQ2MjdkODNhNDUxMjY=|74bcae03b2bfc7d008a840776ebbfba2213a8d612a3aad8e16031b318d931ffe\\\"\"},\"version\":\"HTTP\/1.1\"},\"outboundAttachmentNames\":[],\"payload\":{\"flights\":[{\"price\":900.0,\"flightCode\":\"eefd3000\",\"availableSeats\":0,\"planeType\":\"Boeing 737\",\"departureDate\":\"2018-02-01T00:00:00\",\"origination\":\"MUA\",\"airlineName\":\"american\",\"destination\":\"SFO\"},{\"price\":676.0,\"flightCode\":\"eefd1994\",\"availableSeats\":0,\"planeType\":\"Boeing 777\",\"departureDate\":\"2018-01-01T00:00:00\",\"origination\":\"MUA\",\"airlineName\":\"american\",\"destination\":\"SFO\"},{\"price\":142.0,\"flightCode\":\"rree1093\",\"availableSeats\":1,\"planeType\":\"Boeing 737\",\"departureDate\":\"2018-02-11T00:00:00\",\"origination\":\"MUA\",\"airlineName\":\"american\",\"destination\":\"SFO\"},{\"price\":300.0,\"flightCode\":\"ffee2000\",\"availableSeats\":30,\"planeType\":\"Boeing 737\",\"departureDate\":\"2018-02-20T00:00:00\",\"origination\":\"MUA\",\"airlineName\":\"american\",\"destination\":\"SFO\"},{\"price\":456.0,\"flightCode\":\"rree4567\",\"availableSeats\":100,\"planeType\":\"Boeing 737\",\"departureDate\":\"2018-01-20T00:00:00\",\"origination\":\"MUA\",\"airlineName\":\"american\",\"destination\":\"SFO\"}]}},\"2\":{\"exceptionPayload\":null,\"inboundAttachmentNames\":[],\"outboundPropertyNames\":[],\"inboundPropertyNames\":[],\"attributes\":{\"clientCertificate\":null,\"listenerPath\":\"\/flights\",\"requestPath\":\"\/flights\",\"queryString\":\"code=SFO&airline=all\",\"remoteAddress\":\"\/127.0.0.1:61252\",\"method\":\"GET\",\"scheme\":\"http\",\"relativePath\":\"\/flights\",\"requestUri\":\"\/flights?code=SFO&airline=all\",\"localAddress\":\"localhost\/127.0.0.1:8081\",\"uriParams\":{},\"queryParams\":{\"code\":\"SFO\",\"airline\":\"all\"},\"headers\":{\"host\":\"localhost:8081\",\"connection\":\"keep-alive\",\"upgrade-insecure-requests\":\"1\",\"user-agent\":\"Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/71.0.3578.98 Safari\/537.36\",\"accept\":\"text\/html,application\/xhtml+xml,application\/xml;q=0.9,image\/webp,image\/apng,*\/*;q=0.8\",\"accept-encoding\":\"gzip, deflate, br\",\"accept-language\":\"en-US,en;q=0.9\",\"cookie\":\"username-localhost-8888=\\\"2|1:0|10:1546922286|23:username-localhost-8888|44:NGQwYjI2ZTcwMTcyNGI4ZGEwZWRlYzZhNzQ2NmNiMGM=|18d05d8d17831708b522556e239113e4f1cfa22d4025ea2d640d7159b49c2aa6\\\"; _xsrf=2|ee2cf2ac|dee0469ac077ff09840d46bd97767239|1546922286; username-localhost-8889=\\\"2|1:0|10:1547145765|23:username-localhost-8889|44:NjI5OTgzMTgwOTk2NDZkNGI1OWQ2MjdkODNhNDUxMjY=|74bcae03b2bfc7d008a840776ebbfba2213a8d612a3aad8e16031b318d931ffe\\\"\"},\"version\":\"HTTP\/1.1\"},\"outboundAttachmentNames\":[],\"payload\":{\"flights\":[{\"airlineName\":\"United\",\"availableSeats\":54,\"departureDate\":\"2018\/09\/11\",\"destination\":\"SFO\",\"flightCode\":\"ER39rk\",\"origination\":\"MUA\",\"planeType\":\"Boeing 757\",\"price\":945},{\"airlineName\":\"United\",\"availableSeats\":23,\"departureDate\":\"2018\/02\/12\",\"destination\":\"SFO\",\"flightCode\":\"ER39rj\",\"origination\":\"MUA\",\"planeType\":\"Boeing 777\",\"price\":954},{\"airlineName\":\"United\",\"availableSeats\":0,\"departureDate\":\"2018\/03\/20\",\"destination\":\"SFO\",\"flightCode\":\"ER38sd\",\"origination\":\"MUA\",\"planeType\":\"Boeing 737\",\"price\":400}]}}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="jibx" format="xml">
+      <types:shape format="xml-schema" element="{http://www.jibx.org/starters/fromcode}order" location="schema/xml/jibx.xsd"/>
+    </types:type>
+    <types:type name="xmlNamespacesExample" format="xml">
+      <types:example format="xml" element="{http://www.w3.org/TR/html4/}table" location="examples/xmlNamespaces.xml"/>
+    </types:type>
+    <types:type name="xmlExample" format="xml">
+      <types:example format="xml" element="root" location="examples/xmlNamespaces.xml"/>
+    </types:type>
+    <types:type name="exampleXml" format="xml">
+      <types:example format="xml" element="root" location="examples/xmlNamespaces.xml"/>
+    </types:type>
+    <types:type name="xslStylesheets" format="xml">
+      <types:example format="xml" element="html" location="examples/xmlNamespaces/cssNamespaceExample.xml"/>
+    </types:type>
+    <types:type name="americanRestResponseArrayOfFlights" format="json">
+      <types:shape format="weave" example="examples/mockdata/americanRestResponseArrayOfFlightObjects.json"><![CDATA[%dw 2.0
+type americanRestResponseArrayOfFlights = Array<{|
+  americanFlight: {|
+    ID: Number {"typeId": "int"}, 
+    code: String, 
+    price: Number {"typeId": "int"}, 
+    departureDate: String, 
+    origin: String, 
+    destination: String, 
+    emptySeats: Number {"typeId": "int"}, 
+    plane: {|
+      "type": String, 
+      totalSeats: Number {"typeId": "int"}
+    |}
+  |}
+|}> {"MetadataFormat": "json",
+"example": "[{\"americanFlight\":{\"ID\":9,\"code\":\"eefd3000\",\"price\":900,\"departureDate\":\"2018-02-01T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":0,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}}},{\"americanFlight\":{\"ID\":7,\"code\":\"eefd1994\",\"price\":676,\"departureDate\":\"2018-01-01T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":0,\"plane\":{\"type\":\"Boeing 777\",\"totalSeats\":300}}},{\"americanFlight\":{\"ID\":5,\"code\":\"rree1093\",\"price\":142,\"departureDate\":\"2018-02-11T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":1,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}}},{\"americanFlight\":{\"ID\":8,\"code\":\"ffee2000\",\"price\":300,\"departureDate\":\"2018-02-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":30,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}}},{\"americanFlight\":{\"ID\":11,\"code\":\"rree4567\",\"price\":456,\"departureDate\":\"2018-01-20T00:00:00\",\"origin\":\"MUA\",\"destination\":\"SFO\",\"emptySeats\":100,\"plane\":{\"type\":\"Boeing 737\",\"totalSeats\":150}}}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="flightsAllAirlinesLAX" format="json">
+      <types:shape format="weave" example="examples/flightsAllAirlinesLAX.json"><![CDATA[%dw 2.0
+
+type flightsAllAirlinesLAX = {|
+  flights: Array<{|    flightCode: String,     availableSeats: Number {"typeId": "int"},     destination: String,     planeType: String,     price: Number {"typeId": "double"},     origination: String,     departureDate: String,     airlineName: String  |}>
+|} {"example": "{\"flights\":[{\"flightCode\":\"A134DS\",\"availableSeats\":555,\"destination\":\"LAX\",\"planeType\":\"BOEING 777\",\"price\":750.0,\"origination\":\"MUA\",\"departureDate\":\"Apr 11, 2018\",\"airlineName\":\"Delta\"},{\"flightCode\":\"A1QWER\",\"availableSeats\":18,\"destination\":\"LAX\",\"planeType\":\"BOEING 747\",\"price\":496.0,\"origination\":\"MUA\",\"departureDate\":\"Aug 11, 2018\",\"airlineName\":\"Delta\"},{\"flightCode\":\"A1B2C4\",\"availableSeats\":10,\"destination\":\"LAX\",\"planeType\":\"BOEING 737\",\"price\":199.99,\"origination\":\"MUA\",\"departureDate\":\"Feb 11, 2018\",\"airlineName\":\"Delta\"},{\"flightCode\":\"ffee0192\",\"availableSeats\":0,\"destination\":\"LAX\",\"planeType\":\"Boeing 777\",\"price\":300.0,\"origination\":\"MUA\",\"departureDate\":\"2018-01-20T00:00:00\",\"airlineName\":\"american\"},{\"flightCode\":\"rree0001\",\"availableSeats\":0,\"destination\":\"LAX\",\"planeType\":\"Boeing 787\",\"price\":541.0,\"origination\":\"MUA\",\"departureDate\":\"2018-01-20T00:00:00\",\"airlineName\":\"american\"},{\"flightCode\":\"eefd4511\",\"availableSeats\":100,\"destination\":\"LAX\",\"planeType\":\"Boeing 777\",\"price\":900.0,\"origination\":\"MUA\",\"departureDate\":\"2018-01-15T00:00:00\",\"airlineName\":\"american\"},{\"airlineName\":\"United\",\"availableSeats\":52,\"departureDate\":\"2018\/02\/11\",\"destination\":\"LAX\",\"flightCode\":\"ER45if\",\"origination\":\"MUA\",\"planeType\":\"Boeing 737\",\"price\":345.99},{\"airlineName\":\"United\",\"availableSeats\":12,\"departureDate\":\"2018\/04\/11\",\"destination\":\"LAX\",\"flightCode\":\"ER45jd\",\"origination\":\"MUA\",\"planeType\":\"Boeing 777\",\"price\":346},{\"airlineName\":\"United\",\"availableSeats\":0,\"departureDate\":\"2018\/06\/11\",\"destination\":\"LAX\",\"flightCode\":\"ER0945\",\"origination\":\"MUA\",\"planeType\":\"Boeing 707\",\"price\":423}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#93840c95-1381-4f57-8176-fa7e80cc4239">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="code" type="code"/>
+          <types:variable name="unitedRestResponseToAllDestinations" type="unitedFlightsRestResponse"/>
+          <types:variable name="americanRestResponsesToAllDestinations" type="americanRestResponsesToAllDestinations"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c822f31d-6c3d-4e0e-b2f4-f190992d1662">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="code" type="code"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c673fdec-036c-4800-80c7-39a6a45479c2">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaFlightRequest"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="code" type="code"/>
+          <types:variable name="deltaFindFlightsSoapRequest" type="deltaFlightRequest"/>
+          <types:variable name="deltaSoapResponsesToAllDestinations" type="deltaSoapResponsesToAllDestinations"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#3aea75b9-04cc-4b8f-90b9-be2f6ed75d4c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaFindFlightsSoapResponses"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flights"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b0b66770-babb-4055-a1be-9bb2aac95b61">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="americanRestResponsesToAllDestinations"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flights"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#7b44053a-462f-4813-b32f-8c2284cc64e8">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="code" type="code"/>
+          <types:variable name="americanRestResponsesToAllDestinations" type="americanRestResponsesToAllDestinations"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8076551a-ec6a-4db6-a5d4-08d7f0f623dd">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="unitedFlightsRestResponse"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="flights"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#79adcc75-3db2-465e-8438-34626f3e0f41">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a3266818-c9fa-468e-8d41-7c6a7cb043c3">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:attributes type="initRequestAttributes"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#6aa696f0-94c4-4934-a9db-7290969269b4">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:attributes type="initRequestAttributes"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4a05804f-08d4-420b-9b96-d5097cf021b5">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:attributes type="initRequestAttributes"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a0e277b0-6b02-41ae-8f3c-ccf59d3fc9b2">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="americanRestResponsesToAllDestinations"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a08eb525-1729-4348-ba76-9d046dd75560">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaFlightRequest"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8297ae19-15a2-4c8d-b7a0-f254401a1108">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="scatterGatherResultJson"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#9a64ee1f-6a8e-4add-a2af-c1cdc83f7cfc">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="scatterGatherResultJson"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#cf171c3a-ea1c-433e-a384-8c6a9e781d08">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="unitedFlightRestResponseAllDestinations" type="unitedFlightsRestResponse"/>
+          <types:variable name="code" type="code"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#29da6274-bb21-405e-853f-3ebf16e901d6">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="deltaFindFlightsSoapResponses"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d0c31668-d466-4c61-9074-34ab436236be">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaSoapResponsesToAllDestinations"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4f8d9842-f629-492c-b1d3-76485c80216c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="initRequestAttributes"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a3cb1246-f5f3-48ea-bf88-90d249d75632">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="code" type="code"/>
+          <types:variable name="americanRestResponsesToAllDestinations" type="americanFlightsRestResponseToAllDestinations"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a3cfea28-0ef2-43ef-a75e-fedb45ddae27">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="americanFlightsRestResponseToAllDestinations"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8029a451-7a84-4590-8a92-ec919ab40128"/>
+  <types:enrichment select="#b6886075-b04a-4479-a44e-7802bc204db5"/>
+  <types:enrichment select="#e9897be6-ba77-440f-8f4f-25eba3e15337"/>
+  <types:enrichment select="#4f5417c2-3dbd-45d1-b6e9-ab15b7a1ad72">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaSoapResponsesToAllDestinations"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d323a768-5fa3-4183-a226-43bb2701a43d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaFindFlightsSoapResponses"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#e70799e8-bd56-4653-929c-066185d583c6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="jibx"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#71bbac13-62f8-4643-b6fc-b54e3ab5e334">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="xslStylesheets"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2342fcf6-ce42-4863-9e44-c45c27cd6d86">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaSoapResponsesToAllDestinations"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d6b48396-045b-4984-9c67-f55ea128f413">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="scatterGatherResultJson"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d4172aad-23e2-48ec-b711-b2236e2001d8">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="scatterGatherResultJson"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c7b5a053-b3eb-478f-b4bb-57c70206cbee">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="americanRestResponseArrayOfFlights"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="flights"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#3b110448-bb11-4797-b21c-fe0a7f07d2c6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="simulate" type="simulate"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#f329679d-6817-41a3-b814-18c5bae8211f">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="deltaSoapResponsesToAllDestinations"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#87cfed7e-e294-4a70-8038-31f40c05f892">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="unitedFlightsRestResponse"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#dd0e0c2b-4920-4d6e-a1fc-e25e0aa252d6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="americanFlightsRestResponseToAllDestinations"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c563365f-1735-4d11-9716-7bc6ed43a45c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flightsAllAirlinesLAX"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

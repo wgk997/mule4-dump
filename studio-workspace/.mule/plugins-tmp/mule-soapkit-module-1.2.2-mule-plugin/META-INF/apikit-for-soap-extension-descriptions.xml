@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension-documentation>
+    <configs>
+        <config name="config">
+            <description><![CDATA[Configuration element for a SOAP Router.]]></description>
+            <parameters>
+                <parameter name="soapVersion">
+                    <description><![CDATA[The soap version of the WSDL.]]></description>
+                </parameter>
+                <parameter name="address">
+                    <description><![CDATA[The address of the web service.]]></description>
+                </parameter>
+                <parameter name="mtomEnabled">
+                    <description><![CDATA[If should use the MTOM protocol to manage the attachments or not.]]></description>
+                </parameter>
+                <parameter name="inboundValidationEnabled">
+                    <description><![CDATA[If should use the MTOM protocol to manage the attachments or not.]]></description>
+                </parameter>
+                <parameter name="httpStatusVarName">
+                    <description><![CDATA[The variable name for the http status.]]></description>
+                </parameter>
+                <parameter name="namespacePrefixes">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="expirationPolicy">
+                    <description><![CDATA[Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.]]></description>
+                </parameter>
+                <parameter name="wsdlLocation">
+                    <description><![CDATA[The WSDL file URL remote or local.]]></description>
+                </parameter>
+                <parameter name="service">
+                    <description><![CDATA[The service name.]]></description>
+                </parameter>
+                <parameter name="port">
+                    <description><![CDATA[The port name.]]></description>
+                </parameter>
+            </parameters>
+        </config>
+    </configs>
+    <connections/>
+    <extension name="APIKit for SOAP">
+        <description><![CDATA[]]></description>
+        <parameters/>
+    </extension>
+    <operations>
+        <operation name="fault">
+            <description><![CDATA[APIKit for SOAP Fault]]></description>
+            <parameters>
+                <parameter name="payload">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="operation">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="fault">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="router">
+            <description><![CDATA[APIKit for SOAP Router]]></description>
+            <parameters>
+                <parameter name="message">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="attributes">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="outputMimeType">
+                    <description><![CDATA[The mime type of the payload that this operation outputs.]]></description>
+                </parameter>
+                <parameter name="outputEncoding">
+                    <description><![CDATA[The encoding of the payload that this operation outputs.]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+    </operations>
+    <sources/>
+    <types/>
+</extension-documentation>

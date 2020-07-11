@@ -1,0 +1,25 @@
+#%RAML 1.0 DataType
+description: A product inventory
+type: object
+properties:
+  id:
+    type: integer
+    required: false
+    example: 801
+  productId:
+    type: integer
+    required: true
+    example: 1001
+  quantityAvailable:
+    type: number
+    required: true
+    example: 10
+  status:
+    type: string
+    enum: 
+      - Available 
+      - Out of Stock 
+  asOfDate:
+    type: string
+    required: false
+    example: "2019-06-13"

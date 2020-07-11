@@ -1,0 +1,48 @@
+{
+  "configs": [
+    "global.xml",
+    "health-check-api.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "com.avioconsulting:health-check-api-mule4:1.0.0-SNAPSHOT",
+  "minMuleVersion": "4.2.2",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [
+        "com.avio.monitoring"
+      ],
+      "exportedResources": [
+        "log4j2.xml",
+        "global.xml",
+        "health-check-api.xml",
+        "api/traits/client-id-secret-trait.raml",
+        "api/traits/error-response-trait.raml",
+        "api/datatypes/health.raml",
+        "api/datatypes/health-runtime.raml",
+        "api/datatypes/health-app.raml",
+        "api/datatypes/mule-properties.raml",
+        "api/datatypes/memory-usage.raml",
+        "api/datatypes/jvm-properties.raml",
+        "api/datatypes/app-properties.raml",
+        "api/datatypes/error-response-dataType.raml",
+        "api/datatypes/os-properties.raml",
+        "api/health-check-api.raml",
+        "api/examples/health-response.raml",
+        "api/examples/error-responses/method-not-allowed-example.raml",
+        "api/examples/error-responses/bad-request-example.raml",
+        "api/examples/error-responses/internal-server-error-example.raml",
+        "api/examples/health-runtime-response.raml",
+        "api/examples/health-app-failure-response.raml",
+        "api/examples/health-app-response.raml",
+        "health-check-api.properties"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

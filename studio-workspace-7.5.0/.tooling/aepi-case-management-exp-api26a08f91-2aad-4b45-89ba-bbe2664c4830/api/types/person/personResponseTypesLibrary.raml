@@ -1,0 +1,52 @@
+#%RAML 1.0 Library
+usage: Used as the source of person response dataTypes
+types:
+  personResponseForGet:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      case:
+        required: true
+        type: !include ../case/caseDataType.raml
+      person:
+        required: true
+        type: array
+        items: !include personDataType.raml
+          
+  personResponseForPut:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      person:
+        required: true
+        type: array
+        items: !include personDataType.raml
+  
+  personResponseGeneric:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true 
+  person:
+    type: !include personDataType.raml
+        

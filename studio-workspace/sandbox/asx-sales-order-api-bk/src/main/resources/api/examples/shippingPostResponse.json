@@ -1,0 +1,13 @@
+{
+  "customerId": "1657",
+  "customerName": "AVIO Consulting",
+  "orderNumber": "SO-123456",
+  "lines": [
+    {
+      "itemNumber": "A-1235B",
+      "quantity": "10",
+      "price": "940.56",
+      "description": "Some part I need"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="get-case-flow" doc:id="4045b94a-e19a-45c1-a850-323eed34577a" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="78e39e65-90ea-4f9d-89d6-621c3f29bbbd" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Start Processing request for get-case' category="${logcat}" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: headers">
+            <ee:variables>
+                <ee:set-variable variableName="caseId"><![CDATA[attributes.uriParams.'caseId']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<http:request method="GET" doc:name="Get Case" doc:id="22cd5b65-55ee-4598-a9f1-745edd90a5f7" config-ref="case-management-pro-http-request-configuration" path='/cases/{caseId}' responseTimeout="10000">
+			<reconnect />
+			<http:headers ><![CDATA[#[vars.requestHeader]]]></http:headers>
+			<http:uri-params ><![CDATA[#[{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform doc:name="build response" doc:id="25915b85-32cc-4a6c-8dce-fc5f60170672" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json skipNullOn="everywhere"
+---
+
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="Log End" doc:id="a9a03349-b51e-490d-9293-7f167e0913af" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" message="Completed Processing request for get-case" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9bdc64f2-1b73-4859-8f11-96bd9078abf8" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="8eb575e2-5a54-4be2-9b97-158906d45846" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Error Processing request for get-case' category="${logcat}" tracePoint="EXCEPTION" level="ERROR"/>
+				<set-variable value="get-case-flow" doc:name="Set current-flow" doc:id="ad6a0ad2-cb94-48ff-9b58-4790c68a3b31" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+		<flow name="put-person-flow" doc:id="3ab7fb77-edb4-420e-83cc-a53f6d50f382" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="16f47094-340d-4305-b9fb-6d9c32f0cd2e" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Start Processing request for put-person-flow' category="${logcat}" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: headers">
+            <ee:variables>
+                <ee:set-variable variableName="caseId"><![CDATA[attributes.uriParams.'caseId']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<http:request method="PUT" doc:name="Put Person" doc:id="da6377e3-7aef-47ee-95d3-2fc8a6034168" config-ref="case-management-pro-http-request-configuration" path='/cases/{caseId}/persons' responseTimeout="10000">
+			<reconnect />
+			<http:headers ><![CDATA[#[vars.requestHeader]]]></http:headers>
+			<http:uri-params ><![CDATA[#[{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log End" doc:id="997eb959-411e-40a1-a084-21f02682176b" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" message="Completed Processing request for put-person-flow" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ee42d6b8-38e7-4918-8076-47042ee1d3eb" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="84ded440-a5c0-40c9-b2a3-39494340ed60" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Error Processing request for put-person-flow' category="${logcat}" tracePoint="EXCEPTION" level="ERROR"/>
+				<set-variable value="put-person-flow" doc:name="Set current-flow" doc:id="9605090f-8ff8-45e1-a845-b549488464b7" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+		<flow name="put-diagnosis-flow" doc:id="c1b213c3-09ea-4529-ae08-10336c6c954b" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="655b7064-1693-44fe-9f27-d3c3a26df7bb" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Start Processing request for put-diagnosis-flow' category="${logcat}" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: headers">
+            <ee:variables>
+                <ee:set-variable variableName="caseId"><![CDATA[attributes.uriParams.'caseId']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<http:request method="PUT" doc:name="Put Diagnosis" doc:id="a75ffa0b-abcd-4a57-9d72-99eab01c7cd0" config-ref="case-management-pro-http-request-configuration" path='/cases/{caseId}/diagnoses' >
+			<reconnect />
+			<http:headers ><![CDATA[#[vars.requestHeader]]]></http:headers>
+			<http:uri-params ><![CDATA[#[{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log End" doc:id="fe400f80-878e-4756-9aa6-f3aa058206da" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" message="Completed Processing request for put-diagnosis-flow" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="396e1254-285f-4be5-a673-936a82746e97" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="b36a017e-3d78-41f5-8945-cc01c8311d5c" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Error Processing request for put-diagnosis-flow' category="${logcat}" tracePoint="EXCEPTION" level="ERROR"/>
+				<set-variable value="put-diagnosis-flow" doc:name="Set current-flow" doc:id="4f93e1c0-1147-447e-a9e7-4aee670a61cb" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+		<flow name="put-procedure-flow" doc:id="d134c8bf-21b6-4daf-b197-4261ad7fae37" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="5ea228e5-326e-4523-b1d4-1f31afc8ae84" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Start Processing request for put-procedure-flow' category="${logcat}" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: headers" doc:id="e3214452-22f4-4100-9c07-865c8a0e42f9">
+            <ee:variables>
+                <ee:set-variable variableName="caseId"><![CDATA[attributes.uriParams.'caseId']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<choice doc:name="Choice" doc:id="39156c01-0b84-419a-96d0-3e2fccb17903" >
+			<when expression='#[(payload.procedure.id == "") or (payload.procedure.id == null)]'>
+				<http:request method="POST" doc:name="Post Procedure" doc:id="4b8e95be-41e0-4b6a-b4d0-aecba18324e3" config-ref="case-management-sys-http-request-configuration" path="/cases/{caseId}/procedures">
+					<http:headers><![CDATA[#[vars.requestHeader]]]></http:headers>
+					<http:uri-params><![CDATA[#[{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+				</http:request>
+			</when>
+			<otherwise>
+				<http:request method="PUT" doc:name="Put Procedure" doc:id="cd1bbd97-3e7b-435e-a06a-061181188502" config-ref="case-management-sys-http-request-configuration" path="/cases/{caseId}/procedures/{procedureId}">
+			<reconnect />
+			<http:headers><![CDATA[#[vars.requestHeader]]]></http:headers>
+			<http:uri-params><![CDATA[#[{
+	"caseId" : vars.caseId,
+	"procedureId": payload.procedure.id
+}]]]></http:uri-params>
+		</http:request>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Transform Message" doc:id="c38e71e6-43ea-4adf-9d25-9fae425cd872" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"statusCode": 200,
+"message": "The procedure has been updated."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="Log End" doc:id="cd72fcc3-f5cf-40bb-a798-d5a60acb3168" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" message="Completed Processing request for put-procedure-flow" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="077367e2-3d3f-4e08-8443-fe1131406492" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="e6b3e3c7-7ac3-418c-98d5-4b7a981270a2" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Error Processing request for put-procedure-flow' category="${logcat}" tracePoint="EXCEPTION" level="ERROR"/>
+				<set-variable value="put-procedure-flow" doc:name="Set current-flow" doc:id="1936c53e-095f-401f-8ca4-3e57c0621048" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="get-diagnosis-code-flow" doc:id="0f8b4509-4d97-424d-acd4-985f4a279446" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="07974f3f-9500-4589-9fbe-3e79af7d58f1" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Start Processing request for get-diagnosis-code-flow' category="${logcat}" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: headers">
+            <ee:variables>
+                <ee:set-variable variableName="icd9Description" ><![CDATA[attributes.queryParams.'icd9Description'
+]]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<http:request method="GET" doc:name="Get Diagnosis Code" doc:id="894e305e-8dc1-4845-91dd-67d4467b9145" config-ref="ref-sys-http-request-configuration" path='/diagnosisCodes' responseTimeout="10000">
+			<reconnect />
+			<http:headers ><![CDATA[#[vars.requestHeader]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"icd9Description" : vars.icd9Description
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="build response" doc:id="634610dc-591a-408b-8855-e5cf5b3a9683" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json skipNullOn="everywhere"
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="Log End" doc:id="0af3da14-7ab6-44b4-9424-a8c730b54de3" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" message="Completed Processing request for get-diagnosis-code-flow" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d90d90b1-9e81-405d-95d3-20684f62a609" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="0f634937-daf5-4517-99b9-c21cf34d7371" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Error Processing request for get-diagnosis-code-flow' category="${logcat}" tracePoint="EXCEPTION" level="ERROR"/>
+				<set-variable value="get-diagnosis-code-flow" doc:name="Set current-flow" doc:id="9d6ecfff-925c-48a3-86f0-48fd26375bc4" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="get-procedure-code-flow" doc:id="baf2192d-8609-4a31-b5b7-f9ed83dcd233" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="9adb3371-3b54-4419-ad32-745fe5dd2e17" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Start Processing request for get-procedure-code-flow' category="${logcat}" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: headers">
+            <ee:variables>
+				<ee:set-variable variableName="hcpcsDescription" ><![CDATA[attributes.queryParams.'hcpcsDescription']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<http:request method="GET" doc:name="Get Procedure Code" doc:id="0157c304-a0de-4ad1-ac8b-e41cd206c6db" config-ref="ref-sys-http-request-configuration" path='/procedureCodes' responseTimeout="10000">
+			<reconnect />
+			<http:headers ><![CDATA[#[vars.requestHeader]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"hcpcsDescription" : vars.hcpcsDescription
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="build response" doc:id="0228acb6-e8d9-4755-b572-444c376e3e7d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json skipNullOn="everywhere"
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="Log End" doc:id="96aebca1-e711-433e-aa03-c14dd4cfa607" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" message="Completed Processing request for get-procedure-code-flow" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="db564a08-5d61-42b6-b543-7d56c5f9b711" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="4a353ac8-4bb2-448d-b527-3dceb87cf709" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Error Processing request for get-procedure-code-flow' category="${logcat}" tracePoint="EXCEPTION" level="ERROR"/>
+				<set-variable value="get-procedure-code-flow" doc:name="Set current-flow" doc:id="316b3499-c29e-4c8b-a369-6e6b592078e0" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="post-notifications-flow" doc:id="074d24e0-15ff-4bfc-96b5-eed78daae68b" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="ae468acc-7e7e-4b81-896a-2476d5634ce2" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Start Processing request for post-notifications-flow' category="${logcat}" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: headers">
+            <ee:variables>
+                <ee:set-variable variableName="caseId"><![CDATA[attributes.uriParams.'caseId']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<http:request method="POST" doc:name="POST Notifications" doc:id="952e9ba6-5697-4b33-ade2-709437765c53" config-ref="medical-alert-pro-http-request-configuration" path='/notifications/{caseId}' responseTimeout="10000">
+			<reconnect />
+			<http:headers ><![CDATA[#[vars.requestHeader]]]></http:headers>
+			<http:uri-params ><![CDATA[#[{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log End" doc:id="c614d54d-9da5-47aa-80f6-f3bb83c53a85" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" message="Completed Processing request for post-notifications-flow" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f79fbc35-bed4-417f-ae5a-eb2bba532a28" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="114e427a-7cd3-446f-a797-04d560eaecf1" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Error Processing request for post-notifications-flow' category="${logcat}" tracePoint="EXCEPTION" level="ERROR"/>
+				<set-variable value="post-notifications-flow" doc:name="Set current-flow" doc:id="683dd393-0284-4354-9e5e-6b805b3aab39" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>	

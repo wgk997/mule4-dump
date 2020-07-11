@@ -1,0 +1,16 @@
+{
+  "statusCode": 200,
+  "message": "OK",  
+  "diagnosisCodes" : [
+    {
+      "icd9Id" : "781.2",
+      "categoryTf": "F",
+      "icd9Description": "Gait abnormality"
+    },
+    {
+      "icd9Id" : "780.91",
+      "categoryTf": "F",
+      "icd9Description": "Fussy infant"
+    }
+  ]
+}

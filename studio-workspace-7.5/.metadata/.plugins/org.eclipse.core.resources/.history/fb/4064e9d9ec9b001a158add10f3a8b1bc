@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="custom-flow" doc:id="7186c0a8-ffc8-48cd-9978-6eb959476c62" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="0e21374f-209a-4367-83f6-2e7e180e2258" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" tracePoint="START" category="${logcat}" message="Started processing request for custom-flow"/>
+		<ee:transform doc:name="set staffSpecialtyCodes" doc:id="b096a012-f3fd-4232-9e1f-eddec8d29e74" >
+			<ee:variables >
+				<ee:set-variable variableName="staffSpecialtyCodes" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.customNotification.staffSpecialtyCodes]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="set personContactTypes" doc:id="a3f49b85-167a-412b-93e5-43026f1088e1" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="personContactTypes" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.customNotification.personContactTypes]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="get-case-participant" doc:id="7f8c8397-33fb-475a-beaa-6e535e9bbf95" name="get-case-participant" target="caseParticipant"/>
+		<ee:transform doc:name="apply custom person filter" doc:id="9ae10844-02c9-49f2-a0b3-216ddd250037" >
+			<ee:variables >
+				<ee:set-variable variableName="personSms" ><![CDATA[%dw 2.0
+output application/json
+var smsMessage = vars.smsMessage
+var allPersonFilterArray = ["EMERGENCY_CONTACT","PATIENT","PATIENT_DR"]
+var customPersonFilterArray = vars.personContactTypes
+
+var allPerson = vars.caseParticipant.person filter (allPersonFilterArray contains  $.personType)
+
+var customPerson = vars.caseParticipant.person filter (customPersonFilterArray contains  $.personType)
+---
+
+customPerson filter $.isNotifyStatus == true
+map {
+    smsMessage : smsMessage,
+    cellNumbers: $.phoneNumber
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="get-medical-staff" doc:id="9931bf21-f902-4796-860e-c06c37e930f4" name="get-medical-staff" target="medicalStaff"/>
+		<ee:transform doc:name="apply custom medical filter" doc:id="eec702d8-95ce-4519-b353-131f6c8667df" >
+			
+			<ee:variables >
+				<ee:set-variable variableName="staffSms" ><![CDATA[%dw 2.0
+output application/json
+
+var smsMessage = vars.smsMessage
+
+var allStaffFilterArray = ["MEDICAL_DIRECTOR","PHYSICIAN","NURSE","ID_INVESTIGATOR"]
+var customStaffFilterArray = vars.staffSpecialtyCodes
+
+var allStaff = vars.medicalStaff.medicalPersons filter (allStaffFilterArray contains  $.specialtyCode)
+var customStaff = vars.medicalStaff.medicalPersons filter (customStaffFilterArray contains  $.specialtyCode)
+---
+
+customStaff
+map {
+    smsMessage : smsMessage,
+    cellNumbers: $.mobileNumber
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="concat Results" doc:id="7044ed4b-6cf8-42ce-bdae-5719d02f758c" >
+			<ee:variables >
+				<ee:set-variable variableName="smsResult" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.personSms ++ vars.staffSms]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="send-message" doc:id="a9cb9e4d-49cb-492e-a486-4d09dabfb3c7" name="send-message"/>
+		<avio-core:custom-logger doc:name="Log End" doc:id="52998030-a703-4590-aab5-6d09885e08a2" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Started processing request for custom-flow" tracePoint="END" category="${logcat}" />
+	</sub-flow>
+</mule>

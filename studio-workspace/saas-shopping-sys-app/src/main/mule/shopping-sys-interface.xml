@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd">
+
+	<apikit:config outboundHeadersMapName="outboundHeadersMapName"
+		httpStatusVarName="httpStatus" doc:name="Router"
+		doc:id="d898061d-7861-457f-accb-be2ef941b992" name="asx-saas-shopping-app-config"
+		raml="api/saas-shopping-sys-app.raml" />
+	<flow name="saas-shopping-sys-app-main" doc:id="360ec8d1-c5e9-4f56-99da-6877ba87ff4c">
+		<http:listener doc:name="Listener"
+			doc:id="8aeaffe6-3892-4377-a2c0-609416062b35" config-ref="HTTP_Listener_config"
+			path="/api/*">
+			<http:response statusCode="#[vars.httpStatus default 200]">
+			</http:response>
+			<http:error-response statusCode="#[vars.httpStatus default 500]">
+				<http:body><![CDATA[#[payload]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<set-variable variableName="correlationId"
+			value="#[message.attributes.guid default uuid()]" doc:name="set correlationId" />
+		<apikit:router doc:name="APIkit Router"
+			doc:id="e474b7e2-127a-4371-af30-b98e39d0bc3c" config-ref="asx-saas-shopping-app-config" />
+	</flow>
+	<flow name="saas-shopping-sys-app-console" doc:id="7d0f944e-387b-4a6f-94c1-de21e517ef93">
+		<http:listener doc:name="Listener"
+			doc:id="d21e0e9b-9c88-45dd-a6bc-98f84ef8852a" config-ref="HTTP_Listener_config"
+			path="/console/*" />
+		<apikit:console doc:name="APIkit Console"
+			doc:id="16be3bd8-ff97-461c-86df-566605fbfe96" config-ref="asx-saas-shopping-app-config" />
+	</flow>
+	<flow name="put:\cart\(customerId):application\json:asx-saas-shopping-app-config">
+		<flow-ref doc:name="Flow Reference" doc:id="bb1db6c1-d1c8-4336-abbb-c3938cd66220" name="main-put-cart"/>
+		<avio-core:custom-logger doc:name="Flow End" doc:id="3e271c03-7a44-46a4-b100-272d1f3954f8" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]"/>
+	</flow>
+	<flow name="get:\cart\(customerId):asx-saas-shopping-app-config">
+		<flow-ref doc:name="Flow Reference" doc:id="67b3d7f1-ffd2-4e49-9b2b-03f5da36b525" name="main-get-cart"/>
+		<avio-core:custom-logger doc:name="Flow End" doc:id="6f1a3acd-9425-4539-a9d7-ecb6c0ceb2f8" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]"/>
+	</flow>
+	<flow name="post:\order:application\json:asx-saas-shopping-app-config">
+		<flow-ref doc:name="Flow Reference" doc:id="7a07bbea-c05d-4012-ac56-0af6427e5351" name="main-post-order"/>
+		<avio-core:custom-logger doc:name="Custom logger" doc:id="376b156c-85fa-4da6-ab58-4164aa64d7fd" config-ref="AVIO_Core_Config" correlation_id="vars.correlationId"/>
+	</flow>
+</mule>

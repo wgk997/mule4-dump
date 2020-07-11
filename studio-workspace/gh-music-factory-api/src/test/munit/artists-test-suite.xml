@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="artists-test-suite.xml" />
+
+	<munit:test name="artists-sr-get-artists-test" description="Test" doc:id="fa5b5fd8-5a34-4baf-963e-000b00e63f52" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when SELECT" doc:id="f72257af-1d9e-4d4f-8ee8-5f053855b472" processor="db:select">
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/java
+---
+[{
+	ARTIST_ID: 2,
+	ARTIST_NM: "MUnit Test",
+	FIRST_NM: "John",
+	LAST_NM: "Lennon",
+	BIRTH_DATE: "1940-01-01",
+	DEATH_DATE: "1980-11-01"
+}]]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="firstName queryParam" doc:id="382c5c8b-12ea-45ac-8e97-2a9378da7bc1" >
+				<munit:attributes value="#[{queryParams: {'firstName':'John'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="sr-get-artists" doc:id="b70f28b5-1567-4036-8dce-31ca47f08bff" name="sr-get-artists"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that NOT null" doc:id="455a7804-af99-4ca1-ab96-3cabb5c6843b" expression="#[payload]" is="#[MunitTools::notNullValue()]" message="NOT null"/>
+			<munit-tools:assert-that doc:name="Assert that artistName" doc:id="5de08d32-3146-4e0b-9fed-2aa30aaaa978" expression="#[payload[0].artistName]" is="#[MunitTools::containsString('MUnit Test')]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="artists-sr-add-artists-inserted-test" description="MUnit Test" doc:id="f5027259-4ddf-4407-9861-ed63d78e04a2" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when http:request getArtists" doc:id="5ee1f9f6-eb3b-4daa-b941-84299d410119" processor="http:request">
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="getArtistResponse" value='#[[]]' mediaType="application/java" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="insert artists" doc:id="f84c18ea-0bca-4ed9-bf9e-f171802fc796" processor="db:insert" />
+		
+</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event post artist array" doc:id="0848c672-d537-4f74-8209-5405f569ffc7" >
+				<munit:payload value='[
+  {
+    "artistName": "MUnit Telegraph Canyon",
+    "lastName": "Hickman",
+    "firstName": "John",
+    "mi": "W",
+    "dateOfBirth": "1988-01-29"
+  },
+  {
+    "artistName": "MUnit Telegraph Canyon",
+    "lastName": "Harrison",
+    "firstName": "Ted",
+	"dateOfBirth": "1982-03-21",
+	"dateOfDeath": "2019-01-15"
+  }
+]' mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="sr-add-artists" doc:id="3293f764-9ca3-4c52-9643-168547775ed1" name="sr-add-artists"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that NOT null" doc:id="150c0ceb-435e-4dc8-a0fb-500c0b23ffb9" expression="#[payload]" is="#[MunitTools::notNullValue()]" message="NOT null"/>
+			<logger level="DEBUG" doc:name="payload" doc:id="4dcf8d1d-dd84-428e-a449-f9d5494bfe74" message="#[payload]" category="${logcat}"/>
+			<munit-tools:assert-that doc:name="Assert that added = 2" doc:id="8a208d54-fda2-4e2a-b5a2-7ad8c5092600" expression="#[payload.results.addedCounts]" is="#[MunitTools::equalTo(2)]" message="duplicatedCounts correct"/>
+		</munit:validation>
+	</munit:test>
+
+	<munit:test name="artists-sr-add-artists-duplicates-test" description="MUnit Test" doc:id="fb939327-880b-40a8-b311-ae4ce07ebdbf">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when subflow" doc:id="31ed5d3c-0ee2-483e-8f91-fe3036b43638" processor=".*:.*">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="#['sr-find-artist']" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="getArtistResponse" value='#[[{"artistName":"Telegraph Canyon","lastName":"Hickman","firstName":"John","dateOfBirth":"1988-01-29","artistId":8},{"artistName":"Telegraph Canyon","lastName":"Harrison","firstName":"Ted","dateOfBirth":"1982-03-21","artistId":9}]]' mediaType="application/java" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="db:insert artists" doc:id="e1ce106e-fbf0-4726-92a3-d07c7ccf4a82" processor="db:insert" />
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event post artist array" doc:id="1f8605cb-a321-4403-ba85-d10438391d1e">
+				<munit:payload value='[
+  {
+    "artistName": "MUnit Telegraph Canyon",
+    "lastName": "Hickman",
+    "firstName": "John",
+    "mi": "W",
+    "dateOfBirth": "1988-01-29"
+  },
+  {
+    "artistName": "MUnit Telegraph Canyon",
+    "lastName": "Harrison",
+    "firstName": "Ted",
+	"dateOfBirth": "1982-03-21",
+	"dateOfDeath": "2019-01-15"
+  }
+]' mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="sr-add-artists" doc:id="25767bb2-0d94-451a-b47d-38e80145e83f" name="sr-add-artists" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that NOT null" doc:id="3df09706-75d7-49a7-a63f-315268320408" expression="#[payload]" is="#[MunitTools::notNullValue()]" message="NOT null" />
+			<logger level="DEBUG" doc:name="payload" doc:id="c624d4ee-1457-41a1-8cc9-f1e22f55b94e" message="#[payload]" category="${logcat}" />
+			<munit-tools:assert-that doc:name="Assert that duplicates = 2" doc:id="bd74465b-4614-49cf-8458-cb5133e61a54" expression="#[payload.results.duplicatedCounts]" is="#[MunitTools::equalTo(2)]" message="duplicatedCounts correct" />
+		</munit:validation>
+	</munit:test>
+
+
+
+</mule>

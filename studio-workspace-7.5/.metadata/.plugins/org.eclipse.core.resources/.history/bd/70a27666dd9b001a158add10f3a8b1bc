@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    <flow name="put:\cases\(caseId)\diagnoses:application\json:aepi-case-management-pro-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "The diagnosis has been updated."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\cases\(caseId)\persons:application\json:aepi-case-management-pro-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "The person has been updated."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\cases\(caseId):aepi-case-management-pro-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "OK",
+  "case": {
+    id: "as909012dop12",
+    activatedDate: "2020-02-25",
+    complaint: "LOREN EPSUM DOLLAR",
+    assignedDr: 1,
+    isolationAlert: false,
+    severityCode: "UNDETERMINED",
+    statusCode: "INTAKE",
+    symptomsCsv: "drycough, fever, heartburn"
+  },
+  person: [
+    {
+      id: "as909012dop12",
+      personType: "EMERGENCY_CONTACT",
+      firstName: "John",
+      lastName: "Doe",
+      mi: "R",
+      phoneNumber: "5613435544",
+      address1: "1234 Main Street",
+      address2: "2A",
+      city: "Denver",
+      state: "NJ",
+      zipCode: "12345",
+      geoLocation: {
+        lat: 37.4267861,
+        lng: -122.0806032,
+        locationType: "APPROXIMATE"
+      },
+      isNotifyStatus: false,
+      timeLastNotified: "2020-02-28T16:41:41.09"
+    }, 
+    {
+      id: "rwyu9345dop12",
+      personType: "PATIENT",
+      firstName: "John",
+      lastName: "Doe",
+      mi: "R",
+      phoneNumber: "5613435544",
+      address1: "1234 Main Street",
+      address2: "2A",
+      city: "Denver",
+      state: "NJ",
+      zipCode: "12345",
+      geoLocation: {
+        lat: 37.4267861,
+        lng: -122.0806032,
+        locationType: "APPROXIMATE"
+      },
+      isNotifyStatus: false,
+      timeLastNotified: "2020-02-28T16:41:41.09"
+    }
+  ],
+  diagnosis: [
+    {
+      id: "ewe2012dop12",
+      diagnosisCode: "XYZ",
+      diagnosisStartDate: "2020-02-28T16:41:41.09",
+      diagnosisEndDate: "2020-02-28T18:41:41.09",
+      statusCode: "PRIMARY",
+      shortDescription: "Lorem Epsom",
+      longDescription: "Lorem Epsom Dollar ....."
+    }, 
+    {
+      id: "fsds902dop12",
+      diagnosisCode: "ABC",
+      diagnosisStartDate: "2020-02-28T16:41:41.09",
+      diagnosisEndDate: "2020-02-28T18:41:41.09",
+      statusCode: "TREATED",
+      shortDescription: "Lorem Epsom",
+      longDescription: "Lorem Epsom Dollar ....."
+    }
+  ],
+  procedure: [
+    {
+      id: "sdsds12dop12",
+      performedTimeStamp: "2020-02-28T16:41:41.09",
+      procedureCode: "X-RAY",
+      statusCode: "PENDING"
+    }, 
+    {
+      id: "dsd3012dop12",
+      performedTimeStamp: "2020-02-28T16:41:41.09",
+      procedureCode: "CT-SCAN",
+      statusCode: "COMPLETE"
+    }
+  ],
+  contactTrace: {
+    id: "asd3012dop12",
+    traceStartDate: "2015-07-04T21:00:00",
+    traceEndDate: "2015-07-04T21:00:00",
+    cdcReported: false,
+    cdcReportedTimestamp: "2015-07-04T21:00:00",
+    traceContacts: [
+      {
+        id: "asd3012dop57",
+        contactDate: "2015-07-04T21:00:00",
+        firstName: "Testy",
+        lastName: "McTesterface",
+        phone: "5551239876",
+        address1: "123 Example Ln",
+        address2: "",
+        city: "Dallas",
+        state: "TX",
+        zip: "12345-67890",
+        geoLocation: {
+          lat: 37.4267861,
+          lng: -122.0806032,
+          locationType: "APPROXIMATE"
+        }
+      }, 
+      {
+        id: "asd3012dop92",
+        contactDate: "2015-07-04T21:00:00",
+        firstName: "Testo",
+        lastName: "DaBesto",
+        phone: "5551239876",
+        address1: "123 Example Ln",
+        address2: "",
+        city: "Dallas",
+        state: "TX",
+        zip: "12345-67890",
+        geoLocation: {
+          lat: 37.4267861,
+          lng: -122.0806032,
+          locationType: "APPROXIMATE"
+        }
+      }
+    ]
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+</mule>

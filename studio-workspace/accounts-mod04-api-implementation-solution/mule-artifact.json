@@ -1,0 +1,28 @@
+{
+  "configs": [
+    "accounts-api.xml",
+    "implementation.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "accounts-mod04-api-implementation",
+  "minMuleVersion": "4.1.2",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedResources": [
+        "api/accounts-api.raml",
+        "api/datatypes/account.raml",
+        "api/datatypes/accountNoID.raml",
+        "api/examples/accountExample.raml",
+        "api/examples/accountsExample.raml",
+        "api/examples/accountsExampleNoID.raml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

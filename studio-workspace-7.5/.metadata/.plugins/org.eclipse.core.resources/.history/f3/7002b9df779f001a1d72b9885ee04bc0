@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="case-management-impl-test-suite.xml" />
+	<munit:test name="get-case-flow-test" doc:id="60559beb-de91-4305-80e2-5c573df5ed0c" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock case " doc:id="2b2eb0c0-07de-482f-8885-9177c7bdc00b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2b6870d1-be85-418e-912c-e0843720c84d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://sample_data/getCase.json')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="case" value="#[readUrl('classpath://sample_data/getCase.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock person " doc:id="30b5252b-4968-490d-a730-7f7426e10838" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get person" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="f9abcafb-0f25-4d7e-b086-97fffef6d78b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="persons" value="#[readUrl('classpath://sample_data/getPerson.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock procedure " doc:id="11b8ef6d-0a1b-4f31-8c16-55cc2a84358e" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get procedure" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="5bbdea5b-1f9f-47e9-85ca-3301c58d2797" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="procedures" value="#[readUrl('classpath://sample_data/getProcedure.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock diagnosis " doc:id="e0956b2b-b8c6-4c91-9f63-8f7cdcdaf6af" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get diagnoses" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="c7b54ce3-72c5-4280-8b4c-c4a65172a386" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="diagnoses" value="#[readUrl('classpath://sample_data/getDiagnosis.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock contactTrace " doc:id="a462d775-c69a-4c56-868f-26c6bcd80bd7" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a9cf7800-5af5-45a4-905d-d17d5e2758a4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="contactTraces" value="#[readUrl('classpath://sample_data/getContactTrace.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-case" doc:id="94f68db9-b9ca-4e3d-8968-66cc222b3646" name="get-case"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert person" doc:id="a6097cd8-5516-4123-8a4c-124118c2687e" actual="#[sizeOf(payload.person)]" expected="#[1]" message="Person size equal to 2"/>
+			<munit-tools:assert-equals doc:name="Assert procedure" doc:id="244dd9bb-2d66-40a3-a6cd-3a8226a34026" actual="#[sizeOf(payload.procedure)]" expected="#[2]"/>
+			<munit-tools:assert-equals doc:name="Assert diagnosis" doc:id="99d6e830-735c-4377-b60d-e40976c3e220" actual="#[sizeOf(payload.diagnoses)]" expected="#[2]" />
+			<munit-tools:assert-equals doc:name="Assert contactTrace" doc:id="affad75e-6989-4066-8408-8c9531f32ace" actual="#[sizeOf(payload.contactTrace.traceContacts)]" expected="#[2]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-case-exception-test-suite" doc:id="f49e23ad-32a9-4b8f-96c7-336b8e6736bb" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock case fail" doc:id="cf87e2d9-3225-4ff6-9eb3-186843a6a335" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f9abcafb-0f25-4d7e-b086-97fffef6d78b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="5d59860a-2fbb-43b7-9f9c-25f376cbbd58" >
+				<flow-ref doc:name="Flow-ref to get-case" doc:id="bcc0d25a-d3ea-4fd2-b1b0-2dd1af2eac22" name="get-case" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="90748064-50d9-4dbc-bfdf-0235c0b585aa" />
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert on error" doc:id="8422157f-6b3f-40d0-b8ce-4ff71f648fa3" actual="#[vars.currentFlow]" expected='#["get-case"]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-diagnosis-fail-test" doc:id="163f8a84-5bfc-4245-9f7e-ca0385f83cdb" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-diagnosis fail" doc:id="cd75c75c-3987-42be-9eaa-43f84362d842" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6d062c50-fe9f-4661-b67e-522856fe8e3d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="540138dc-8f11-4ddf-8fa4-4ab516fecbfd" >
+				<flow-ref doc:name="Flow-ref to get-diagnosis" doc:id="8afbe5ba-7f81-482e-a4a9-8913c8673292" name="get-diagnosis" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cae05599-7e48-4901-ba1c-f1d9e52f7e7b" />
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="cedf7ce6-2de7-4d4e-8c52-7fddff6f6a2a" actual="#[payload.currentFlow]" expected='#["get-diagnosis"]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-person-fail-test" doc:id="83713c28-0566-420a-999a-cffcea50f47d" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-person" doc:id="43e7e76a-41ac-43b8-bf39-c832b4062ed1" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f9abcafb-0f25-4d7e-b086-97fffef6d78b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="aaf077cc-afc4-4fe7-9a7a-c135de61f698" >
+				<flow-ref doc:name="Flow-ref to get-person" doc:id="81a9cc8f-fa6f-4bc2-8b66-abf7c8ee72f9" name="get-person" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="40a3061f-0c33-4981-9c27-7c35a5c5ff12" />
+				</error-handler>
+			</try>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="get-procedure-fail-test" doc:id="7a409c2b-be53-4026-9177-4b5efccb612d" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-procedure" doc:id="6df6af33-5e4d-48f7-b755-2f77a1b75508" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5bbdea5b-1f9f-47e9-85ca-3301c58d2797" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="de75d928-31ba-42af-8ee0-cbfd9bf77814" >
+				<flow-ref doc:name="Flow-ref to get-procedure" doc:id="70273f48-38c2-4773-9906-353d2d90c8cb" name="get-procedure" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ad888137-3feb-4e56-a7ce-91e53a18843a" />
+				</error-handler>
+			</try>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="get-contacttrace-fail-test" doc:id="500bce99-107c-405e-837a-2a1d8f895d14" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-contractTrace fail" doc:id="3740d937-01ed-42ae-9785-c5839d2501e0" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a9cf7800-5af5-45a4-905d-d17d5e2758a4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="4525ac02-61bf-4022-89c4-37779ae4724a" >
+				<flow-ref doc:name="Flow-ref to get-contacttrace" doc:id="35e338f3-1133-464d-882e-9636ee2fb8d2" name="get-contacttrace" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6724abc6-c1bb-4f16-b63b-ef184db3198c" />
+				</error-handler>
+			</try>
+		</munit:execution>
+	</munit:test>
+</mule>

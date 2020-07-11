@@ -1,0 +1,62 @@
+#%RAML 1.0 DataType
+description: Details of a product
+type: object
+properties:
+  id:
+    type: integer
+    required: true
+    example: 801
+  name:
+    type: string
+    example: "Jeep Wrangler"
+  summary:
+    type: string
+    example: "A Jeep Wrangler."
+  manufacturer:
+    type: string
+    example: "Jeep"
+  description:
+    type: string
+    required: false
+    example: "A very fine vehicle."
+  dimensions:
+    type: string
+    required: false
+    example: "6'W x 4'L x 7'H"
+  weight:
+    type: number
+    required: false
+    example: 4.5
+  asin:
+    type: string
+    example: "72036-72589"
+  model:
+    type: string
+    required: false
+    example: "v1.4"
+  averageRating:
+    type: number
+    example: 3.75
+  totalRatings:
+    type: number
+    example: 4
+    required: false
+  inventoryAvailable:
+    type: integer
+    minimum: 0
+    example: 8
+    required: false
+  price:
+    type: number
+    example: 89.99
+    required: false
+  currency:
+    type: string
+    required: false
+    example: "USD"
+  reviews:
+    type: array
+    items: !include review.raml
+  
+  
+  

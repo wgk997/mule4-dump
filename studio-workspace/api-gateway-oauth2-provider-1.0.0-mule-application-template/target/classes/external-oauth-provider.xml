@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xmlns:oauth2-provider="http://www.mulesoft.org/schema/mule/oauth2-provider"
+	  xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	  xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	  xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+
+	  xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/oauth2-provider http://www.mulesoft.org/schema/mule/oauth2-provider/current/mule-oauth2-provider.xsd
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+		http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+
+	<configuration-properties file="api.properties"/>
+
+	<tls:context name="tls.context.listener" doc:name="TLS Context">
+		<tls:key-store path="${key.store.path}" password="${key.store.password}" keyPassword="${key.store.key.password}"/>
+	</tls:context>
+
+	<!--Use this if you want to use an HTTPS listener-->
+	<!--	<http:listener-config name="https.listener">-->
+	<!--		<http:listener-connection host="0.0.0.0" port="${https.port}" protocol="HTTPS" tlsContext="tls.context.listener"/>-->
+	<!--	</http:listener-config>-->
+
+	<!--Use this if you want to use an HTTP listener -->
+	<http:listener-config name="http.listener">
+		<http:listener-connection host="0.0.0.0" port="${http.port}" protocol="HTTP"/>
+	</http:listener-config>
+
+	<oauth2-provider:config name="external-oauth2-provider"
+							resourceOwnerSecurityProvider="resourceOwnerSecurityProvider"
+							clientSecurityProvider="clientSecurityProvider"
+							supportedGrantTypes="${supported.grant.types}"
+							listenerConfig="http.listener"
+							scopes="${scopes}"
+                            defaultScopes="${scopes}"
+                            clientStore="clientObjectStore">
+		<oauth2-provider:token-config path="${access.token.endpoint.path}" tokenTtl="${token.ttl.value}" tokenTtlTimeUnit="${token.ttl.unit}" tokenStore="tokenObjectStore">
+			<oauth2-provider:refresh-token-strategy>
+				<oauth2-provider:single-refresh-token objectStore="refreshTokenObjectStore"/>
+			</oauth2-provider:refresh-token-strategy>
+		</oauth2-provider:token-config>
+		<oauth2-provider:authorization-config path="${authorization.endpoint.path}" authorizationCodeStore="authorizationCodeObjectStore"/>
+	</oauth2-provider:config>
+
+	<flow name="validateToken">
+		<http:listener path="${validate.endpoint.path}" config-ref="http.listener"/>
+		<oauth2-provider:validate-token config-ref="external-oauth2-provider"/>
+	</flow>
+
+	<!--	This endpoint will enforce the READ scopes on token validation-->
+	<!--	<flow name="validateTokenWithScope">-->
+	<!--		<http:listener path="${validate.read.endpoint.path}" config-ref="http.listener"/>-->
+	<!--		<oauth2-provider:validate-token scopes="#[['READ']]" config-ref="external-oauth2-provider"/>-->
+	<!--	</flow>-->
+
+	<!--	This endpoint allows token revoking, by passing the token as payload-->
+	<!--	<flow name="revokeToken">-->
+	<!--        <http:listener path="${revoke.endpoint.path}" config-ref="http.listener"/>-->
+	<!--		<oauth2-provider:revoke-token token="#[payload]" config-ref="external-oauth2-provider"/>-->
+	<!--	</flow>-->
+
+</mule>

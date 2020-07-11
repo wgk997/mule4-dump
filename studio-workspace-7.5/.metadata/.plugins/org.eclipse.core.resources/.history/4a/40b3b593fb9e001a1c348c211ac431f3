@@ -1,0 +1,19 @@
+{
+	"statusCode": 200,
+	"message": "OK",
+	"caseId": "a093i000001tYwDAAU",
+		"procedures": [
+			 {
+			"id": "a0I3i0000007Fs6EAE",
+			"performedTimeStamp": "2020-02-28T16:41:41",
+			"procedureCode": "X-RAY",
+			"statusCode": "PENDING"
+			},
+			{
+			"id": "a0I3i0000007Fs1EAE",
+			"performedTimeStamp": "2020-02-28T16:41:41",
+			"procedureCode": "CT-SCAN",
+			"statusCode": "COMPLETE"
+			}
+		]
+}

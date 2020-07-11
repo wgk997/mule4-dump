@@ -1,0 +1,34 @@
+{
+  "flights": [
+    {
+      "code": "ER45if",
+      "price": 345.99,
+      "origin": "MUA",
+      "destination": "LAX",
+      "departureDate": "2018/02/11",
+      "planeType": "Boeing 737",
+      "airlineName": "United",
+      "emptySeats": 52
+    },
+    {
+      "code": "ER45jd",
+      "price": 346,
+      "origin": "MUA",
+      "destination": "LAX",
+      "departureDate": "2018/04/11",
+      "planeType": "Boeing 777",
+      "airlineName": "United",
+      "emptySeats": 12
+    },
+    {
+      "code": "ER0945",
+      "price": 423,
+      "origin": "MUA",
+      "destination": "LAX",
+      "departureDate": "2018/06/11",
+      "planeType": "Boeing 707",
+      "airlineName": "United",
+      "emptySeats": 0
+    }
+  ]
+}

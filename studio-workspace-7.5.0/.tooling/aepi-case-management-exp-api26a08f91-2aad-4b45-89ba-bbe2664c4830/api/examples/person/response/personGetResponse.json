@@ -1,0 +1,59 @@
+{
+  "statusCode": 200,
+  "message": "OK",
+  
+  "case": 
+  {
+    "caseId": "as909012dop12",
+    "activatedDate": "2020-02-25",
+    "complaint": "LOREN EPSUM DOLLAR",
+    "assignedDr": 1,
+    "isolationAlert": false,
+    "severityCode" : "UNDETERMINED",
+    "statusCode": "INTAKE",
+    "symptomsCsv" : "drycough, fever, heartburn"
+  },
+  
+  "person": [
+  {
+    "personType": "EMERGENCY_CONTACT",
+    "firstName": "John",
+    "lastName": "Doe",
+    "mi": "R",
+    "phoneNumber": "5613435544",
+    "address1": "1234 Main Street",
+    "address2": "2A",
+    "city": "Denver",
+    "state": "NJ",
+    "zipCode": "12345",
+    "geoLocation" : 
+    {
+      "lat" : 37.4267861,
+      "lng" : -122.0806032,
+      "locationType": "APPROXIMATE"
+    },
+    "isNotifyStatus": false,
+    "timeLastNotified": "2020-02-28T16:41:41.090Z"
+  },
+  {
+    "personType": "PATIENT",
+    "firstName": "John",
+    "lastName": "Doe",
+    "mi": "R",
+    "phoneNumber": "5613435544",
+    "address1": "1234 Main Street",
+    "address2": "2A",
+    "city": "Denver",
+    "state": "NJ",
+    "zipCode": "12345",
+    "geoLocation" : 
+    {
+      "lat" : 37.4267861,
+      "lng" : -122.0806032,
+      "locationType": "APPROXIMATE"
+    },
+    "isNotifyStatus": false,
+    "timeLastNotified": "2020-02-28T16:41:41.090Z"
+  }
+  ]
+}

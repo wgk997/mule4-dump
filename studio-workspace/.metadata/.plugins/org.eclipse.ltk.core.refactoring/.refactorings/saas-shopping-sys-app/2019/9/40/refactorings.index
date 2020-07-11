@@ -1,0 +1,13 @@
+1569868895984	Rename resource 'global-config.xml'
+1569868908548	Rename resource 'business-logic.xml'
+1569871953128	Delete element
+1569872143142	Rename resource 'dev.properties'
+1569872152657	Rename resource 'prod.properties'
+1569872161240	Rename resource 'stg.properties'
+1569872639644	Rename resource 'asx-saas-shopping-sys-api.raml'
+1569873061502	Rename resource 'saas-shopping-sys-app.xml'
+1569873852165	Rename resource 'saas-shopping-business-logic.xml'
+1569873864609	Rename resource 'saas-shopping-sys-interface.xml'
+1569873876641	Rename resource 'saas-shopping-global-config.xml'
+1569874857186	Rename resource 'shopping-global-config.xml'
+1569874885488	Rename resource 'shopping-business-logic.xml'

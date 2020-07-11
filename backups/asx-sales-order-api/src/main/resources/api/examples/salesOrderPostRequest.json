@@ -1,0 +1,37 @@
+[
+  {
+    "salesOrderId": 1001,
+    "customerId": 11,
+    "customerName": "Chris Brown",
+    "lineItems": [
+      {
+        "itemId": 105,
+        "description": "Watch Repair",
+        "quantity": 1,
+        "itemType": "Service",
+        "pricePerItemService": 70.77
+      }
+    ]
+  },
+  {
+    "salesOrderId": 1002,
+    "customerId": 12,
+    "customerName": "Fifty Cent",
+    "lineItems": [
+      {
+        "itemId": 101,
+        "description": "Bootleg Jeans",
+        "quantity": 2,
+        "itemType": "Item",
+        "pricePerItemService": 45
+      },
+     {
+        "itemId": 102,
+        "description": "Cotton Shirt",
+        "quantity": 3,
+        "itemType": "Item",
+        "pricePerItemService": 20
+      }
+    ]
+  }
+]

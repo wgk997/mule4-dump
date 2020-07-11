@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;apdw2-flights-starter/src/main/resources/dw/mappings/myMapping.dwl&apos; to &apos;MyMapping.dwl&apos;" description="Rename resource &apos;myMapping.dwl&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/resources/dw/mappings/myMapping.dwl" name="MyMapping.dwl" stamp="1586809806794" updateReferences="true"/>
+</session>

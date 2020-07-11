@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="sr-get-albums" doc:id="d1b9f026-1070-47cb-b0d7-fa37db7419ab" >
+		<avio-core:custom-logger doc:name="START" doc:id="eea43c6f-e8b5-42f7-b7e4-c7565d0b2295" config-ref="AVIO_Core_Config" message="START" category="${log.cat}" correlation_id="#[vars.correlationId]"/>
+		<validation:is-not-null doc:name="Is not null queryParam" doc:id="592686f3-09f7-4576-bfc1-a8288d311871" value="#[attributes.queryParams.title]" message="A 'title' query parameter is required."/>
+		<db:select doc:name="SELECT albums" doc:id="49fa5e6f-193b-4034-bafa-ba8b1b5852bc" config-ref="Database_Config">
+			<db:sql >SELECT DISTINCT ALB.ALBUM_ID, ALB.TITLE, ALB.GENRE, ALB.PUBLICATION_DT, ART.ARTIST_NM, ART.ARTIST_ID
+	FROM BC_ALBUM ALB 
+		LEFT OUTER JOIN BC_ARTIST ART 
+			ON ART.ARTIST_ID = ALB.ARTIST_ID
+    WHERE ALB.TITLE LIKE :albumName   			
+    GROUP BY ALB.TITLE</db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	albumName: attributes.queryParams.title ++ '%'
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Set Payload" doc:id="8d73e68a-d092-4ef1-ae36-59cfbc1a0618" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( album ) -> {
+	albumId: album.ALBUM_ID default 0, 
+	albumTitle: album.TITLE default "",
+	genre: album.GENRE default "",
+	publicationDate: album.PUBLICATION_DT as String {format: "yyyy-MM-dd"},
+	artistId: album.ARTIST_ID default 0,
+	artistName: album.ARTIST_NM default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="END payload" doc:id="14ef2ffd-dd8f-4401-aed4-8b757757608b" message="#[payload]" category="${log.cat}"/>
+		<avio-core:custom-logger doc:name="END payload" doc:id="6a1bb2e8-608d-452a-b144-a3d47cf4f74b" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="#['Number of albums found: ' ++ sizeOf(payload)]" tracePoint="END" category="${log.cat}">
+			<avio-core:properties />
+		</avio-core:custom-logger>
+	
+</sub-flow>
+
+	<sub-flow name="sr-get-artists" doc:id="8e0aaeb6-ccc5-43a0-a975-e96534da12df" >
+		<logger level="INFO" doc:name="START" doc:id="a8f904d7-0540-46d3-8cd4-d0e4b8e7be91" message="START" category="${log.cat}"/>
+		<flow-ref doc:name="sr-build-query-param-list" doc:id="4d389fd8-a4fa-4517-bd5b-565b26d353e8" name="sr-build-query-param-list" target="queryParamList"/>
+		<set-variable value="#[%dw 2.0
+output application/java
+---
+(&quot;SELECT ARTIST_ID, ARTIST_NM, FIRST_NM, LAST_NM, MI, BIRTH_DATE, DEATH_DATE FROM BC_ARTIST WHERE &quot;) 
+++ (if (vars.queryParamList.artistName != null) (&quot; ARTIST_NM LIKE '&quot; ++ vars.queryParamList.artistName as String ++ &quot;%'&quot;) else &quot; ARTIST_NM LIKE '%'&quot;)
+++ (if(vars.queryParamList.firstName != null)   (&quot; AND FIRST_NM LIKE '&quot; ++ vars.queryParamList.firstName as String ++ &quot;%'&quot;) else &quot;&quot;) 
+++ (if(vars.queryParamList.lastName != null)   (&quot; AND LAST_NM LIKE '&quot; ++ vars.queryParamList.lastName as String ++ &quot;%'&quot;) else &quot;&quot;) 
+++ (if(vars.queryParamList.dateOfBirth != null)   (&quot; AND BIRTH_DATE = '&quot; ++ vars.queryParamList.dateOfBirth as Date ++ &quot;'&quot;) 
+else &quot;&quot;) as String]" doc:name="dynamicSelect" doc:id="af2f02e6-523a-474d-9bad-75f44e3b282b" variableName="dynamicSelect"/>
+		<logger level="DEBUG" doc:name="dynamicSelect" doc:id="26859015-e3d0-4521-987e-63206dc7a8f2" message="#[vars.dynamicSelect]" category="${log.cat}" />
+		<db:select doc:name="SELECT artists" doc:id="964f5c6d-e688-4aef-bc5d-4a2816dac346" config-ref="Database_Config" transactionalAction="NOT_SUPPORTED">
+			<db:sql>#[vars.dynamicSelect]</db:sql>
+			<db:input-parameters ><![CDATA[#[vars.queryParamList]]]></db:input-parameters>
+		
+</db:select>
+		<ee:transform doc:name="Set Payload" doc:id="8505bf14-b97f-4266-a78a-9c755dff265e">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( artist ) -> {
+	artistId: artist.ARTIST_ID default 0,
+	artistName: artist.ARTIST_NM default "",
+	lastName: artist.LAST_NM,
+	firstName: artist.FIRST_NM,
+	(if (artist.MI != null) (mi: artist.MI) else (mi: "")),
+	dateOfBirth: artist.BIRTH_DATE as String {format: "yyyy-MM-dd"},
+	(if (artist.DEATH_DATE != null) (dateOfDeath: artist.DEATH_DATE as String {format: "yyyy-MM-dd"}) else dateOfDeath: "")
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="sizeOf" doc:id="6636ce09-5316-47f2-b9c6-ae47e3665c44" message="#['# of artists: ' ++ sizeOf(payload)]" category="${log.cat}"/>
+	
+</sub-flow>
+	<sub-flow name="sr-get-songs" doc:id="914f1d25-82f6-4735-a2af-965acccc99ac" >
+		<avio-core:custom-logger doc:name="Custom logger" doc:id="f05e8f61-960d-4585-ba27-a9fe8ad46a25" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="START of sr-get-songs" level="WARN" tracePoint="START" category="${log.cat}"/>
+		<validation:is-not-null doc:name="Is not null songTitle" doc:id="ee32c380-cbc2-4099-8d9b-f76d4df8f1ec" value="#[attributes.queryParams.songTitle]" message="A 'songTitle' query parameter is required."/>
+		<db:select doc:name="SELECT songs" doc:id="b88e7621-c26f-44be-bbb0-2bae9c985b94" config-ref="Database_Config">
+			<db:sql >SELECT SNG.SONG_ID, SNG.SONG_TITLE, SNG.PUBLICATION_DT, SNG.GENRE, 
+  SNG.DURATION,ALB.TITLE AS ALBUM_NM, ARTIST_NM, ALB.ALBUM_ID
+	FROM BC_SONG SNG
+        LEFT OUTER JOIN BC_ALBUM ALB 
+          ON SNG.ALBUM_ID = ALB.ALBUM_ID
+        LEFT OUTER JOIN BC_ARTIST ART 
+          ON ALB.ARTIST_ID = ART.ARTIST_ID
+      WHERE SONG_TITLE LIKE :songTitle</db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	songTitle: attributes.queryParams.songTitle ++ '%'
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Set Payload" doc:id="eef6d7ef-e9cc-440d-b783-dc6995f0ec79" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( song ) -> {
+	songId: song.SONG_ID default 0,
+	songTitle: song.SONG_TITLE default "",
+	genre: song.GENRE default "",
+	publicationDate: song.PUBLICATION_DT as String {format: "yyyy-MM-dd"},
+	duration: song.DURATION default "",
+	artistName: song.ARTIST_NM default "",
+	albumId: song.ALBUM_ID default 0,
+	albumName: song.ALBUM_NM default ""
+}
+]]></ee:set-payload>
+			
+</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="END payload size" doc:id="050eadd8-79b4-4290-98b7-29c661039d85" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="#['Number of songs found: ' ++ sizeOf (payload)]" tracePoint="END" category="${log.cat}"/>
+	
+</sub-flow>
+	
+	<sub-flow name="sr-add-artists" doc:id="903b95a6-5ac9-48da-a722-6a81658cadbe" >
+		<avio-core:custom-logger doc:name="sizeOf (payload)" doc:id="c69825ab-58ea-46db-99be-4bead64b65a9" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="#[sizeOf (payload)]" tracePoint="START" category="${log.cat}"/>
+		<set-variable value="#[[]]" doc:name="Initialize artistsOut" doc:id="d2c6b6f2-95e8-43c3-a03a-d9b470c4867c" variableName="artistsOut"/>
+		<set-variable value="#[[]]" doc:name="Initialize artistsFound" doc:id="812f6642-4267-46ae-a0d3-d0b9429e2a48" variableName="artistsFound"/>
+		<foreach collection="payload">
+			<set-variable value="#[%dw 2.0
+output application/java	
+var artist = payload
+---
+{
+	artistName: artist.artistName,
+	lastName: artist.lastName,
+	firstName: artist.firstName,
+	dateOfBirth: artist.dateOfBirth,
+	artistId: 0
+}]" doc:name="artist" doc:id="f1260a32-878d-4547-91f4-0424e7a6936d" variableName="artist"/>
+			<avio-core:custom-logger doc:name="artist" doc:id="0ade20be-027a-4ab5-9d20-c4a7e569aa17" correlation_id="#[vars.correlationId]" message="#[vars.artist.artistName as String]" level="DEBUG" category="${log.cat}.request" config-ref="AVIO_Core_Config"/>
+			<flow-ref doc:name="sr-find-artist" doc:id="dd014e43-1073-4069-9a8e-786e35f595d0" name="sr-find-artist"/>
+			<avio-core:custom-logger doc:name="getArtistResponse" doc:id="099275af-6772-40ad-bcf7-5e922642dd7d" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="#['after sr-find-artist: ' ++ sizeOf(vars.getArtistResponse)]" level="DEBUG" category="${log.cat}.response"/>
+			<choice doc:name="Artist Found?" doc:id="4a3de10a-5a25-4d11-a5d4-dcfa755ba819" tracking:enable-default-events="true">
+				<when expression="#[vars.getArtistResponse[0] == null]" doc:id="0c8777b2-5431-4a6a-ae70-3cd7e6ad11eb">
+					<flow-ref doc:name="sr-insert-artist" doc:id="67f73b37-86ff-4aea-9e64-c218db77eaaf" name="sr-insert-artist"/>
+					<set-variable value="#[%dw 2.0
+output application/java
+---
+	vars.artistsOut + vars.artist]" doc:name="Append artistsOut" doc:id="d5e7239b-2691-4f49-9a84-1a54dce0780a" variableName="artistsOut" />
+				</when>
+				<otherwise >
+					<set-variable value='#[%dw 2.0
+output application/json
+---
+{
+	artistId: vars.getArtistResponse[0].artistId,
+	artistName: vars.artist.artistName as String,
+	lastName: vars.artist.lastName as String,
+	firstName: vars.artist.firstName as String,
+	dateOfBirth: vars.artist.dateOfBirth as String
+}]' doc:name="Update artist" doc:id="700acd07-be04-403e-84f4-6649ff955457" variableName="artist"/>
+					<set-variable value="#[%dw 2.0
+output application/java
+---
+	vars.artistsFound + vars.artist]" doc:name="Append artistsFound" doc:id="92aea079-e780-4858-8850-a35b6ae0dcdd" variableName="artistsFound"/>
+				</otherwise>
+			</choice>
+ 		
+
+</foreach>
+		<ee:transform doc:name="Set Payload" doc:id="61374439-0712-4772-b6ef-80145478caef">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	results: {
+		addedCounts: if (vars.artistsOut[0]==null) "0" else sizeOf(vars.artistsOut), 
+		addedArtists: if (vars.artistsOut[0]==null) "[]" else vars.artistsOut, 
+		duplicatedCounts: if (vars.artistsFound[0]==null) "0" else sizeOf(vars.artistsFound), 
+		duplicatedArtists: if (vars.artistsFound[0]==null) "[]" else vars.artistsFound, 
+	}
+}
+
+]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		<avio-core:custom-logger doc:name="payload" doc:id="a827e0a3-98f8-440a-ba52-fd85ae0ead61" correlation_id="#[vars.correlationId]" payload="#[write(payload,'application/json')]" tracePoint="END" category="${log.cat}" config-ref="AVIO_Core_Config" level="TRACE"/>
+	
+</sub-flow>
+	<sub-flow name="sr-find-artist" doc:id="4d31dc10-8fa2-43f8-9d1d-881d94d8a62c">
+		<avio-core:custom-logger doc:name="artist" doc:id="f417a7d3-43c1-46bd-85c4-8c15cbacb674" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="#['sr-find-artist: ' ++ (vars.artist.lastName as String)]" category="${log.cat}"/>
+		<set-variable value="#[output application/java
+---
+[
+  {
+	artistName: vars.artist.artistName,
+	firstName: vars.artist.firstName,
+	lastName: vars.artist.lastName,
+	dateOfBirth: vars.artist.dateOfBirth
+  }
+]]" doc:name="queryParameterMap" doc:id="d8fcda22-f295-4966-a90a-520c61d144dd" variableName="queryParameterMap" />
+		<avio-core:custom-logger doc:name="queryParameterMap" doc:id="13c3f1a5-08c2-4c0a-9749-3e0e9bf3247f" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" level="DEBUG" tracePoint="BEFORE_TRANSFORM" category="${log.cat}.request" message="queryParameterMap" payload="#[write(vars.queryParameterMap,'application/java')]"/>
+		<set-variable value="${mf.clientId}" doc:name="clientId" doc:id="68415b75-619c-4d4a-a89d-013dca588c86" variableName="clientId" />
+		<set-variable value="${mf.clientSecret}" doc:name="clientSecret" doc:id="9da1c446-77a4-41d6-9f4e-ab009d1774c5" variableName="clientSecret" />
+		<http:request method="GET" doc:name="GET artists" doc:id="a02a75d8-2e6a-436e-b4ac-6b4ba56a3675" config-ref="HTTP_Request_configuration" path="${http.router.path}/artists" target="getArtistResponse">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_id" : vars.clientId,
+	"client_secret" : vars.clientSecret
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"artistName" : vars.artist.artistName,
+	"firstName" : vars.artist.firstName,
+	"lastName" : vars.artist.lastName,
+	"dateOfBirth" : vars.artist.dateOfBirth
+}]]]></http:query-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="artist" doc:id="6879c305-a069-4011-9500-e6ac7163d9a0" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="getArtistResponse[-0]" tracePoint="END" category="${log.cat}" payload="#[write(vars.getArtistResponse[0],'application/json')]"/>
+	</sub-flow>
+	<sub-flow name="sr-insert-artist" doc:id="c9106dfc-1312-4327-9aa5-4fb52720137e">
+		<try doc:name="Try" doc:id="20fc8be4-640d-4dcf-92ca-b0b96b60c2ec" >
+			<db:insert doc:name="artist" doc:id="2e08bff8-8fc2-46d9-b4db-c11a0578221c" config-ref="Database_Config">
+				<db:sql>INSERT INTO BC_MUSIC_FACTORY.BC_ARTIST 
+	(ARTIST_ID, ARTIST_NM, FIRST_NM, LAST_NM, BIRTH_DATE, STATUS_CD) 
+		VALUES (NULL, :artistName, :firstName, :lastName, :birthDate, 'GH')</db:sql>
+				<db:input-parameters><![CDATA[#[{
+	artistName: vars.artist.artistName,
+	firstName: vars.artist.firstName,
+	lastName: vars.artist.lastName,
+	birthDate: vars.artist.dateOfBirth
+}]]]></db:input-parameters>
+			
+</db:insert>
+			<db:select doc:name="newArtistId" doc:id="ee0d51e8-3b7f-403c-bff5-ceef0153a389" config-ref="Database_Config" target="newArtistId">
+				<db:sql>SELECT MAX(artist_id) from BC_MUSIC_FACTORY.BC_ARTIST</db:sql>
+				<db:parameter-types />
+			
+</db:select>
+			<set-variable value='#[%dw 2.0
+output application/java
+---
+{
+	artistId: vars.newArtistId[0]."MAX(artist_id)" default 0,
+	artistName: vars.artist.artistName,
+	lastName: vars.artist.lastName,
+	firstName: vars.artist.firstName,
+	dateOfBirth: vars.artist.dateOfBirth
+}]' doc:name="Set newArtistId" doc:id="a9252451-11eb-4daf-a6d7-3bdb1a554645" variableName="artist" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a5f7e79d-f753-4667-9f58-e11b20b4de9a" type="EXPRESSION" >
+					<logger level="WARN" doc:name="Continue" doc:id="0aa3f9c4-1cd2-490d-8d71-8f1686a36c4e" message="#[payload]" category="${log.cat}" />
+				</on-error-continue>
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c06b74ab-d134-43c0-aeaf-d9b4786341a6" type="DB:QUERY_EXECUTION" >
+					<logger level="ERROR" doc:name="Copy_of_DB:QUERY_EXECUTION" doc:id="a12849d6-9b00-443d-9ceb-6d4026fc072d" message="#[payload]" category="${log.cat}" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</sub-flow>
+	<flow name="sr-add-albums" doc:id="d52a4755-6b71-4383-8501-ea774301e9d3" >
+		<http:listener doc:name="Listener" doc:id="c26c80d4-6974-4a3a-9dd6-6c1d5b98b05c" config-ref="HTTP_Listener_config" path="/batchAddAlbums"/>
+		<batch:job jobName="sr-add-albums-batch-job" doc:id="56dfe4d2-a187-4027-9a08-c162b149d39c" maxFailedRecords="10">
+			<batch:process-records >
+				<batch:step name="process-all-records" doc:id="52345bd2-01b5-4317-b1ce-229480e6f4df" >
+					<set-variable value="#[payload]" doc:name="album" doc:id="e63e10e9-6a38-4553-9499-981557d2d79b" variableName="album"/>
+					<set-payload value='#[output application/java
+---
+{
+	albumIdParam: 0,
+	titleParam: vars.album.albumTitle,
+	genreParam: vars.album.genre,
+	publicationParam: vars.album.publicationDate,
+	statusParam: "GH",
+	artistIdParam: vars.album.artistId
+	
+}]' doc:name="Set Payload" doc:id="2771583a-0be7-4060-b6b9-0cc7f3ee41a3" />
+					<batch:aggregator doc:name="sr-add-albums-bulk-insert" doc:id="8e3ec90b-0dad-48e8-8ecb-50f054c20053" size="200">
+						<db:bulk-insert doc:name="Bulk insert" doc:id="0dad4c30-e59f-4b33-8b44-bedd35627b5a" config-ref="Database_Config">
+							<db:sql >insert into BC_MUSIC_FACTORY.BC_ALBUM (album_id,title, genre, publication_dt, status_cd, artist_id) values 
+            (:albumIdParam,
+             :titleParam,
+             :genreParam,
+             :publicationParam,
+             'GH',
+             :artistIdParam)</db:sql>
+						</db:bulk-insert>
+					</batch:aggregator>
+				</batch:step>
+				<batch:step name="failures-only-step" doc:id="2f94b44a-52ec-4fe8-a12a-72cc3e4961e7" acceptPolicy="ONLY_FAILURES">
+					<logger level="WARN" doc:name="payload" doc:id="e13eae89-fcf9-4e5b-8a92-e113ff141cf1" message="#[payload]" category="${log.cat}"/>
+					<db:insert doc:name="Staging Error" doc:id="96cd7d92-98e2-4ab8-8b64-e7feaa7dd242" config-ref="Database_Config">
+						<db:sql >INSERT INTO BC_MUSIC_FACTORY.BC_STAGING_ERROR (STAGING_ID, STAGING_RECORD, STATUS_CD) 
+    VALUES (NULL, :stagingRecord, 'GH')</db:sql>
+						<db:input-parameters ><![CDATA[#[{
+	stagingRecord: payload.titleParam as String
+}]]]></db:input-parameters>
+					</db:insert>
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete >
+				<ee:transform doc:name="batch report" doc:id="796b613d-3392-4d5d-9908-01dcd6820a12" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	totalRecords: payload.totalRecords default 0,
+	successfulRecords: payload.successfulRecords default 0,
+	failedRecords: payload.failedRecords default 0
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<logger level="INFO" doc:name="batch report" doc:id="1182dbde-534f-462c-906a-8eecfe7f3530" message="#[payload]" category="${log.cat}"/>
+			</batch:on-complete>
+		</batch:job>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d0d3c4e9-56cf-49a1-a7d3-ec76af65ea05" >
+				<logger level="ERROR" doc:name="ERROR" doc:id="354f8191-4552-4655-bd1b-0a961f1b48ce" message="#[payload]" category="${log.cat}"/>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<sub-flow name="sr-build-query-param-list" doc:id="e8649289-e68a-4108-9757-a6eed8554550" >
+		<logger level="INFO" doc:name="START" doc:id="78dfdd8a-b4bb-4e82-88d0-d59cbc60ba18" message="START" category="${log.cat}" />
+		<ee:transform doc:name="queryParams" doc:id="ce39dbba-c5c3-49a7-a756-cc06317442ef" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	firstName: attributes.queryParams.firstName,
+	lastName: attributes.queryParams.lastName,
+	dateOfBirth: attributes.queryParams.dateOfBirth,
+	artistName: attributes.queryParams.artistName
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="payload" doc:id="8061b4bd-ad88-4f2d-a536-d440a022333f" message="#[payload]" category="${log.cat}" />
+	</sub-flow>
+	<flow name="sr-show-secure-properties" doc:id="bba4abc0-9092-4dd9-a36d-45db56151f54" >
+		<http:listener doc:name="GET /showSecureProperties" doc:id="c6203073-1927-4a18-92f6-5c5d61c8b80e" config-ref="HTTP_Listener_config" path="/showSecureProperties" />
+		<ee:transform doc:name="password" doc:id="8bed8ce2-47eb-4a7f-a7e7-4a205c5ea06f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json 
+---
+{
+	message: p('secure::db.password')
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+
+
+
+
+
+</mule>

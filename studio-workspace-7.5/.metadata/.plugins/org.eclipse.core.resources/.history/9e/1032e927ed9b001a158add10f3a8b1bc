@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd">
+
+    	<sub-flow name="custom-choice-flow" doc:id="28f33fa1-6f9b-40c5-905d-b6b79b7b63b0" >
+		<choice doc:name="Is Notification Custom" doc:id="afb4d5b4-4f59-4f82-a728-302086394d69">
+			<when expression='#[payload.notificationType != "CUSTOM_NOTIFICATIONS"]'>
+				<avio-core:custom-logger doc:name="Log no" doc:id="c35d5b5b-1058-4a97-a493-a2c8a2cb113c" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" category="${logcat}" />
+				<flow-ref doc:name="not-custom-message-flow" doc:id="a04ebf10-3560-4f73-90e4-1367f42cdbcc" name="not-custom-flow" />
+			</when>
+			<when expression='#[payload.notificationType == "CUSTOM_NOTIFICATIONS"]'>
+				<avio-core:custom-logger doc:name="Log yes" doc:id="000dc291-8c2c-457c-b420-7b7772ad663a" config-ref="avio-core-config" category="${logcat}" correlation_id="#[vars.headerAttributes.correlationId]" />
+				<flow-ref doc:name="custom-flow" doc:id="25f58b68-94aa-4f48-a2eb-0318e9d8dafe" name="custom-flow" />
+			</when>
+			<otherwise>
+				<avio-core:custom-logger doc:name="Log default" doc:id="59634918-7c64-4bad-b0d2-01ca03549958" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="notificationType either null or doesn't exist !   " category="${logcat}" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<flow name="not-custom-flow" doc:id="a2025db2-eedb-41ff-bd4c-7d92f097a7c9" >
+		<choice doc:name="not custom notification type" doc:id="d4a25782-d5f3-4dc7-a96d-0af3c8890f6a" >
+			<when expression='#[payload.notificationType=="PRECAUTIONARY_ALERT"]'>
+				<avio-core:custom-logger doc:name="Start precautionary alert" doc:id="290ea1d2-a8e9-4c0c-a694-c189abab174e" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Started Processing Request for PRECAUTIONARY_ALERT" tracePoint="START" category="${logcat}" />
+				<flow-ref doc:name="get-medical-staff" doc:id="9e348dde-25e4-41f9-b9b5-857127232828" name="get-medical-staff" target="medicalStaff"/>
+				<ee:transform doc:name="filter by Nurse" doc:id="e5bb12e7-429d-48ff-a939-d3079c6b66a6" >
+					<ee:variables >
+						<ee:set-variable variableName="smsResult" ><![CDATA[%dw 2.0
+output application/json
+var medStaff = vars.medicalStaff.medicalPersons filter $.specialtyCode == "NURSE"
+---
+medStaff map 
+{
+	smsMessage: vars.smsMessage,
+	cellNumbers: $.mobileNumber
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<when expression='#[payload.notificationType=="ISOLATION_ALERT"]'>
+				<avio-core:custom-logger doc:name="Start Isoaltion Alert" doc:id="2c04e044-3c95-4b86-86f9-49ec9e23e3c0" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Started Processing Request for ISOLATION_ALERT" tracePoint="START" category="${logcat}" />
+				<flow-ref doc:name="get-case-participant" doc:id="048222a7-20ad-42d3-92d0-78b6770ab3f8" name="get-case-participant" target="caseParticipant"/>
+				<ee:transform doc:name="filter person" doc:id="3c1ce557-7f42-4d2a-a73c-b497e6e1a829">
+					<ee:message>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="caseParticipantSms" ><![CDATA[%dw 2.0
+output application/json
+var smsMessage = vars.smsMessage
+var caseParticipant = vars.caseParticipant 
+--- 
+caseParticipant.person 
+filter $.isNotifyStatus == true
+map {
+    smsMessage : smsMessage,
+    cellNumbers: $.phoneNumber
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<flow-ref doc:name="get-medical-staff" doc:id="e451adc1-2a81-460c-b446-022555a7eba3" name="get-medical-staff" target="medicalStaff"/>
+				<ee:transform doc:name="filter medical staff" doc:id="5ad35d50-3aa2-4c72-9ec6-0f3756f8ec9a">
+					<ee:message>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="medicalPersonSms" ><![CDATA[%dw 2.0
+output application/json
+var smsMessage = vars.smsMessage
+var medStaff = vars.medicalStaff
+---
+medStaff.medicalPersons 
+filter $.specialtyCode == "PHYSICIAN" or $.specialtyCode == "NURSE"
+map {
+	smsMessage: smsMessage,
+	cellNumbers: $.mobileNumber
+}
+]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<ee:transform doc:name="concat results" doc:id="430f185b-2ce6-418b-9e4e-d985f123e38f" >
+					<ee:variables >
+						<ee:set-variable variableName="smsResult" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.medicalPersonSms ++ vars.caseParticipantSms]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<when expression='#[payload.notificationType=="DIAGNOSIS_REQUEST"]' >
+				<avio-core:custom-logger doc:name="Start Diagnonis Alert" doc:id="e11ef4ab-e307-4e33-b8f9-80822736cd68" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message='Started Processing Request for DIAGNOSIS_REQUEST' category="${logcat}" tracePoint="START"/>
+				<flow-ref doc:name="get-medical-staff" doc:id="a943daea-f9b6-494b-98f8-8eae976408a8" name="get-medical-staff" target="medicalStaff"/>
+				<ee:transform doc:name="filter by ER doctor" doc:id="1b5251b6-2452-45ea-930e-6b6eb170c189" >
+
+					<ee:variables >
+						<ee:set-variable variableName="smsResult" ><![CDATA[%dw 2.0
+output application/json
+var smsMessage = vars.smsMessage
+var medStaff = vars.medicalStaff.medicalPersons filter $.specialtyCode == "PHYSICIAN"
+---
+medStaff map 
+{
+	smsMessage: vars.smsMessage,
+	cellNumbers: $.mobileNumber
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<avio-core:custom-logger doc:name="Log default" doc:id="3e59c8e1-3545-460d-a69c-f8cdfd6434f1" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" level="ERROR" category="${logcat}" message='#["Error notification type: " ++ payload.notificationType ++ " doesnt exists"]'/>
+			</otherwise>
+		</choice>
+		<flow-ref doc:name="send-message" doc:id="d99db02f-c2ca-4df3-a495-e770e1a4b7ec" name="send-message"/>
+	</flow>
+	<sub-flow name="custom-flow" doc:id="7015ae2f-d0bc-475e-9c50-76386de1c266" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="c369304c-981a-43f2-9d57-962fffdf48a9" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" tracePoint="START" category="${logcat}" message="Started processing request for custom-flow"/>
+		<ee:transform doc:name="set staffSpecialtyCodes" doc:id="7d51cbd4-73bf-40ae-a833-4f3f1ec8d01e" >
+			<ee:variables >
+				<ee:set-variable variableName="staffSpecialtyCodes" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.customNotification.staffSpecialtyCodes]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="set personContactTypes" doc:id="4def77c5-5e5e-416e-ba17-fa7edf710fa1" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="personContactTypes" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.customNotification.personContactTypes]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="get-case-participant" doc:id="cb47578e-2d24-4991-b7f3-607bd8e0fd8e" name="get-case-participant" target="caseParticipant"/>
+		<ee:transform doc:name="apply custom person filter" doc:id="837d8d8f-d662-47ae-b735-b50c4b84cb9d" >
+			<ee:variables >
+				<ee:set-variable variableName="personSms" ><![CDATA[%dw 2.0
+output application/json
+var smsMessage = vars.smsMessage
+var allPersonFilterArray = ["EMERGENCY_CONTACT","PATIENT","PATIENT_DR"]
+var customPersonFilterArray = vars.personContactTypes
+
+var allPerson = vars.caseParticipant.person filter (allPersonFilterArray contains  $.personType)
+
+var customPerson = vars.caseParticipant.person filter (customPersonFilterArray contains  $.personType)
+---
+
+customPerson filter $.isNotifyStatus == true
+map {
+    smsMessage : smsMessage,
+    cellNumbers: $.phoneNumber
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="get-medical-staff" doc:id="e58eefb3-84a0-4398-9b79-8470b735bba7" name="get-medical-staff" target="medicalStaff"/>
+		<ee:transform doc:name="apply custom medical filter" doc:id="86aeda8f-eec1-4ca8-bd7a-77b5d0383f3e" >
+			
+			<ee:variables >
+				<ee:set-variable variableName="staffSms" ><![CDATA[%dw 2.0
+output application/json
+
+var smsMessage = vars.smsMessage
+
+var allStaffFilterArray = ["MEDICAL_DIRECTOR","PHYSICIAN","NURSE","ID_INVESTIGATOR"]
+var customStaffFilterArray = vars.staffSpecialtyCodes
+
+var allStaff = vars.medicalStaff.medicalPersons filter (allStaffFilterArray contains  $.specialtyCode)
+var customStaff = vars.medicalStaff.medicalPersons filter (customStaffFilterArray contains  $.specialtyCode)
+---
+
+customStaff
+map {
+    smsMessage : smsMessage,
+    cellNumbers: $.mobileNumber
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="concat Results" doc:id="fa898296-33e7-43bf-ab6a-08f03d4abac4" >
+			<ee:variables >
+				<ee:set-variable variableName="smsResult" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.personSms ++ vars.staffSms]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="send-message" doc:id="aadea9dc-b9e4-4c85-88a7-882f217e3037" name="send-message"/>
+		<avio-core:custom-logger doc:name="Log End" doc:id="b7ce0ea5-017e-4925-9c5b-47b2c238a20f" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Started processing request for custom-flow" tracePoint="END" category="${logcat}" />
+	</sub-flow>
+	<sub-flow name="get-case-participant" doc:id="4976ba6e-a548-4f36-91d4-4ba5bea4970a" >
+		<try doc:name="Try" doc:id="7e2bfc64-968d-47b6-b3cc-cc30ebaec0ae" >
+			<avio-core:custom-logger doc:name="Log Start" doc:id="36ddee1c-2c60-4d88-ae40-42c52014793c" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Start Processing request for get-case-participant flow" tracePoint="START" category="${logcat}" />
+			<http:request method="GET" doc:name="Get Case Participants" doc:id="cbeb7d36-1bdc-4595-8a0d-6b78ad0f5103" config-ref="case-management-system-http-request-configuration" path="cases/{caseId}/persons">
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: "1111	"
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"caseId" : vars.caseID
+}]]]></http:uri-params>
+		</http:request>
+			<avio-core:custom-logger doc:name="Log End" doc:id="a8302748-47f2-4aae-8dc0-83778c29a31f" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Completed Processing request for get-case-participant flow" tracePoint="START" category="${logcat}" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="b1a647a3-6146-4ef5-a57a-2d46d0b0af58" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="c8a4132c-7d53-472f-bbd5-8835329644d7" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Error while getting case participant" payload='#[write(payload, "application/json")]' level="ERROR" category="${logcat}" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</sub-flow>
+	<sub-flow name="get-medical-staff" doc:id="4be05161-a331-4128-a08c-53a59d876aff" >
+		<try doc:name="Try" doc:id="255b01d4-a234-4fdb-9bc0-761218c0ad96" >
+			<avio-core:custom-logger doc:name="Log Start" doc:id="80dd049e-2d99-48b0-9eb8-d28a1bae9fd1" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Start Processing request for get-medical-staff flow" tracePoint="START" category="${logcat}" />
+			<http:request method="GET" doc:name="Get medical Staff" doc:id="ddb6b8fb-078a-4a3e-b772-9ac8b28af914" config-ref="ref-system-http-request-configuration" path="/medicalPersons">
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: "1111	"
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"specialty" : "PHYSICIAN"
+}]]]></http:query-params>
+		</http:request>
+			<avio-core:custom-logger doc:name="Log End" doc:id="fbfc5414-a01f-4d48-b1c1-206a3ce5e9c3" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Completed Processing request for get-medical-staff flow" tracePoint="END" category="${logcat}" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d571cf52-4c10-4ccd-bbd1-34c3a0c7f464" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="eed3d95a-7da6-476e-b658-7270e607c3ff" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Error while getting medical staff" payload='#[write(payload, "application/json")]' level="ERROR" category="${logcat}" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</sub-flow>
+	<sub-flow name="send-message" doc:id="50ea5529-ff91-4ed4-9470-7751109e00bd" >
+		<try doc:name="Try" doc:id="36bbe900-c3fe-4315-822e-64f7b04df31d" >
+			<avio-core:custom-logger doc:name="Log Start" doc:id="3503e6f1-9d8c-4c1a-927b-12e7b0f64d7e" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Start Processing request for send-message flow" category="${logcat}" tracePoint="START"/>
+			<foreach doc:name="For Each" doc:id="64f920c5-970b-4ad1-b60c-cc7524bb3726" collection="#[vars.smsResult]">
+				<ee:transform doc:name="sqsPayload">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+	delaySeconds: 0,
+	body: "\n{\n  \"smsMessage\": \" "++ payload.smsMessage ++" \",\n  \"cellNumbers\": \" "++ payload.cellNumbers ++" \"\n}",
+		messageAttributes: {
+		"smsMessage": {
+			"stringValue" : payload.smsMessage,
+			"dataType" : "String"
+		} as Object {
+			class: "org.mule.extension.sqs.api.model.MessageAttributeValue"
+		},
+		"cellNumbers": {
+			"stringValue" : payload.cellNumbers,
+			"dataType" : "String"
+		} as Object {
+			class : "org.mule.extension.sqs.api.model.MessageAttributeValue"
+		}
+	} as Object {
+		class: "java.util.HashMap"
+	}
+} as Object {
+	class: "org.mule.extension.sqs.api.model.Message"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<sqs:send-message doc:name="Send message" doc:id="6e0ef19f-0bbc-4ff7-a6d5-07e08a9adffc" config-ref="Amazon_SQS_Configuration" queueUrl="${sqs.queue.url}">
+			</sqs:send-message>
+			</foreach>
+			<avio-core:custom-logger doc:name="Log End" doc:id="2d2798fe-3540-4f6f-867c-05d55de8f951" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Completed Processing request for send-message flow" tracePoint="END" category="${logcat}" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="0c08c312-c849-4830-9bc8-8180c1540579" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="16a2aae1-6bc8-4c0a-a8c5-0e105f2f788c" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" level="ERROR" category="${logcat}" message="Error while sending message to SQS" payload='#[write(payload, "application/json")]' />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</sub-flow>
+	</mule>

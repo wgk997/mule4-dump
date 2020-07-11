@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="fault">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Code">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Value" type="xs:string"/>
+                            <xs:element name="Subcode">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Value" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Reason">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Text" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Detail" type="xs:string"/>
+                <xs:element name="Node" type="xs:string"/>
+                <xs:element name="Role" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+
+
+<!--
+
+<Code> - Mandatory
+The <Code> element is a mandatory element in the <Fault> element. It provides information about the fault in
+ a form that can be processed by software. It contains a <Value> element and an optional <Subcode> element.
+
+<Reason> - Mandatory
+The <Reason> element is a mandatory element in the <Fault> element. The <Reason> element contains one or more
+ <Text> elements, each of which contains information about the fault in a different native language.
+
+<Node>
+The <Node> element contains the URI of the SOAP node that generated the fault. A SOAP node that is not the
+ultimate SOAP receiver must include the <Node> element when it creates a fault. An ultimate SOAP receiver is not
+ obliged to include this element, but may do so.
+
+<Role>
+The <Role> element contains a URI that identifies the role in which the node was operating at the point the fault occurred.
+
+<Detail>
+The <Detail> element is an optional element, which contains application-specific error information related
+to the SOAP fault codes describing the fault. The presence of the <Detail> element has no significance
+regarding which parts of the faulty SOAP message were processed.
+
+-->

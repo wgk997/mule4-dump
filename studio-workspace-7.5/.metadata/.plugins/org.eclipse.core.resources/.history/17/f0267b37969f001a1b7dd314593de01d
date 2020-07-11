@@ -1,0 +1,15 @@
+{
+  "statusCode": 200,
+  "message": "OK",
+  "case": 
+  {
+  "id": "as909012dop12",
+  "activatedDate": "2020-02-25",
+  "complaint": "LOREN EPSUM DOLLAR",
+  "assignedDr": "as909012DSp12",
+  "isolationAlert": false,
+  "severityCode" : "UNDETERMINED",
+  "statusCode": "INTAKE",
+  "symptomsCsv" : "drycough, fever, heartburn"
+  }
+}

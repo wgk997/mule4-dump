@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/personDataTypeForUpdate",
+  "definitions": {
+    "personDataTypeForUpdate": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "person"
+      ],
+      "properties": {
+        "person": {
+          "$ref": "#/definitions/items"
+        }
+      }
+    },
+    "items": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "personType",
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        "address1",
+        "city",
+        "zipCode",
+        "geoLocation",
+        "isNotifyStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "personType": {
+          "type": "string",
+          "enum": [
+            "PATIENT",
+            "EMERGENCY_CONTACT",
+            "PATIENT_DR"
+          ]
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "mi": {
+          "type": "string",
+          "maxLength": 1
+        },
+        "phoneNumber": {
+          "type": "string",
+          "pattern": "^[2-9]\\d{2}\\d{3}\\d{4}$"
+        },
+        "address1": {
+          "type": "string",
+          "pattern": "^(\\d{3,})\\s?(\\w{0,5})\\s([a-zA-Z]{2,30})\\s([a-zA-Z]{2,15})\\.?\\s?(\\w{0,5})$"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "zipCode": {
+          "pattern": "^[0-9]{5}([\\s-]{1}[0-9]{4})?$",
+          "type": "string"
+        },
+        "geoLocation": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "lng",
+            "lat"
+          ],
+          "properties": {
+            "lat": {
+              "type": "number"
+            },
+            "lng": {
+              "type": "number"
+            },
+            "locationType": {
+              "type": "string",
+              "enum": [
+                "ROOFTOP",
+                "APPROXIMATE"
+              ]
+            }
+          }
+        },
+        "isNotifyStatus": {
+          "type": "boolean"
+        },
+        "timeLastNotfied": {
+          "type": "string",
+          "format": "date-time-only"
+        }
+      }
+    }
+  }
+}

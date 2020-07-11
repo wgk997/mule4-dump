@@ -1,0 +1,387 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/caseResponseForGet",
+  "definitions": {
+    "caseResponseForGet": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "statusCode",
+        "message",
+        "case",
+        "person",
+        "diagnosis",
+        "procedure",
+        "contactTrace"
+      ],
+      "properties": {
+        "statusCode": {
+          "type": "number",
+          "minimum": 100.0,
+          "maximum": 599.0
+        },
+        "message": {
+          "type": "string"
+        },
+        "case": {
+          "$ref": "#/definitions/type"
+        },
+        "person": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/items"
+          }
+        },
+        "diagnosis": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/items_2"
+          }
+        },
+        "procedure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/items_3"
+          }
+        },
+        "contactTrace": {
+          "$ref": "#/definitions/type_1"
+        }
+      }
+    },
+    "type": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "complaint",
+        "isolationAlert",
+        "severityCode",
+        "statusCode",
+        "symptomsCsv"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "activatedDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "complaint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "assignedDr": {
+          "type": "number"
+        },
+        "isolationAlert": {
+          "type": "boolean"
+        },
+        "primaryDiagnosis": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "severityCode": {
+          "type": "string",
+          "enum": [
+            "UNDETERMINED",
+            "ROUTINE",
+            "CRITICAL",
+            "INFECTIOUS"
+          ]
+        },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "INTAKE",
+            "DISCHARGED",
+            "CLOSED",
+            "ADMITTED"
+          ]
+        },
+        "symptomsCsv": {
+          "type": "string"
+        }
+      }
+    },
+    "type_1": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "traceStartDate",
+        "traceEndDate",
+        "cdcReported",
+        "cdcReportedTimestamp",
+        "traceContacts"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "traceStartDate": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "traceEndDate": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "cdcReported": {
+          "type": "boolean"
+        },
+        "cdcReportedTimestamp": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "traceContacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/type_4"
+          }
+        }
+      }
+    },
+    "items": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "personType",
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        "address1",
+        "city",
+        "zipCode",
+        "geoLocation",
+        "isNotifyStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "personType": {
+          "type": "string",
+          "enum": [
+            "PATIENT",
+            "EMERGENCY_CONTACT",
+            "PATIENT_DR"
+          ]
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "mi": {
+          "type": "string",
+          "maxLength": 1
+        },
+        "phoneNumber": {
+          "type": "string",
+          "pattern": "^[2-9]\\d{2}\\d{3}\\d{4}$"
+        },
+        "address1": {
+          "type": "string",
+          "pattern": "^(\\d{3,})\\s?(\\w{0,5})\\s([a-zA-Z]{2,30})\\s([a-zA-Z]{2,15})\\.?\\s?(\\w{0,5})$"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "zipCode": {
+          "pattern": "^[0-9]{5}([\\s-]{1}[0-9]{4})?$",
+          "type": "string"
+        },
+        "geoLocation": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "lng",
+            "lat"
+          ],
+          "properties": {
+            "lat": {
+              "type": "number"
+            },
+            "lng": {
+              "type": "number"
+            },
+            "locationType": {
+              "type": "string",
+              "enum": [
+                "ROOFTOP",
+                "APPROXIMATE"
+              ]
+            }
+          }
+        },
+        "isNotifyStatus": {
+          "type": "boolean"
+        },
+        "timeLastNotfied": {
+          "type": "string",
+          "format": "date-time-only"
+        }
+      }
+    },
+    "items_2": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "diagnosisCode",
+        "diagnosisStartDate",
+        "diagnosisEndDate",
+        "statusCode"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "diagnosisCode": {
+          "type": "string"
+        },
+        "diagnosisStartDate": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "diagnosisEndDate": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "PRIMARY",
+            "SECONDARY",
+            "INITIAL",
+            "TREATED"
+          ]
+        },
+        "shortDescription": {
+          "maxLength": 255,
+          "type": "string"
+        },
+        "longDescription": {
+          "maxLength": 255,
+          "type": "string"
+        }
+      }
+    },
+    "items_3": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "procedureCode",
+        "statusCode"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "performedTimestamp": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "procedureCode": {
+          "type": "string"
+        },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "COMPLETE"
+          ]
+        }
+      }
+    },
+    "type_4": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "contactDate",
+        "firstName",
+        "lastName",
+        "address1",
+        "city",
+        "state",
+        "zip",
+        "geoLocation",
+        "phone"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "contactDate": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "firstName": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "middleInitial": {
+          "type": "string",
+          "maxLength": 1
+        },
+        "lastName": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "address1": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "address2": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "state": {
+          "type": "string",
+          "maxLength": 2
+        },
+        "zip": {
+          "type": "string",
+          "minLength": 5
+        },
+        "geoLocation": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "lng",
+            "lat"
+          ],
+          "properties": {
+            "lat": {
+              "type": "number"
+            },
+            "lng": {
+              "type": "number"
+            },
+            "locationType": {
+              "type": "string",
+              "enum": [
+                "ROOFTOP",
+                "APPROXIMATE"
+              ]
+            }
+          }
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

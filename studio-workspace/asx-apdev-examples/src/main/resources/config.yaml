@@ -1,0 +1,10 @@
+http:
+  port: "8081"
+
+sdfc:
+  username: "dwouch@avioconsulting.com"
+  password: "DevMan1993!"
+  token: "zZugSudGUYPltJfKEFtMvqXc7"
+
+file:
+  accountsDir: "/Users/asapkota/Desktop/training materials/MUFundamentals4.2_studentFiles_27jul2019/resources"

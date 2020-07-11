@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+<os:object-store name="sales-order-object-store" doc:name="Object store" doc:id="33bc1209-2396-44da-ba32-e8db07f98f4b" maxEntries="100" config-ref="sales-object-store-config" />
+	
+	<sub-flow name="get-sales-order" doc:id="6a546998-6282-4619-8e6d-0df30c4d56ad" >
+		<avio-core:custom-logger doc:name="Start" doc:id="c959f25f-42ee-45c1-b94b-e5b348e0fb36" config-ref="AVIO_Core_Config" message="START Get Request" correlation_id="#[vars.correlationId]" category="${log.cat}"/>
+		<os:retrieve-all doc:name="retreive object store" doc:id="bf27426b-9434-4ad1-867b-c3cecfdd1792" objectStore="sales-order-object-store"/>
+		<ee:transform doc:name="Transform Message" doc:id="3acdad3b-223c-4f23-9e16-8001d10745cf" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload pluck (value, key, index) -> {
+	storeOrderId : key,
+	status: value
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="End" doc:id="8ba2e549-27a3-4f49-ad46-4e9ba3d19cf3" config-ref="AVIO_Core_Config" message="END Get Request" correlation_id="#[vars.correlationId]" category="${log.cat}" payload="payload"/>
+	</sub-flow>
+	<sub-flow name="post-sales-order" doc:id="45310665-6f52-45ef-bce4-2c95cf6eb3ff" >
+		<avio-core:custom-logger doc:name="Start" doc:id="c4c79c1a-a701-4e62-8c24-a6e24d588ebc" config-ref="AVIO_Core_Config"/>
+		<set-variable value="#[[]]" doc:name="Initialize totalSalesOrders" doc:id="80468e6f-7bee-4180-a94b-cadf8b5893db" variableName="totalSalesOders"/>
+		<foreach doc:name="For Each" doc:id="d1baf77b-17e3-4fd5-a5e5-f8a85a2cb7bf" collection="payload">
+			<set-variable value="#[%dw 2.0
+output application/java	
+var salesOrder = payload
+---
+{
+	salesOrderId: salesOrder.salesOrderId,
+	customerId: salesOrder.customerId,
+	customerName: salesOrder.customerName,
+	lineItems: salesOrder.lineItems
+}]" doc:name="Set Variable" doc:id="d42727be-13ec-48b1-a555-47b0cc153e0b" variableName="salesOrder"/>
+			<avio-core:custom-logger doc:name="Sales Order" doc:id="e4ac4f5a-5bb9-4ded-849e-688baa1e4ff8" message="#[vars.salesOrder.customerName as String]" correlation_id="#[vars.correlationId]" config-ref="AVIO_Core_Config"/>
+			<vm:publish doc:name="Publish VM" doc:id="31509ec1-7a98-4f6d-a8ca-359b1a97e59c" config-ref="VM_Config" sendCorrelationId="AUTO" queueName="salesOrderQueue" correlationId="#[vars.correlationId]" >
+				<vm:content ><![CDATA[#[vars.salesOrder]]]></vm:content>
+			</vm:publish>
+			<os:store doc:name="Store object" doc:id="fa38e407-1f5b-4d58-8576-f62dd7940084" key="#[vars.salesOrder.salesOrderId]" objectStore="sales-order-object-store">
+			<os:value><![CDATA[#["CONFIRMED"]]]></os:value>
+		</os:store>
+		</foreach>
+	</sub-flow>
+	<flow name="listener-sales-order-flow" doc:id="adc39676-ae10-422a-aa25-c23a3a33e25d" >
+		<vm:listener queueName="salesOrderQueue" doc:name="Listener" doc:id="c3049f53-4dc6-45bf-ace4-a930b919f747" config-ref="VM_Config"/>
+		<avio-core:custom-logger doc:name="Listener sales order" doc:id="c6e20f36-4e4c-41c0-a1e4-fdb1357cd8e9" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" message="#[payload.customerName as String]"/>
+	</flow>
+</mule>

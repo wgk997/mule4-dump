@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/diagnosisDataTypeForUpdate",
+  "definitions": {
+    "diagnosisDataTypeForUpdate": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "diagnosis"
+      ],
+      "properties": {
+        "diagnosis": {
+          "$ref": "#/definitions/items"
+        }
+      }
+    },
+    "items": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "diagnosisCode",
+        "diagnosisStartDate",
+        "diagnosisEndDate",
+        "statusCode"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "diagnosisCode": {
+          "type": "string"
+        },
+        "diagnosisStartDate": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "diagnosisEndDate": {
+          "type": "string",
+          "format": "date-time-only"
+        },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "PRIMARY",
+            "SECONDARY",
+            "INITIAL",
+            "TREATED"
+          ]
+        },
+        "shortDescription": {
+          "maxLength": 255,
+          "type": "string"
+        },
+        "longDescription": {
+          "maxLength": 255,
+          "type": "string"
+        }
+      }
+    }
+  }
+}

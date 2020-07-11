@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	  xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	  xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	  xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	  xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+      xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+	  xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+		http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+		http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+		http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd">
+
+	<import doc:name="Import" doc:id="13748ced-0740-494e-a895-2aeaac40a6c0" file="health-check-api.xml" />
+
+    <!-- AVIO Mule Logger configuration -->
+	<avio-core:config name="avio-core-config" doc:name="AVIO Core Config" doc:id="4e221d01-3161-46ac-8e95-791ff05ce148" app_name="${api.name}" app_version="${api.version}" env="${env}" />
+
+    <!-- This is the Configuration to make mule always refer to globalErrorHandler defined in error-handling.xml for handling exceptions -->
+    <configuration defaultErrorHandler-ref="globalErrorHandler"/>
+
+    <!-- This Property is to use in AVIO custom logger to log the current mule application version. Change this everytime when you decided to change this application version in POM. -->
+    <global-property doc:name="Global Property" doc:id="17770a11-4157-4172-973b-72174cc545ad" name="pomVersion" value="1.0.0" />
+
+    <!-- This Property is to use in various properties and Custom Logger to reference the environment (e.g. local, dev, etc) -->
+	<global-property doc:name="Global Property" doc:id="a1fa49c4-d27a-47ab-bd5e-20d5f55721f5" name="env" value="local" />
+
+    <!-- This is the configuration to refer and encrypt properties in properties file. -->
+    <secure-properties:config name="secure-properties-config" doc:name="Secure Properties Config" doc:id="d64f0a63-454a-486c-be29-1fcdc9534db5" file="properties/${env}.properties" key="${secureKey}" >
+    	<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+
+    <!-- This is the configuration to let this mule app talk to API Manager's corresponding API -->
+    <api-gateway:autodiscovery apiId="${api.apiId}" doc:name="API Autodiscovery" doc:id="64e53ea9-8f3d-4165-8451-fc9e075835f3" flowRef="aepi-case-management-pro-api-main" />
+
+    <!-- Added to expedite the Bootcamp project archetype -->
+	<global-property doc:name="Global Property" doc:id="0a76d4c0-842d-40b6-9fc5-2f5cf73b0360" name="secureKey" value="password" />
+
+    <!-- reference artifactId specific properties directory -->
+	<configuration-properties doc:name="Configuration properties" doc:id="0da4297a-cc2b-4d83-8e5d-fde6621077ec" file="properties/${env}.properties" />
+
+    <!-- Listener references "env" specific properties -->
+	<http:listener-config name="http-listener-config" doc:name="HTTP Listener config" doc:id="110e7948-6f84-4387-937e-2728db55929e" basePath="${http.router.path}">
+		<http:listener-connection host="${http.host}" port="${https.port}" protocol="HTTPS">
+			<tls:context>
+				<tls:key-store path="aepiKeystore.p12" type="pkcs12" password="${secure::keystore.password}" keyPassword="${secure::keystore.password}" alias="aepikeystore"/>
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+
+	<http:request-config name="case-management-sys-http-request-configuration" doc:name="Case Mgmt HTTP Request configuration" doc:id="c5540c43-d45d-477e-bdf1-286f827a0c0f" basePath="${case.management.system.api.basePath}" >
+		<http:request-connection host="${case.management.system.api.host}" protocol="HTTPS"/>
+	</http:request-config>
+	
+	<http:request-config name="infectious-disease-sys-http-request-configuration" doc:name="Infectious Disease HTTP Request configuration" doc:id="8d2aaf6a-aedb-4feb-98b1-c90e43032855" >
+		<http:request-connection host="${http.host}" port="${https.port}" protocol="HTTPS"/>
+	</http:request-config>
+	
+	<http:request-config name="ref-sys-http-request-configuration" doc:name="Reference HTTP Request configuration" doc:id="21991a53-4a42-445d-9402-bd94294512c3" >
+		<http:request-connection host="${http.host}" port="${https.port}" protocol="HTTPS"/>
+	</http:request-config>
+	
+	<http:request-config name="location-sys-http-request-configuration" doc:name="Location HTTP Request configuration" doc:id="671d3026-b25c-465e-ba02-a21683869cdd" >
+		<http:request-connection host="${http.host}" port="${https.port}" protocol="HTTPS"/>
+	</http:request-config>
+		
+	<http:request-config name="er-intake-sys-http-request-configuration" doc:name="ER Intake HTTP Request configuration" doc:id="306b5f8b-ca9d-4849-9a71-54daa68a6cc1" >
+		<http:request-connection host="${http.host}" port="${https.port}" protocol="HTTPS"/>
+	</http:request-config>
+	
+	<apikit:config outboundHeadersMapName="outboundHeaders" httpStatusVarName="statusCode" doc:name="Router" doc:id="d898061d-7861-457f-accb-be2ef941b992" name="aepi-case-management-pro-api-config" raml="api/aepi-case-management-pro-api.raml" api="resource::f2ea2cb4-c600-4bb5-88e8-e952ff5591ee:aepi-case-management-pro-api:1.0.1:raml:zip:aepi-case-management-pro-api.raml"/>
+
+	<error-handler name="globalErrorHandler">
+        <on-error-propagate type="APIKIT:BAD_REQUEST" enableNotifications="true" logException="false">
+			<set-variable value="400" doc:name="Set HTTP Status code" doc:id="1d6586fd-fb35-42e5-8bdc-3c21840bba73" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="b795ed54-98fd-4265-ba7a-a0a484971f96" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_FOUND" enableNotifications="true" logException="false">
+			<set-variable value="404" doc:name="Set HTTP Status code" doc:id="5f6f2bd7-a208-4998-a35c-a18eef871ae1" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="8fc5a7ea-ba62-4053-bd85-c2a51cc6cd09" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED" enableNotifications="true" logException="false">
+			<set-variable value="405" doc:name="Set HTTP Status code" doc:id="1d6586fd-fb35-42e5-8bdc-3c21840bba73" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="b795ed54-98fd-4265-ba7a-a0a484971f96" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_ACCEPTABLE" enableNotifications="true" logException="false">
+			<set-variable value="406" doc:name="Set HTTP Status code" doc:id="1d6586fd-fb35-42e5-8bdc-3c21840bba73" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="b795ed54-98fd-4265-ba7a-a0a484971f96" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE" enableNotifications="true" logException="false">
+			<set-variable value="415" doc:name="Set HTTP Status code" doc:id="1d6586fd-fb35-42e5-8bdc-3c21840bba73" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="b795ed54-98fd-4265-ba7a-a0a484971f96" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_IMPLEMENTED" enableNotifications="true" logException="false">
+			<set-variable value="501" doc:name="Set HTTP Status code" doc:id="1d6586fd-fb35-42e5-8bdc-3c21840bba73" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="b795ed54-98fd-4265-ba7a-a0a484971f96" name="error-handling-subflow"/>
+        </on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="false" doc:name="On Error Propagate" doc:id="5d14246f-b613-44f0-9c61-6028e61493a6" type="ANY">
+			<set-variable value="500" doc:name="Set HTTP Status code" doc:id="1d6586fd-fb35-42e5-8bdc-3c21840bba73" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="b795ed54-98fd-4265-ba7a-a0a484971f96" name="error-handling-subflow"/>
+		</on-error-propagate>
+    </error-handler>
+	
+	<sub-flow name="error-handling-subflow" doc:id="3b4e3606-24c8-45a0-8b78-c2befbc6224e" >
+		<ee:transform doc:name="Set Error Payload" doc:id="fe4c4d73-1774-4686-bf07-bb8f735baf1c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	statusCode: vars.statusCode,
+	apiInError: p('api.name') ++ "/" ++ p('api.version'),
+	currentFlow: vars.currentFlow,
+	correlationId: vars.headerAttributes.correlationId,
+  	error: {
+  		"type": (error.errorType.namespace ++ ":" ++ error.errorType.identifier as String) default "Not found",
+  		detail: (error.description as String) default "Unhandled Exception"
+  	}
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="Custom logger" doc:id="bb3bbc7a-55b6-4b32-ad2d-e99da03dab4d" config-ref="avio-core-config" correlation_id="#[vars.requestId]" message="Exception Occured" level="ERROR" tracePoint="EXCEPTION" status_code="#[payload.statusCode]" type='#[payload.error."type"]' detail="#[payload.error.detail]"/>
+	</sub-flow>
+
+
+</mule>

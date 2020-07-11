@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 11 resources" deleteContents="false" description="Delete 11 resources" element1="/asx-apdev-flights-ws" element10="/saas-shopping-sys-app" element11="/testapp" element2="/asx-sales-order-api" element3="/error-handling-examples" element4="/gh-music-factory-api" element5="/saas-product-exp-app" element6="/saas-product-process-app" element7="/saas-product-sys-app" element8="/saas-shopping-exp-app" element9="/saas-shopping-process-app" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="11" stamp="1576706906212"/>
+</session>

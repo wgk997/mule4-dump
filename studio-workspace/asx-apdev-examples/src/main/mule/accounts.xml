@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<flow name="getSFDCaccounts" doc:id="2cd3a539-1787-4b28-a32c-97836ed105e0" >
+		<http:listener doc:name="GET /sdfc" doc:id="108b5070-dae3-47b1-80fa-d75aab01b961" config-ref="HTTP_Listener_config" path="/sdfc"/>
+		<salesforce:query doc:name="Account" doc:id="789ec507-f31f-4097-9f01-4f35661a7340" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query >Select Name, LastModifiedDate, BillingPostalCode from Account</salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="cc3ef86b-8429-4670-b981-2d135dec4973" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="getCSVaccounts" doc:id="061c6029-7e9d-49a2-a9d5-c9e778897cca" >
+		<file:listener doc:name="accounts.csv" doc:id="fe2efd03-b9cc-46dc-b161-418de5897c31" config-ref="File_Config" directory="input" moveToDirectory="output" renameTo='#[".backup"]'>
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+			<file:matcher filenamePattern="*.csv" />
+		</file:listener>
+		<logger level="INFO" doc:name="payload" doc:id="e33d2029-96ea-4af4-9f74-9be0c2ae9794" />
+	</flow>
+</mule>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<munit:config name="albums-test-suite.xml" />
+
+	<munit:test name="albums-sr-get-albums-test" description="MUnit Test" doc:id="19f22244-c137-4248-8500-d3b29cde4691">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when SELECT" doc:id="43035c53-90f7-4cbe-81e2-2035b9506eff" processor="db:select">
+				<munit-tools:then-return>
+					<munit-tools:payload value='#[output application/java
+---
+[
+  {
+    "ALBUM_ID": 1,
+    "TITLE": "MUnit Let It Be",
+    "GENRE": "ROCK",
+    "PUBLICATION_DT": "1970-05-08",
+    "ARTIST_ID": 1,
+    "ARTIST_NM": "The Beatles"
+  },
+  {
+    "ALBUM_ID": 2,
+    "TITLE": "MUnit Let It Be (CD)",
+    "GENRE": "ROCK",
+    "PUBLICATION_DT": "1970-05-08",
+    "ARTIST_ID": 1,
+    "ARTIST_NM": "The Beatles"
+  }
+]]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="title queryParam" doc:id="d2d0ef05-c591-44e4-aab9-5aa2ffb87137">
+				<munit:attributes value="#[{queryParams: {'title':'Let it Be'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="sr-get-albums" doc:id="4c54ea9a-a04d-4563-95b7-881a484c2d98" name="sr-get-albums" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that NOT null" doc:id="d8ccee9a-6a23-4ab5-937a-6a7eb55bb823" expression="#[payload]" is="#[MunitTools::notNullValue()]" message="NOT null" />
+			<logger level="DEBUG" doc:name="payload" doc:id="7765068b-3921-45b6-8d1f-023802afa4a7" message="#[payload]" category="${logcat}" />
+			<munit-tools:assert-that doc:name="Assert that size = 2" doc:id="364074ae-59e0-48e8-88de-c6084d48c5fa" expression="#[sizeOf (payload)]" is="#[MunitTools::equalTo(2)]" message="size = 2" />
+			<munit-tools:assert-that doc:name="Assert that payload content" doc:id="b60b2e0d-6a70-428a-93f4-705427c61003" expression="#[payload[0].albumTitle]" is="#[MunitTools::startsWith('MUnit')]" />
+			<http:request method="GET" doc:name="Request" doc:id="89c980b8-332f-48dd-8b4a-7876e2fc9acd" config-ref="HTTP_Request_configuration">
+				<http:response-validator >
+					<http:success-status-code-validator values="2000" />
+				</http:response-validator>
+			</http:request>
+		</munit:validation>
+	</munit:test>
+
+
+
+</mule>

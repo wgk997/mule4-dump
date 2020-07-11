@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<flow name="main-get-cart" doc:id="f4fdda2d-91ee-45ee-9c2a-9d42fdf83390" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="48faeb6a-4ff6-4ff0-bc87-55629b7ee880" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" level="DEBUG" tracePoint="START" category="${logcat}"/>
+		<os:retrieve doc:name="Retrieve" doc:id="c84b7ca6-5d41-4bbd-bd48-f2e98ed062bb" key="#[attributes.uriParams.customerId]" objectStore="asx-shopping-cart">
+		</os:retrieve>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b7a94d0e-8983-4fa6-a937-9cd3569d0beb" type="OS:INVALID_KEY, OS:KEY_NOT_FOUND">
+				<set-payload doc:name="Set Payload" doc:id="42bb9e38-7238-4768-86d6-510d8913546e" value='#[%dw 2.0
+output application/json
+---
+{
+	message: "failed",
+	error: "No object found or key mismatch"
+}]'/>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="main-put-cart" doc:id="7ce21d7d-a7f6-4f06-b356-5ed6776416bc" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="c5f799df-8a91-4712-9e8d-48ee49511c76" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" level="DEBUG" tracePoint="START" category="${logcat}" message="#[sizeOf(payload.items)]"/>
+		<os:store doc:name="Store" doc:id="811b9294-a444-4ca8-aac5-ed4f34ea2271" key="#[attributes.uriParams.customerId]" objectStore="asx-shopping-cart">
+			<os:value ><![CDATA[#[payload.items]]]></os:value>
+		</os:store>
+		<set-payload value='#[%dw 2.0
+output application/json
+---
+{
+	message: "success",
+	detailMessage: sizeOf(payload.items) ++" items has been added."
+}]' doc:name="Set Payload" doc:id="ccfcc920-f3ac-4ac7-be45-ab27d582dcf5" />
+	</flow>
+	<flow name="main-post-order" doc:id="89872036-2b86-425e-b0dc-97d10974ff9c" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="333c614a-1fea-4c06-9a8f-79c268ce0fd6" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationId]" level="DEBUG" tracePoint="START" category="${logcat}"/>
+		<wsc:consume doc:name="Order WS " doc:id="eb4948f1-dc32-4361-8082-c0de50eff5e1" config-ref="Web_Service_Consumer_Config" operation="placeOrder">
+			<wsc:message>
+				<wsc:body ><![CDATA[#[%dw 2.0
+output application/xml
+ns ns0 http://www.avioconsulting.com/mulesoft/bootcamp/store/orderService/types
+---
+{
+	ns0#placeOrderRequest: {
+		ns0#customer: {
+			ns0#firstName: 'testfname',
+			ns0#email: payload.customerId,
+			ns0#lastName: 'lname'
+		},
+		ns0#lineItems: {
+			(payload.items map ( item , indexOfItem ) -> {
+				ns0#lineItem: {
+					ns0#itemId: item.itemId,
+					ns0#quantity: item.quantity,
+					ns0#statusCode: 'Success'
+				}
+			})
+		}
+	}
+}]]]></wsc:body>
+			</wsc:message>
+		</wsc:consume>
+		<ee:transform doc:name="soap to json" doc:id="2380dfd5-ea28-4cb7-8b7d-acb315b98efc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns0 http://www.avioconsulting.com/mulesoft/bootcamp/store/orderService/types
+---
+{
+	message : "success",
+	orderNumber: payload.body.ns0#placeOrderResponse.ns0#orderId,
+	stackTrace: payload
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="Log End" doc:id="9b3ff224-ba52-41d2-9a1f-53b244249d65" config-ref="AVIO_Core_Config" level="DEBUG" tracePoint="AFTER_TRANSFORM" category="${logcat}" correlation_id="#[vars.correlationId]" message="End of Post Order"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5932c1fd-f925-44b1-a784-5c411f97a62c" type="WSC:BAD_REQUEST, WSC:CONNECTIVITY, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT">
+				<avio-core:custom-logger doc:name="Log Error" doc:id="527bda2d-914c-4683-a0d5-1794e9c20478" config-ref="AVIO_Core_Config" level="ERROR" tracePoint="END" category="${logcat}"/>
+				<set-payload value='#[%dw 2.0
+output application/json
+---
+{
+	"status": "failed",
+	"errorType": error.errorType.identifier,
+	"errorMessage": error.description
+}]' doc:name="Set Payload" doc:id="779ae5c3-d8e0-4f37-85f9-e99c5e9aaf87" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>

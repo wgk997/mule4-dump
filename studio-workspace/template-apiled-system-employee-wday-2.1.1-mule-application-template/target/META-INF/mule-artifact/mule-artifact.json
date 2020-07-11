@@ -1,0 +1,41 @@
+{
+  "configs": [
+    "implementation.xml",
+    "global.xml",
+    "system-api.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "org.mule.templates:template-apiled-system-employee-wday:2.1.1",
+  "minMuleVersion": "4.1.4",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "log4j2.xml",
+        "global.xml",
+        "system-api.xml",
+        "common.properties",
+        "mule.prod.properties",
+        "mule.dev.properties",
+        "api/template-apiled-system-employee.raml",
+        "api/traits/trait-collection.raml",
+        "api/dataTypes/ErrorResponse.raml",
+        "api/dataTypes/SuccessResponse.raml",
+        "api/dataTypes/Employees.raml",
+        "api/examples/post_employees_example.yaml",
+        "api/examples/get_employees_example.yaml",
+        "api/examples/put_employee_example.yaml",
+        "api/examples/get_employeeById_example.yaml",
+        "implementation.xml",
+        "mule.qa.properties"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

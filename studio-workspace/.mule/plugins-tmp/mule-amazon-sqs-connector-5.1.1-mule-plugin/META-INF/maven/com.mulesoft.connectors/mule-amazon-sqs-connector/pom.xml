@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mule-amazon-sqs-connector</artifactId>
+    <version>5.1.1</version>
+    <name>Amazon SQS Connector</name>
+
+    <packaging>mule-extension</packaging>
+
+    <parent>
+        <groupId>com.mulesoft.connectors</groupId>
+        <artifactId>mule-connectivity-parent</artifactId>
+        <version>1.1.0</version>
+    </parent>
+
+    <properties>
+        <!-- Property added to comply with a faulty feature on SDK 1.1 which makes the connector fail. -->
+        <extensionsAnnotationProcessor>
+            org.mule.runtime.module.extension.internal.resources.ExtensionResourcesGeneratorAnnotationProcessor
+        </extensionsAnnotationProcessor>
+        <!-- Property added to comply with a faulty feature on SDK 1.1 which makes the connector fail. -->
+        <apt.phase>compile</apt.phase>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sqs</artifactId>
+            <version>1.11.79</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.connectors</groupId>
+            <artifactId>aws-connector-commons</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15</artifactId>
+            <version>1.40</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.1.9.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <scm>
+        <connection>scm:git:git@github.com:mulesoft/mule-amazon-sqs-connector.git</connection>
+        <developerConnection>scm:git:git@github.com:mulesoft/mule-amazon-sqs-connector.git</developerConnection>
+        <url>https://github.com/mulesoft/mule-amazon-sqs-connector</url>
+        <tag>mule-amazon-sqs-connector-5.1.1</tag>
+    </scm>
+</project>

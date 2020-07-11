@@ -1,0 +1,54 @@
+{
+  "flights": [
+    {
+      "price": 900.0,
+      "flightCode": "eefd3000",
+      "availableSeats": 0,
+      "planeType": "Boeing 737",
+      "departureDate": "2018-02-01T00:00:00",
+      "origination": "MUA",
+      "airlineName": "american",
+      "destination": "SFO"
+    },
+    {
+      "price": 676.0,
+      "flightCode": "eefd1994",
+      "availableSeats": 0,
+      "planeType": "Boeing 777",
+      "departureDate": "2018-01-01T00:00:00",
+      "origination": "MUA",
+      "airlineName": "american",
+      "destination": "SFO"
+    },
+    {
+      "price": 142.0,
+      "flightCode": "rree1093",
+      "availableSeats": 1,
+      "planeType": "Boeing 737",
+      "departureDate": "2018-02-11T00:00:00",
+      "origination": "MUA",
+      "airlineName": "american",
+      "destination": "SFO"
+    },
+    {
+      "price": 300.0,
+      "flightCode": "ffee2000",
+      "availableSeats": 30,
+      "planeType": "Boeing 737",
+      "departureDate": "2018-02-20T00:00:00",
+      "origination": "MUA",
+      "airlineName": "american",
+      "destination": "SFO"
+    },
+    {
+      "price": 456.0,
+      "flightCode": "rree4567",
+      "availableSeats": 100,
+      "planeType": "Boeing 737",
+      "departureDate": "2018-01-20T00:00:00",
+      "origination": "MUA",
+      "airlineName": "american",
+      "destination": "SFO"
+    }
+  ]
+}

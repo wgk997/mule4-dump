@@ -1,0 +1,17 @@
+#%RAML 1.0 Library
+usage: used as the source of diagnosis request body dataTypes
+
+types:
+  diagnosisDataTypeForInsert:
+    type: object
+    properties: 
+      diagnosis:
+        required: true
+        type: !include diagnosisDataType.raml
+
+  diagnosisDataTypeForUpdate:
+    type: object
+    properties: 
+      diagnosis:
+        required: true
+        type: !include diagnosisDataType.raml

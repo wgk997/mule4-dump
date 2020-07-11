@@ -1,0 +1,21 @@
+#%RAML 1.0 DataType
+type: object
+properties: 
+  staffSpecialtyCodes:
+    type: array
+    required: true
+    minItems: 0
+    items: 
+      enum: 
+        [PHYSICIAN, NURSE, MEDICAL_DIRECTOR, ID_INVESTIGATOR, ALL]
+    example: [MEDICAL_DIRECTOR, NURSE]
+  personContactTypes:
+    type: array
+    required: true
+    minItems: 0
+    items:
+      enum: 
+        [PATIENT, EMERGENCY_CONTACT, PATIENT_DR, ALL]
+    example:
+      [EMERGENCY_CONTACT, PATIENT_DR]
+

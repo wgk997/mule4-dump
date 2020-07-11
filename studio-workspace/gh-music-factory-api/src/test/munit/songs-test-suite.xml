@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="songs-test-suite.xml" />
+	
+	<munit:test name="songs-sr-get-songs-test" description="Test" doc:id="9417308c-43ed-47c5-8823-3c4671dbe07e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when SELECT" doc:id="9da147bd-45aa-4502-8332-c9e560444210" processor="db:select">
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/java
+---
+[{
+	SONG_ID: 7,
+	SONG_TITLE: "MUnit Test",
+	GENRE: "Rock",
+	PUBLICATION_DT: "1970-03-23",
+	DURATION: "3:58",
+	ALBUM_NM: "Let it Be",
+	ARTIST_NM: "The Beatles",
+	ALBUM_ID: 1
+}]]' mediaType="application/java"/>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="songTitle queryParam" doc:id="c6419237-c1b6-4de1-a854-cead3dfb0caa" >
+				<munit:attributes value="#[{queryParams: {'songTitle':'Dig'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="sr-get-songs" doc:id="cc283816-be7a-42c0-810c-2e395d7ba5be" name="sr-get-songs"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that NOT null" doc:id="5b590972-4e2b-4c33-a3ef-ecc3c1cd1232" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+			<logger level="DEBUG" doc:name="payload" doc:id="2c8ca919-2b67-48d7-9b9f-bbdf4393514b" message="#[payload]" category="${logcat}"/>
+			<munit-tools:assert-that doc:name="Assert that SIZE = 1" doc:id="5743c34d-a011-4419-b445-24a052594023" expression="#[sizeOf (payload)]" is="#[MunitTools::equalTo(1)]" message="SIZE = 1"/>
+			<munit-tools:assert-that doc:name="Assert that payload content" doc:id="2586f3cb-6e7a-4825-88da-2061516385e8" is="#[MunitTools::containsString('MUnit Test')]" expression="#[payload[0].songTitle as String]" message="songTitle"/>
+		</munit:validation>
+	</munit:test>
+	
+
+</mule>

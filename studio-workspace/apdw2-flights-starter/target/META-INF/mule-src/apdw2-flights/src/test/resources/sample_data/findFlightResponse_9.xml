@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fl:findFlightResponse xmlns="http://default.training.mulesoft.com/"  xmlns:fl="http://fights.training.mulesoft.com/" xmlns:pr="http://prices.training.mulesoft.com/">
+    <return>
+        <fl:airlineName>Delta</fl:airlineName>
+        <fl:code>A1B2C3</fl:code>
+        <departureDate>2018/03/20</departureDate>
+        <pr:price>400.0</pr:price>
+    </return>
+    <return>
+        <fl:airlineName>Delta</fl:airlineName>
+        <fl:code>A1BTT4</fl:code>
+        <departureDate>2018/02/12</departureDate>
+        <pr:price>593.0</pr:price>
+    </return>
+</fl:findFlightResponse>

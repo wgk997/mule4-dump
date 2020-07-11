@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.mule.tooling.runtime.muleServerLaunchType">
+<stringAttribute key="clear_data" value="NEVER"/>
+<booleanAttribute key="consoleEnabled" value="true"/>
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.4.2.2.ee"/>
+<stringAttribute key="maven.command.line" value=""/>
+<stringAttribute key="mule-agent-port" value="61671"/>
+<listAttribute key="mule-project-names">
+<listEntry value="health-check-example-mule4"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.ALLOW_TERMINATE" value="true"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="health-check-example-mule4"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Denv=dev -DsecureKey=dSR4gP3ZYPxmQcFYEP"/>
+<intAttribute key="remote-debug-max-stream-size" value="-1"/>
+<intAttribute key="remote-debug-port" value="6666"/>
+<booleanAttribute key="remote-debug-suspend" value="false"/>
+</launchConfiguration>

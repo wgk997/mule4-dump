@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dw-testsFlow-solution" doc:id="1c5a49bc-fa56-40fd-9ef4-99592b65ae06" >
+		<http:listener doc:name="Listener" doc:id="1b428ede-ff7f-45d4-9b33-ca8cf3dd4557" config-ref="HTTP_Listener_config" path="/dw-tests-solution"/>
+		<parse-template doc:name="index.html" doc:id="d014c2d1-5955-4d56-a3a9-77323f76b513" location="html/index.html"/>
+	</flow>
+	<flow name="addAndConcat-solution" >
+		<ee:transform doc:name="Transform Message" doc:id="2aa36b94-afb2-4e25-91e7-4023eed0efd5">
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var array1 = [1, "a", true]
+
+var object1 = {
+	one: "one1",
+	two: "two2"
+}
+
+var array2  = [
+	objOne: object1,
+	objTwo: object1
+]
+---
+{}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="matchOperatorTest-solution" doc:id="bd9e2b8e-5637-40a9-869d-91d6eb33acba" >
+		<ee:transform doc:name="Transform Message" doc:id="7b9b9a41-7682-42c7-b5c6-a2a291a395ec" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var americanFlights =
+[
+  {
+    "ID": 5,
+    "code": "rree1093",
+    "price": 142,
+    "departureDate": "2018-02-11T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 1,
+    "plane": {
+      "type": "Boeing 737",
+      "totalSeats": 150
+    }
+  },
+  {
+    "ID": 7,
+    "code": "eefd1994",
+    "price": 676,
+    "departureDate": "2018-01-01T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 0,
+    "plane": {
+      "type": "Boeing 777",
+      "totalSeats": 300
+    }
+  },
+  {
+    "ID": 8,
+    "code": "ffee2000",
+    "price": 300,
+    "departureDate": "2018-02-20T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 30,
+    "plane": {
+      "type": "Boeing 737",
+      "totalSeats": 150
+    }
+  },
+  {
+    "ID": 9,
+    "code": "eefd3000",
+    "price": 900,
+    "departureDate": "2018-02-01T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 0,
+    "plane": {
+      "type": "Boeing 737",
+      "totalSeats": 150
+    }
+  }
+  ]
+  
+fun processByType( anInput ) =
+anInput 
+  
+---
+processByType(americanFlights[0].ID)
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="constructObjects-solution" doc:id="d701ece6-8415-4064-aa11-e3304ecbdd39" >
+		<ee:transform doc:name="Construct an Object with { }" doc:id="ffe17c6a-4f64-406e-840a-5e88765c0a04" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var array1 = [1, "a", true]
+
+var object1 = {
+	one: "one1",
+	two: "two2"
+}
+
+var array2  = [
+	objOne: object1,
+	objTwo: object1
+]
+
+import dw::core::Objects
+---
+
+{}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dynamicEvaluateTest" doc:id="0fa57fa0-95ca-41fa-8d9b-525da96299fb" >
+		<http:listener doc:name="Listener" doc:id="a29451a6-ffc9-4cbf-a637-709980c6af37" config-ref="HTTP_Listener_config" path="eval" />
+		<set-variable value='output application/xml --- 
+root: { message: "order " ++ attributes.queryParams.orderid ++ " has been received from " 
+	++ uName, items: payload.items
+}' doc:name="script1" doc:id="2fa373d4-ce4e-45d5-933a-5d129ee26735" variableName="script1" />
+		<set-variable value='output application/json --- root: {  message: "Order2 " ++ attributes.queryParams.orderid ++ " has been received from " ++ uName, items: payload.items}' doc:name="script2" doc:id="cf3faec4-0592-4b38-989c-6ee9067cbf6a" variableName="script2" />
+		<set-payload value='#[if( payload is Object and payload["items"]? ) 
+payload 
+else
+items: {
+	item1: "Phone Case",
+	item2: "Phone Charger"
+}]' doc:name="Set Payload" doc:id="7d02b404-1c90-44de-9ce5-5c838ebb1f54" />
+		<ee:dynamic-evaluate doc:name="Dynamic Evaluate" doc:id="b5a20416-a8ad-433b-8089-c22de8b01a7d" expression="#[output application/json 
+--- 
+/* do {
+	var choice = attributes.queryParams.script
+	---
+	if(choice == &quot;script1&quot;) vars.script1
+	else vars.script2
+}
+*/
+
+do {
+  var choice = attributes.queryParams.script default &quot;NO_SCRIPT&quot;
+  ---
+  if(choice == &quot;NO_SCRIPT&quot;) 
+    &quot;output application/json --- {result: 'NO SCRIPT ENTERED'}&quot;
+  else if(choice == &quot;script1&quot;) vars.script1
+  else if (choice == &quot;script2&quot;)  vars.script2
+  else read(choice)
+}]" >
+			<ee:parameters >#[{ uName: attributes.queryParams.username default &quot;Annie&quot; }]</ee:parameters>
+		</ee:dynamic-evaluate>
+	</flow>
+</mule>

@@ -1,0 +1,27 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  itemId: 
+    type: number
+    required: true
+    example: 2
+  description: 
+    type: string
+    minLength: 5
+    required: false
+    example: "Good quality material"
+  quantity:
+    type: number
+    required: false
+    example: 3
+  itemType:
+    type: string
+    enum: 
+      - Item 
+      - Service 
+  pricePerItemService:
+    type: number
+    multipleOf: 0.01
+    required: false
+    example: 100
+

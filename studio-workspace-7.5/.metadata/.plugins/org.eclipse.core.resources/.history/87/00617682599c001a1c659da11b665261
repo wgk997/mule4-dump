@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd">
+	<munit:config name="notifications-impl-test-suite.xml" />
+		<munit:test name="post-notifications-main-custom-notification-flow-test" doc:id="a48c9aba-7ea4-4bc8-818d-c997b068fdee" description="Test" ignore="true">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when call custom-flow" doc:id="ff464cc8-13fc-43fd-bb27-df24db8c76ce" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="custom-flow" attributeName="name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://sample_data/responseSmspayload.json')]" mediaType="application/java" />
+					<munit-tools:variables >
+						<munit-tools:variable key="smsResult" value="#[readUrl('classpath://sample_data/responseSmspayload.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+						
+		</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="da43cda3-8c0f-494a-b3f5-3047893acccb" >
+				<munit:payload value="#[readUrl('classpath://sample_data/customNotificationRequestPayload.json')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\notifications\(caseId):application\json:aepi-medical-alert-pro-api-config" doc:id="04fbab26-6791-46ae-951e-24a19c080dfb" name="post:\notifications\(caseId):application\json:aepi-medical-alert-pro-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert smsPayload" doc:id="91abf919-9826-4e57-9cf5-caec105d1c7f" is="#[MunitTools::equalTo(2)]" expression="#[sizeOf(vars.smsResult)]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post-notifications-main-non-custom-notification-flow-test" doc:id="59d05cfa-74e3-4963-82a3-563530d19614" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7e482df1-043f-4147-a6c3-e5388c12e993" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d6308404-46fe-4ad5-a81b-ea5dfbbe8d06" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="smsResult" value="#[readUrl('classpath://sample_data/responseSmspayload.json')]" mediaType="application/java" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+				
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a3414071-4501-41a2-a714-5989a12b4e62" >
+				<munit:payload value="#[readUrl('classpath://sample_data/diagnosisRequestPayload.json')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\notifications\(caseId):application\json:aepi-medical-alert-pro-api-config" doc:id="bab00cc5-68f8-47e7-99a1-97b92459e61c" name="post:\notifications\(caseId):application\json:aepi-medical-alert-pro-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert smsPayload" doc:id="b4e4ee34-045e-40ba-b8b1-3ec4030bebbe" is="#[MunitTools::equalTo(2)]" expression="#[sizeOf(vars.smsResult)]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post-notifications-main-exception-test" doc:id="bd21df06-ec70-40c0-bba0-76c26e16c59f" expectedErrorType="ANY" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="602ee78e-93c4-490e-a4bd-fe2ebad0f7ba" processor="avio-core:custom-logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6c82e371-b08d-4f14-8a18-934f1801608c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\notifications\(caseId):application\json:aepi-medical-alert-pro-api-config" doc:id="301a7cee-79d3-4592-aef1-fbb6d92d3cfa" name="post:\notifications\(caseId):application\json:aepi-medical-alert-pro-api-config" />
+		</munit:execution>
+	</munit:test>
+	<munit:test name="diagnosis-request-notifications-impl-test" doc:id="863387e6-ba1a-442c-8bb2-9eb047802006" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when get-medical-staff" doc:id="95a6fe87-b7c0-449a-a0b9-3cd1447fef30" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="get-medical-staff" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a943daea-f9b6-494b-98f8-8eae976408a8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="medicalStaff" value="#[readUrl('classpath://sample_data/medicalStaff.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when send-message" doc:id="ce9b9fde-c5f1-442e-8e9f-a9a2a2a1ac1b" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="send-message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d99db02f-c2ca-4df3-a495-e770e1a4b7ec" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+				
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="bc98fb22-418c-4bed-93ed-51e98b11b484" >
+				<munit:payload value="#[readUrl('classpath://sample_data/diagnosisRequestPayload.json')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to not-custom-flow" doc:id="18a3a2b3-a856-4f2b-af68-142393079a55" name="not-custom-flow"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals doc:name="Assert payload size 1" doc:id="04ae5801-e2f8-466e-b1f8-c72d24cc830a" actual="#[sizeOf(vars.smsResult)]" expected="#[1]" message="Doesn't match number 1 ." />
+		</munit:validation>
+	</munit:test>
+	
+		<munit:test name="precautionary-alert-notifications-impl-test" doc:id="f7645404-54cf-465c-a8a6-73cd85168897" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when get-medical-staff" doc:id="39569969-bd48-44a7-bc71-a49a4537efa6" processor="flow-ref" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="get-medical-staff" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9e348dde-25e4-41f9-b9b5-857127232828" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="medicalStaff" value="#[readUrl('classpath://sample_data/medicalStaff.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when send-message" doc:id="591883d6-9125-49e7-80b6-3dfb4cfb449f" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="send-message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d99db02f-c2ca-4df3-a495-e770e1a4b7ec" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="cd11343c-2cfa-473e-b5f9-8bf38c19c5a6" >
+				<munit:payload value="#[readUrl('classpath://sample_data/precautionaryAlertRequestPayload.json')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to not-custom-flow" doc:id="fdbab4b3-2ab0-4298-a10b-f0e7c6f5fe31" name="not-custom-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert payload size 1" doc:id="88bfbba7-468d-4808-b916-17b4f1c08201" actual="#[sizeOf(vars.smsResult)]" expected="#[1]" message="Is not be equal to 1"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="isolation-alert-notifications-impl-test" doc:id="b9ef9fd6-4af2-46d4-828a-6af8a1f45b0b" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when get-case-participant" doc:id="87b68c9c-6dba-40b7-b900-333c4c511382" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="get-case-participant" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="048222a7-20ad-42d3-92d0-78b6770ab3f8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:variables>
+						<munit-tools:variable key="caseParticipant" value="#[readUrl('classpath://sample_data/caseParticipant.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when medical-staff" doc:id="f608ee39-be6c-4401-af9c-77811dfa2a78" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="get-medical-staff" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="e451adc1-2a81-460c-b446-022555a7eba3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="medicalStaff" value="#[readUrl('classpath://sample_data/medicalStaff.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+				
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when send-message" doc:id="7070c57d-7a97-402a-86fa-a9e77e3206fb" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="send-message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d99db02f-c2ca-4df3-a495-e770e1a4b7ec" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="9bfece27-644e-42fe-a8c1-e20b6a1753d3" >
+				<munit:payload value="#[readUrl('classpath://sample_data/isolationAlertRequestPayload.json')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to not-custom-flow" doc:id="2a86e02b-c0cf-4126-adaa-2016d9e5f4b0" name="not-custom-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert payload size =3" doc:id="e343fdc4-360f-4ca9-a7a4-25c79cb60e65" actual="#[sizeOf(vars.smsResult)]" expected="#[3]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="notifications-custom-impl-test-suite-custom-flow-test" doc:id="4df7613c-5bb2-45ee-a583-b9e684fadfc9" description="Test" ignore="true">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when get-case-participant" doc:id="cd71e38b-805e-4650-a3d1-1859e1ea6a65" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="get-case-participant" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="cb47578e-2d24-4991-b7f3-607bd8e0fd8e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:variables>
+						<munit-tools:variable key="caseParticipant" value="#[readUrl('classpath://sample_data/caseParticipant.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when medical-staff" doc:id="176b6eb4-1ba4-4ad7-9542-2f79918bd73f" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="get-medical-staff" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="e58eefb3-84a0-4398-9b79-8470b735bba7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="medicalStaff" value="#[readUrl('classpath://sample_data/medicalStaff.json')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+				
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when message-sent" doc:id="2a7863c4-6a49-4611-9251-fe1a1d6eee4f" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="send-message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="aadea9dc-b9e4-4c85-88a7-882f217e3037" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Request Payload" doc:id="943857f9-e024-421d-a2be-8cd1ce4dabfa" >
+				<munit:payload value="#[readUrl('classpath://sample_data/customNotificationRequestPayload.json')]" encoding="UTF-8" mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to custom-flow" doc:id="c7df3973-6bc4-440a-922d-535671cd32e8" name="custom-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert sizef smsResult =3 " doc:id="6db242a8-b307-4452-a93d-bd8fbfb748bd" actual="#[sizeOf(vars.smsResult)]" expected='#[3]'/>
+		</munit:validation>
+	</munit:test>
+		<munit:test name="notifications-get-case-participant-test" doc:id="9d18062a-97d2-4020-b53b-26077eee69e7" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7b71a323-905c-4ae8-85ff-cbd2346b9404" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get Case Participants" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://sample_data/caseParticipant.json')]" mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-case-participant" doc:id="f8c7ba2e-35ab-4010-8b21-86ba8c19aef9" name="get-case-participant"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that 200" doc:id="5df6cb9a-ee5e-4647-9ac0-2ff5bf31a99b" expression="#[write(payload.statusCode, 'application/json')]" is="#[MunitTools::equalTo('200')]"/>
+			<munit-tools:assert-that doc:name="Assert no of persons" doc:id="96ba1702-cb02-46c1-9c1a-761c3d7944d3" is="#[MunitTools::equalTo(2)]" expression="#[sizeOf(payload.person)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="notifications-get-case-participant-exception-test" doc:id="421b316b-478d-4090-916a-b2490d21f06e" description="Test" expectedErrorType="HTTP:CONNECTIVITY" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e03f4c15-bb20-43cf-9fb8-54ea4d5ffbc3" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get Case Participants" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://sample_data/caseParticipant.json')]" />
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-case-participant" doc:id="b4ddd41e-e991-4051-a97e-ca22f38c716d" name="get-case-participant"/>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="notifications-get-medical-test" doc:id="4f3a9106-b011-4073-8ec3-c193dcda191c" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="3c66ee06-d70a-41f0-a9fd-12fd8e9eaf2e" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get medical Staff" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://sample_data/medicalStaff.json')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-medical-staff" doc:id="254dd8aa-d909-4cf6-ac56-1ea2e8c60977" name="get-medical-staff"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that 200" doc:id="4bbcc90b-b49a-4bfd-bbfa-f95327edd0d9" expression="#[write(payload.statusCode, 'application/json')]" is="#[MunitTools::equalTo('200')]" />
+			<munit-tools:assert-that doc:name="Assert no of med staff" doc:id="8e1e726a-d5e8-4559-9042-1e2fcf04beae" is="#[MunitTools::equalTo(2)]" expression="#[sizeOf(payload.medicalPersons)]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="notifications-get-medical-exception-test" doc:id="2f498720-1b66-48e9-96dc-4acbc3d44de3" description="Test" expectedErrorType="HTTP:CONNECTIVITY" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when http call" doc:id="0a59fda8-463b-4a74-94a4-2cb9b552dcf4" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get medical Staff" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://sample_data/medicalStaff.json')]" mediaType="application/java" />
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-medical-staff" doc:id="0acb739d-7bef-4478-a827-abff335cfafb" name="get-medical-staff"/>
+		</munit:execution>
+	</munit:test>
+	<munit:test name="notifications-send-message-test" doc:id="bf387fda-53e4-497b-a953-c34df5593722" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f4995a52-42e1-4018-b0ad-ef5293ca135b" processor="sqs:send-message">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send message" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:payload value='#["success"]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="set sms variable" doc:id="59d8394b-d5c2-4c4f-b763-b856bb723e53">
+				<munit:payload value="#[readUrl('classpath://sample_data/responseSmsPayload.json')]" encoding="UTF-8" mediaType="application/java" />
+				<munit:variables >
+					<munit:variable key="smsResult" value="#[readUrl('classpath://sample_data/responseSmsPayload.json')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to send-message" doc:id="f817ee4e-2111-4dc2-ac87-0d3ef5cea093" name="send-message"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that success payload" doc:id="f57a1877-dfdc-48bf-a514-d863d0d4a0a9" is="#[MunitTools::notNullValue()]" expression="#[write(payload, 'application/json')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="notification-send-message-exception-test" doc:id="8c8f6fd2-0d15-4d06-b445-558bdf43de51" description="Test" expectedErrorType="SQS:CONNECTIVITY">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b4c2c3ce-f084-4554-a265-e9272a99873a" processor="sqs:send-message">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="6e0ef19f-0bbc-4ff7-a6d5-07e08a9adffc" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:error typeId="SQS:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="set sms variable" doc:id="01e719db-d439-4124-a0da-0628524aac36" >
+				<munit:payload value="#[readUrl('classpath://sample_data/responseSmsPayload.json')]" encoding="UTF-8" mediaType="application/java" />
+				<munit:variables >
+					<munit:variable key="smsResult" value="#[readUrl('classpath://sample_data/responseSmsPayload.json')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to send-message" doc:id="12b22f93-08d3-4699-8c1e-eca62043d398" name="send-message" />
+		</munit:execution>
+		<munit:validation >
+			<avio-core:custom-logger doc:name="Custom logger" doc:id="4afaf341-b2d9-440a-ba53-b8a95a9f7cb8" config-ref="avio-core-config"/>
+		</munit:validation>
+	</munit:test>
+</mule>

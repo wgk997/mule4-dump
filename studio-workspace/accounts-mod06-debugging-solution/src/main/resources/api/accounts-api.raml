@@ -1,0 +1,148 @@
+#%RAML 1.0
+title: Accounts API
+
+types:
+  Account: !include datatypes/account.raml
+  AccountNoID: !include datatypes/accountNoID.raml
+
+/accounts:
+  get:
+    description: Retrieves accounts based on the given query parameters.
+    headers:
+      Requester-ID:
+        description: id of the person requesting the accounts information
+        required: true
+    queryParameters:
+      country:
+        required: false
+        type: string
+      name:
+        description: The system will look for names that contain the given value in the name parameter.
+        required: false
+        type: string
+      type:
+        required: true
+        type: string
+        enum: ["personal", "business"]
+    responses:
+      400:
+        body:
+          application/json:
+            example: {
+              "message": "Error retrieving data from the Account database."
+            }
+      200:
+        description: Returns an array of Account objects in JSON
+        body:
+          application/json:
+            type: Account[]
+            example:  !include examples/accountsExample.raml
+  post:
+    description: Creates new accounts based on a given array of Account objects.
+    headers:
+      Requester-ID:
+        description: id of the person requesting posting the accounts information
+        required: true
+    body:
+      application/json:
+        description: Payload should be an array of Account objects with all fields present for each Account object.
+        type: AccountNoID[]
+        example: !include examples/accountsExampleNoID.raml
+    responses:
+      400:
+        body:
+          application/json:
+             example: {
+               "message": "Error creating accounts. Please check the JSON object and make sure it's valid."
+             }
+      201:
+        body:
+          application/json:
+            example: {
+              "message": "Accounts uploaded (but not really)."
+            }
+  /{id}:
+    get:
+      description: Retrieves information for an account
+      headers:
+        Requester-ID:
+          description: id of the person requesting the accounts information
+          required: true
+      responses:
+        400:
+          body:
+            application/json:
+              example: {
+                "message": "Error retrieving account for the provided id. Please check whether the provided id is valid."
+              } 
+        200:
+          body:
+            application/json:
+              type: Account
+              example: !include examples/accountExample.raml
+    put:
+      description: Endpoint to replace all values of the associated account.
+      headers:
+        Requester-ID:
+          description: id of the person requesting the accounts information
+          required: true
+      body: 
+        application/json:
+          description: The given expected object should contain all fields for Account.
+          type: AccountNoID
+      responses:
+        400:
+          body:
+            application/json:
+              example: {
+                "message": "Error in replacing the account. Please check the JSON object and make sure it's valid."
+              }
+        200:
+          body: 
+            application/json:
+              example: {
+                "message": "Account replaced (but not really)"
+              }
+    patch:
+      description: Endpoint to modify the associated account.
+      headers:
+        Requester-ID:
+          description: id of the person requesting the accounts information
+          required: true
+      body: 
+        application/json:
+          description: The given expected object can contain one field or all fields for Account that need to be modified.
+          type: AccountNoID
+      responses: 
+        400:
+          body:
+            application/json:
+              example: {
+                "mesage": "Error modifying the account. Please check the JSON object and make sure it's valid."
+              }
+        200:
+          body: 
+            application/json:
+              example: {
+                "message": "Account modified (but not really)"
+              }
+
+    delete:
+      description: Endpoint to delete the associated account.
+      headers:
+        Requester-ID:
+          description: id of the person requesting the accounts information
+          required: true
+      responses:
+        400: 
+          body:
+            application/json:
+              example: {
+                "message": "Error deleting account. Please check the account id supplied."
+              }
+        200:
+          body:
+            application/json:
+              example: {
+                "message": "Account deleted (but not really)"
+              }

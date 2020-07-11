@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+
+<http:listener-config name="http-listener-config">
+        <http:listener-connection host="0.0.0.0" port="${http.port}" />
+    </http:listener-config>
+
+<configuration-properties doc:name="Configuration properties" doc:id="8ad293bc-4488-403d-8197-5716508a24ac" file="${env}.properties" />
+	<global-property doc:name="Global Property" doc:id="da3119d9-dcd5-439e-a716-0e2c9c24438e" name="env" value="local" />
+	<os:config name="sales-object-store-config" doc:name="ObjectStore Config" doc:id="f4edca0a-4338-4f59-8965-c2db8c32bbec" >
+		<os:connection >
+			<reconnection >
+				<reconnect />
+			</reconnection>
+		</os:connection>
+	</os:config>
+	<avio-core:config name="AVIO_Core_Config" doc:name="AVIO Core Config" doc:id="6740c320-a166-4bd1-9f0c-8f6216f93fa4" app_name="${api.name}" app_version="${api.version}"/>
+	<vm:config name="VM_Config" doc:name="VM Config" doc:id="9fe74bab-75b2-4118-b753-d4bcc87ae8a9">
+		<vm:connection />
+		<vm:queues >
+			<vm:queue queueName="salesOrderQueue" maxOutstandingMessages="10" />
+		</vm:queues>
+	</vm:config>
+	<sub-flow name="error-handling-subflow" doc:id="8f46bae2-6e5c-4059-93ec-8406d3a9ec60" >
+		<ee:transform doc:name="Prepare Exception Response" doc:id="56177b9e-ccbb-4a73-87f7-18e38fef5cd7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	statusCode: vars.statusCode,
+  	error: {
+  		"type": (error.errorType.namespace ++ ":" ++ error.errorType.identifier) default "Not found",
+  		detail: (error.description as String) default "Unhandled Exception"
+  	}
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+vars.statusCode]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Error" doc:id="d57946bc-487d-49d0-944e-a3722bef6afd" />
+	
+	</sub-flow>
+
+
+	<error-handler name="global-error-handler" doc:id="79b37630-3e28-44f8-b0b8-b042e2722775" >
+        <on-error-propagate type="APIKIT:BAD_REQUEST" enableNotifications="true" logException="false">
+  		    <set-variable value="400" doc:name="Set HTTP Status code" doc:id="3c2ed931-89e3-4864-a232-b197fdfb1299" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="bfbff2d6-84a3-4d75-a919-cf1f788fc4cb" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_FOUND" enableNotifications="true" logException="false">
+			<set-variable value="404" doc:name="Set HTTP Status code" doc:id="60a446a1-ffff-4c7a-ab93-7f08bd802ba2" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="534740ce-ab4a-4a64-9780-2766de91c940" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED" enableNotifications="true" logException="false">
+			<set-variable value="405" doc:name="Set HTTP Status code" doc:id="a462c69c-07d4-4cfe-bb01-edf4a9dd1225" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="84660704-48e6-4311-a9d5-50c4f5c3d076" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_ACCEPTABLE" enableNotifications="true" logException="false">
+			<set-variable value="406" doc:name="Set HTTP Status code" doc:id="6328ef57-07de-4328-970b-db744c8649a3" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="5df02ca9-046e-4798-beca-fa72b61a12a8" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE" enableNotifications="true" logException="false">
+			<set-variable value="415" doc:name="Set HTTP Status code" doc:id="4218c3f4-34aa-4dba-a367-2a8c29cdf4bd" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="01f332cf-4495-445f-bbd4-fb49b808bf20" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_IMPLEMENTED" enableNotifications="true" logException="false">
+			<set-variable value="501" doc:name="Set HTTP Status code" doc:id="a4416ddc-9ba7-4944-ae61-aaf5ffd3977c" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="8a4de1ef-5b53-4678-a8cd-8a5f7e0cfd26" name="error-handling-subflow"/>
+        </on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="false" doc:name="On Error Propagate" doc:id="8f7194fe-f64a-447e-a565-54c2e4cf1f4a" type="ANY">
+			<set-variable value="500" doc:name="Set HTTP Status code" doc:id="8900b66e-6505-49b3-9416-1df8e2c30c7e" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="84779968-fa3d-46a5-9e7a-3901c3789852" name="error-handling-subflow"/>
+		</on-error-propagate>
+    </error-handler>	
+	
+	
+</mule>

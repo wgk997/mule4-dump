@@ -1,0 +1,34 @@
+{
+  "flights": [
+    {
+      "airlineName": "United",
+      "availableSeats": 95,
+      "departureDate": "2018/02/20",
+      "destination": "PDX",
+      "flightCode": "ER95jf",
+      "origination": "MUA",
+      "planeType": "Boeing 777",
+      "price": 483
+    },
+    {
+      "airlineName": "United",
+      "availableSeats": 30,
+      "departureDate": "2018/02/12",
+      "destination": "PDX",
+      "flightCode": "ER04kf",
+      "origination": "MUA",
+      "planeType": "Boeing 777",
+      "price": 532
+    },
+    {
+      "airlineName": "United",
+      "availableSeats": 0,
+      "departureDate": "2018/02/13",
+      "destination": "PDX",
+      "flightCode": "ER49fd",
+      "origination": "MUA",
+      "planeType": "Boeing 777",
+      "price": 853
+    }
+  ]
+}

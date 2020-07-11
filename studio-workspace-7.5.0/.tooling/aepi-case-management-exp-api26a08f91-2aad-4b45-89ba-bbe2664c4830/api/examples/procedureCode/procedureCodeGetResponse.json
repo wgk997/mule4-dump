@@ -1,0 +1,14 @@
+{
+  "statusCode": 200,
+  "message": "OK",  
+  "procedureCodes": [
+    {
+      "procedureCode": "G0130",
+      "description": "Single energy x-ray absorptiometry (sexa) bone density study, one or more sites; appendicular skeleton (peripheral) (e.g., radius, wrist, heel)"
+    },
+    {
+      "procedureCode": "G6002",
+      "description": "Stereoscopic x-ray guidance for localization of target volume for the delivery of radiation therapy"     
+    }
+  ]
+}

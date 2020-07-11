@@ -1,0 +1,47 @@
+#%RAML 1.0
+
+#######################################################################
+# WHO  WHEN      WHY
+# ASX  09-10-19  Initial API with sales order GET POST API
+#######################################################################
+
+title: ASX Sales Order
+description: "ASX Sales Order API to provide add sales order for furthur processing."
+version: v1
+
+types:
+  salesOrders: !include dataTypes/salesOrder.raml
+
+traits:
+  hasClientIdRequired: !include traits/hasClientId.raml
+  hasCorrelationId: !include traits/hasCorrelationId.raml
+  hasErrorResponses: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.0/error-responses-trait.raml
+
+resourceTypes: 
+  collection: !include resourceTypes/collection.raml
+  item: !include resourceTypes/item.raml
+
+/salesOrders:
+  is: [hasClientIdRequired, hasErrorResponses, hasCorrelationId]
+  description: "Methods provided to serve add and retrieve sales orders"
+  type: collection
+
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            examples:
+              example: !include examples/salesOrderGetResponse.json
+
+  post:
+    body:
+      application/json:
+        type: salesOrders[]
+        examples:
+          example: !include examples/salesOrderPostRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            example: { "message" :  "2 sales orders have been submitted for processing" }

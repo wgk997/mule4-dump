@@ -1,0 +1,19 @@
+{
+  "smsMessage": "A person whom you've been in contact with is ill, please contact xxx-xxx-xxxx for further information",
+  "notificationType": "CUSTOM_NOTIFICATIONS",
+  "customNotification": {
+    "staffSpecialtyCodes": [
+      "MEDICAL_DIRECTOR",
+      "PHYSICIAN",
+      "NURSE",
+      "ID_INVESTIGATOR",
+      "ALL"
+    ],
+    "personContactTypes": [
+      "EMERGENCY_CONTACT",
+      "PATIENT_DR",
+      "PATIENT",
+      "ALL"
+    ]
+  }
+}

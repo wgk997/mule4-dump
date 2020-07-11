@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+ <flow name="put:\cases\(caseId)\diagnosis:application\json:aepi-case-management-exp-api-config">
+        <flow-ref doc:name="put-diagnosis-flow" doc:id="80279c8f-2e57-4f15-9948-feaeb2f55d16" name="put-diagnosis-flow"/>
+    </flow>
+    <flow name="put:\cases\(caseId)\persons:application\json:aepi-case-management-exp-api-config">
+        <flow-ref doc:name="put-person-flow" doc:id="33f57cee-4e1e-4e1b-b78b-ef9c05a10a37" name="put-person-flow"/>
+    </flow>
+    <flow name="put:\cases\(caseId)\procedures:application\json:aepi-case-management-exp-api-config">
+		<flow-ref doc:name="put-procedure-flow" doc:id="2080524e-6c59-4165-8231-24cd085262f2" name="put-procedure-flow"/>
+    </flow>
+    <flow name="get:\cases\(caseId):aepi-case-management-exp-api-config">
+        <flow-ref doc:name="get-case-flow" doc:id="8ca58dc3-34a7-4309-9a53-c886320c1d12" name="get-case-flow"/>
+    </flow>
+    <flow name="get:\diagnosisCodes:aepi-case-management-exp-api-config">
+        <flow-ref doc:name="get-diagnosis-code-flow" doc:id="8fd69a30-735c-4680-b03a-59e583a0aab5" name="get-diagnosis-code-flow"/>
+    </flow>
+    <flow name="get:\procedureCodes:aepi-case-management-exp-api-config">
+        <flow-ref doc:name="get-procedure-code-flow" doc:id="c39772d8-700f-40bf-af13-b7ee8c6b8834" name="get-procedure-code-flow"/>
+    </flow>
+    <flow name="post:\cases\(caseId)\notifications:application\json:aepi-case-management-exp-api-config">
+        <flow-ref doc:name="get-procedure-code-flow" doc:id="6fb2963b-1235-4a5e-9ae8-4920b4a33ab3" name="post-notifications-flow"/>
+    </flow>
+	</mule>

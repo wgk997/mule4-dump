@@ -1,0 +1,89 @@
+#%RAML 1.0 ResourceType
+description: Entity representing a <<resourcePathName|!singularize>>
+get?:
+  description: |
+    Get details for <<resourcePathName| !singularize>>
+    with <<resourcePathName |!singularize>>Id =
+    {<<resourcePathName|!singularize>>Id}
+  responses:
+    200:
+      body:
+        application/json: 
+          type: <<getResponseType>>
+          examples:
+            example: <<getResponseJson>>
+    404:
+      body:
+        application/json:
+          example: |
+            {
+              "stausCode": 404,
+              "message": "<<resourcePathName|!singularize>> not found" 
+            }
+put?:
+  description: |
+    Update details for <<resourcePathName| !singularize>>
+    with <<resourcePathName |!singularize>>Id =
+    {<<resourcePathName|!singularize>>Id}
+  body:
+    application/json:
+      type: <<putBodyType>>         
+      examples:
+        example: <<putBodyJson>>
+  responses:
+    200:
+      body:
+        application/json:
+          type: <<putResponseType>>
+          example: |
+            {
+              "statusCode": 200,
+              "message": "The <<resourcePathName|!singularize>> has been updated."
+            }
+post?:
+  description: |
+    Add new <<resourcePathName>>.
+  body:
+    application/json:
+      type: <<postBodyType>>
+      examples:
+        example: <<postBodyJson>>
+  responses:
+    201:
+      body:
+        application/json:
+          type: <<postResponseType>>
+          examples:
+            example: <<postResponseJson>>
+delete?:
+  description: |
+    Delete <<resourcePathName| !singularize>>
+    with <<resourcePathName |!singularize>>Id =
+    {<<resourcePathName|!singularize>>Id}
+  responses:
+    200:
+      body:
+        application/json:
+          type: <<deleteResponseType>>
+          example: |
+            {
+              "statusCode": 200,
+              "message": "The <<resourcePathName|!singularize>> has been deleted."
+            }
+patch?:
+  description: |
+    Patch details for <<resourcePathName| !singularize>>
+    with <<resourcePathName |!singularize>>Id =
+    {<<resourcePathName|!singularize>>Id}
+  body:
+    application/json:
+      type: <<patchBodyType>>         
+      examples:
+        example: <<patchBodyJson>>
+  responses:
+    200:
+      body:
+        application/json:
+          type: <<patchResponseType>>
+          examples:
+            example: <<patchResponseJson>>

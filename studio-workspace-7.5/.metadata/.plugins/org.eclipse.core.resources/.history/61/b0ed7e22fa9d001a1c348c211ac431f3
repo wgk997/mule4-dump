@@ -1,0 +1,41 @@
+# API Versioning
+api.version=v1
+api.name=aepi-medical-alert-pro-api
+
+# API Autodiscovery API key
+api.apiId=16136691
+
+# Logging category
+logcat=com.avioconsulting.aepi.medical.pro.api
+
+# HTTP
+http.host=0.0.0.0
+http.port=8081
+https.port=8082
+http.router.path=${api.name}/${api.version}/api
+
+#HTTPS SSL
+keystore.password=![VjgSiu+d7kOKhmQNjDMdTg==]
+
+# Health Check API
+healthcheck.https.configuration.reference=http-listener-config
+healthcheck.apiId=16001283
+log.healthcheck.category=com.avioconsulting.healthcheck
+healthcheck.flows=hc-sqs-health-flow
+healthcheck.flow.ok=OK
+healthcheck.flow.error=ERROR
+
+# Ref System API
+ref.system.api.basePath=mocking/api/v1/sources/exchange/assets/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-reference-sys-api/1.0.1/m
+ref.system.api.host=anypoint.mulesoft.com
+ref.system.api.port=443
+
+# Case Management System API
+case.management.system.api.basePath=mocking/api/v1/sources/exchange/assets/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-case-management-sys-api/1.0.1/m
+case.management.system.api.host=anypoint.mulesoft.com
+case.management.system.api.port=443
+
+# AWS SQS
+aws.access.key=![H+sl/pjf7SePU/1HN2632TaQlbcf0PJD]
+aws.secret.key=![X9L5GZPfwnNHBQpBedQbJN1xdk8OTUnskeKIzo7QMOpjPWY6/wgT7O6Y6jm3swkQ]
+sqs.queue.url=https://sqs.us-east-1.amazonaws.com/689558777833/aepi-notification-queue

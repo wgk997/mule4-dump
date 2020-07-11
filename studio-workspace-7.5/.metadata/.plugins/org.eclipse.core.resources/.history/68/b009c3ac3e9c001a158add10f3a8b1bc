@@ -1,0 +1,8 @@
+{
+	"smsMessage" : "testMessage1",
+	"cellNumbers" : "+15313445032"	
+},
+{
+	"smsMessage" : "testMessage2",
+	"cellNumbers" : "+15313443425"	
+}

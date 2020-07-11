@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="9dfc25e8-e80c-44c9-9ea4-fcd998c71bc4" sendBodyMode="ALWAYS" requestStreamingMode="ALWAYS">
+		<http:request-connection port="${http.port}" connectionIdleTimeout="60000" host="${http.host}"/>
+	</http:request-config>
+ 	<db:config name="Database_Config" doc:name="Database Config" doc:id="53d7adf3-19eb-4658-ab37-a1b0f33d4619" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="Avio1234!" database="${db.database}" />
+	</db:config>
+	
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="db9d3cd7-376c-472b-8db1-1f8e1d23ad02" >
+		<http:listener-connection host="0.0.0.0" port="8081" connectionIdleTimeout="60000"/>
+	</http:listener-config>
+		
+
+	<avio-core:config name="AVIO_Core_Config" doc:name="AVIO Core Config" doc:id="fd3116ef-fc30-4446-9cd2-56318005398d" app_name="${api.name}" app_version="${api.version}" env="${env}" />
+	
+	<global-property doc:name="Global Property: env" doc:id="c253a6ba-0a1e-48dd-878b-3330d00246bc" name="env" value="local" />
+	<global-property doc:name="Global Property: key" doc:id="07a74ad3-6f29-405e-8c60-590578ac7ab5" name="secureKey" value="password" />
+	<configuration-properties doc:name="Configuration properties" doc:id="5a088c48-2477-442f-a835-879f1c2e2ee3" file="${env}.properties" />
+	<configuration doc:name="Configuration" doc:id="0bf46c14-1231-4b6d-8984-df8112c2ad0e" defaultErrorHandler-ref="global-error-handler" />
+	<api-gateway:autodiscovery apiId="${api.apiId}" doc:name="API Autodiscovery" doc:id="90e452b7-8c62-4a62-8f4b-f24a668cbb9d" flowRef="gjh-music-factory-api-main" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="d14df4c7-44ca-45a0-b893-ebb68847c81b" file="${env}.properties" key="${secureKey}																						" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<sub-flow name="error-handling-subflow" doc:id="91dbc770-763b-4dee-b0d1-dd4d76370043" >
+		<ee:transform doc:name="Prepare Exception Response" doc:id="4180a595-06fa-40f0-8917-01328e3c4a1d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	statusCode: vars.statusCode,
+  	error: {
+  		"type": (error.errorType.namespace ++ ":" ++ error.errorType.identifier) default "Not found",
+  		detail: (error.description as String) default "Unhandled Exception"
+  	}
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+vars.statusCode]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+
+ 		<avio-core:custom-logger doc:name="ERROR" doc:id="906293d3-4145-4235-9b11-a2437f9420f9" config-ref="AVIO_Core_Config" correlation_id="#[vars.requestId]" message="Exception Occured" level="ERROR" tracePoint="EXCEPTION" status_code="#[payload.statusCode]" type='#[payload.error."type"]' detail="#[payload.error.detail]" payload='#[write(payload,"application/json")]' category="${log.cat}"/>
+	
+	</sub-flow>
+
+
+	<error-handler name="global-error-handler" doc:id="4a7ee38d-fd65-47b5-95d9-973ef720cc88" >
+        <on-error-propagate type="APIKIT:BAD_REQUEST" enableNotifications="true" logException="false">
+  		    <set-variable value="400" doc:name="Set HTTP Status code" doc:id="956960b0-40d6-4003-ba55-f3fb80339490" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="7c406a5a-43f0-4a0e-8cee-b29c2561ae7a" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_FOUND" enableNotifications="true" logException="false">
+			<set-variable value="404" doc:name="Set HTTP Status code" doc:id="dff3df07-f6b1-47b6-a7d0-ffe87ff63e50" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="838a440e-cbc5-4541-aa85-c612e2a9aaac" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED" enableNotifications="true" logException="false">
+			<set-variable value="405" doc:name="Set HTTP Status code" doc:id="b409596c-ae17-4497-8629-14510416a7f1" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="f981ebb8-c3d7-45e7-9585-68b26b789af0" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_ACCEPTABLE" enableNotifications="true" logException="false">
+			<set-variable value="406" doc:name="Set HTTP Status code" doc:id="15b72288-ec04-4d86-88ad-fcba725da228" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="875e70fd-e2fc-49bd-8a2a-994432d89afb" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE" enableNotifications="true" logException="false">
+			<set-variable value="415" doc:name="Set HTTP Status code" doc:id="51695181-0ddc-4f44-b23e-ba12212c945e" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="438707e8-8607-47ad-a767-7225fad1e782" name="error-handling-subflow"/>
+        </on-error-propagate>
+        <on-error-propagate type="APIKIT:NOT_IMPLEMENTED" enableNotifications="true" logException="false">
+			<set-variable value="501" doc:name="Set HTTP Status code" doc:id="e4afd1de-a3e9-4344-845e-1e44b2b1b611" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="b434aa17-9716-43ac-8f64-b5c38ba01f53" name="error-handling-subflow"/>
+        </on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="false" doc:name="On Error Propagate" doc:id="4e3ec6f5-095a-4f55-984c-3d09906c5f5c" type="ANY">
+			<set-variable value="500" doc:name="Set HTTP Status code" doc:id="7da1befe-e6c1-4768-9ef1-9a72288e72c2" variableName="statusCode"/>
+			<flow-ref doc:name="error-handling-subflow" doc:id="9ccc78be-9532-4592-b400-9c4d6dbc53ad" name="error-handling-subflow"/>
+		</on-error-propagate>
+    </error-handler>
+
+
+    
+
+
+</mule>

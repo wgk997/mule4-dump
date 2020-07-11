@@ -1,0 +1,62 @@
+[
+  {
+    "flightCode": "AFFFC4",
+    "availableSeats": 30,
+    "destination": "PDX",
+    "planeType": "BOEING 777",
+    "origination": "MUA",
+    "price": 283,
+    "departureDate": "Feb 20, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "A1B3D4",
+    "availableSeats": 10,
+    "destination": "PDX",
+    "planeType": "BOEING 777",
+    "origination": "MUA",
+    "price": 385,
+    "departureDate": "Feb 12, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "ER95jf",
+    "availableSeats": 95,
+    "destination": "PDX",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 483,
+    "departureDate": "2018/02/20",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "ER04kf",
+    "availableSeats": 30,
+    "destination": "PDX",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 532,
+    "departureDate": "2018/02/12",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "ER49fd",
+    "availableSeats": 0,
+    "destination": "PDX",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 853,
+    "departureDate": "2018/02/13",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "A1FGF4",
+    "availableSeats": 80,
+    "destination": "PDX",
+    "planeType": "BOEING 777",
+    "origination": "MUA",
+    "price": 958,
+    "departureDate": "Feb 13, 2018",
+    "airlineName": "Delta"
+  }
+]

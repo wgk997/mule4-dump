@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns2:findFlightResponse xmlns:ns2="http://soap.training.mulesoft.com/">
+  <return>
+    <airlineName>Delta</airlineName>
+    <code>A1B2C3</code>
+    <departureDate>2018/03/20</departureDate>
+    <destination>SFO</destination>
+    <emptySeats>40</emptySeats>
+    <origin>MUA</origin>
+    <planeType>Boing 737</planeType>
+    <price>400.0</price>
+  </return>
+  <return>
+    <airlineName>Delta</airlineName>
+    <code>A1BTT4</code>
+    <departureDate>2018/02/12</departureDate>
+    <destination>SFO</destination>
+    <emptySeats>30</emptySeats>
+    <origin>MUA</origin>
+    <planeType>Boing 777</planeType>
+    <price>593.0</price>
+  </return>
+  <return>
+    <airlineName>Delta</airlineName>
+    <code>A14244</code>
+    <departureDate>2018/02/12</departureDate>
+    <destination>SFO</destination>
+    <emptySeats>10</emptySeats>
+    <origin>MUA</origin>
+    <planeType>Boing 787</planeType>
+    <price>294.0</price>
+  </return>
+</ns2:findFlightResponse>

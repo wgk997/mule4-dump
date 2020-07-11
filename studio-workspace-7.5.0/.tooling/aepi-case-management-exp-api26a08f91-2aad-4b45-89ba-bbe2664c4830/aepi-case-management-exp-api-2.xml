@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    <http:listener-config name="aepi-case-management-exp-api-2-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="aepi-case-management-exp-api-2-config" api="aepi-case-management-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="aepi-case-management-exp-api-2-main">
+        <http:listener config-ref="aepi-case-management-exp-api-2-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="aepi-case-management-exp-api-2-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="aepi-case-management-exp-api-2-console">
+        <http:listener config-ref="aepi-case-management-exp-api-2-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="aepi-case-management-exp-api-2-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="put:\cases\(caseId)\diagnosis:application\json:aepi-case-management-exp-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "The diagnosis has been updated."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\cases\(caseId)\persons:application\json:aepi-case-management-exp-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "The person has been updated."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\cases\(caseId)\procedures:application\json:aepi-case-management-exp-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "The procedure has been updated."
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\cases\(caseId):aepi-case-management-exp-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "OK",
+  "case": {
+    caseId: "as909012dop12",
+    activatedDate: "2020-02-25",
+    complaint: "LOREN EPSUM DOLLAR",
+    assignedDr: "232dedd3kk34jk",
+    isolationAlert: false,
+    severityCode: "UNDETERMINED",
+    statusCode: "INTAKE",
+    symptomsCsv: [
+      "drycough, fever, heartburn"
+    ],
+    patient: {
+      personType: "PATIENT",
+      firstName: "John",
+      lastName: "Doe",
+      mi: "R",
+      phoneNumber: "5613435544",
+      address1: "1234 Main Street",
+      address2: "2A",
+      city: "Denver",
+      state: "NJ",
+      zipCode: "12345",
+      geoLocation: {
+        lat: 37.4267861,
+        lng: -122.0806032,
+        locationType: "APPROXIMATE"
+      },
+      isNotifyStatus: false,
+      timeLastNotified: "2020-02-28T16:41:41.090Z"
+    },
+    emergencyContacts: [
+      {
+        personType: "EMERGENCY_CONTACT",
+        firstName: "John",
+        lastName: "Doe",
+        mi: "R",
+        phoneNumber: "5613435544",
+        address1: "1234 Main Street",
+        address2: "2A",
+        city: "Denver",
+        state: "NJ",
+        zipCode: "12345",
+        geoLocation: {
+          lat: 37.4267861,
+          lng: -122.0806032,
+          locationType: "APPROXIMATE"
+        },
+        isNotifyStatus: false,
+        timeLastNotified: "2020-02-28T16:41:41.090Z"
+      }, 
+      {
+        personType: "EMERGENCY_CONTACT",
+        firstName: "Tim",
+        lastName: "Tom",
+        mi: "T",
+        phoneNumber: "5613435544",
+        address1: "1234 Main Street",
+        address2: "2A",
+        city: "Denver",
+        state: "NJ",
+        zipCode: "12345",
+        geoLocation: {
+          lat: 37.4267861,
+          lng: -122.0806032,
+          locationType: "APPROXIMATE"
+        },
+        isNotifyStatus: false,
+        timeLastNotified: "2020-02-28T16:41:41.090Z"
+      }
+    ],
+    diagnosis: [
+      {
+        diagnosisCode: "XYZ",
+        diagnosisStartDate: "2020-02-28T16:41:41.09",
+        diagnosisEndDate: "2020-02-28T18:41:41.09",
+        statusCode: "PRIMARY",
+        shortDescription: "Lorem Epsom",
+        longDescription: "Lorem Epsom Dollar ....."
+      }, 
+      {
+        diagnosisCode: "ABC",
+        diagnosisStartDate: "2020-02-28T16:41:41.09",
+        diagnosisEndDate: "2020-02-28T18:41:41.09",
+        statusCode: "TREATED",
+        shortDescription: "Lorem Epsom",
+        longDescription: "Lorem Epsom Dollar ....."
+      }
+    ],
+    procedure: [
+      {
+        performedTimeStamp: "2020-02-28T16:41:41.09",
+        procedureCode: "X-RAY",
+        statusCode: "PENDING"
+      }, 
+      {
+        performedTimeStamp: "2020-02-28T16:41:41.09",
+        procedureCode: "CT-SCAN",
+        statusCode: "COMPLETE"
+      }
+    ],
+    contactTrace: {
+      traceStartDate: "2015-07-04T21:00:00",
+      traceEndDate: "2015-07-04T21:00:00",
+      cdcReported: true,
+      cdcReportedTimestamp: "2015-07-04T21:00:00",
+      traceContacts: [
+        {
+          contactDate: "2015-07-04T21:00:00",
+          firstName: "Testy",
+          lastName: "McTesterface",
+          phone: "5551239876",
+          address1: "123 Example Ln",
+          address2: "",
+          city: "Dallas",
+          state: "TX",
+          zip: "12345-67890",
+          geoLocation: {
+            lat: 37.4267861,
+            lng: -122.0806032,
+            locationType: "APPROXIMATE"
+          }
+        }, 
+        {
+          contactDate: "2015-07-04T21:00:00",
+          firstName: "Testo",
+          lastName: "DaBesto",
+          phone: "5551239876",
+          address1: "123 Example Ln",
+          address2: "",
+          city: "Dallas",
+          state: "TX",
+          zip: "12345-67890",
+          geoLocation: {
+            lat: 37.4267861,
+            lng: -122.0806032,
+            locationType: "APPROXIMATE"
+          }
+        }
+      ]
+    }
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\diagnosisCodes:aepi-case-management-exp-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "OK",
+  diagnosisCodes: [
+    {
+      icd9Id: "781.2",
+      categoryTf: "F",
+      icd9Description: "Gait abnormality"
+    }, 
+    {
+      icd9Id: "780.91",
+      categoryTf: "F",
+      icd9Description: "Fussy infant"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\procedureCodes:aepi-case-management-exp-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 200,
+  message: "OK",
+  procedureCodes: [
+    {
+      procedureCode: "G0130",
+      description: "Single energy x-ray absorptiometry (sexa) bone density study, one or more sites; appendicular skeleton (peripheral) (e.g., radius, wrist, heel)"
+    }, 
+    {
+      procedureCode: "G6002",
+      description: "Stereoscopic x-ray guidance for localization of target volume for the delivery of radiation therapy"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\cases\(caseId)\notifications:application\json:aepi-case-management-exp-api-2-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 201,
+  message: "Added",
+  smsMessage: "A person whom you've been in contact with is ill, please contact xxx-xxx-xxxx for further information",
+  notifications: [
+    {
+      to: "+19725550000",
+      status: "SENT"
+    }, 
+    {
+      to: "+19725550001",
+      status: "SENT"
+    }, 
+    {
+      to: "+19725550002",
+      status: "SENT"
+    }, 
+    {
+      to: "+19725550003",
+      status: "SENT"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+</mule>

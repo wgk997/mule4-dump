@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="mod01Flow" doc:id="de42eb3c-637d-42f2-ac87-bb24e54564dd" >
+		<ee:transform doc:name="Selector" doc:id="5d60bbac-07f8-4382-a649-2a2ac8c6d532" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+do{
+	var nested = {
+		flights: {
+			b: 
+				flights: { 
+					c: {
+						d: flights: {
+							e: {
+								flights: {
+									f: "end"
+								}
+							}
+						}
+					}
+				}	
+		}
+	}
+	---
+	nested..flights
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Vars" doc:id="8478e38d-81f0-4dca-8b67-b660794d0592" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var exchangeRate = 1.35
+
+var internationalPrice = 
+(amount : Number, exch_rate) -> 
+amount * exch_rate
+
+---
+internationalPrice("100", exchangeRate)
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Functions" doc:id="3e07b356-bb29-4898-be07-9d62c83d8f55">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var exchangeRate = 1.35
+
+fun internationalPrice(amount :Number, exch_rate) =
+amount * exch_rate
+
+---
+//internationalPrice(100, exchangeRate)
+//internationalPrice("100", exchangeRate)
+internationalPrice("One Hundred", exchangeRate)
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="using operator" doc:id="68b7ca98-8704-4da9-acf3-c56b5c2a3478" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+var dept = "Eng"
+---
+entry: using ( firstName = "Annie", lastName = "Point" ) {
+	person: using ( user = firstName, gender = "Female")(
+		("first-name": firstName) ++ ("user-gender": gender)
+	),
+	sn: lastName ++ ":" ++ dept,
+	//gen: gender
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="do operator" doc:id="0c06c40b-b2a5-40af-8c76-6bd4c5052870" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+---
+(
+do {
+   var firstName = "Annie"
+   var lastName = "Point"
+   var dept = "Eng"
+   fun combineName( first, last ) = first as String ++ last as String
+   ---
+   {
+      name: combineName( firstName, lastName ),
+      department: dept
+   } 
+}
+//++ { firstName: firstName }
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mod01Flow3" doc:id="25926364-b646-4786-a19e-b2ad90d0a0b4" >
+		<ee:transform doc:name="nested" doc:id="fbbdd3ce-9a62-41f3-946b-3f4eef0ecf52" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload = {One: "one1", TWO: "two2"}
+
+fun mapItems ( value ) =
+do{
+	var ItemsArray = value
+	var firstItemArray = ItemsArray[0] pluck ( firstItemValues ) -> firstItemValues
+	var secondItemArray = ItemsArray[1] pluck ( secondItemValues ) -> secondItemValues
+	var ItemKeysArray = ItemsArray[1] pluck ( secondItemValues, keys ) -> keys
+	
+	fun groupedItemValues( anInput ) =
+	anInput
+    ---
+    firstItemArray pluck ( value, key ) -> {( groupedItemValues[  ( ( ItemKeysArray find key )[0] ) ] )}
+   
+}
+---
+payload pluck ( (value, key) -> 
+	key match {
+        case "Items"  -> {( (lower(key) ) : value )}	   
+		else -> {}
+	}
+)
+
+	]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mod01Flow1" doc:id="66084fca-54fc-4e9d-b687-d742b179b388" >
+		<ee:transform doc:name="Transform Message" doc:id="957d231b-ede3-4957-bd09-902153a67c19" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+fun myFunction( s: String ) = upper(s)
+
+fun myFunction( num: Number ) = num * 100
+
+fun myFunction ( anArr: Array ) = anArr map ( 
+	(value, index) -> 
+	lower(value) 
+)
+
+fun myFunction(n:Null) = "It's Null"
+
+---
+myFunction(null)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mod01Flow4" doc:id="7749b9f7-47ef-42be-9b1c-ae0a2f6cc55c" >
+		<ee:transform doc:name="if-else-if" doc:id="81243831-6825-4649-b78d-742d95ca325c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload = [{
+	ID: "id",
+	name: "alice"
+},
+{name:"one", ID: "id2"}
+]
+
+---
+if (payload is Object) payload 
+else if( sizeOf(payload) < 2 ) payload[0]
+else payload[-1 to 0][ (sizeOf(payload) -1 ) ]
+	
+
+
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="if-else-match" doc:id="c7b966ef-fa26-4256-8f08-4101cca3447e" >
+		<ee:transform doc:name="if else" doc:id="45564007-b0f1-47f0-ae12-b2d1b3c6d147">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var payload = {one: "one"}
+
+fun not( boolExp : Boolean) = 
+(boolExp == false)
+
+---
+if (not (payload is Object) ) "Not Object" else "Object"
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="match" doc:id="398f94f5-1e10-48f1-b233-ef476bff351e">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var anInput =
+{
+	one: "airline-name": "american"
+}
+
+fun testType( anInput ) =
+anInput match {
+    case is Array -> "input is an Array of size $(sizeOf(anInput))"
+    case anObject if (anObject is Object)  -> (inputType: "Object") ++ anObject
+    case "SFO" -> "San Francisco"
+    case hasDelta if (hasDelta contains "delta") -> upper(hasDelta)
+    case is Number -> $ as String {format: "#,###.00"} as Number
+    else -> "input " ++ anInput as String ++ " is of type " ++ typeOf( anInput )
+}
+---
+testType(anInput)
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_match" doc:id="7b4226a8-174f-4d58-90e8-f9a3f2c57a76" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var anInput =
+{
+	one: "airline-name": "american"
+}
+
+fun testType( anInput ) =
+anInput match {
+    case anArray is Array -> "input is an Array of size $(sizeOf(anArray))"
+    case anObject if (anObject is Object)  -> (inputType: "Object") ++ anObject
+    case isSFO: "SFO" -> "San Francisco"
+    case hasDelta if( hasDelta is String and hasDelta contains "Delta") -> hasDelta
+    case is Number -> $ as String {format: "#,###.00"} as Number
+    case other: true -> other
+}
+---
+testType(anInput)
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_Copy_of_match" doc:id="43f922f0-db54-4548-908f-d272ffdc61db" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload =[
+  {
+     "ID": 11,
+     "code": "rree4567",
+     "price": 456.5,
+     "destination": "LAX"
+  }
+]
+fun testType( anInput ) =
+anInput match {
+    case anArray is Array -> "input is an Array of size $(sizeOf(anArray))"
+    case anObject if (anObject is Object)  -> (inputType: "Object") ++ anObject
+    case isSFO: "SFO" -> "San Francisco"
+    case hasDelta if( hasDelta is String and hasDelta contains "Delta") -> hasDelta
+    case is Number -> $ as String {format: "#,###.00"} as Number
+    case other: true -> other
+}
+
+fun testType2( aPayload ) =
+using( valueForID = {( aPayload[0] )}["ID"] )
+  (valueForID match 
+  	{
+
+       else   -> ( "The input goes to " ) default null
+    }
+)   
+
+fun processArray ( aValue ) =
+aValue
+
+fun processObject ( aValue ) =
+aValue
+---
+using( valueForID = {( payload[0] )}   ["ID"]  )
+valueForID
+
+ match {
+	else -> "hello"
+}
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="functionsExample" doc:id="ceb76918-9897-49c7-bf5c-b432a64c0ae0" >
+		<ee:transform doc:name="Transform Message" doc:id="82b0404a-8840-4e47-9e03-ba6e7849adbc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var exchangeRate = 1.3504
+
+fun addTitle( title, exchangeRate ) =
+upper(title) ++ ": for exchange rate " ++ exchangeRate ++ ": "
+
+fun formatPrice( exchangeRate, price ) =
+"Exchange rate of " ++ exchangeRate ++ " gives price " 
+++ price * exchangeRate
+
+fun useFunction( functName, functName2, rate, price ) =
+    upper( functName("Order Total", rate) ) 
+    ++ functName2( rate, price )
+    
+---
+useFunction( addTitle, formatPrice, 3.55, 120)
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="modulesExample" doc:id="7ae3e250-471d-4390-a30f-d3c03b216cc6" >
+		<ee:transform doc:name="import Modules" doc:id="4f8d9842-f629-492c-b1d3-76485c80216c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0 
+output application/json 
+
+import myFunction from dw::modules::MyModule
+
+---
+myFunction
+(
+	305.5 * dw::modules::MyModule::exchangeRate 
+) 
+as MyModule::Currency]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="import Mappings" doc:id="396c1aa8-bd2e-46d9-9be3-bb71bee78773" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+
+output application/json
+
+import dw::modules::MyMapping
+---
+MyMapping::main( 
+   {someInput: { "user" : "bar" } }
+)
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="maxBy-minBy" doc:id="4e6cea6c-3f47-4a44-9d32-50f8876b205c" >
+		<ee:transform doc:name="Transform Message" doc:id="719d08e1-ddcb-45a8-a10f-e343491de360">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var obj1 = {"one":"1", "two":2, three:2, four:1, "any":4}
+
+var flights = {
+  flight: {price: 100},
+  flight: {price: 200},
+  flight: {price: 50}
+}
+---
+(
+  //11 to 15 maxBy (abs(13 - $))
+  flights.*flight maxBy (fl) -> fl.price
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mod01Flow2" doc:id="3d49e6b1-b653-4ca4-9a68-7b5b6a7e61fc" >
+		<ee:transform doc:name="Transform Message" doc:id="fa57c337-4b16-4ed4-8f79-593b0a62fd31" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

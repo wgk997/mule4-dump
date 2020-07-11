@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;aepi-medical-alert-pro-api&apos;" deleteContents="false" description="Delete resource &apos;aepi-medical-alert-pro-api&apos;" element1="/aepi-medical-alert-pro-api" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1590775936995"/>
+</session>

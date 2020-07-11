@@ -1,0 +1,78 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {},
+    "id": "http://example.com/example.json",
+    "items": {
+        "additionalProperties": false,
+        "id": "/items",
+        "properties": {
+            "ID": {
+                "id": "/items/properties/ID",
+                "maximum": 5000,
+                "minimum": 0,
+                "type": "integer"
+            },
+            "code": {
+                "id": "/items/properties/code",
+                "type": "string"
+            },
+            "departureDate": {
+                "id": "/items/properties/departureDate",
+                "type": "string"
+            },
+            "destination": {
+                "id": "/items/properties/destination",
+                "type": "string"
+            },
+            "emptySeats": {
+                "id": "/items/properties/emptySeats",
+                "maximum": 1000,
+                "minimum": 0,
+                "type": "integer"
+            },
+            "origin": {
+                "id": "/items/properties/origin",
+                "type": "string"
+            },
+            "plane": {
+                "additionalProperties": false,
+                "id": "/items/properties/plane",
+                "properties": {
+                    "totalSeats": {
+                        "id": "/items/properties/plane/properties/totalSeats",
+                        "maximum": 1000,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "type": {
+                        "id": "/items/properties/plane/properties/type",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type",
+                    "totalSeats"
+                ],
+                "type": "object"
+            },
+            "price": {
+                "id": "/items/properties/price",
+                "maximum": 50000,
+                "minimum": 0,
+                "type": "number"
+            }
+        },
+        "required": [
+            "origin",
+            "code",
+            "price",
+            "destination",
+            "emptySeats",
+            "plane",
+            "departureDate",
+            "ID"
+        ],
+        "type": "object"
+    },
+    "type": "array"
+}

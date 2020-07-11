@@ -1,0 +1,39 @@
+{
+  "extensionModelLoaderDescriptor": {
+    "id": "java",
+    "attributes": {
+      "type": "org.mule.extension.http.internal.temporary.HttpConnector",
+      "version": "1.0.0"
+    }
+  },
+  "name": "HTTP",
+  "requiredProduct": "MULE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "privilegedExportedPackages": [],
+      "privilegedArtifactIds": [],
+      "exportedPackages": [
+        "org.mule.extension.http.internal.request.client",
+        "org.mule.extension.http.api",
+        "org.mule.extension.http.api.policy",
+        "org.mule.extension.http.internal",
+        "org.mule.modules.cors.configuration.origin",
+        "org.mule.extension.http.api.request.validator",
+        "org.mule.extension.http.internal.request",
+        "org.mule.extension.http.api.request.proxy",
+        "org.mule.extension.http.api.request.authentication",
+        "org.mule.extension.http.api.error",
+        "org.mule.extension.socket.api.socket.tcp",
+        "org.mule.extension.http.api.listener.server",
+        "org.mule.extension.http.internal.listener.intercepting.cors"
+      ],
+      "exportedResources": []
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  },
+  "minMuleVersion": "4.0.0"
+}

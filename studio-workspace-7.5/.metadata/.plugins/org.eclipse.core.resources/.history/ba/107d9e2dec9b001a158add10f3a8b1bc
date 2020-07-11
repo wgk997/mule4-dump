@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs"
+	xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd">
+	
+	<sqs:config name="Amazon_SQS_Configuration" doc:name="Amazon SQS Configuration" doc:id="4e7f7319-a3a8-4050-8642-ef1690da3503">
+		<sqs:basic-connection accessKey="${secure::aws.access.key}" secretKey="${secure::aws.secret.key}"/>
+	</sqs:config>
+	
+		<sub-flow name="get-case-participant" doc:id="038e875d-6ef0-4744-ab4d-c98f4c512ff8" >
+		<try doc:name="Try" doc:id="46c92477-93f5-414a-928e-8e98e9711dce" >
+			<avio-core:custom-logger doc:name="Log Start" doc:id="f8c71e51-f1cb-4a18-8670-c2fe8857d558" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Start Processing request for get-case-participant flow" tracePoint="START" category="${logcat}" />
+			<http:request method="GET" doc:name="Get Case Participants" doc:id="bdfc59cc-b1c4-4a23-9c4c-e220c6d6fbaa" config-ref="case-management-system-http-request-configuration" path="cases/{caseId}/persons">
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: "1111	"
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"caseId" : vars.caseID
+}]]]></http:uri-params>
+		</http:request>
+			<avio-core:custom-logger doc:name="Log End" doc:id="1c3d70a8-2c5a-4bff-9fb3-cb746e49df08" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Completed Processing request for get-case-participant flow" tracePoint="START" category="${logcat}" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="11e62c14-5208-41a9-908a-b58289482056" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="4599e079-6730-4d42-a109-125034223197" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Error while getting case participant" payload='#[write(payload, "application/json")]' level="ERROR" category="${logcat}" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</sub-flow>
+	<sub-flow name="get-medical-staff" doc:id="90e676ee-c319-4218-88ae-b953f660e4eb" >
+		<try doc:name="Try" doc:id="9a90e6f2-9fbb-492e-81ce-0566e7d1ac4b" >
+			<avio-core:custom-logger doc:name="Log Start" doc:id="13f39dcd-b7ac-4b3a-b3d7-2d74965f4efd" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Start Processing request for get-medical-staff flow" tracePoint="START" category="${logcat}" />
+			<http:request method="GET" doc:name="Get medical Staff" doc:id="ecf78032-d46a-4c07-8c42-33cbee16c988" config-ref="ref-system-http-request-configuration" path="/medicalPersons">
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: "1111	"
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"specialty" : "PHYSICIAN"
+}]]]></http:query-params>
+		</http:request>
+			<avio-core:custom-logger doc:name="Log End" doc:id="9a0fff7f-65e5-4855-aad7-2ac83447a1da" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Completed Processing request for get-medical-staff flow" tracePoint="END" category="${logcat}" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="10cf8621-33b6-4762-bb1d-ec1a234077b6" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="6e69c897-b547-4067-ac26-a816708035b2" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Error while getting medical staff" payload='#[write(payload, "application/json")]' level="ERROR" category="${logcat}" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</sub-flow>
+	<sub-flow name="send-message" doc:id="ceec12aa-7d26-4c51-87d0-d1e4bce78310" >
+		<try doc:name="Try" doc:id="f7b500da-322a-4384-a382-963edd8db72a" >
+			<avio-core:custom-logger doc:name="Log Start" doc:id="03d67ec9-9fe0-409f-ac54-c25e167f454e" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Start Processing request for send-message flow" category="${logcat}" tracePoint="START"/>
+			<foreach doc:name="For Each" doc:id="ba8e7139-adf7-4e1a-ae93-d3e9a6bcf196" collection="#[vars.smsResult]">
+				<ee:transform doc:name="sqsPayload">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+	delaySeconds: 0,
+	body: "\n{\n  \"smsMessage\": \" "++ payload.smsMessage ++" \",\n  \"cellNumbers\": \" "++ payload.cellNumbers ++" \"\n}",
+		messageAttributes: {
+		"smsMessage": {
+			"stringValue" : payload.smsMessage,
+			"dataType" : "String"
+		} as Object {
+			class: "org.mule.extension.sqs.api.model.MessageAttributeValue"
+		},
+		"cellNumbers": {
+			"stringValue" : payload.cellNumbers,
+			"dataType" : "String"
+		} as Object {
+			class : "org.mule.extension.sqs.api.model.MessageAttributeValue"
+		}
+	} as Object {
+		class: "java.util.HashMap"
+	}
+} as Object {
+	class: "org.mule.extension.sqs.api.model.Message"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<sqs:send-message doc:name="Send message" doc:id="c07e6200-35ce-4338-97d3-302e8df19ddd" config-ref="Amazon_SQS_Configuration" queueUrl="${sqs.queue.url}">
+			</sqs:send-message>
+			</foreach>
+			<avio-core:custom-logger doc:name="Log End" doc:id="caa3ab4e-918c-4dc4-97c9-e637daccce01" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Completed Processing request for send-message flow" tracePoint="END" category="${logcat}" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="b7e3b978-852a-4c5b-9428-9d5eedf700ec" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="10fdd5f8-c1b6-4601-b376-cdd5f1fe413b" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" level="ERROR" category="${logcat}" message="Error while sending message to SQS" payload='#[write(payload, "application/json")]' />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</sub-flow>
+	</mule>

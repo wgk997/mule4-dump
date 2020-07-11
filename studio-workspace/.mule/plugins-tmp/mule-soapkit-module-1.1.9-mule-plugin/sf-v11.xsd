@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="fault">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="faultcode" type="xs:string"/>
+                <xs:element name="faultmessage" type="xs:string"/>
+                <xs:element name="faultactor" type="xs:string"/>
+                <xs:element name="detail" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+
+<!--
+
+<faultcode>
+The <faultcode> element is a mandatory element in the <Fault> element. It provides information about
+the fault in a form that can be processed by software. SOAP defines a small set of SOAP fault codes
+covering basic SOAP faults, and this set can be extended by applications.
+
+<faultstring>
+The <faultstring> element is a mandatory element in the <Fault> element.
+It provides information about the fault in a form intended for a human reader.
+
+<faultactor>
+The <faultactor> element contains the URI of the SOAP node that generated the fault.
+A SOAP node that is not the ultimate SOAP receiver must include the <faultactor> element when it creates a fault.
+An ultimate SOAP receiver is not obliged to include this element, but may do so.
+
+<detail>
+The <detail> element carries application-specific error information related to the <Body> element.
+It must be present if the contents of the <Body> element were not successfully processed. It must not be
+used to carry information about error information belonging to header entries. Detailed error information belonging to header
+entries must be carried in header entries.
+
+-->

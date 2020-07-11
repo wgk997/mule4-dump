@@ -1,0 +1,17 @@
+#%RAML 1.0 Library
+usage: Used as the source of resources dataTypes related to the case
+types:
+  caseResponseForGet:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      case:
+        required: true
+        type: !include caseDataType.raml

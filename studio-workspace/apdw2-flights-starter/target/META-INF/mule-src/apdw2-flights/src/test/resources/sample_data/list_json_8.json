@@ -1,0 +1,15 @@
+[
+  {
+    "plane": {
+      "type": "????",
+      "totalSeats": 2
+    },
+    "code": "????",
+    "price": 2,
+    "origin": "????",
+    "destination": "????",
+    "ID": 2,
+    "departureDate": "????",
+    "emptySeats": 2
+  }
+]

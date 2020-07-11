@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="/Users/asapkota/AnypointStudio/studio-workspace/asx-music-factory-api"/>
+	</list>
+	<list key="installedFeatures">
+		<item value="org.eclipse.draw2d:3.10.100.201606061308"/>
+		<item value="org.eclipse.emf.common:2.13.0.v20170609-0707"/>
+		<item value="org.eclipse.emf.ecore:2.13.0.v20170609-0707"/>
+		<item value="org.eclipse.gef:3.11.0.201606061308"/>
+		<item value="org.eclipse.help:2.2.102.v20171130-0510"/>
+		<item value="org.eclipse.jdt:3.13.2.v20171130-0906"/>
+		<item value="org.eclipse.pde:3.13.2.v20171130-0510"/>
+		<item value="org.eclipse.platform:4.7.2.v20171130-0510"/>
+		<item value="org.eclipse.rcp:4.7.2.v20171130-0510"/>
+		<item value="org.eclipse.wst.jsdt.chromium.debug.feature:0.6.0.v201705091354"/>
+		<item value="org.eclipse.wst.jsdt.feature:2.1.0.v201706011953"/>
+		<item value="org.eclipse.wst.json_ui.feature:1.1.1.v201707252002"/>
+		<item value="org.eclipse.wst.web_ui.feature:3.9.1.v201711152154"/>
+		<item value="org.eclipse.wst.xml_ui.feature:3.9.1.v201707252002"/>
+		<item value="org.eclipse.xsd.edit:2.9.0.v20170609-0928"/>
+		<item value="org.eclipse.xsd:2.13.0.v20170609-0928"/>
+		<item value="org.mule.tooling.extension.server.4.2.0.ee:7.3.4.201909021919"/>
+		<item value="org.mule.tooling.extension.server.4.2.1.ee:7.3.3.201909021919"/>
+		<item value="org.mule.tooling.extension.server.4.2.2.ee:7.3.5.201911202039"/>
+		<item value="org.mule.tooling.munit.extension:2.3.4.201908092009"/>
+		<item value="org.mule.tooling.properties.feature:1.8.0"/>
+		<item value="org.mule.tooling.studio:7.3.5.201909031748"/>
+		<item value="org.mule.tooling:7.3.5.201909031748"/>
+	</list>
+	<section name="CleanDialogSettings">
+		<item value="484" key="DIALOG_WIDTH"/>
+		<item value="true" key="BUILD_ALL"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+		<item value="446" key="DIALOG_HEIGHT"/>
+		<item value="701" key="DIALOG_X_ORIGIN"/>
+		<item value="256" key="DIALOG_Y_ORIGIN"/>
+		<item value="true" key="BUILD_NOW"/>
+	</section>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="/Users/asapkota/AnypointStudio/studio-workspace/asx-music-factory-api"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog">
+		<item value="false" key="FilterByLocation"/>
+		<item value="true" key="ShowStatusLine"/>
+		<item value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0A;&lt;History&gt;&#x0A;&lt;historyRootNode&gt;&#x0A;&lt;infoNode path=&quot;/health-check-example-mule4/src/main/resources/api/health-check-example.raml&quot; type=&quot;1&quot;/&gt;&#x0A;&lt;/historyRootNode&gt;&#x0A;&lt;/History&gt;" key="History"/>
+		<item value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0A;&lt;workingSet workingSetName=&quot;&quot;/&gt;" key="WorkingSet"/>
+		<item value="false" key="ShowDerived"/>
+		<section name="DialogBoundsSettings">
+			<item value="600" key="DIALOG_WIDTH"/>
+			<item value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont" key="DIALOG_FONT_NAME"/>
+			<item value="500" key="DIALOG_HEIGHT"/>
+			<item value="485" key="DIALOG_X_ORIGIN"/>
+			<item value="155" key="DIALOG_Y_ORIGIN"/>
+		</section>
+	</section>
+	<section name="SaveAsDialogSettings">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont" key="DIALOG_FONT_NAME"/>
+		<item value="528" key="DIALOG_HEIGHT"/>
+		<item value="811" key="DIALOG_X_ORIGIN"/>
+		<item value="22" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

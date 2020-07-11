@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;asx-music-factory-api&apos;" deleteContents="false" description="Delete resource &apos;asx-music-factory-api&apos;" element1="/asx-music-factory-api" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1568064798123"/>
+</session>

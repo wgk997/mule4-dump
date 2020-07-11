@@ -1,0 +1,38 @@
+{
+  "extensionModelLoaderDescriptor": {
+    "id": "java",
+    "attributes": {
+      "type": "com.mulesoft.modules.oauth2.provider.internal.OAuth2ProviderModule",
+      "version": "1.0.5"
+    }
+  },
+  "license": {
+    "allowsEvaluation": true
+  },
+  "name": "OAuth2 Provider",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "privilegedExportedPackages": [],
+      "privilegedArtifactIds": [],
+      "exportedPackages": [
+        "com.mulesoft.modules.oauth2.provider.api.code",
+        "com.mulesoft.modules.oauth2.provider.api.client",
+        "com.mulesoft.modules.oauth2.provider.api",
+        "com.mulesoft.modules.oauth2.provider.api.exception",
+        "com.mulesoft.modules.oauth2.provider.api.token",
+        "com.mulesoft.modules.oauth2.provider.api.token.generator",
+        "com.mulesoft.modules.oauth2.provider.api.ratelimit"
+      ],
+      "exportedResources": [
+        "www-static/auth.html"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  },
+  "minMuleVersion": "4.1.1"
+}

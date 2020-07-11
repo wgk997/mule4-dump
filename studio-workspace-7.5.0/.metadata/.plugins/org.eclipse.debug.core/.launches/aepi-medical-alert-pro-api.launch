@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.munit.launchconfig">
+<stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.4.3.0.ee"/>
+<listAttribute key="mule-project-names">
+<listEntry value="aepi-medical-alert-pro-api"/>
+</listAttribute>
+<booleanAttribute key="munit_run" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="aepi-medical-alert-pro-api"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path="/>
+<booleanAttribute key="run_coverage" value="true"/>
+<setAttribute key="test_names"/>
+<setAttribute key="test_resources">
+<setEntry value="notifications-impl-test-suite.xml"/>
+</setAttribute>
+</launchConfiguration>

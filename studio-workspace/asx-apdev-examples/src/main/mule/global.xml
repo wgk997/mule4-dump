@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+
+<http:listener-config name="HTTP_Listener_config"
+		doc:name="HTTP Listener config" doc:id="2236a6d5-10bc-4c23-8a56-57922aa742fe">
+		<http:listener-connection host="0.0.0.0"
+			port="${http.port}" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration"
+		doc:name="HTTP Request configuration" doc:id="5516ef50-d659-41f0-ab7f-38e8c37f7e35">
+		<http:request-connection host="localhost"
+			port="8081" />
+	</http:request-config>
+	<vm:config name="VM_Config" doc:name="VM Config" doc:id="9b0ae0f6-1de5-4d1b-bbd9-cb6d41674e09" >
+		<vm:queues >
+			<vm:queue queueName="goodbye" />
+		</vm:queues>
+	</vm:config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="223eda41-8bba-4b91-ac59-e89a7eb976e5" >
+		<salesforce:cached-basic-connection username="${sdfc.username}" password="${sdfc.password}" securityToken="${sdfc.token}" />
+	</salesforce:sfdc-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="e6891804-900b-489e-b334-472fdd5ac06d" file="config.yaml" />
+	<file:config name="File_Config" doc:name="File Config" doc:id="f6f4d0f2-d0c3-40f9-9f7d-25906f3ae3d1" >
+		<file:connection workingDir="${file.accountsDir}" />
+	</file:config>
+
+</mule>

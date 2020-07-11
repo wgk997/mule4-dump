@@ -1,0 +1,82 @@
+[
+  {
+    "flightCode": "rree1000",
+    "availableSeats": 5,
+    "destination": "CLE",
+    "planeType": "Boeing 737",
+    "origination": "MUA",
+    "price": 200,
+    "departureDate": "2018-01-20T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "ER3kfd",
+    "availableSeats": 13,
+    "destination": "CLE",
+    "planeType": "Boeing 747",
+    "origination": "MUA",
+    "price": 245,
+    "departureDate": "2018/08/11",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "eefd0123",
+    "availableSeats": 7,
+    "destination": "CLE",
+    "planeType": "Boeing 747",
+    "origination": "MUA",
+    "price": 300,
+    "departureDate": "2018-01-25T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "A12342",
+    "availableSeats": 17,
+    "destination": "CLE",
+    "planeType": "BOEING 727",
+    "origination": "MUA",
+    "price": 308,
+    "departureDate": "Jul 11, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "A1B34S",
+    "availableSeats": 50,
+    "destination": "CLE",
+    "planeType": "BOEING 707",
+    "origination": "MUA",
+    "price": 420,
+    "departureDate": "Jun 11, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "A1ASD4",
+    "availableSeats": 40,
+    "destination": "CLE",
+    "planeType": "BOEING 757",
+    "origination": "MUA",
+    "price": 736,
+    "departureDate": "Sep 11, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "ER9fje",
+    "availableSeats": 32,
+    "destination": "CLE",
+    "planeType": "Boeing 727",
+    "origination": "MUA",
+    "price": 845,
+    "departureDate": "2018/07/11",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "ffee1112",
+    "availableSeats": 100,
+    "destination": "CLE",
+    "planeType": "Boeing 787",
+    "origination": "MUA",
+    "price": 954,
+    "departureDate": "2018-01-20T00:00:00",
+    "airlineName": "American"
+  }
+]

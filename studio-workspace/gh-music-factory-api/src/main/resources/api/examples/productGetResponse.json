@@ -1,0 +1,31 @@
+{
+	"id" : 103,
+	"name" : "GoPro Camera",
+	"summary" : "Who doesn't want video of everything.",
+	"manufacturer" : "GoPro",
+	"description" : "A camera",
+	"dimensions" : "1x3x5",
+	"weight" : 3.5,
+	"asin" : "1000ABC-DEF",
+	"model" : "v3",
+	"averageRating" : 4.0,
+  "totalRatings" : 2,
+  "inventoryAvailable" : 20,
+  "price" : 85.99,
+  "currency" : "USD",
+	"reviews" : [
+		{
+			"id" : 4000,
+			"user" : "Samantha fox",
+			"rating" : 3,
+			"review" : "Very powerful cam.",
+			"createdDate" : "2019-07-22T14:30:00.000Z"
+		}, {
+			"id" : 4001,
+			"user" : "Anonymous",
+			"rating" : 1,
+			"review" : "Rather use my phone camera, low quality.",
+			"createdDate" : "2019-06-13T14:30:00.000Z"
+		}
+	]
+}

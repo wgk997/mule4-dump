@@ -1,0 +1,14 @@
+[
+	{
+		"id" : 100,
+		"name" : "Yeti Mug",
+		"summary" : "A very nice looking mug.",
+		"manufacturer" : "Yeti"
+	}, 
+  {
+		"id" : 101,
+		"name" : "Amazon FireStick",
+		"summary" : "A new way to watch TV.",
+		"manufacturer" : "Amazon"
+	}
+]

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule 
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<http:listener-config name="HTTP_Listener_config"
+		doc:name="HTTP Listener config" doc:id="10dd9ffb-f43e-41ff-8d13-f8503768ab16">
+		<http:listener-connection host="0.0.0.0"
+			port="8081" />
+	</http:listener-config>
+
+	<http:request-config name="HTTP_Request_configuration"
+		doc:name="HTTP Request configuration" doc:id="a4e8455c-8036-47c1-9b39-fb036bca9705"
+		basePath="/flights">
+		<http:request-connection host="mu.mulesoft-training.com"
+			port="80" />
+	</http:request-config>
+	<http:request-config name="AmericanFlightsRestWebService"
+		doc:name="HTTP Request configuration" doc:id="9825e371-ed51-4e6a-9983-03145164187e"
+		basePath="/api/">
+		<http:request-connection host="training-american-ws.cloudhub.io"
+			port="80" />
+	</http:request-config>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" >
+		<wsc:connection
+			wsdlLocation="http://ilt.mulesoft-training.com/essentials/delta?wsdl"
+			service="TicketServiceService" port="TicketServicePort"
+			address="http://training.cloudhub.io/essentials/delta" />
+	</wsc:config>
+	<http:listener-config name="HTTP_8082_Listener_config1" doc:name="HTTP Listener config" doc:id="40d51fea-5fe5-4a82-a52f-d3285da3f800" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_8085" doc:name="HTTP Request configuration" doc:id="e9661978-41c7-438e-8a98-dc41a214a70b" >
+		<http:request-connection host="localhost" port="8085" connectionIdleTimeout="300000" />
+	</http:request-config>
+	<http:listener-config name="HTTP_8085_Listener" doc:name="HTTP Listener config" doc:id="62d010fe-4cc9-4335-bebc-c534026aa8ba" >
+		<http:listener-connection host="0.0.0.0" port="8085" />
+	</http:listener-config>
+</mule>

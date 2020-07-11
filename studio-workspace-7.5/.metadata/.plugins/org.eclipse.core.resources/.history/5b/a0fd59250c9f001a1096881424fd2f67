@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd">
+
+	<flow name="get-case" doc:id="02b2ef92-552a-43db-9236-a3801068415d" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="da079ea0-dea4-4fe0-bbc1-9cc8c85ffd05" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="START" category="${logcat}" message="Start Processing Request for get-case"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: caseId">
+            <ee:variables>
+                <ee:set-variable variableName="caseId"><![CDATA[attributes.uriParams.'caseId']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+        <http:request method="GET" doc:name="Get case" doc:id="2b6870d1-be85-418e-912c-e0843720c84d" config-ref="case-management-sys-http-request-configuration" path="cases/{caseId}" target="case">
+			<reconnect />
+			<http:headers ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<choice doc:name="Choice" doc:id="480122e5-8dc6-4ecc-995f-ff7e63106da2" >
+			<when expression="#[payload.statusCode == 200]">
+				<flow-ref doc:name="get-person" doc:id="c8b9cf5c-7bee-41cf-976b-b1e9e8ded7f6" name="get-person" />
+				<flow-ref doc:name="get-diagnosis" doc:id="6d062c50-fe9f-4661-b67e-522856fe8e3d" name="get-diagnosis" />
+				<flow-ref doc:name="get-procedure" doc:id="6b11d77e-cc4e-4ae2-ae1f-bd2ecffbef9e" name="get-procedure" />
+				<flow-ref doc:name="get-contacttrace" doc:id="d31ae360-7502-451e-b21b-72b0ba3889de" name="get-contacttrace" />
+				<ee:transform doc:name="build response" doc:id="9319edfb-93aa-42df-a4d8-96e83c16a6bc">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var case = vars.case.case
+var person = vars.persons.persons
+var procedure = vars.procedures.procedure
+var diagnois = vars.diagnoses.diagnosis
+var contactTrace = vars.contactTraces.contactTrace
+---
+
+{
+"statusCode": 200,
+"message": "OK",
+"case" : case,
+"person"  : person
+"procedure" : procedure, 
+"diagnoses" : diagnois,
+"contactTrace" : contactTrace
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</when>
+			<otherwise >
+				<avio-core:custom-logger doc:name="Log Default" doc:id="e87c3c35-70fc-47fc-b812-26f45307a5ec" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" level="ERROR" tracePoint="EXCEPTION" category="${logcat}" message="The Case doesn't exist"/>
+				<raise-error doc:name="Raise error" doc:id="7a3490cf-58e1-4304-87aa-017d0c098bc3" type="ANY"/>
+			</otherwise>
+		</choice>
+		<avio-core:custom-logger doc:name="Log End" doc:id="494303a6-7111-42fa-b442-61465b9d9f5b" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" message="Completed Processing Request for get-case" category="${logcat}" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ae9258c7-7711-4bb2-b310-87e6e4f9c854" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="b0d7b16a-fb07-4fe0-a0f0-011e5555b113" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" level="ERROR" tracePoint="EXCEPTION" category="${logcat}"/>
+				<set-variable value="get-case" doc:name="Set current-flow" doc:id="e1b0ce8f-3f0c-4e7d-ad06-20fd616faa2f" variableName="currentFlow"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<sub-flow name="get-contacttrace" doc:id="f9dae9a8-3a05-49bd-864e-7686490b0cfd" >
+	<avio-core:custom-logger doc:name="Log Start" doc:id="27a595f9-cb42-48ad-8cd0-0b3c70068b97" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="START" category="${logcat}" message="Start Processing Request for get-contacttrace"/>
+		
+		<http:request method="GET" doc:name="Get contactTrace" doc:id="a9cf7800-5af5-45a4-905d-d17d5e2758a4" config-ref="infectious-disease-sys-http-request-configuration" path="cases/{caseId}/contactTrace" target="contactTraces">
+			<reconnect />
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : vars.headers.client_id,
+	client_secret: vars.headers.client_secret,
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log End" doc:id="6029769e-744f-4ab2-beee-76547f504a0c" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="END" category="${logcat}" message="Completed Processing Request for get-contacttrace"/>
+	</sub-flow>
+	<sub-flow name="get-diagnosis" doc:id="0bb587e0-f6a5-441a-a0f9-0e7378b64e6b" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="0ebb96f5-1e65-42a5-9b27-86691a88740f" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="START" category="${logcat}" message="Start Processing Request for get-diagnosis"/>
+		<http:request method="GET" doc:name="Get diagnoses" doc:id="c7b54ce3-72c5-4280-8b4c-c4a65172a386" config-ref="case-management-sys-http-request-configuration" path="/cases/{caseId}/diagnoses" target="diagnoses">
+			<reconnect />
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log End" doc:id="c13a636f-d6bc-451d-90cb-89277707e8a5" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" message="Completed Processing Request for get-diagnosis" tracePoint="END" category="${logcat}" />
+	</sub-flow>
+	<sub-flow name="get-procedure" doc:id="b23ac4da-1aa4-436f-9957-30f24c807b5b" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="656093c0-61e2-4c2f-b277-6335f5f8caf1" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" message="Start Processing Request for get-procedure" tracePoint="START" category="${logcat}" />
+		<http:request method="GET" doc:name="Get procedure" doc:id="5bbdea5b-1f9f-47e9-85ca-3301c58d2797" config-ref="case-management-sys-http-request-configuration" path="/cases/{caseId}/procedures" target="procedures">
+			<reconnect />
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log End" doc:id="712de64b-8253-417c-98b7-8a101d7cd776" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" message="Completed Processing Request for get-procedure" tracePoint="END" category="${logcat}" />
+	</sub-flow>
+	<sub-flow name="get-person" doc:id="2fd94ce8-9111-4600-9867-72fbe17abb55" >
+		<avio-core:custom-logger doc:name="Log Start" doc:id="e876d192-13b3-4bd0-a57a-fcaec0e64e5b" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" message="Start Processing Request for get-person" tracePoint="START" category="${logcat}" />
+		<http:request method="GET" doc:name="Get person" doc:id="f9abcafb-0f25-4d7e-b086-97fffef6d78b" config-ref="case-management-sys-http-request-configuration" path="/cases/{caseId}/persons" target="persons">
+			<reconnect />
+			<http:headers><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : "34kjkf",
+	client_secret: "asd343wd",
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"caseId" : vars.caseId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log End" doc:id="d569a9d1-fb2b-4417-887f-76c78dff0863" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" message="Completed Processing Request for get-diagnosis" tracePoint="END" category="${logcat}" />
+	</sub-flow>
+
+	</mule>

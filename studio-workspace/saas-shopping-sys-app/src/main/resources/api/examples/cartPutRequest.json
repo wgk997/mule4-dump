@@ -1,0 +1,21 @@
+{
+  "customerId" : "abc@whatever.com",
+  "cartTotal" : 131.67,
+  "items" : [
+    {
+      "itemId" : 1001,
+      "quantity" : 1,
+      "price" : 75.25
+    }, 
+    {
+      "itemId" : 1002,
+      "quantity" : 3,
+      "price" : 10.99
+    },
+    {
+      "itemId" : 1003,
+      "quantity" : 3,
+      "price" : 23.45
+    }
+  ]
+}

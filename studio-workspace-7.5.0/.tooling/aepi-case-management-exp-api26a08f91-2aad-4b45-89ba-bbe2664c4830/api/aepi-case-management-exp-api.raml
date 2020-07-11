@@ -1,0 +1,107 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/f09e9a4a-dc57-4ac6-9990-3d761719b63e/ # 
+title: aepi-case-management-exp-api
+version: v1
+protocols:
+  - HTTPS
+
+#######################################################################
+# WHO  WHEN      WHY
+# DW   05-05-20  Initial API
+# AS   06-06-20  Modified Notification to match medical alert pro
+#################################################################
+
+uses:
+  caseResponses: types/case/caseResponseTypesLibrary.raml
+
+  personRequests: types/person/personRequestTypeLibrary.raml
+  personResponses: types/person/personResponseTypesLibrary.raml
+
+  diagnosisRequests: types/diagnosis/diagnosisRequestTypeLibrary.raml
+  diagnosisResponses: types/diagnosis/diagnosisResponseTypesLibrary.raml
+
+  procedureRequests: types/procedure/procedureRequestTypeLibrary.raml
+  procedureResponses: types/procedure/procedureResponseTypesLibrary.raml
+
+  diagnosisCodeRequests: types/diagnosisCode/diagnosisCodeResponseTypesLibrary.raml
+  diagnosisCodeResponses: types/diagnosisCode/diagnosisCodeResponseTypesLibrary.raml
+
+  procedureCodeRequests: types/procedureCode/procedureCodeResponseTypesLibrary.raml
+  procedureCodeResponses: types/procedureCode/procedureCodeResponseTypesLibrary.raml
+
+  notificationsTypes: types/notifications/notificationsTypeLibrary.raml
+  notificationsRequestTypes: types/notifications/notificationRequestDataType.raml
+
+  commonTraits: exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/commonTraits.raml
+
+resourceTypes:
+  collection: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/resourceTypes/collection.raml
+  item: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/resourceTypes/item.raml
+
+/cases/{caseId}:
+  description: Get case information by Id
+  is: [commonTraits.clientIdRequired, commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+  type:
+    item:
+      getResponseType: caseResponses.caseResponseForGet
+      getResponseJson: !include examples/case/response/caseGetResponse.json  
+  get:
+
+  /persons:
+    description: Insert or Update Person related to Case
+    is: [commonTraits.clientIdRequired, commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+    type: 
+      item:
+        putBodyType: personRequests.personDataTypeForUpdate
+        putBodyJson: !include examples/person/request/personPutRequest.json
+        putResponseType: personResponses.personResponseGeneric
+    put:
+    
+  /procedures:
+    description: Update a procedure related to the case
+    is: [commonTraits.clientIdRequired, commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+    type: 
+      item:
+        putBodyType: procedureRequests.procedureDataTypeForUpdate
+        putBodyJson: !include examples/procedure/request/procedurePostRequest.json
+        putResponseType: procedureResponses.procedureResponseGeneric
+    put:
+  
+  /diagnosis:
+    description: Update a diagnosis related to the case
+    is: [commonTraits.clientIdRequired, commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+    type: 
+      item:
+        putBodyType: diagnosisRequests.diagnosisDataTypeForUpdate
+        putBodyJson: !include examples/diagnosis/request/diagnosisPostRequest.json
+        putResponseType: diagnosisResponses.diagnosisResponseGeneric
+    put:
+  
+  /notifications:
+    is: [commonTraits.clientIdRequired, commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+    type: 
+      item: 
+        postBodyJson: !include examples/notifications/request/notificationPostRequest.json
+        postBodyType: notificationsRequestTypes.notificationsDataTypeForPostRequest
+        postResponseJson: !include examples/notifications/response/notificationPostResponse.json
+        postResponseType: notificationsTypes.notificationsDataTypeForPostResponse
+
+    post:
+
+/diagnosisCodes:
+  description: Get diagnosis codes from an external source
+  is: [commonTraits.clientIdRequired, commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+  type:
+    collection:
+      getResponseType: diagnosisCodeResponses.diagnosisCodeResponseForGet
+      getResponseJson: !include examples/diagnosisCode/diagnosisCodeGetResponse.json
+  get:
+
+/procedureCodes:
+  description: Get procedure codes from an external source
+  is: [commonTraits.clientIdRequired, commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+  type:
+    collection:
+      getResponseType: procedureCodeResponses.procedureCodeResponseForGet
+      getResponseJson: !include examples/procedureCode/procedureCodeGetResponse.json
+  get:

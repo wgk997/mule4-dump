@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	<flow name="post-order-main" doc:id="2cf29dda-9d4e-4cdc-b90d-4646337a6682">
+		<vm:listener doc:name="Listener" doc:id="c5fafae1-fe62-48c4-bfcc-d6ebf4d15c8c" config-ref="PostOrderVM_Config" queueName="postOrderQueue"/>
+		<avio-core:custom-logger doc:name="Log Start"
+			doc:id="a1d3a566-def1-4041-bd1a-eeb2346d1828" config-ref="AVIO_Core_Config"
+			correlation_id="#[vars.correlationId]" level="DEBUG" tracePoint="START"
+			category="${logcat}" />
+		<set-variable value="#[payload.customerId]" doc:name="customerId"
+			doc:id="1727af37-e18c-4908-b3db-fb2e3b55b5ec" variableName="customerId" />
+		<try doc:name="Try" doc:id="7cfc964c-08fe-4620-984e-f3df2ea26a8e" transactionType="XA">
+			<flow-ref doc:name="Post Order subflow" doc:id="14d28989-06fb-4881-8bbb-fdd0a2c008b6" name="post-order-subflow" />
+			<flow-ref doc:name="Patch Product subflow" doc:id="6af2c8a9-9a5b-4fc6-bf37-514896d3681e" name="patch-product-subflow" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="fd92b396-1fa9-4923-9dd9-aaf11b2e3b0d" type="HTTP:BAD_REQUEST, HTTP:CONNECTIVITY, HTTP:FORBIDDEN, HTTP:NOT_FOUND, HTTP:PARSING, HTTP:RETRY_EXHAUSTED, HTTP:SERVICE_UNAVAILABLE, HTTP:TIMEOUT, HTTP:TOO_MANY_REQUESTS, EXPRESSION, STREAM_MAXIMUM_SIZE_EXCEEDED">
+					<set-payload value='#[%dw 2.0
+output application/json
+---
+
+{
+	status: "failed",
+	statusCode:500,
+	stackTrace: payload
+}]' doc:name="Set Payload" doc:id="03f61f25-4e46-4d9a-851c-109ba693bafa" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	</flow>
+	<sub-flow name="post-order-subflow" doc:id="d70c6d51-ef79-45b1-86ab-f082428ece5f">
+		<http:request method="POST" doc:name="POST order WS"
+			doc:id="a9d7898a-6266-4581-8a0b-f287ea0d62de" config-ref="Shopping_System_HTTP_Request_configuration"
+			path="/order">
+			<http:headers><![CDATA[#[output application/java
+---
+{
+	"client_secret" : 1,
+	"client_id" : 2,
+	"correlationId": vars.correlationId
+}]]]></http:headers>
+		</http:request>
+		<avio-core:custom-logger doc:name="after post order"
+			doc:id="1926954d-43cb-40ec-9866-c114ff033b71" config-ref="AVIO_Core_Config"
+			correlation_id="#[vars.correlationId]" message="#[sizeOf(payload)]"
+			level="DEBUG" tracePoint="AFTER_REQUEST" category="${logcat}" />
+	</sub-flow>
+	<sub-flow name="patch-product-subflow" doc:id="b230f19a-cb0e-4ae6-b175-49c41b9aa745">
+		<http:request method="GET" doc:name="Get Cart" doc:id="fce5ccec-4c06-43a2-b3ad-da67ea130958" config-ref="Shopping_System_HTTP_Request_configuration" path="/cart/{customerId}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : 1,
+	"client_id" : 2,
+	"correlationId": vars.correlationId
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"customerId" : vars.customerId
+}]]]></http:uri-params>
+		</http:request>
+		<avio-core:custom-logger doc:name="Log Get Cart" doc:id="1c99c6ef-2d6f-48f2-aef3-55449fa6a5da" config-ref="AVIO_Core_Config" correlation_id="#[vars.correlationID]" level="DEBUG" tracePoint="AFTER_REQUEST" category="${logcat}"/>
+		<choice doc:name="Choice" doc:id="f777b225-7e72-47e6-953a-7311c10b42c3" >
+			<when expression='#[payload.message != "failed"]'>
+				<foreach doc:name="For Each" doc:id="debd08c4-d3f0-449b-a622-068f5803ecc4" collection="#[payload]">
+			<set-variable value="#[payload.quantity]" doc:name="orderQuantity" doc:id="9f31475f-add6-4a4a-bace-591e8e73f66b" variableName="orderQuantity" />
+			<http:request method="GET" doc:name="Get Product Detail" doc:id="0a93ef50-f5e3-4fa4-bf51-ff5cd66adb26" config-ref="Product_System_HTTP_Request_configuration" path="/products/{productId}">
+				<http:headers><![CDATA[#[output application/java
+---
+{
+	"client_secret" : 1,
+	"client_id" : 2,
+	"correlationId": vars.correlationId
+}]]]></http:headers>
+				<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"productId" : payload.itemId
+}]]]></http:uri-params>
+			</http:request>
+			<ee:transform doc:name="patchInventory Request" doc:id="e22d72f8-53c2-42fe-b83d-be8a0e082007">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "productId" : payload.id,
+  "quantityAvailable" : payload.inventoryAvailable - vars.orderQuantity
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			<http:request method="PATCH" doc:name="patch product inventory" doc:id="02aba3e9-c370-4bbc-9126-b48ca2f3fe1f" config-ref="Product_System_HTTP_Request_configuration" path="/products/{productId}/inventory">
+			<http:headers><![CDATA[#[output application/java
+---
+{
+	"client_secret" : 1,
+	"client_id" : 2,
+	"correlationId": vars.correlationId
+}]]]></http:headers>
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"productId" : payload.productId
+}]]]></http:uri-params>
+		</http:request>
+		</foreach>
+			</when>
+			<otherwise>
+				<avio-core:custom-logger doc:name="Log Error" doc:id="6cfaa686-8005-4c4e-b3bf-495a06f4a3b8" config-ref="AVIO_Core_Config" message="No Cart Items for Customer Id" level="ERROR" tracePoint="END" category="${logcat}"/>
+			</otherwise>
+		</choice>
+		<set-payload doc:name="Set Payload" doc:id="50267073-95c5-4dc9-a2bf-e9c3859150c2" value='#[%dw 2.0
+output application/json
+---
+
+{
+	status: "success",
+	statusCode:200,
+	message: sizeOf(payload) ++ " Products Inventory has been updated !"
+}]' />
+	</sub-flow>
+</mule>

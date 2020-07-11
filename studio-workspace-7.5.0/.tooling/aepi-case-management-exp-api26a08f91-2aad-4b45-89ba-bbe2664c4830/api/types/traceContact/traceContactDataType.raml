@@ -1,0 +1,62 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  contactDate:
+    required: true
+    type: datetime-only
+    example:
+      "2015-07-04T21:00:00"
+  firstName:
+    required: true
+    type: string
+    maxLength: 255
+    example:
+      "Testy"
+  middleInitial:
+    required: false
+    type: string
+    maxLength: 1
+    example:
+      "T"
+  lastName:
+    required: true
+    type: string
+    maxLength: 255
+    example:
+      "McTesterface"
+  address1:
+    required: true
+    type: string
+    maxLength: 255
+    example:
+      "1212 Main"
+  address2:
+    required: false
+    type: string
+    maxLength: 255
+  city:
+    required: true
+    type: string
+    maxLength: 255
+    example:
+      "Dallas"
+  state:
+    required: true
+    type: string
+    example:
+      "TX"
+    maxLength: 2
+  zip:
+    required: true
+    type: string
+    minLength: 5
+    example:
+      "12345-67890"
+  geoLocation:
+    description: geo coordinates of address
+    type: !include ../location/locationDataType.raml
+  phone:
+    required: true
+    type: string
+    example:
+      "214-555-1234"

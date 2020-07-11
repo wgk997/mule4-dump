@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="reduceOperator" doc:id="328e5d16-0c33-493d-949b-f4f125d2cd95" >
+		<ee:transform doc:name="Transform Message" doc:id="4c6b69ec-2ade-462d-90ef-4c761a3d3281" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var array1 = 2 to 5
+
+ var stringArray = ["one", "two", "three", "go!"]
+ 
+ var nestedArray = [ [1], [2,3], ["hello"] ]
+ 
+ var objArray = [
+   {one: 1},
+   {two: 2, three: 3}
+]
+ 
+---
+{ 
+   reduceElement: array1 reduce (element, acc) -> element,
+   reduceElement2: array1 reduce $,
+   reduceAccumulator: array1 reduce $$,
+   reduceAccumulator2: array1 reduce (element, acc) -> acc,
+   initAccumulator: array1 reduce (element, acc=1) -> acc,
+   sumNumbersFrom1: array1 reduce (element, acc=1) -> element + acc,
+   sumNumbersFrom1: array1 reduce (element, acc) -> element + acc,
+   sumNumbersReverse: array1 reduce (element, acc) -> acc + element,
+   sumNumbers2: array1 dw::core::Arrays::sumBy $,
+   concatStrings: array1 reduce (element, acc) -> acc ++ element,
+   concatStrings2: array1 reduce (element, acc) -> acc ++ "," ++ element,
+   concatStringsReverse: array1 reduce (element, acc) -> element ++ "," ++ acc,
+   concatStringsReverseFrom1: 
+array1 reduce (element, acc=1) -> 
+   element ++ "," ++ acc
+   ,
+   concatStringsFrom1: array1 reduce (element, acc=1) -> acc ++ "," ++ element,
+   
+   concateStrings: stringArray reduce (element, acc) -> acc ++ "," ++ element,
+   concatStringsReverse: 
+stringArray reduce (element, acc) -> 
+   element ++ "," ++ acc,
+  countSmallStrings: stringArray reduce (element, acc=0) -> 
+(if(sizeOf(element) < 4) 1 else 0) + acc,
+countSmallStrings2: stringArray dw::core::Arrays::countBy(sizeOf($) < 4),
+flattenChildArrays: nestedArray reduce (element, acc=[]) -> acc ++ element,
+flattenForwards: objArray reduce (element, acc={})  -> acc ++ element,
+flattenBackwards: objArray reduce (element, acc={})  -> element ++ acc,
+flattenBackwards2: {( objArray[-1 to 0] )}
+   
+   
+  
+   
+}
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

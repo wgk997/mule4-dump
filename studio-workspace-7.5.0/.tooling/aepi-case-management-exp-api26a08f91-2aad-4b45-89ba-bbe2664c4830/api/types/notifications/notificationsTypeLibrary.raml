@@ -1,0 +1,59 @@
+#%RAML 1.0 Library
+types:
+  
+  notificationsMessageDetail:
+    type: object
+    properties:
+      to:
+        required: true
+        type: string
+        example:
+          "+19725550000"
+      status:
+        required: true
+        type: string
+        example:
+          "SENT"
+
+  notificationsDataTypeForPostResponse:
+    type: object
+    properties:
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+        example:
+          201
+      message:
+        type: string
+        required: true      
+        example:          
+          "Added"
+      smsMessage:
+        type: string
+        required: true
+        example:
+          "A person whom you've been in contact with is ill, please contact xxx-xxx-xxxx for further information"
+      notifications:
+        type: array
+        items:
+          notificationsMessageDetail
+        example: [
+          {
+            "to": "+19725550000",  
+            "status": "SENT"
+          },
+          {
+            "to": "+19725550001",  
+            "status": "SENT"
+          },
+          {
+            "to": "+19725550002",  
+            "status": "SENT"
+          },
+          {
+            "to": "+19725550003",  
+            "status": "SENT"
+          }
+        ]

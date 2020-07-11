@@ -1,0 +1,70 @@
+#%RAML 1.0 Library
+usage: Used as the source of resources dataTypes related to the procedure
+types:
+  procedureResponseForGet:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      case:
+        required: true
+        type: !include ../case/caseDataType.raml
+      procedure:
+        required: true
+        type: array
+        items: !include procedureDataType.raml
+  
+  procedureResponseForPost:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      case:
+        required: true
+        type: !include ../case/caseDataType.raml
+      procedure:
+        required: true
+        type: array
+        items: !include procedureDataType.raml
+  
+  procedureResponseForPut:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      procedure:
+        required: true
+        type: array
+        items: !include procedureDataType.raml
+  
+  procedureResponseGeneric:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true 
+  procedure:
+    type: !include procedureDataType.raml

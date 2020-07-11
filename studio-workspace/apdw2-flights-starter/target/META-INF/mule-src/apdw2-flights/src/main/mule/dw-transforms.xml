@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+	<flow name="testJoinAirportDetailsToFlights" doc:id="a93e7779-6cce-47e7-9d08-724fdbc20a0d" >
+		<http:listener doc:name="HTTP: /join" doc:id="6fcde5ad-7414-4018-a317-447bda267f42" config-ref="HTTP_Listener_config" path="/join"/>
+		<set-payload value='#[output application/java 
+--- 
+readUrl( "classpath://examples/flightsAllAirlinesSFO.json", "application/json")]' doc:name="Mocked flightsAllAirlines results" doc:id="5e72fe29-b88a-4c4f-a84d-7656b9a69b57" />
+		<flow-ref doc:name="joinAirportDetailsToFlights" doc:id="9f51c096-e3d1-49f5-a273-20e3397656ba" name="joinAirportDetailsToFlights"/>
+	</flow>
+	<flow name="joinAirportDetailsToFlights" doc:id="3a168865-95f3-4de7-88fc-2c23cae436cf">
+		<ee:transform doc:name="Transform Message" doc:id="79adcc75-3db2-465e-8438-34626f3e0f41">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/dw
+import dw::modules::FlightsLib
+
+var airportDetails = readUrl("classpath://airportInfoTiny.csv","application/csv") groupBy $.IATA
+
+fun flightsJoinedWithAirportInfo(payload) = 
+  payload.flights map ( ( flight ) -> 
+ 	flight ++
+	{
+		airportInfo :  { (airportDetails[flight.destination][0] - 
+			"openFlightsAirportId" - "airportName" -"city")}
+	} 
+)
+
+var flightKeysToDelete=
+["destination","openFlightsAirportId","type","source"]
+
+fun joinAirportDetailsv1(flight) =
+	destination:
+	 (
+		 {airportCode: flight.destination }
+		 ++ 
+		 (
+		 	airportDetails[flight.destination][0]		
+		 )
+	 )
+
+//fun filterDetailsKeys(detailsObject, keysArray) =
+//	detailsObject - keysArray
+
+fun flightsJoinedWithAirportInfoV2(payload) = 
+	payload.flights  map (flight,index) -> 
+		 flight mapObject (value, key) -> 
+			key match { 
+				case "destination" -> joinAirportDetails(flight) 
+				else -> { (key): value }
+			}
+
+fun buildXmlObject( objectArray, parentTag ) =
+{
+	 (dw::core::Strings::pluralize(parentTag)) :
+	 {
+		 ( objectArray map (element) -> 
+		 {	
+			 (parentTag): element
+		 })
+	 }
+}
+
+fun buildJsonObject( objectArray: Array<Object>, parentTag: String	) = 
+ objectArray map (element, index) -> {
+ ( parentTag ++ index ): element
+ }
+ 
+fun joinAirportDetails(flight) =
+	destination:
+	 do {
+	 	var airportCodeDetails = 
+	 	(
+		 {airportCode: flight.destination }
+		 ++ 
+		 (
+
+		 		reorderObject(airportDetails[flight.destination][0], flightKeysToDelete)
+	
+		 )
+	 )
+	 ---
+	  airportCodeDetails
+	 }
+
+fun reorderObject( anObject, reorderedIndices ) =
+	do {
+		var objectKeys = 
+			anObject pluck (value, key) -> (key as String) 
+			var pluckedKeys = dw::core::Objects::nameSet( anObject ) 
+	---
+	objectKeys
+	}
+
+---
+FlightsLib::buildXmlObject( flightsJoinedWithAirportInfoV2(payload), "flight")
+ //buildJsonObject( flightsJoinedWithAirportInfoV2(payload), "flight")
+//airportDetails
+//flightsJoinedWithAirportInfo(payload)
+//flightsJoinedWithAirportsInfoV2(payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="b21c73b5-a0f1-4e3d-a256-99b58a8d6dcc" message="payload"/>
+	</flow>
+	<flow name="flattenSampleScatterGatherResults"  >
+		<ee:transform doc:name="Transform Message" doc:id="d4172aad-23e2-48ec-b711-b2236e2001d8">
+			<ee:message >
+				<ee:set-payload resource="flattenScatterGatherResults.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="transformAmericanJsonToJava" doc:id="b51802b8-d443-441b-b0df-90325ccecda5">
+		<ee:transform doc:name="American JSON to Flight Java objects" doc:id="c563365f-1735-4d11-9716-7bc6ed43a45c">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+type Currency = String {format: "###.00"}
+type Flight = Object {class: "com.mulesoft.training.Flight"}
+var airlineName = "American Airlines"
+ns mu http://mu.com
+
+fun amrJsontoJava(payload)=
+flights: payload as Array map (payload01,indexOfPayload01) -> {
+	airlineName: airlineName,
+	availableSeats: payload01.emptySeats,
+	departureDate: payload01.departureDate,
+	destination: payload01.destination,
+	flightCode: payload01.code,
+	origination: payload01.origin,
+	planeType: payload01.plane."type",
+	price: payload01.price
+} as Flight
+---
+amrJsontoJava(payload)
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables />
+		</ee:transform>
+	</flow>
+	<flow name="dwReview" doc:id="eef7d317-ea46-4324-b280-ade17c54583d" >
+		<ee:transform doc:name="Transform Message" doc:id="47052770-e9f9-43b4-916b-f8ca3f89e6c8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+typeOf(
+	(readUrl("classpath://examples/flightsJoinedWithAirports.xml",
+"application/xml")..*flight 
+//distinctBy $."airline-name"
+filter $."available-seats" as Number > 0
+and $."price" as Number < 600 
+orderBy ($."airline-name"  ++ $.price )
+groupBy upper($."airline-name")
+//).."available-seats"[0] as Number as String {format: "+#,###"}
+).."departure-date"[0] as Date {format:"yyyy/MM/dd"} as Date {format:"dd MMM, yyyy"}
+)
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	
+	
+
+</mule>

@@ -1,0 +1,59 @@
+{
+  "configs": [
+    "global-config.xml",
+    "health-check.xml",
+    "aepi-medical-alert-sys-api/aepi-medical-alert-sys-api-main.xml",
+    "aepi-medical-alert-sys-api/aepi-medical-alert-sys-api-impl.xml"
+  ],
+  "secureProperties": [
+    "anypoint.platform.client_id",
+    "anypoint.platform.client_secret"
+  ],
+  "redeploymentEnabled": true,
+  "name": "com.avioconsulting.bc:aepi-medical-alert-sys-api:1.0.0",
+  "minMuleVersion": "4.2.2",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "log4j2-sqs-example.xml",
+        "log4j2.xml",
+        "global-config.xml",
+        "health-check.xml",
+        "security/log4j2.xml",
+        "aepi-medical-alert-sys-api/aepi-medical-alert-sys-api-impl.xml",
+        "aepi-medical-alert-sys-api/aepi-medical-alert-sys-api-main.xml",
+        "properties/QA.properties",
+        "properties/local.properties",
+        "properties/DEV.properties",
+        "properties/PROD.properties",
+        "api/types/notifications/notificationsStatusDataType.raml",
+        "api/types/notifications/notificationsTypeLibrary.raml",
+        "api/types/notifications/notificationsDataType.raml",
+        "api/aepi-medical-alert-sys-api.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/commonTraits.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/resourceTypes/item.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/resourceTypes/collection.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/schemas/error-response-dataType.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/examples/data-not-found-example.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/examples/unsupported-type-example.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/examples/not-acceptable-example.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/examples/not-implemented-example.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/examples/method-not-allowed-example.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/examples/bad-request-example.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses/examples/internal-server-error-example.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses-trait.raml",
+        "api/exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/basic_auth_scheme.raml",
+        "api/examples/notificationsPostResponse.json",
+        "api/examples/notificationsPostRequest.json",
+        "aepiKeystore.p12"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

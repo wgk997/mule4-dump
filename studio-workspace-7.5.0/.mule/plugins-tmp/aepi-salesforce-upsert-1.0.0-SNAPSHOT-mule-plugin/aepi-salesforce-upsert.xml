@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd">
+
+	<flow name="shared-salesforce-upsert" doc:id="e0130572-50ec-441c-95da-4aecda6bb752" >
+		
+ 		<ee:transform doc:name="VARS: updateQuery, salesforceType,correlationId" doc:id="ddc38be7-229b-4f12-bda6-128ea1fba28a">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="updateQuery"><![CDATA[%dw 2.0
+output application/java
+var id = {Id: payload.upsertPayload.Id as String} default {}
+
+//payload[?($ == null)] builds an object with the key:value pairs of  "payload" 
+//where the value (noted as '$') is null
+//pluck is a native function that given an object, it builds an array following the logic after '->'
+var fieldsToNull = {fieldsToNull: (payload.upsertPayload[?($ == null)] pluck (value, key) -> key) default []}
+
+---
+[
+	id ++ payload.upsertPayload ++ fieldsToNull
+]]]></ee:set-variable>
+				<ee:set-variable variableName="salesforceType" ><![CDATA[payload.upsertHeader.salesforceType]]></ee:set-variable>
+				<ee:set-variable variableName="correlationId" ><![CDATA[payload.upsertHeader.correlationId]]></ee:set-variable>
+			
+</ee:variables>
+		</ee:transform>
+		
+		<salesforce:upsert
+			
+			externalIdFieldName="Id" 
+			doc:name="sobject" 
+			doc:id="982006a4-02ef-434d-a8de-13311427ccfe" 
+			config-ref="salesforce-config" 
+			target="updatedSObject" 
+			type="#[vars.salesforceType as String]">
+			<salesforce:records ><![CDATA[#[vars.updateQuery]]]></salesforce:records>
+		</salesforce:upsert>
+		
+		<ee:transform doc:name="build response" doc:id="7ea48aed-5bf4-4acd-ba34-d7b039449080">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	responseMetadata:{
+		statusCode: if (vars.updatedSObject[0].success==true) (201) else (400),
+		message: if (vars.updatedSObject[0].success==true) ("OK") else (vars.updatedSObject[0].errors[0].message),
+		Id: vars.updatedSObject[0].id
+	}, 	
+	updatedSObject: payload.upsertPayload
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+		<avio-core:custom-logger doc:name="shared upsert response" doc:id="617279e1-89cf-43bc-b9f2-498137a7a38d" config-ref="avio-core-config" correlation_id="#[vars.correlationId]" payload="#[write(payload,'application/json')]" tracePoint="END" category="${log.cat}" message="Response from Upsert"/>
+		<error-handler >
+<!-- 			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9acc5e1e-6014-4493-9d5d-2776b585918b" type="SALESFORCE:CONNECTIVITY, SALESFORCE:INVALID_REQUEST_DATA, SALESFORCE:INVALID_SESSION, SALESFORCE:INVALID_STRUCTURE_FOR_INPUT_DATA, SALESFORCE:RETRY_EXHAUSTED, SALESFORCE:UNKNOWN">
+			</on-error-continue> -->
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d2726bac-ee24-405b-bf8f-16ad92e57ec6" type="SALESFORCE:CONNECTIVITY, SALESFORCE:INVALID_REQUEST_DATA, SALESFORCE:INVALID_SESSION, SALESFORCE:INVALID_STRUCTURE_FOR_INPUT_DATA, SALESFORCE:RETRY_EXHAUSTED, SALESFORCE:UNKNOWN">
+				<avio-core:custom-logger doc:name="SF ERROR" doc:id="4c711d9a-91da-464d-97d6-80b87ec3f3c0" config-ref="avio-core-config" correlation_id="#[vars.correlationId]" message="#['Caught Salesforce Error: ' ++ error.errorType.namespace ++ error.errorType.identifier]" payload="#[write(error,'application/json')]" level="ERROR" tracePoint="EXCEPTION" status_code="500" type='#[error.errorType.namespace ++ ":" ++ error.errorType.identifier]' detail="#[error.errorMessage]" category="${log.cat}" />
+				<ee:transform doc:name="salesforce error response" doc:id="5e4d0902-757a-4dff-b223-432a7501539d">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	responseMetadata:{
+		statusCode: 400,
+		message: "The " ++ vars.salesForceType as String ++ " was not updated due to a Salesforce error"
+	},
+	salesforceError:{
+		errorType: error.errorType.namespace ++ ":" ++ error.errorType.identifier,
+		errorMessage: error.cause.localizedMessage  
+	} 
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4726732f-6f0f-4bba-bcc0-fac8e2bd225c" type="EXPRESSION, STREAM_MAXIMUM_SIZE_EXCEEDED">
+				<avio-core:custom-logger doc:name="Other ERROR" doc:id="c232fa5d-3c6c-4b09-93d1-4b79e778bf54" config-ref="avio-core-config" correlation_id="#[vars.correlationId]" message="#['Caught Salesforce Error: ' ++ error.errorType.namespace ++ error.errorType.identifier]" payload="#[write(error,'application/json')]" level="ERROR" tracePoint="EXCEPTION" status_code="500" type='#[error.errorType.namespace ++ ":" ++ error.errorType.identifier]' detail="#[error.errorMessage]" category="${log.cat}" />
+				<ee:transform doc:name="other error response" doc:id="b51fa3a2-216b-49f3-a12c-5ee66a3b95b2">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	responseMetadata:{
+		statusCode: 500,
+		message: "Exception"
+	},
+	salesforceError:{
+		errorType: error.errorType.namespace ++ ":" ++ error.errorType.identifier,
+		errorMessage: error.errorMessage  
+	} 
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+		</error-handler>
+				
+		
+	</flow>
+</mule>

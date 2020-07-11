@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+
+	<flow name="chainTests" doc:id="e7d3c4e0-229c-465e-9e3d-5f00c5b23307" >
+		<ee:transform doc:name="Transform Message" doc:id="fd78c593-be8f-49d6-a4bc-bc3fc963eb97" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var inputArray = ["one","three","four", "5", 10, 30, 50, 20]
+
+---
+{
+	backwards: inputArray filter ($ is Number) orderBy (-$),
+	tower: inputArray filter ($ is String) orderBy sizeOf($)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="importCustomMapping" doc:id="5662cde0-9534-4efe-82c8-8fc76397da6d" >
+		<ee:transform doc:name="Custom module test 1" doc:id="4a3a68e6-50b0-459c-b8c1-6e4322ed6d24">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+import capitalizeKey from dw::modules::MyModule
+
+---
+{ (capitalizeKey("total"))
+	: 300 * dw::modules::MyModule::exchangeRate
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Custom mapping" doc:id="4ed55514-fd0c-439c-9e57-78fac20fcb01" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+import dw::modules::MyMapping
+
+---
+MyMapping::main( 
+   someInput: { "user" : "bar" } 
+)
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Custom mapping error" doc:id="b5e89d9a-269a-49b4-a260-2a55adf137c2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+import dw::modules::MyMapping
+
+---
+/*
+ * This produces an error:
+ MyMapping::capitalizeKey( 
+ "aKeyName"
+)
+
+* 
+*/
+{}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mockExternalService" doc:id="cdfbb8dd-e61b-47d9-884e-7d4933b281f5" >
+		<http:listener doc:name="POST HTTP:8085 /lookupDWScript" doc:id="7aff521e-3c50-4e29-af3c-b02de747cde1" path="/dynScript" config-ref="HTTP_8085_Listener"/>
+		<set-variable value="#[attributes.queryParms.uname]" doc:name="uname from queryParam" doc:id="049b02e0-a125-484f-9ab2-cb9d2e812cb4" variableName="uname" />
+		<http:request method="POST" doc:name="HTTP://localhost:8085/lookupDWScript" doc:id="6222a912-3c3a-4057-9be0-1071bd108601" config-ref="HTTP_Request_8085" path="/lookupDWScript" >
+			<http:body ><![CDATA[#[output applicatlin/json
+
+---
+{
+	oid: attributes.queryParams.orderid,
+	username: attributes.queryParams.uname,
+	script: attributes.queryParams.script
+}]]]></http:body>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"oid" : attributes.queryParams.orderid,
+	"username" : attributes.queryParams.uname
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"uname" : "Henry",
+	"oid" : attributes.queryParams.orderid
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Build URL encoded DW script string" doc:id="52821ef4-4165-42b3-9c3b-da5d900fca7b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+		orderId: attributes.queryParm.orderid,
+		userName: vars.uname
+		
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dynamicEvaluateFromConnectorTest" doc:id="d8f04680-91c7-4951-9c29-798f4cff4fd0" >
+		<http:listener doc:name="HTTP: 8081/eval" doc:id="fde0c280-0c6a-429f-85de-f9f9d7259096" config-ref="HTTP_Listener_config" path="evalScript" />
+		<ee:dynamic-evaluate doc:name="Eval script from payload urlEncoded string with orderid" doc:id="48032856-7985-4b20-9566-22d3687fff5a" expression="#[output application/xml
+--- 
+read( dw::core::URL::decodeURIComponent(payload as String) )]" >
+			<ee:parameters >#[{ oid: attributes.queryParams.orderid default &quot;1001&quot; }]</ee:parameters>
+		</ee:dynamic-evaluate>
+	</flow>
+	<flow name="getDynamicDataWeaveScript" doc:id="53b166fe-3df8-47a7-b062-0ebf2fe69762" >
+		<ee:transform doc:name="Transform Message" doc:id="489c26ca-93a3-4ffd-a05d-0db5f7d66d0f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="namespaces" doc:id="63a1d03a-922c-49d1-b27c-252c2f1340b4" >
+		<ee:transform doc:name="JSON namespaces" doc:id="ca432dc9-255a-4bb6-bf83-1ea25b57f58b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+/*dynamicMappingJSON.dwl
+ * This is a reusable DataWeave template. 
+ * Read this as an encoded string from a Dynamic Evaluate component
+ */
+import capitalize from dw::core::Strings
+output application/json
+
+var uname = "Max"
+var orderid = "3000"
+var dept = "Sales"
+var payload = 
+	["one", "aValue"]
+	
+fun formatKey(aString: String) = 
+capitalize(aString) ++ "Key" 
+
+fun createObjectFromArray( someElement: Array ) =
+{
+      (formatKey (someElement[0] as String)) : someElement[1]
+}
+
+
+
+---
+result:
+createObjectFromArray( payload as Array )
+++ 
+{
+	"user:user-name" : uname, 
+	"sales:oid-$(uname)" : orderid,
+	"org:dept": dept,
+	namespaces: {
+		user: "http://acme.com/crm",
+		org: "http://acme.com/ldap/groups",
+		sales: "http://acme.com/dept/sales"
+	}
+}
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="5ccd79af-29d0-42b3-9931-48411a64d1de" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+/* dynamicMappingXML.dwl
+ * This is a reusable DataWeave template. 
+ * To use this template, the two variables uname and orderid are supplied.
+ * This script will then be dynamically evaluated in-place using a 
+ * Dynamic Evaluate component in the flow. 
+ * 
+ * If this template uses custom DataWeave modules, these modules must be included in the 
+ * project so they can be accessed when evaluated by the Dynamic Evaluate component. 
+ */
+import capitalize from dw::core::Strings
+output application/xml
+
+ns cust http://amce.com/crm
+ns sales http://acme.com/dept/sales
+ns org http://acme.com/ldap
+
+var uname = "Max"
+var orderid = "3000"
+var dept = "Sales"
+var aPayload = ["one", "aValue"] 
+	
+
+
+fun formatKey(aString: String) = 
+capitalize(aString) ++ "Key" 
+
+fun createObjectFromArray( someElement: Array ) =
+{
+      (formatKey (someElement[0] as String)) : someElement[1]
+}
+---
+result:
+createObjectFromArray(aPayload )
+++ 
+{
+	cust#"user-name" @(dept: dept): uname, 
+	sales#oid @(user: uname): orderid,
+	org#dept: dept
+}
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

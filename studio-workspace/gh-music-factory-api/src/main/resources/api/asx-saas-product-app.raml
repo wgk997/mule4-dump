@@ -1,0 +1,102 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/df33bfdc-b8cb-468f-8e57-971de50a06ae/ # 
+#######################################################################
+# WHO  WHEN      WHY
+# ASX  09-22-19  Initial Product API with resources 
+#######################################################################
+
+version: v1
+title: ASX-SAAS-Product-Sys-Api
+description: System API for the Store as a Service experience layer which exposes the methods and resources to search for products, see product details.
+
+types:
+  product: !include dataTypes/product.raml
+  productDetail: !include dataTypes/productDetail.raml
+  review: !include dataTypes/review.raml
+  inventory: !include dataTypes/inventory.raml
+
+uses:
+  lib: libraries/commonTraits.raml
+
+traits:  
+  hasErrorResponses: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.0/error-responses-trait.raml
+
+resourceTypes: 
+  collection: !include resourcesType/collection.raml
+  item: !include resourcesType/item.raml
+
+/products:
+  is: [lib.correlationRequired, lib.clientIdRequired, hasErrorResponses]
+  type: collection
+  description: "Find resources related to products"
+
+  get:
+    description: Search for products based on name, summary and/or manufacturer.
+    queryParameters:
+      query:
+        description: "Part or all of the name summary or manufacturer."
+        minLength: 3
+        type: string
+        example: "gopro"
+    responses:
+      200:
+        body:
+          application/json:
+            type: product[]
+            example: !include examples/productsGetResponse.json
+
+  /{id}:
+    is: [lib.correlationRequired, lib.clientIdRequired, hasErrorResponses]
+    type: item
+
+    get:
+      description: Product details, including inventory and pricing.
+      responses:
+        200:
+          body:
+            application/json:
+              type: productDetail
+              example: !include examples/productGetResponse.json
+    patch:
+      description: "Update product detail information including name, average ratings, total ratings."
+      body:
+        application/json:
+          type: productDetail
+          examples:
+            example: !include examples/productGetResponse.json
+      responses:
+        200:
+          body:
+            application/json:
+              example: 
+                message" :  "The product record has been updated"
+
+    /reviews:
+      is: [lib.correlationRequired, lib.clientIdRequired]
+      post:
+        description: Add new review.
+        body:
+          application/json:
+            type: review
+            example: !include examples/reviewAddRequest.json
+        responses:
+          200:
+            body:
+              application/json:
+                example:
+                  message: "Review has been added." 
+
+    /inventory:
+      is: [lib.correlationRequired, lib.clientIdRequired]
+      patch:
+        description: Update product inventory for availabilityß.
+        body:
+          application/json:
+            type: inventory
+            example: !include examples/inventoryPatchRequest.json
+        responses:
+          200:
+            body:
+              application/json:
+                example:
+                  message: "Product Inventory has been updated."

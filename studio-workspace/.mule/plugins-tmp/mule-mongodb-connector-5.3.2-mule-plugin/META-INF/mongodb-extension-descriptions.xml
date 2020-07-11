@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension-documentation>
+    <configs>
+        <config name="config">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="expirationPolicy">
+                    <description><![CDATA[Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.]]></description>
+                </parameter>
+                <parameter name="enableMetadata">
+                    <description><![CDATA[collectionMetadataSamples: Stores templates to build metadata based on Document parameters union Key (String): Collection Name. List<String>: List of ObjectIDs Documents in specific collection.]]></description>
+                </parameter>
+                <parameter name="collectionMetadataSamples">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </config>
+    </configs>
+    <connections>
+        <connection name="connection">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="host">
+                    <description><![CDATA[A list of MongoDB instance, with the format <code>host:port</code>, separated by commas. <p> <pre> Example: 127.0.0.1:27017, 192.168.1.2:27017 </pre>]]></description>
+                </parameter>
+                <parameter name="connectionsPerHost">
+                    <description><![CDATA[The number of connections allowed per host (the pool size, per host)]]></description>
+                </parameter>
+                <parameter name="threadsAllowedToBlockForConnectionMultiplier">
+                    <description><![CDATA[Multiplier for connectionsPerHost for # of threads that can block.]]></description>
+                </parameter>
+                <parameter name="maxWaitTime">
+                    <description><![CDATA[The max wait time for a blocking thread for a connection from the pool in ms.]]></description>
+                </parameter>
+                <parameter name="connectTimeout">
+                    <description><![CDATA[The connection timeout in milliseconds; this is for establishing the socket connections (open). 0 is default and infinite.]]></description>
+                </parameter>
+                <parameter name="socketTimeout">
+                    <description><![CDATA[The socket timeout. 0 is default and infinite.]]></description>
+                </parameter>
+                <parameter name="username">
+                    <description><![CDATA[the username to use for authentication.]]></description>
+                </parameter>
+                <parameter name="password">
+                    <description><![CDATA[the password to use for authentication. If the password is null or whitespaces only, the connector won't use authentication and username must be empty too.]]></description>
+                </parameter>
+                <parameter name="database">
+                    <description><![CDATA[Name of the database]]></description>
+                </parameter>
+                <parameter name="ssl">
+                    <description><![CDATA[This is for enabling an SSL connection. It is disabled by default.]]></description>
+                </parameter>
+                <parameter name="tlsContextFactory">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="reconnection">
+                    <description><![CDATA[When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy]]></description>
+                </parameter>
+            </parameters>
+        </connection>
+        <connection name="connection-string">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="connectionString">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="reconnection">
+                    <description><![CDATA[When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy]]></description>
+                </parameter>
+            </parameters>
+        </connection>
+    </connections>
+    <extension name="MongoDB">
+        <description><![CDATA[MongoDB is an open source, high-performance, schema-free, document-oriented database that manages collections of BSON documents.]]></description>
+        <parameters/>
+    </extension>
+    <operations>
+        <operation name="addUser">
+            <description><![CDATA[Adds a new user for this db]]></description>
+            <parameters>
+                <parameter name="username">
+                    <description><![CDATA[Name of the user]]></description>
+                </parameter>
+                <parameter name="password">
+                    <description><![CDATA[Password that will be used for authentication]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="countDocuments">
+            <description><![CDATA[Counts the number of documents that match the given query. If no query is passed, returns the number of elements in the collection]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[The target collection]]></description>
+                </parameter>
+                <parameter name="conditionQuery">
+                    <description><![CDATA[The optional String query for counting documents. Only documents matching it will be counted. If unspecified, all documents are counted.]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="createCollection">
+            <description><![CDATA[Creates a new collection. If the collection already exists, a MongoException will be thrown.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection to create]]></description>
+                </parameter>
+                <parameter name="capped">
+                    <description><![CDATA[if the collection will be capped]]></description>
+                </parameter>
+                <parameter name="maxObjects">
+                    <description><![CDATA[the maximum number of documents the new collection is able to contain]]></description>
+                </parameter>
+                <parameter name="collectionSize">
+                    <description><![CDATA[the maximum size of the new collection]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="createFileFromPayload">
+            <description><![CDATA[Creates a new MuleGridFSFile in the database, saving the given content, filename, contentType, and extraData, and answers it.]]></description>
+            <parameters>
+                <parameter name="content">
+                    <description><![CDATA[the mandatory content of the new gridfs file. It may be a java.io.File, a byte[] or an InputStream.]]></description>
+                </parameter>
+                <parameter name="filename">
+                    <description><![CDATA[the mandatory name of new file.]]></description>
+                </parameter>
+                <parameter name="metadata">
+                    <description><![CDATA[the optional String metadata of the new content type]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="createIndex">
+            <description><![CDATA[Creates a new index]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection where the index will be created]]></description>
+                </parameter>
+                <parameter name="fieldName">
+                    <description><![CDATA[the name of the field which will be indexed]]></description>
+                </parameter>
+                <parameter name="order">
+                    <description><![CDATA[the indexing order]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="dropCollection">
+            <description><![CDATA[Deletes a collection and all the objects it contains. If the collection does not exist, does nothing.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection to drop]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="dropDatabase">
+            <description><![CDATA[Drop the current database]]></description>
+            <parameters>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="dropIndex">
+            <description><![CDATA[Drops an existing index]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection where the index is]]></description>
+                </parameter>
+                <parameter name="indexName">
+                    <description><![CDATA[the name of the index to drop]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="dump">
+            <description><![CDATA[Executes a dump of the database to the specified output directory. If no output directory is provided then the default /dump directory is used.]]></description>
+            <parameters>
+                <parameter name="outputDirectory">
+                    <description><![CDATA[output directory path, if no output directory is provided the default /dump directory is assumed]]></description>
+                </parameter>
+                <parameter name="outputName">
+                    <description><![CDATA[output file name, if it's not specified the database name is used]]></description>
+                </parameter>
+                <parameter name="zip">
+                    <description><![CDATA[whether to zip the created dump file or not]]></description>
+                </parameter>
+                <parameter name="oplog">
+                    <description><![CDATA[point in time backup (requires an oplog)]]></description>
+                </parameter>
+                <parameter name="threads">
+                    <description><![CDATA[amount of threads to execute the dump]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="executeCommand">
+            <description><![CDATA[Executes a command on the database]]></description>
+            <parameters>
+                <parameter name="commandName">
+                    <description><![CDATA[The command to execute on the database]]></description>
+                </parameter>
+                <parameter name="commandValue">
+                    <description><![CDATA[The value for the command]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="executeGenericCommand">
+            <description><![CDATA[Executes a generic command on the database.]]></description>
+            <parameters>
+                <parameter name="command">
+                    <description><![CDATA[The generic command to execute on the database]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="existsCollection">
+            <description><![CDATA[Answers if a collection exists given its name]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="findDocuments">
+            <description><![CDATA[Finds all documents that match a given query. If no query is specified, all documents of the collection are retrieved. If no fields object is specified, all fields are retrieved.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the target collection]]></description>
+                </parameter>
+                <parameter name="conditionQuery">
+                    <description><![CDATA[the optional String query document. If unspecified, all documents are returned.]]></description>
+                </parameter>
+                <parameter name="fields">
+                    <description><![CDATA[alternative way of passing fields as a literal List]]></description>
+                </parameter>
+                <parameter name="numToSkip">
+                    <description><![CDATA[number of documents skip (offset)]]></description>
+                </parameter>
+                <parameter name="resultLimit">
+                    <description><![CDATA[limit of documents to return]]></description>
+                </parameter>
+                <parameter name="sortBy">
+                    <description><![CDATA[indicates the String used to sort the results]]></description>
+                </parameter>
+                <parameter name="returnId">
+                    <description><![CDATA[boolean that indicates if a Id is return in the response]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="findFiles">
+            <description><![CDATA[Lists all the files that match the given query]]></description>
+            <parameters>
+                <parameter name="findQuery">
+                    <description><![CDATA[a String query]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="findOneAndUpdateDocument">
+            <description><![CDATA[Finds and update the first document that matches a given query. When returnNew = true, returns the updated document instead of the original document.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the target collection]]></description>
+                </parameter>
+                <parameter name="findQuery">
+                    <description><![CDATA[the String query that the returned object matches.]]></description>
+                </parameter>
+                <parameter name="contentToUpdate">
+                    <description><![CDATA[the String mandatory object that will replace that one which matches the query]]></description>
+                </parameter>
+                <parameter name="fields">
+                    <description><![CDATA[alternative way of passing fields as a literal List]]></description>
+                </parameter>
+                <parameter name="returnNewDocument">
+                    <description><![CDATA[Flag to specify if the returning org.bson.Document should be the updated document instead of the original. Defaults to false, returning the document before modifications]]></description>
+                </parameter>
+                <parameter name="sortBy">
+                    <description><![CDATA[indicates the String used to sort the results.]]></description>
+                </parameter>
+                <parameter name="remove">
+                    <description><![CDATA[removes the specified in the query field. Defaults to false]]></description>
+                </parameter>
+                <parameter name="upsert">
+                    <description><![CDATA[whether the database should create the element if it does not exist]]></description>
+                </parameter>
+                <parameter name="bypassDocumentValidation">
+                    <description><![CDATA[lets you update documents that do not meet the validation requirements. Defaults to false]]></description>
+                </parameter>
+                <parameter name="returnId">
+                    <description><![CDATA[boolean that indicates if a Id is return in the response]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="findOneDocument">
+            <description><![CDATA[Finds the first document that matches a given query. Throws a MongoException if no one matches the given query]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the target collection]]></description>
+                </parameter>
+                <parameter name="findQuery">
+                    <description><![CDATA[the mandatory String query document that the returned object matches.]]></description>
+                </parameter>
+                <parameter name="fields">
+                    <description><![CDATA[alternative way of passing fields as a literal List]]></description>
+                </parameter>
+                <parameter name="failOnNotFound">
+                    <description><![CDATA[Flag to specify if an exception will be thrown when no object is found. For backward compatibility the default value is true.]]></description>
+                </parameter>
+                <parameter name="returnId">
+                    <description><![CDATA[boolean that indicates if a Id is return in the response]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="findOneFile">
+            <description><![CDATA[Answers the first file that matches the given query. If no object matches it, a MongoException is thrown.]]></description>
+            <parameters>
+                <parameter name="findQuery">
+                    <description><![CDATA[the String mandatory query]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="getFileContent">
+            <description><![CDATA[Answers an inputstream to the contents of the first file that matches the given query. If no object matches it, a MongoException is thrown.]]></description>
+            <parameters>
+                <parameter name="fileId">
+                    <description><![CDATA[the MuleBsonObjectId of the file to be deleted]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="incrementalDump">
+            <description><![CDATA[Executes an incremental dump of the database]]></description>
+            <parameters>
+                <parameter name="outputDirectory">
+                    <description><![CDATA[output directory path, if no output directory is provided the default /dump directory is assumed]]></description>
+                </parameter>
+                <parameter name="incrementalTimestampFile">
+                    <description><![CDATA[file that keeps track of the last timestamp processed, if no file is provided one is created on the output directory]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="insertDocument">
+            <description><![CDATA[Inserts a document in a collection, setting its id if necessary.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection where to insert the given document.]]></description>
+                </parameter>
+                <parameter name="document">
+                    <description><![CDATA[a String instance.]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="insertDocuments">
+            <description><![CDATA[Inserts a list of documents in a collection, setting its id if necessary.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection where to insert the given document.]]></description>
+                </parameter>
+                <parameter name="documents">
+                    <description><![CDATA[a java.util.List of String.]]></description>
+                </parameter>
+                <parameter name="writeOrdered">
+                    <description><![CDATA[indicates if the list of write operations is ordered or unordered. By default, ff an error occurs during the processing of one of the write operations, MongoDB will return without processing any remaining write operations in the list. return new BsonDocumentWrapper(this, codecRegistry.get(Document.class));]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="listCollections">
+            <description><![CDATA[Lists names of collections available at this database]]></description>
+            <parameters>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="listFiles">
+            <description><![CDATA[Lists all the files that match the given query, sorting them by filename. If no query is specified, all files are listed.]]></description>
+            <parameters>
+                <parameter name="findQuery">
+                    <description><![CDATA[the String optional query]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="listIndices">
+            <description><![CDATA[List existent indices in a collection]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="mapReduceObjects">
+            <description><![CDATA[Transforms a collection into a collection of aggregated groups, by applying a supplied element-mapping function to each element, that transforms each one into a key-value pair, grouping the resulting pairs by key, and finally reducing values in each group applying a suppling 'reduce' function. Each supplied function is coded in JavaScript. Note that the correct way of writing those functions may not be obvious; please consult MongoDB documentation for writing them.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection to map and reduce]]></description>
+                </parameter>
+                <parameter name="mappingFunction">
+                    <description><![CDATA[a JavaScript encoded mapping function]]></description>
+                </parameter>
+                <parameter name="reduceFunction">
+                    <description><![CDATA[a JavaScript encoded reducing function]]></description>
+                </parameter>
+                <parameter name="outputCollection">
+                    <description><![CDATA[the name of the output collection to write the results, replacing previous collection if existed, mandatory when results may be larger than 16MB. If outputCollection is unspecified, the computation is performed in-memory and not persisted.]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="removeDocuments">
+            <description><![CDATA[Removes all the documents that match the a given optional query. If query is not specified, all documents are removed. However, please notice that this is normally less performant that dropping the collection and creating it and its indices again]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the collection whose elements will be removed]]></description>
+                </parameter>
+                <parameter name="findQuery">
+                    <description><![CDATA[the optional String query object. Documents that match it will be removed.]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="removeFiles">
+            <description><![CDATA[Removes the file that matches the given file id. If no file id is specified, all files are removed]]></description>
+            <parameters>
+                <parameter name="fileId">
+                    <description><![CDATA[the MuleBsonObjectId of the file to be deleted]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="restore">
+            <description><![CDATA[Takes the output from the dump and restores it. Indexes will be created on a restore. It only does inserts with the data to restore, if existing data is there, it will not be replaced.]]></description>
+            <parameters>
+                <parameter name="inputPath">
+                    <description><![CDATA[input path to the dump files, it can be a directory, a zip file or just a bson file]]></description>
+                </parameter>
+                <parameter name="dropCollection">
+                    <description><![CDATA[whether to drop existing collections before restore]]></description>
+                </parameter>
+                <parameter name="oplogReplay">
+                    <description><![CDATA[replay oplog for point-in-time restore]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="saveDocument">
+            <description><![CDATA[Inserts or updates a document based on its object _id.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the collection where to insert the object]]></description>
+                </parameter>
+                <parameter name="document">
+                    <description><![CDATA[the mandatory String document to insert.]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="updateDocuments">
+            <description><![CDATA[Updates documents that matches the given query. If query is not specified, all documents are retrieved. If parameter multi is set to false, only the first document matching it will be updated. Otherwise, all the documents matching it will be updated.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection to update]]></description>
+                </parameter>
+                <parameter name="findQuery">
+                    <description><![CDATA[the String query object used to detect the element to update.]]></description>
+                </parameter>
+                <parameter name="contentToUpdate">
+                    <description><![CDATA[the String mandatory object that will replace that one which matches the query.]]></description>
+                </parameter>
+                <parameter name="multipleUpdate">
+                    <description><![CDATA[if all or just the first document matching the query will be updated]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="updateDocumentsByFunction">
+            <description><![CDATA[Update documents using a mongo function. If query is not specified, all documents are retrieved.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection to update]]></description>
+                </parameter>
+                <parameter name="function">
+                    <description><![CDATA[the function used to execute the update]]></description>
+                </parameter>
+                <parameter name="findQuery">
+                    <description><![CDATA[the String query document used to detect the element to update.]]></description>
+                </parameter>
+                <parameter name="contentToUpdate">
+                    <description><![CDATA[the String mandatory document that will replace that one which matches the query.]]></description>
+                </parameter>
+                <parameter name="upsert">
+                    <description><![CDATA[if the database should create the element if it does not exist.]]></description>
+                </parameter>
+                <parameter name="multipleUpdate">
+                    <description><![CDATA[if all or just the first document matching the query will be updated.]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="updateDocumentsByFunctions">
+            <description><![CDATA[Update documents using one or more mongo function(s). If query is not specified, all documents are retrieved. If there are duplicated operators. Only the last one will be executed.]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[the name of the collection to update]]></description>
+                </parameter>
+                <parameter name="findQuery">
+                    <description><![CDATA[the String query document used to detect the element to update]]></description>
+                </parameter>
+                <parameter name="functions">
+                    <description><![CDATA[the String of functions used to execute the update. e.g. &lt;$set,{"key":123}&gt;]]></description>
+                </parameter>
+                <parameter name="upsert">
+                    <description><![CDATA[whether the database should create the element if it does not exist]]></description>
+                </parameter>
+                <parameter name="multipleUpdate">
+                    <description><![CDATA[if all or just the first document matching the query will be updated]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+    </operations>
+    <sources>
+        <source name="deleted-object-trigger">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[The collection that will be watched to detect the matching documents.]]></description>
+                </parameter>
+                <parameter name="fieldName">
+                    <description><![CDATA[The field that will queried to detect the objects that match the trigger condition. For New Objects trigger, it it is empty the `_id` field will be used.]]></description>
+                </parameter>
+                <parameter name="since">
+                    <description><![CDATA[Please specify an initial value from where to start querying objects. If this field is empty, this operation will retrieve the selected objects from the time the Mule app is started. For most objects types, the Object#toString() representation is sufficient. For Date objects please use Date#getTime()]]></description>
+                </parameter>
+                <parameter name="primaryNodeOnly">
+                    <description><![CDATA[Whether this source should only be executed on the primary node when runnning in Cluster]]></description>
+                </parameter>
+                <parameter name="schedulingStrategy">
+                    <description><![CDATA[Configures the scheduler that triggers the polling]]></description>
+                </parameter>
+                <parameter name="redeliveryPolicy">
+                    <description><![CDATA[Defines a policy for processing the redelivery of the same message]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </source>
+        <source name="modified-object-trigger">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[The collection that will be watched to detect the matching documents.]]></description>
+                </parameter>
+                <parameter name="fieldName">
+                    <description><![CDATA[The field that will queried to detect the objects that match the trigger condition. For New Objects trigger, it it is empty the `_id` field will be used.]]></description>
+                </parameter>
+                <parameter name="since">
+                    <description><![CDATA[Please specify an initial value from where to start querying objects. If this field is empty, this operation will retrieve the selected objects from the time the Mule app is started. For most objects types, the Object#toString() representation is sufficient. For Date objects please use Date#getTime()]]></description>
+                </parameter>
+                <parameter name="primaryNodeOnly">
+                    <description><![CDATA[Whether this source should only be executed on the primary node when runnning in Cluster]]></description>
+                </parameter>
+                <parameter name="schedulingStrategy">
+                    <description><![CDATA[Configures the scheduler that triggers the polling]]></description>
+                </parameter>
+                <parameter name="redeliveryPolicy">
+                    <description><![CDATA[Defines a policy for processing the redelivery of the same message]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </source>
+        <source name="new-object-trigger">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="collectionName">
+                    <description><![CDATA[The collection that will be watched to detect the matching documents.]]></description>
+                </parameter>
+                <parameter name="fieldName">
+                    <description><![CDATA[The field that will queried to detect the objects that match the trigger condition. For New Objects trigger, it it is empty the `_id` field will be used.]]></description>
+                </parameter>
+                <parameter name="since">
+                    <description><![CDATA[Please specify an initial value from where to start querying objects. If this field is empty, this operation will retrieve the selected objects from the time the Mule app is started. For most objects types, the Object#toString() representation is sufficient. For Date objects please use Date#getTime()]]></description>
+                </parameter>
+                <parameter name="primaryNodeOnly">
+                    <description><![CDATA[Whether this source should only be executed on the primary node when runnning in Cluster]]></description>
+                </parameter>
+                <parameter name="schedulingStrategy">
+                    <description><![CDATA[Configures the scheduler that triggers the polling]]></description>
+                </parameter>
+                <parameter name="redeliveryPolicy">
+                    <description><![CDATA[Defines a policy for processing the redelivery of the same message]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </source>
+    </sources>
+    <types>
+        <type name="org.mule.modules.mongo.api.MuleBsonObjectId">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="value">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+    </types>
+</extension-documentation>

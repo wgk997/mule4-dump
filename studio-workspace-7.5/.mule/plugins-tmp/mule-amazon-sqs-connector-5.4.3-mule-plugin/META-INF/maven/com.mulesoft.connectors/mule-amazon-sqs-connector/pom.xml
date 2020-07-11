@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mule-amazon-sqs-connector</artifactId>
+    <version>5.4.3</version>
+    <name>Amazon SQS Connector - Mule 4</name>
+
+    <packaging>mule-extension</packaging>
+
+    <parent>
+        <groupId>com.mulesoft.connectors</groupId>
+        <artifactId>mule-connectivity-parent</artifactId>
+        <version>1.3.0</version>
+    </parent>
+
+    <properties>
+        <!-- Property added to comply with a faulty feature on SDK 1.1 which makes the connector fail. -->
+        <extensionsAnnotationProcessor>
+            org.mule.runtime.module.extension.internal.resources.ExtensionResourcesGeneratorAnnotationProcessor
+        </extensionsAnnotationProcessor>
+        <!-- Property added to comply with a faulty feature on SDK 1.1 which makes the connector fail. -->
+        <apt.phase>compile</apt.phase>
+        <!-- runtime version to run -->
+        <runtimeVersion>4.2.0</runtimeVersion>
+        <runtimeProduct>MULE_EE</runtimeProduct>
+        <skipTests>false</skipTests>
+        <amazon.sdk.version>1.11.649</amazon.sdk.version>
+        <jacoco.maven.plugin.version>0.8.4</jacoco.maven.plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sqs</artifactId>
+            <version>${amazon.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.connectors</groupId>
+            <artifactId>aws-connector-commons</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15</artifactId>
+            <version>1.40</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.module</groupId>
+            <artifactId>mule-java-module</artifactId>
+            <version>1.0.0</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Remove to run Junit Tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <scm>
+        <connection>scm:git:git@github.com:mulesoft/mule-amazon-sqs-connector.git</connection>
+        <developerConnection>scm:git:git@github.com:mulesoft/mule-amazon-sqs-connector.git</developerConnection>
+        <url>https://github.com/mulesoft/mule-amazon-sqs-connector</url>
+        <tag>mule-amazon-sqs-connector-5.4.3</tag>
+    </scm>
+    <repositories>
+        <repository>
+            <id>mule-releases</id>
+            <name>Nexus Public Releases</name>
+            <url>https://repository-master.mulesoft.org/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+</project>

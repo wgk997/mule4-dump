@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:mule="http://www.mulesoft.org/schema/mule/core" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.mulesoft.org/schema/mule/avio-core" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"></xs:import>
+  <xs:import namespace="http://www.springframework.org/schema/beans" schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd"></xs:import>
+  <xs:import namespace="http://www.mulesoft.org/schema/mule/core" schemaLocation="http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></xs:import>
+  <xs:element xmlns:mule="http://www.mulesoft.org/schema/mule/core" substitutionGroup="mule:abstract-shared-extension" name="config">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mule:abstractExtensionType">
+          <xs:annotation>
+            <xs:documentation>Default configuration</xs:documentation>
+          </xs:annotation>
+          <xs:sequence minOccurs="0" maxOccurs="1">
+            <xs:element minOccurs="0" maxOccurs="1" ref="mule:expiration-policy"></xs:element>
+          </xs:sequence>
+          <xs:attribute type="mule:expressionString" use="optional" default="#[app.name]" name="app_name"></xs:attribute>
+          <xs:attribute type="mule:expressionString" use="optional" default="${appVersion}" name="app_version"></xs:attribute>
+          <xs:attribute type="mule:expressionString" use="optional" default="${env}" name="env"></xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="name">
+            <xs:annotation>
+              <xs:documentation>The identifier of this element used to reference it in other components</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/avio-core" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="CustomLoggerType" substitutionGroup="mule:abstract-operator" name="custom-logger">
+    <xs:annotation>
+      <xs:documentation>Author: Chakri Bonthala</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="CustomLoggerType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractOperatorType">
+        <xs:sequence minOccurs="0" maxOccurs="1">
+          <xs:element minOccurs="0" maxOccurs="1" name="properties">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="property">
+                  <xs:complexType>
+                    <xs:attribute type="mule:expressionString" use="required" name="key"></xs:attribute>
+                    <xs:attribute type="mule:expressionString" use="required" name="value"></xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" use="optional" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>The name of the configuration to be used to execute this component</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="mule:expressionString" use="optional" name="correlation_id"></xs:attribute>
+        <xs:attribute type="mule:expressionString" use="optional" name="message"></xs:attribute>
+        <xs:attribute type="mule:expressionString" use="optional" name="payload"></xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/avio-core" type="com.avio.customlogger.internal.model.LoggerLevelProperty.LogLevelEnumType" use="optional" default="INFO" name="level"></xs:attribute>
+        <xs:attribute xmlns="http://www.mulesoft.org/schema/mule/avio-core" type="com.avio.customlogger.internal.model.tracePointProperty.tracePointEnumType" use="optional" default="FLOW" name="tracePoint"></xs:attribute>
+        <xs:attribute type="mule:expressionString" use="optional" name="category"></xs:attribute>
+        <xs:attribute type="mule:expressionMap" use="optional" name="properties"></xs:attribute>
+        <xs:attribute type="mule:expressionString" use="optional" name="status_code"></xs:attribute>
+        <xs:attribute type="mule:expressionString" use="optional" name="type"></xs:attribute>
+        <xs:attribute type="mule:expressionString" use="optional" name="detail"></xs:attribute>
+        <xs:attribute type="mule:expressionBoolean" use="optional" default="False" name="logLocationInfo"></xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="com.avio.customlogger.internal.model.LoggerLevelProperty.LogLevelEnumType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="TRACE"></xs:enumeration>
+          <xs:enumeration value="DEBUG"></xs:enumeration>
+          <xs:enumeration value="INFO"></xs:enumeration>
+          <xs:enumeration value="WARN"></xs:enumeration>
+          <xs:enumeration value="ERROR"></xs:enumeration>
+          <xs:enumeration value="FATAL"></xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="com.avio.customlogger.internal.model.tracePointProperty.tracePointEnumType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="START"></xs:enumeration>
+          <xs:enumeration value="END"></xs:enumeration>
+          <xs:enumeration value="BEFORE_REQUEST"></xs:enumeration>
+          <xs:enumeration value="AFTER_REQUEST"></xs:enumeration>
+          <xs:enumeration value="BEFORE_TRANSFORM"></xs:enumeration>
+          <xs:enumeration value="AFTER_TRANSFORM"></xs:enumeration>
+          <xs:enumeration value="FLOW"></xs:enumeration>
+          <xs:enumeration value="EXCEPTION"></xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+</xs:schema>

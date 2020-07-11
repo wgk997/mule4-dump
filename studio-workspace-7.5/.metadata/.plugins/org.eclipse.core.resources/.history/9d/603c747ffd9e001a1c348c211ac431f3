@@ -1,0 +1,25 @@
+{
+"statusCode": 200,
+"message": "OK",
+"caseId": "a093i000001tYwDAAU",
+	"diagnoses": [
+		{
+		"id": "a0J3i000000zNoXEAU",
+		"diagnosisCode": "XYZ",
+		"diagnosisStartDate": "2020-02-28T16:41:41",
+		"diagnosisEndDate": "2020-02-28T18:41:41",
+		"statusCode": "PRIMARY",
+		"shortDescription": "Lorem Epsom",
+		"longDescription": "Lorem Epsom Dollar ....."
+		},
+	  	{
+		"id": "a0J3i000000zNocEAE",
+		"diagnosisCode": "ABC",
+		"diagnosisStartDate": "2020-02-28T16:41:41",
+		"diagnosisEndDate": "2020-02-28T18:41:41",
+		"statusCode": "TREATED",
+		"shortDescription": "Lorem Epsom",
+		"longDescription": "Lorem Epsom Dollar ....."
+		}
+	]
+}

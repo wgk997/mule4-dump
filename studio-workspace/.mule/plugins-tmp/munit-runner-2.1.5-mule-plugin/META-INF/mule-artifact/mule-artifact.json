@@ -1,0 +1,35 @@
+{
+  "extensionModelLoaderDescriptor": {
+    "id": "crafted",
+    "attributes": {
+      "type": "org.mule.munit.runner.MunitExtensionLoadingDelegate"
+    }
+  },
+  "name": "MUnit",
+  "minMuleVersion": "4.1.0",
+  "requiredProduct": "MULE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [
+        "org.mule.munit.runner",
+        "org.mule.munit.runner.config",
+        "org.mule.munit.runner.actions",
+        "org.mule.munit.runner.remote",
+        "org.mule.munit.runner.remote.api",
+        "org.mule.munit.runner.processors"
+      ],
+      "exportedResources": [
+        "/META-INF/",
+        "/META-INF/services/org/mule/runtime/core/config/registry-bootstrap.properties",
+        "/META-INF/spring.schemas",
+        "/META-INF/mule.schemas",
+        "/META-INF/mule-munit.xsd"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

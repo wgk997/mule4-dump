@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="sendToJMS" doc:id="b636b719-a8d2-4f92-853a-3f91dc31a28e" >
+		<http:listener doc:name="Listener" doc:id="974bda2b-81ab-485b-ac72-14ccdc0fd9cc" config-ref="HTTP_Listener_config" path="/jms">
+			<http:response >
+				<http:body ><![CDATA[#[output application/json --- payload]]]></http:body>
+			</http:response>
+		</http:listener>
+		<db:select doc:name="Retrieve 10 accounts" doc:id="13732fdd-a7db-4181-8021-e662e7dd802b" config-ref="DB_MySQL" target="jmsPayload" targetValue="#[output application/json --- payload]">
+			<db:sql >#[&quot;SELECT * FROM $(p('db.account')) LIMIT 10&quot;]</db:sql>
+		</db:select>
+		<foreach doc:name="For Each" doc:id="378cbc4a-7fba-4e20-98ed-9b18a5b2af24" collection="vars.jmsPayload">
+			<jms:publish doc:name="JMS: account Queue" doc:id="b9157662-d26c-4959-8fb5-546970d97957" config-ref="JMS_Config" destination="account">
+			</jms:publish>
+		</foreach>
+		<set-payload value='#[{
+		"message": "Accounts sent for processing to JMS queue."
+}]' doc:name="Set Payload" doc:id="7b21dd3b-7e4c-4d80-bd79-3a885c1d7826" />
+	</flow>
+	<flow name="jmsProcessing" doc:id="9175d6fd-0954-4478-8e4b-acf561a1edfa" >
+		<jms:listener doc:name="JMS: account Queue" doc:id="ec0c988f-678e-4ae9-b257-5438fad06afd" config-ref="JMS_Config" destination="account">
+			<jms:consumer-type >
+				<jms:queue-consumer />
+			</jms:consumer-type>
+		</jms:listener>
+		<ee:transform doc:name="Upper case keys" doc:id="8f573ce7-b9b5-49ce-b540-1662a90c6169" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload mapObject ((value,key,index) -> 
+	{
+		"$(upper(key))-$(index)": value
+	}
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<jms:publish doc:name="JMS: collect Queue" doc:id="952dd79c-2831-4423-9dd4-08c1b04e94af" config-ref="JMS_Config" destination="collect"/>
+	</flow>
+	<flow name="getAccountOffQueue" doc:id="f06e1ecc-cc01-499b-b1d5-f334ff746200" >
+		<http:listener doc:name="Listener" doc:id="dc18ce60-7b91-4b88-8fb0-fc70bbf387a9" config-ref="HTTP_Listener_config" path="/pop">
+			<http:response >
+				<http:body ><![CDATA[#[output application/json ---
+{correlationID: attributes.headers.correlationId} ++
+payload
+]]]></http:body>
+			</http:response>
+		</http:listener>
+		<jms:consume doc:name="JMS: collect Queue" doc:id="0f39d76b-1f37-4ea9-91a9-e7cd4767c9c7" config-ref="JMS_Config" destination="collect">
+			<jms:consumer-type>
+				<jms:queue-consumer />
+			</jms:consumer-type>
+		</jms:consume>
+	</flow>
+</mule>

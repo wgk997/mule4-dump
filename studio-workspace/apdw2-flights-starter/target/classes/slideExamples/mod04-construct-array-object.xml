@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="addConcatAndRemoveArraysAndObjects" doc:id="b31cde90-ad79-4638-b0f4-ffbf35cb66f1" >
+		<ee:transform doc:name="Add and concat to arrays" doc:id="0902958b-01e4-424a-9d80-c400d0521787">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+
+var array1 = [1, "a", true]
+
+var object1= {
+  one: "one1", 
+  two: "two2"
+}
+
+---
+{
+	one: (array1 + array1),
+	two: (array1 ++ array1),
+	three: (array1 + object1),
+	//four: (array1 ++ object1),
+	five: (array1 + "hello"),
+	//six: (array1 ++ "hello"),
+	//seven: (object1 ++ array1),
+	//eight: (object1 as Array ++ array1)
+	
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Remove from arrays" doc:id="484818f7-41a0-45ae-988d-3b34f34e5c52">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var array1 = 
+[1, "a", true]
+
+---
+{
+	
+	one: (array1 - 1 - true),
+	two: (array1 -- [1,true]),
+	three: (array1 - array1),
+	four: (array1 -- array1),
+	five: (array1 + 4 - 1),
+	six: (array1 + 1 - 1)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Remove from objects and arrays" doc:id="ec478994-4cee-4b72-8538-bc8032a69b32">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var array1 = [1, "a", true]
+
+var object1 = {
+  one: "one1", 
+  two: "two2"}
+  
+---
+{
+	one: object1 - "one",
+	two: (object1 -- {one:"one1"}),
+	three: (object1 -- "one":"one1"),
+	four: object1 - "one1",
+	five: object1 -- {"one":"bogus"},
+	//six: (array1 -- "one"),
+	//seven: (array1 -- "one1")
+	
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Remove from arrays" doc:id="55a4aa2f-1923-49be-8aff-a5ed4dc75b5e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var array1 = [1, "a", true]
+
+var object1 = {
+    one: "one1",
+    two: "two2"
+}
+
+var object2 = {
+	three: "three3",
+	four: "four4"
+}
+---
+{
+	one: object1 ++ object2,
+	//two: object1 + object2,
+	three: ([1,"a",1,true] - 1) ,
+	four: ( [1,"a",1,true] - [1,"a",1,true] ),
+	five: ( [1,"a",1,true] -- [true,1] ),
+	six: ( [1,"a",1,true] -- [1,"a",true,1] ),
+	seven: ( [1,"a",1,true] -- [true,"a",1] )
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Remove from objects" doc:id="500f4b26-db46-475c-96fe-61cb560299b2">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var array1 = [1, "a", true]
+
+var object1 = {
+    one: "one1",
+    two: "two2"
+}
+
+var object2 = {
+	three: "three3",
+	four: "four4"
+}
+---
+{
+	one: ({"one":"one1", "two":"two1"} - "one" ),
+	two: ({"one":"one1", "two":"two1"} -- {"one":"one1"} ),
+	three: ({"one":"one1", "two":"two1"} -- {"one":"bad"}  )
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="filter objects" doc:id="7754bf36-f956-4b75-8db9-bfe08cdb2419" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns myns http://mynamespace.com
+
+var array1 = [1, "a", true]
+
+var object1 = {
+    one: "one1",
+    two: "two2"
+}
+
+var object2 = {
+	three: "three3",
+	four: "four4"
+}
+
+var nestedObject = {
+  parent1: {myns#one: "one1", child: {two:"two1",five:"five5"}},
+  parent2: {child2: {myns#three:"three3", two @(city: "SF"):"two2"}}
+}
+
+---
+{
+	filter1: object1 filterObject ((value, key, index) ->  not value ~= "one1"),
+ 	filter2: object1 filterObject ((value, key, index) ->  not key ~= "one"),
+ 	filter3: array1 filter ((item, index) -> not item is Number ),
+ 	filter4: nestedObject filterObject not $..three is Null
+ 
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mod02Flow1" doc:id="257da836-3752-4f6c-9124-0b21dd12a045" >
+		<ee:transform doc:name="Transform Message" doc:id="9c6fbcd8-4e5a-43fd-a121-f6b191e1f9cb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	(
+		[
+		{one:1, two: 2},
+		{three:3, four: 4, five: 5}
+		]
+	),
+	(
+		[
+			{six:6, seven: 7}
+		]
+	)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="cebcb9f7-93f8-4271-93f6-92a17887d79d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+ns ns0 http://acme.com
+---
+[
+	{one:1},
+	two:true,
+	ns0#aDate: now() as Date
+]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="75280ad1-595c-4837-b7e7-e24e85c8d131" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var object1 = 
+{ one: "1",  two: true}
+
+var object2 = 
+{ 
+ (object1), 
+  date: now() as Date 
+}
+
+var object3 = 
+{ root: object2 } 
+
+//root is removed, //object is flattened
+var failedObject3 = 
+//{ object1 } 
+{}
+
+
+---
+{
+	obj1: object1,
+	obj2: object2,
+	obj3: object3,
+	//err: failedObject3
+	
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="3a00f4f3-2ff9-4696-8902-85da653012b9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var object1 = 
+{ one: "1",  two: 2}
+
+var object2 = 
+{ (object1), three: 3 }
+
+var objArray= 
+[object1, object2]
+
+---
+{
+	t1: object2,
+	t2: objArray,
+	t3: { (objArray) },
+	t4: {(objArray), test:[1,2] },
+	t5: {( objArray )} ++ test:[1,2],
+	t6: {( objArray )} ++ {test:[1,2]},
+	t7: {( objArray )} ++ (test:[1,2])
+	
+
+	
+	
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

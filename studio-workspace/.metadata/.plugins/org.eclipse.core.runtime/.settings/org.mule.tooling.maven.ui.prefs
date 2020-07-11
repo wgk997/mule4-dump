@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+maven_preference_maven_installation_home=/usr/local/Cellar/maven/3.6.1/libexec
+maven_preference_use_embedded=false
+maven_preference_user_settings_override=true
+maven_preference_user_settings_path=/Users/asapkota/.m2/settings.xml

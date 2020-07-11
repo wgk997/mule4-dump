@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs" xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	  xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	  xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd">
+	
+	<sub-flow name="hc-sqs-health-flow" doc:id="67b1db60-8076-424b-89b7-2b3d50bc3a8a" >
+		<try doc:name="Try" doc:id="7d980193-f296-4b90-9a85-675ebc3b1500" >
+			<sqs:get-approximate-number-of-messages doc:name="Get approximate number of messages" doc:id="8b88b481-9ee9-4bb1-9af9-8492117a437e" config-ref="Amazon_SQS_Configuration" queueUrl="${sqs.queue.url}"/>
+			<set-variable value="OK" doc:name="statusCode" doc:id="b8f5c68b-a6ee-45c7-b89a-09fd4614bde6" variableName="statusCode" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3b2e0883-8a14-47b2-8130-57be3be70805" >
+					<avio-core:custom-logger doc:name="ERROR" doc:id="47adf31c-ab21-4d55-abdb-2ed979ad8e2a" config-ref="avio-core-config" message="Health check could not access SQS" correlation_id="#[vars.headers.correlationId]" category="${logcat}" level="ERROR" tracePoint="EXCEPTION"/>
+					<ee:transform doc:name="VARS: statusCode,errorDescription" doc:id="a1edceaf-fece-4034-aaae-6ac5cffbb27c" >
+
+						<ee:variables >
+							<ee:set-variable variableName="errorDescription" ><![CDATA[error.description]]></ee:set-variable>
+							<ee:set-variable variableName="statusCode" ><![CDATA["ERROR"]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Transform Message" doc:id="3f2d8054-a292-4131-b5fb-cb1a90a2bb24">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+  systemName: 'SQS',
+  connectionConfig: p('sqs.queue.url'),
+  user :'N/A',
+  status: vars.statusCode,
+  (exception: vars.errorDescription) if (vars.statusCode=="ERROR"),
+  timeStamp : now() as String {format: 'yyyy-MM-dd HH:mm:ss'}
+}
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

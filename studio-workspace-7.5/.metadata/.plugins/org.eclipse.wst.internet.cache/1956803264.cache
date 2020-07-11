@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.mulesoft.org/schema/mule/mongo"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+            xmlns:schemadoc="http://www.mulesoft.org/schema/mule/schemadoc"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            targetNamespace="http://www.mulesoft.org/schema/mule/mongo"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.springframework.org/schema/beans"
+                schemaLocation="http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"/>
+    <xsd:import namespace="http://www.mulesoft.org/schema/mule/core"
+                schemaLocation="http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd"/>
+    <xsd:import namespace="http://www.mulesoft.org/schema/mule/schemadoc"
+                schemaLocation="http://www.mulesoft.org/schema/mule/schemadoc/3.1/mule-schemadoc.xsd"/>
+
+    <xsd:annotation>
+        <xsd:documentation>
+            This schema was auto-generated. Do not edit.
+        </xsd:documentation>
+    </xsd:annotation>
+
+    <!-- Configuration -->
+    <xsd:element name="config" type="configType" substitutionGroup="mule:abstract-extension"/>
+    <xsd:complexType name="configType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractExtensionType">
+                <xsd:attribute name="name" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Give a name to this configuration so it can be later referenced by config-ref.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="client-ref" type="xsd:string" use="optional">
+                </xsd:attribute>
+                <xsd:attribute name="database" type="xsd:string" use="optional" default="test">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The database name of the Mongo server
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="host" type="xsd:string" use="optional" default="localhost">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The host of the Mongo server
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="port" type="xsd:string" use="optional" default="27017">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The port of the Mongo server
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="password" type="xsd:string" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The user password. Only required for collections that require authentication
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="username" type="xsd:string" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The user name. Only required for collections that require authentication
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!-- OAuth Operations -->
+
+    <!-- Operations -->
+    <xsd:element name="list-collections" type="listCollectionsType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Lists names of collections available at this database
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="listCollectionsType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="exists-collection" type="existsCollectionType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Answers if a collection exists given its name
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="existsCollectionType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="drop-collection" type="dropCollectionType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Deletes a collection and all the objects it contains.  
+If the collection does not exist, does nothing.
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="dropCollectionType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection to drop
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="create-collection" type="createCollectionType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates a new collection. 
+If the collection already exists, a MongoException will be thrown.
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="createCollectionType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection to create
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="capped" type="xsd:string" default="false">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            if the collection will be capped
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="maxObjects" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the maximum number of documents the new collection is able to contain
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="size" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the maximum size of the new collection
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="insert-object" type="insertObjectType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Inserts an object in a collection, setting its id if necessary.
+
+Object can either be a raw DBObject, a String-Object Map or a JSon String.
+If it is passed as Map, a shallow conversion into DBObject is performed - that is, no conversion is performed to its values.
+If it is passed as JSon String, _ids of type ObjectId must be passed as a String, for example: 
+{ "_id": "ObjectId(4df7b8e8663b85b105725d34)", "foo" : 5, "bar": [ 1 , 2 ] }
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="insertObjectType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <xsd:element name="elementAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="elementAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection where to insert the given object
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="element" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the object to insert. Maps, JSon Strings and DBObjects are supported.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="writeConcern" type="WriteConcernEnum" default="DATABASE_DEFAULT">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the optional write concern of insertion
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="update-objects" type="updateObjectsType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Updates objects that matches the given query. If parameter multi is set to false,
+only the first document matching it will be updated. 
+Otherwise, all the documents matching it will be updated.  
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="updateObjectsType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <xsd:element name="queryAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="queryAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="elementAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="elementAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection to update
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="query" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the query object used to detect the element to update. Maps, JSon Strings and DBObjects are supported, as described in insert-object operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="element" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the mandatory object that will replace that one which matches the query. Maps, JSon Strings and DBObjects are supported, as described in insert-object operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="upsert" type="xsd:string" default="false">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            if the database should create the element if it does not exist
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="multi" type="xsd:string" default="true">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            if all or just the first object matching the query will be updated
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="writeConcern" type="WriteConcernEnum" default="DATABASE_DEFAULT">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the write concern used to update
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="save-object" type="saveObjectType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Inserts or updates an object based on its object _id.
+ 
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="saveObjectType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <xsd:element name="elementAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="elementAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the collection where to insert the object
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="element" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the mandatory object to insert. Maps, JSon Strings and DBObjects are supported, as described in insert-object operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="writeConcern" type="WriteConcernEnum" default="DATABASE_DEFAULT">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the write concern used to persist the object
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="remove-objects" type="removeObjectsType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Removes all the objects that match the a given optional query. 
+If query is not specified, all objects are removed. However, please notice that this is normally
+less performant that dropping the collection and creating it and its indices again
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="removeObjectsType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <xsd:element name="queryAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="queryAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the collection whose elements will be removed
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="query" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the optional query object. Objects that match it will be removed. Maps, JSon Strings and DBObjects are supported, as described in insert-object operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="writeConcern" type="WriteConcernEnum" default="DATABASE_DEFAULT">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the write concern used to remove the object
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="map-reduce-objects" type="mapReduceObjectsType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Transforms a collection into a collection of aggregated groups, by
+applying a supplied element-mapping function to each element, that transforms each one
+into a key-value pair, grouping the resulting pairs by key, and finally 
+reducing values in each group applying a suppling 'reduce' function.   
+
+Each supplied function is coded in JavaScript.
+
+Note that the correct way of writing those functions may not be obvious; please 
+consult MongoDB documentation for writing them.
+ 
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="mapReduceObjectsType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection to map and reduce
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="mapFunction" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            a JavaScript encoded mapping function
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="reduceFunction" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            a JavaScript encoded reducing function
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="outputCollection" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the output collection to write the results, replacing previous collection if existed, mandatory when results may be larger than 16MB. If outputCollection is unspecified, the computation is performed in-memory and not persisted.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="count-objects" type="countObjectsType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Counts the number of objects that match the given query. If no query
+is passed, returns the number of elements in the collection
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="countObjectsType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <xsd:element name="queryAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="queryAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the target collection
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="query" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the optional query for counting objects. Only objects matching it will be counted. If unspecified, all objects are counted. Maps, JSon Strings and DBObjects are supported, as described in insert-object operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="find-objects" type="findObjectsType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Finds all objects that match a given query. If no query is specified, all objects of the 
+collection are retrieved. If no fields object is specified, all fields are retrieved. 
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="findObjectsType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <xsd:element name="queryAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="queryAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="fields" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="field" minOccurs="0" maxOccurs="unbounded"
+                                             type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the target collection
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="query" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the optional query object. If unspecified, all documents are returned. Maps, JSon Strings and DBObjects are supported, as described in insert-object operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="fieldsRef" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            an optional list of fields to return. If unspecified, all fields are returned.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="find-one-object" type="findOneObjectType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Finds the first object that matches a given query. 
+Throws a {@link MongoException} if no one matches the given query 
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="findOneObjectType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <xsd:element name="queryAttributes"  minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="queryAttribute" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="xsd:string"/>
+                                        <xsd:attribute name="value" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="fields" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="field" minOccurs="0" maxOccurs="unbounded"
+                                             type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the target collection
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="query" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the mandatory query object that the returned object matches. Maps, JSon Strings and DBObjects are supported, as described in insert-object operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="fieldsRef" type="xsd:string" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            an optional list of fields to return. If unspecified, all fields are returned.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="create-index" type="createIndexType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates a new index
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="createIndexType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection where the index will be created
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="field" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the field which will be indexed
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="order" type="IndexOrderEnum" default="ASC">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the indexing order
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="drop-index" type="dropIndexType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Drops an existing index
+ 
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="dropIndexType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection where the index is
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="index" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the index to drop
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="list-indices" type="listIndicesType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                List existent indices in a collection
+
+
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="listIndicesType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="collection" type="xsd:string" use="required" >
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            the name of the collection
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <!-- Transformers -->
+
+    <!-- Enums -->
+    <xsd:simpleType name="WriteConcernEnum">
+        <xsd:union>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="NONE" />
+                    <xsd:enumeration value="NORMAL" />
+                    <xsd:enumeration value="SAFE" />
+                    <xsd:enumeration value="FSYNC_SAFE" />
+                    <xsd:enumeration value="REPLICAS_SAFE" />
+                    <xsd:enumeration value="DATABASE_DEFAULT" />
+                    <xsd:enumeration value="mongoWriteConcern" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="\#\[[^\]]+\]"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:union>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="IndexOrderEnum">
+        <xsd:union>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ASC" />
+                    <xsd:enumeration value="DESC" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="\#\[[^\]]+\]"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:union>
+    </xsd:simpleType>
+
+
+    <!-- XML Types -->
+</xsd:schema>

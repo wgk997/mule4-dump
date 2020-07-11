@@ -1,0 +1,23 @@
+{
+  "statusCode": 201,
+  "message": "Added",
+  "smsMessage": "A person whom you've been in contact with is ill, please contact xxx-xxx-xxxx for further information",
+  "notifications" : [
+    {
+      "to": "+19725550000",  
+      "status": "SENT"
+    },
+    {
+      "to": "+19725550001",  
+      "status": "SENT"
+    },
+    {
+      "to": "+19725550002",  
+      "status": "SENT"
+    },
+    {
+      "to": "+19725550003",  
+      "status": "SENT"
+    }
+  ]
+}

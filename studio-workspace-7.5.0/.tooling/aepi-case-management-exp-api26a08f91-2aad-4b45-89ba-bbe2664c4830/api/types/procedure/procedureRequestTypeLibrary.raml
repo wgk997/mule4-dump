@@ -1,0 +1,17 @@
+#%RAML 1.0 Library
+usage: used as the source of procedure request body dataTypes
+
+types:
+  procedureDataTypeForInsert:
+    type: object
+    properties: 
+      procedure:
+        required: true
+        type: !include procedureDataType.raml
+
+  procedureDataTypeForUpdate:
+    type: object
+    properties: 
+      procedure:
+        required: true
+        type: !include procedureDataType.raml

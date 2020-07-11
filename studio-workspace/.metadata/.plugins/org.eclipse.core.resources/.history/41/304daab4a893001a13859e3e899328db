@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:twilio-connector="http://www.mulesoft.org/schema/mule/twilio-connector" xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs"
+	xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd
+http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd
+http://www.mulesoft.org/schema/mule/twilio-connector http://www.mulesoft.org/schema/mule/twilio-connector/current/mule-twilio-connector.xsd">
+	<twilio-connector:config name="Twilio_Connector_Config" doc:name="Twilio Connector Config" doc:id="ab565811-b953-46cd-88fe-3bd3ad716d1c" property_username="AC9b99e58bec7baea9137ef25e516e84a0" property_password="3970b807bdea5a6af228134d6c5a10dd" >
+		<twilio-connector:connection />
+	</twilio-connector:config>
+	<sqs:config name="Amazon_SQS_Configuration" doc:name="Amazon SQS Configuration" doc:id="d21b15cc-eda5-4fea-be44-848ea2547da2" >
+		<sqs:basic-connection accessKey="AKIA2BDHH57U32IOG6ZA" secretKey="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"/>
+	</sqs:config>
+	<flow name="aepi-medical-alert-sys-api-implFlow" doc:id="62b3ae20-f95b-42f2-88c9-bcee825da3a9" >
+		<sqs:receivemessages doc:name="Receive messages" doc:id="c8fbe404-b9a7-4cb8-ae61-d40891a328ed" config-ref="Amazon_SQS_Configuration"/>
+		<avio-core:custom-logger doc:name="" doc:id="70679506-6d54-45f5-8c0c-35ae9777d3bd" />
+		<ee:transform doc:name="Transform Message" doc:id="ee21f15f-b230-47ed-88dc-1e365fd34c85" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	To: "+14153775041",
+	From: "+6602344902",
+    Body: "smsBody"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<twilio-connector:send-message doc:name="Send message" doc:id="3870e0e0-0dbd-45d5-bdbe-401a68584730" config-ref="Twilio_Connector_Config" account-sid="AC9b99e58bec7baea9137ef25e516e84a0"/>
+	</flow>
+	</mule>

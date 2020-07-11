@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.mule.templates</groupId>
+    <artifactId>api-gateway-oauth2-provider</artifactId>
+    <version>1.0.0</version>
+    <packaging>mule-application</packaging>
+    <name>api-gateway-oauth2-provider-1.0.0-mule-application-template</name>
+
+    <url>http://www.mulesoft.com</url>
+    <inceptionYear>2020</inceptionYear>
+    
+    <organization>
+        <name>MuleSoft, Inc.</name>
+        <url>http://www.mulesoft.com</url>
+    </organization>
+
+    <properties>
+        <lightweightPackage>false</lightweightPackage>
+
+        <skipVerifications>false</skipVerifications>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Dependencies -->
+        <httpProxyExtensionVersion>1.1.2</httpProxyExtensionVersion>
+        <httpConnectorVersion>1.4.2</httpConnectorVersion>
+        <oauthProviderModuleVersion>1.0.5</oauthProviderModuleVersion>
+        <springModuleVersion>1.2.0</springModuleVersion>
+        <springVersion>4.2.5.RELEASE</springVersion>
+        <springSecurityVersion>4.0.4.RELEASE</springSecurityVersion>
+        <muleObjectStoreConnectorVersion>1.1.3</muleObjectStoreConnectorVersion>
+        <apiGatewayClientStore>1.0.0</apiGatewayClientStore>
+
+        <!-- Plugin -->
+        <licenseMavenPluginVersion>3.0</licenseMavenPluginVersion>
+        <javaFormatterPluginVersion>1.9.0</javaFormatterPluginVersion>
+        <formatterGoal>validate</formatterGoal>
+        <mavenInstallPluginVersion>2.5.2</mavenInstallPluginVersion>
+        <mavenDeployPluginVersion>2.8.2</mavenDeployPluginVersion>
+        <muleMavenPluginVersion>3.2.7</muleMavenPluginVersion>
+        <mavenCompilerPluginVersion>2.3.2</mavenCompilerPluginVersion>
+        <jdkSourceVersion>1.8</jdkSourceVersion>
+        <jdkTargetVersion>1.8</jdkTargetVersion>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mulesoft.anypoint</groupId>
+            <artifactId>mule-http-proxy-extension</artifactId>
+            <version>${httpProxyExtensionVersion}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>${httpConnectorVersion}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.modules</groupId>
+            <artifactId>mule-oauth2-provider-module</artifactId>
+            <version>${oauthProviderModuleVersion}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-spring-module</artifactId>
+            <version>${springModuleVersion}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${springSecurityVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${springSecurityVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-objectstore-connector</artifactId>
+            <version>${muleObjectStoreConnectorVersion}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.anypoint</groupId>
+            <artifactId>api-gateway-oauth2-client-store</artifactId>
+            <version>${apiGatewayClientStore}</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.8.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-descriptor</id>
+                        <goals>
+                            <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${mavenInstallPluginVersion}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${mavenDeployPluginVersion}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.mule.tools.maven</groupId>
+                <artifactId>mule-maven-plugin</artifactId>
+                <version>${muleMavenPluginVersion}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>heavy</id>
+                        <goals>
+                            <goal>validate</goal>
+                            <goal>initialize</goal>
+                            <goal>generate-sources</goal>
+                            <goal>process-sources</goal>
+                            <goal>compile</goal>
+                            <goal>generate-test-sources</goal>
+                            <goal>package</goal>
+                        </goals>
+                        <configuration>
+                            <lightweightPackage>false</lightweightPackage>
+                        <classifier>mule-application</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sharedLibraries>
+                        <sharedLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-core</artifactId>
+                        </sharedLibrary>
+                        <sharedLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-beans</artifactId>
+                        </sharedLibrary>
+                        <sharedLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-context</artifactId>
+                        </sharedLibrary>
+                        <sharedLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-aop</artifactId>
+                        </sharedLibrary>
+                        <sharedLibrary>
+                            <groupId>org.springframework.security</groupId>
+                            <artifactId>spring-security-core</artifactId>
+                        </sharedLibrary>
+                        <sharedLibrary>
+                            <groupId>org.springframework.security</groupId>
+                            <artifactId>spring-security-config</artifactId>
+                        </sharedLibrary>
+                    </sharedLibraries>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${mavenCompilerPluginVersion}</version>
+                <configuration>
+                    <source>${jdkSourceVersion}</source>
+                    <target>${jdkTargetVersion}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <repositories>
+        <repository>
+            <id>mule</id>
+            <name>Mule Public Repository</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </repository>
+        <repository>
+            <id>MuleRepository</id>
+            <name>Mule Release EE Repository</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/releases-ee/</url>
+        </repository>
+    </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-release</id>
+            <name>mulesoft release repository</name>
+            <layout>default</layout>
+            <url>http://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>mule-ee-snapshots</id>
+            <name>MuleEE Snapshots Repository</name>
+            <url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>mule-ee-releases</id>
+            <name>MuleEE Releases Repository</name>
+            <url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-releases/</url>
+        </repository>
+    </distributionManagement>
+</project>

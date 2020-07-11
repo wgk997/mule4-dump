@@ -1,0 +1,46 @@
+# API Versioning
+api.version=v1
+api.name=aepi-case-management-pro-api
+
+# API Autodiscovery API key
+api.apiId=12345
+
+# Logging category
+logcat=com.avioconsulting.bc
+
+# HTTP
+http.host=0.0.0.0
+http.port=8081
+https.port=8082
+http.router.path=${api.name}/${api.version}
+
+#HTTPS SSL
+keystore.password=![2Vocx7IHjzOMQUnDuxd1GA==]
+
+# Health Check API
+healthcheck.https.configuration.reference=http-listener-config
+healthcheck.apiId=16001283
+log.healthcheck.category=com.avioconsulting.healthcheck
+healthcheck.flows=hc-general-health-flow,hc-db-health-flow
+healthcheck.flow.ok=OK
+healthcheck.flow.error=ERROR
+
+# Ref System API
+ref.system.api.basePath=mocking/api/v1/sources/exchange/assets/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-reference-sys-api/1.0.1/m
+ref.system.api.host=anypoint.mulesoft.com
+ref.system.api.port=443
+
+# Case Management System API
+case.management.system.api.basePath=mocking/api/v1/sources/exchange/assets/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-case-management-sys-api/1.0.1/m
+case.management.system.api.host=anypoint.mulesoft.com
+case.management.system.api.port=443
+
+# Infectious Disease System API
+case.management.system.api.basePath=mocking/api/v1/sources/exchange/assets/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-case-management-sys-api/1.0.1/m
+case.management.system.api.host=anypoint.mulesoft.com
+case.management.system.api.port=443
+
+# Location System API
+case.management.system.api.basePath=mocking/api/v1/sources/exchange/assets/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-case-management-sys-api/1.0.1/m
+case.management.system.api.host=anypoint.mulesoft.com
+case.management.system.api.port=443

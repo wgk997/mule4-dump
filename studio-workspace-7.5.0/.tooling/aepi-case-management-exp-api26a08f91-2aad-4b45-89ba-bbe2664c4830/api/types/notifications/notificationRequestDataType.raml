@@ -1,0 +1,22 @@
+#%RAML 1.0 Library
+types:
+  
+  notificationsDataTypeForPostRequest:
+    type: object
+    properties:
+      smsMessage:
+        type: string
+        required: true
+        example:
+          "A person whom you've been in contact with is ill, please contact xxx-xxx-xxxx for further information"
+      notificationType:
+        type: string
+        required: true
+        enum: [ PRECAUTIONARY_ALERT, ISOLATION_ALERT, DIAGNOSIS_REQUEST, CUSTOM_NOTIFICATIONS ]
+        example:
+          "CUSTOM_NOTIFICATIONS"
+      customNotification:
+        required: false
+        type: !include customNotificationsDataType.raml
+    
+      

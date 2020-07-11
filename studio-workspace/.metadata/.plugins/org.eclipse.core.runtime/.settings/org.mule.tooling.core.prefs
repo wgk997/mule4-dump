@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+mule_core_plugin_preference_maven_embedded=false
+mule_core_plugin_preference_maven_override_user_settings=true
+mule_core_plugin_preference_maven_override_user_settings_path=/Users/asapkota/.m2/settings.xml
+mule_core_plugin_preference_maven_path=/usr/local/Cellar/maven/3.6.1/libexec

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="mod04Flow" doc:id="7f27063d-6a06-42f7-a53b-0a2270a0bde8" >
+		<ee:transform doc:name="Transform Message" doc:id="55c1ca14-012f-43ff-b52e-fd5c1de976d0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+fun formatString(aString) =
+upper(aString)
+
+fun formatNumber( aNumber ) =
+aNumber
+
+fun formatAllValues (anInput) =
+anInput match {
+  case is Null -> ""
+  case is Array -> anInput default []
+  case is Object -> anInput default {}
+  case is String -> formatString(anInput) default ""
+  
+  case is Number -> formatNumber(anInput) 
+  
+  case is Date -> anInput as Date default "|1001-01-01|"
+  else -> anInput
+}
+---
+formatAllValues ( "one")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="format all keys" doc:id="260440f7-3a60-488d-8dfa-2ada622dccbb">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+
+output application/json
+
+var payload = 1 to 5
+
+var arrayOfObjects = [
+	root: {
+		c1: "One", c2:"Two"
+	}
+]
+
+fun formatAllKeys (anInput, keyFormatter) = 
+anInput match {
+	case is Array -> anInput map (element) -> formatAllKeys (element, keyFormatter)
+
+	case is Object -> anInput mapObject (value,key) -> {
+		(keyFormatter(key)) : formatAllKeys (value,keyFormatter)
+	}
+
+	case is String ->  lower (anInput) //hardcode that every string should be UPPER
+
+	else -> anInput //leave all other literal types unchanged
+}
+
+
+---
+formatAllKeys ( arrayOfObjects, (k)-> upper(k) )
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="format all values" doc:id="92c1d0b9-a30d-4b66-95de-15af2798f2f7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/json
+
+var payload = 1 to 5
+
+var arrayOfObjects = [
+	root: {
+		c1: "One", c2:"Two"
+	}
+]
+
+fun formatAllValues (anInput, valueFormatter = (v) -> v) = 
+anInput match {
+	case is Array -> anInput map (element) -> formatAllValues (element, valueFormatter)
+
+	case is Object -> anInput mapObject (value,key) -> {
+		(key) : formatAllValues (value, valueFormatter )
+	}
+
+	case is String -> valueFormatter (anInput) //hardcode that every string should be UPPER
+
+	else -> anInput //leave all other literal types unchanged
+}
+
+
+---
+formatAllValues ( arrayOfObjects, (v) -> upper(v) )
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="formatData" doc:id="f2baacdf-5829-4e44-979a-4347b403834e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/json
+
+var payload = 1 to 5
+
+var arrayOfObjects = [
+	root: {
+		c1: "One", c2:"Two"
+	}
+]
+
+fun formatData (anInput, keyFormatter = ((k) ->  upper(k)) , valueFormatter = ( (v) -> upper(v) ) ) = 
+anInput match {
+	case is Array -> anInput map (element) -> formatData (element, keyFormatter, valueFormatter)
+
+	case is Object -> anInput mapObject (value,key) -> {
+		(keyFormatter(key)) : formatData (value, keyFormatter, valueFormatter )
+	}
+
+	case is String -> valueFormatter (anInput) //hardcode that every string should be UPPER
+
+	else -> anInput //leave all other literal types unchanged
+}
+
+
+---
+formatData ( arrayOfObjects, dw::core::Strings::capitalize, lower )
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

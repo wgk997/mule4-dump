@@ -1,0 +1,112 @@
+[
+  {
+    "flightCode": "rree1093",
+    "availableSeats": 1,
+    "destination": "SFO",
+    "planeType": "Boeing 737",
+    "origination": "MUA",
+    "price": 142,
+    "departureDate": "2018-02-11T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "A14244",
+    "availableSeats": 10,
+    "destination": "SFO",
+    "planeType": "BOEING 787",
+    "origination": "MUA",
+    "price": 294,
+    "departureDate": "Feb 12, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "ffee2000",
+    "availableSeats": 30,
+    "destination": "SFO",
+    "planeType": "Boeing 737",
+    "origination": "MUA",
+    "price": 300,
+    "departureDate": "2018-02-20T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "A1B2C3",
+    "availableSeats": 40,
+    "destination": "SFO",
+    "planeType": "BOEING 737",
+    "origination": "MUA",
+    "price": 400,
+    "departureDate": "Mar 20, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "ER38sd",
+    "availableSeats": 0,
+    "destination": "SFO",
+    "planeType": "Boeing 737",
+    "origination": "MUA",
+    "price": 400,
+    "departureDate": "2018/03/20",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "rree4567",
+    "availableSeats": 100,
+    "destination": "SFO",
+    "planeType": "Boeing 737",
+    "origination": "MUA",
+    "price": 456,
+    "departureDate": "2018-01-20T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "A1BTT4",
+    "availableSeats": 30,
+    "destination": "SFO",
+    "planeType": "BOEING 777",
+    "origination": "MUA",
+    "price": 593,
+    "departureDate": "Feb 12, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "eefd1994",
+    "availableSeats": 0,
+    "destination": "SFO",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 676,
+    "departureDate": "2018-01-01T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "eefd3000",
+    "availableSeats": 0,
+    "destination": "SFO",
+    "planeType": "Boeing 737",
+    "origination": "MUA",
+    "price": 900,
+    "departureDate": "2018-02-01T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "ER39rk",
+    "availableSeats": 54,
+    "destination": "SFO",
+    "planeType": "Boeing 757",
+    "origination": "MUA",
+    "price": 945,
+    "departureDate": "2018/09/11",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "ER39rj",
+    "availableSeats": 23,
+    "destination": "SFO",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 954,
+    "departureDate": "2018/02/12",
+    "airlineName": "United"
+  }
+]

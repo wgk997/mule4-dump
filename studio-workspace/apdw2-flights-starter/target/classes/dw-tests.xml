@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+	<flow name="dw-testsFlow" doc:id="984b608f-7b30-47df-a948-0a8a55a815ee" >
+		<http:listener doc:name="dynamicEvaluateTest" doc:id="99b327b1-c1e8-4e28-a5be-043d6d31d23a" config-ref="HTTP_Listener_config" path="eval"/>
+		<set-variable value='output application/xml --- root: { message: "order " ++ attributes.queryParams.orderid ++ " has been received from " ++ uName, items: payload.items}' doc:name="script1" doc:id="643f114e-3a35-4507-b74f-c36b13fad0a5" variableName="script1"/>
+		<set-variable value='output application/json --- root: { message: "Order2 " ++ attributes.queryParams.orderid ++ " has been received from " ++ uName, items: payload.items}' doc:name="script2" doc:id="e1e5f9fc-3836-426a-9df2-979f18a67469" variableName="script2"/>
+		<set-payload value='#[if( payload is Object and payload["items"]? )
+payload
+else
+items: {
+item1: "Phone Case",
+item2: "Phone Charger"
+}]' doc:name="Set Payload" doc:id="1510b9f6-83b1-462d-8bf0-bc57f71e3b11" />
+		<ee:dynamic-evaluate doc:name="Dynamic Evaluate" doc:id="b98d1282-0c76-47d7-a071-b4b8f318c1d6" expression='#[output application/json
+---
+do {
+var choice = attributes.queryParams.script
+---
+if(choice == "script1") vars.script1
+else vars.script2
+}]'>
+			<ee:parameters >#[{ uName: attributes.queryParams.username default &quot;Annie&quot; }]</ee:parameters>
+		</ee:dynamic-evaluate>
+	</flow>
+	<flow name="chainableTest" doc:id="0d8ba09c-88fb-450a-b8fc-94bd17135d96" >
+		<ee:transform doc:name="Transform Message" doc:id="da08b8c7-46af-4a9a-889e-ad593192e5a7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+fun chain(inpStr, expression) = expression (inpStr)
+---
+
+{one:"One", two:"Two"} chain (a) -> (a.one ++ ' ' ++ a.two)
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="customMappingTest" doc:id="d7be25a9-6316-410e-b281-82c430a6e8d8" >
+		<ee:transform doc:name="Transform Message" doc:id="39f66930-64cc-4623-ba3d-585bc1abd479" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import dw::mappings::MyMapping
+---
+MyMapping::main( {someElement: ["order", "1001"], formatter: lower } ) ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="passFunctions" doc:id="c05dece5-4b81-4ea5-9a50-deeee1155fde" >
+		<ee:transform doc:name="Transform Message" doc:id="66fde23b-3210-4905-85a5-27463fbb9ad3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+fun formatString( anInputString : String, formatter: ( String )  -> String ) 
+= formatter(anInputString)
+---
+
+
+formatString( "helloWorld" , ( inStr )-> lower( inStr replace "World" with "There" ) )]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="matchOperatorTest" doc:id="bd9e2b8e-5637-40a9-869d-91d6eb33acba">
+		<ee:transform doc:name="Transform Message" doc:id="7b9b9a41-7682-42c7-b5c6-a2a291a395ec">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var americanFlights =
+[
+  {
+    "ID": 5,
+    "code": "rree1093",
+    "price": 142,
+    "departureDate": "2018-02-11T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 1,
+    "plane": {
+      "type": "Boeing 737",
+      "totalSeats": 150
+    }
+  },
+  {
+    "ID": 7,
+    "code": "eefd1994",
+    "price": 676,
+    "departureDate": "2018-01-01T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 0,
+    "plane": {
+      "type": "Boeing 777",
+      "totalSeats": 300
+    }
+  },
+  {
+    "ID": 8,
+    "code": "ffee2000",
+    "price": 300,
+    "departureDate": "2018-02-20T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 30,
+    "plane": {
+      "type": "Boeing 737",
+      "totalSeats": 150
+    }
+  },
+  {
+    "ID": 9,
+    "code": "eefd3000",
+    "price": 900,
+    "departureDate": "2018-02-01T00:00:00",
+    "origin": "MUA",
+    "destination": "SFO",
+    "emptySeats": 0,
+    "plane": {
+      "type": "Boeing 737",
+      "totalSeats": 150
+    }
+  }
+]
+//fun overloaded ( anInput: Object ) = "input is an Array of size $(sizeOf(anInput))"
+//fun overloaded ( anInput : Null) = "input is Null"
+
+fun processByType( anInput ) =
+anInput match {
+ case is Array  -> "input is an Array of size $(sizeOf(anInput))"
+ case is Object -> "input is object"
+ else -> anInput
+}	
+---
+//americanFlights
+processByType( americanFlights[0] )
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="tryAndFailTest" doc:id="2b4d0325-0930-4374-a57a-281afeacb1c8" >
+		<http:listener doc:name="Listener" doc:id="6cb623d0-7e5b-4d4c-820f-b89e74d20f47" config-ref="HTTP_Listener_config" path="load"/>
+		<ee:transform doc:name="Transform Message" doc:id="50062566-f099-46e1-9278-4f4069d814f4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+import * from dw::Runtime
+
+fun 	readInput (anInputFile) = 
+try (
+  () -> readUrl("classpath://" ++ anInputFile)
+)
+match {
+ case theOutput if(theOutput.success ~= false) ->
+ try(
+   () -> readUrl( "classpath://examples/" ++ anInputFile)
+ )
+match {
+ case secondTry if(secondTry.success ~= false) ->
+ fail(
+   "First Error: " ++ write(theOutput.error)
+   ++ "\n\nSecond Error: " ++ write(secondTry.error)
+ )
+ else -> $.result
+ }
+ else -> $.result
+}
+---
+readInput(attributes.queryParms.filename default "flightsToLAX.json")
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="addAndConcat" doc:id="1ed26514-7bb1-4500-9031-73d704054598" >
+		<ee:transform doc:name="Transform Message" doc:id="efe0dc9f-550c-43ad-8f00-0f29d85cfcba" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var array1 = [1, "a", true]
+
+var object1 = {
+ one: "one1",
+ two: "two2"
+}
+
+var array2 = [
+		obj1 : object1,
+		obj2 : object1
+
+]
+---
+{
+(array2), (object1), four: "four" 
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="testArraysModule" doc:id="1e9750c4-11c6-482c-b423-1422085f6915" >
+		<ee:transform doc:name="Transform Message" doc:id="369e182f-fbf4-423c-bf13-591a580a5e07" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+//import dw::core::Arrays
+import * from dw::core::Arrays
+var flights = readUrl("classpath://examples/extra/americanFlightsResponse.json")
+---
+//flights
+//flights..totalSeats every ($ < 400)
+//Arrays::some(flights..availableSeats, (ts) -> (ts > 400))
+{
+	smallerPlanes: flights..totalSeats sumBy (if ($<200) $*$ else 0) ,
+	totalPlanes: sizeOf(flights)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dw-testsFlow1" doc:id="d6026767-6ab6-46bd-a926-7df809c1abfd" >
+		<ee:transform doc:name="Transform Message" doc:id="cc680e0a-5e02-4de7-b322-72a3dce03e02" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="testObjectsModule" doc:id="15a83663-3a4e-400f-b13a-94aad78003fe" >
+		<ee:transform doc:name="Transform Message" doc:id="29dfba38-6948-434d-bd8f-81f29b751f59" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import dw::core::Objects
+
+ns myns http://mydowmin.com
+
+var object1 = 
+{
+	users : 
+	{
+		myns#user1 @(name: "Annie", lastname: "Point"): "AP",
+		myns#user2 @(name: "Connie", lastname: "Hector"): "CH"
+	}	
+}
+---
+//Objects::entrySet(object1.users) map (user) -> ( user.value )
+{one:"ONE", one: "One2", two:"TWO"} Objects::mergeWith { one:"Number1" }]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="testSelectors" doc:id="c4b6224e-a71b-4b89-8e78-e94e46a66461" >
+		<ee:transform doc:name="Transform Message" doc:id="c847bbbc-920e-4491-beb6-dfa886bbfebe" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload =
+readUrl("classpath://examples//joinedFlightsAndAirportsNS.xml",
+"application/xml")
+
+---
+payload..*flights[0].@]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

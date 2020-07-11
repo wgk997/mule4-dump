@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="namespacesTests1" doc:id="d56023ce-08ef-4082-ab26-51c6d634ad9a" >
+		<ee:transform doc:name="Copy_of_XML input" doc:id="295b5206-781c-4a45-9082-2eeb76e59849">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/dw
+
+var payload = 
+{
+"findFlightResponse": {
+"return": {
+		"airlineName": "American"
+	},
+"return": {
+	"airlineName": "United"
+	}
+  }
+}
+   
+---
+{t1: (payload..&return) ++ (payload..&return)[0]..,
+	t2: payload..&return..
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_Copy_of_XML input" doc:id="6d31f6bf-afbe-4e24-982a-138651a5b713">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/dw
+
+var payload = 
+{
+"findFlightResponse": {
+"return": {
+		"airlineName": "American"
+	},
+"return": {
+	"airlineName": "United"
+	}
+  }
+}
+   
+---
+{t1: (payload..*return) ++ (payload..*return)[0]..,
+	t2: payload..*return..
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="XML input" doc:id="2342fcf6-ce42-4863-9e44-c45c27cd6d86" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+ns fl http://flights.com
+ns air http://airlines.com
+
+var payload ={
+  findFlightResponse: {
+    fl#return @(airline:"american"):{
+      air#airlineName: "American",
+      "code":"AA231",
+      "price":310.10
+    },
+   fl#return @(airline:"american"):{
+      air#airlineName: "United",
+      "code":"UA40",
+      "price":220.00
+    }
+  }
+}
+
+---
+ (payload..).&return
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="DW input to XML output namespaces" doc:id="b59f2deb-ac6b-4d4e-8abc-cbd5b08f6c9f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload = do {
+  ns fl http://fights.training.mulesoft.com/
+  ns ns0 http://default.training.mulesoft.com/
+  ns pr http://prices.training.mulesoft.com/
+  ---
+  {
+    fl#findFlightResponse 
+    @(xmlns:"http://default.training.mulesoft.com/",
+    	"xmlns:fl":"http://flights.training.mulesoft.com/",
+    	"xmlns:pr":"http://prices.training.mulesoft.com/"
+    ) : {
+      return: 
+      {
+        fl#airlineName: "American",
+        fl#code @("flight-type":"domestic") : "AA203",
+        departureDate: "2018/03/20",
+        pr#price: "333.50"
+      },
+      return: 
+      {
+        fl#airlineName: "United",
+        fl#code @("flight-type":"international"): "UA40",
+        departureDate: "2018/03/20",
+        pr#price: "620.00"
+      }
+    }
+  }
+}
+---
+payload.*findFlightResponse
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_DW input to XML output namespaces" doc:id="bf6095ca-2822-4373-bac1-e11beca61f49">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+(
+do {
+  ns fl http://fights.training.mulesoft.com/
+  ns ns0 http://default.training.mulesoft.com/
+  ns pr http://prices.training.mulesoft.com/
+  ---
+  {
+    findFlightResponse 
+    @(xmlns:"http://default.training.mulesoft.com/",
+    	"xmlns:fl":"http://flights.training.mulesoft.com/",
+    	"xmlns:pr":"http://prices.training.mulesoft.com/"
+    )
+    : {
+        return: 
+          {
+            fl#airlineName: "American",
+            fl#code: "AA203",
+            departureDate: "2018/03/20",
+            pr#price: "333.50"
+          },
+          return: 
+          {
+            fl#airlineName: "United",
+            fl#code: "UA40",
+            departureDate: "2018/03/20",
+            pr#price: "620.00"
+          }
+      }
+    }
+  }
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_XML input" doc:id="7ee0599b-509a-4f51-8c42-08b44f652bca">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+ns fl http://flights.com
+ns air http://airlines.com
+
+var payload ={
+  findFlightResponse: {
+    fl#return @(airline:"american"):{
+      air#airlineName: "American",
+      "code":"AA231",
+      "price":310.10
+    },
+   fl#return @(airline:"american"):{
+      air#airlineName: "United",
+      "code":"UA40",
+      "price":220.00
+    }
+  }
+}
+
+---
+(payload..).&return
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="DW namespaces to XML output" doc:id="c728e3f8-b8f8-40f7-92b0-bd1655d59dca" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+
+---
+do{
+  ns fl http://soap.training.mulesoft.com/
+  ns pr http://soap.training.mulesoft.com/
+  ---
+  {
+    fl#findFlightResponse: {
+      fl#flight @("type": "domestic"): {
+        fl#airlineName: "Delta",
+        fl#code: "UA40",
+        pr#price: "400.0"
+      },
+      fl#flight @("type": "international"): {
+        fl#airlineName: "American",
+        fl#code: "AA203"
+      }
+    }
+  }
+} as Object
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_Transform Message" doc:id="1628ac24-4cd7-4ab3-a096-dd96821e2192">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+
+---
+do{
+  ns fl http://soap.training.mulesoft.com/
+  ns pr http://soap.training.mulesoft.com/
+  ---
+  {
+    fl#findFlightResponse: {
+      fl#flight @("type": "domestic"): {
+        fl#airlineName: "Delta",
+        fl#code: "UA40",
+        pr#price: "400.0"
+      },
+      fl#flight @("type": "international"): {
+        fl#airlineName: "American",
+        fl#code: "AA203"
+      }
+    }
+  }
+} as Object
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="e70799e8-bd56-4653-929c-066185d583c6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="71bbac13-62f8-4643-b6fc-b54e3ab5e334" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="6c0f0351-a13b-4073-95c2-d5e2fe6dce3f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload = {
+  "findFlightResponse": {
+    "return": {
+      "airlineName": "American"
+    },
+    "return": {
+      "airlineName": "United"
+    }
+  }
+}
+---
+payload.*findFlightResponse[0 to -1]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="57bab7f9-39c0-4d58-8cd5-7e5bafbc0d6e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/json
+
+var payload = root: {
+  "findFlightResponse": {
+    "return": {
+      "airlineName": "American",
+      "code":"AA231",
+      "return":{
+      "airlineName": "Delta",
+      "code":"AA231"}
+    },
+    "return": {
+      "airlineName": "United",
+      "code":"UA40",
+      "price":{current: 220.00},
+      return: {hello: "world"}
+    }
+  }
+}
+
+---
+payload..return]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dwCoreObjectsModuleTests" doc:id="db722635-5c42-4d1b-b15b-c97e20bc6d5f">
+		<ee:transform doc:name="Transform Message" doc:id="01f327ed-e432-4b8b-a829-b9f591bb722e">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var array1 = [1, "a", true]
+
+var object1 = {
+	one: "one1",
+	two: "two2"
+	
+}
+
+
+import dw::core::Objects
+var myVar = read('<users xmlns="http://test.com">
+                     <user1 name="Mariano" lastName="Achaval">MA</user1>
+                     <user2 name="Stacey" lastName="Duke">SD</user2>
+                  </users>', 'application/xml')
+output application/json
+---
+{ 
+	keySet: {
+		
+		keys: Objects::keySet(myVar.users) map (  (user) -> ("INDEX$$") : user ),
+		nameSpaces: Objects::keySet(myVar.users) map (  (user) -> ("INDEX$$") :user.# ),
+		attributes:	Objects::keySet(myVar.users) map (  (user) -> ("INDEX$$") :user.@ )
+	},
+	nameSet: {
+		keys: Objects::nameSet(myVar.users) map (  (user) -> ("INDEX$$") :user ),
+		nameSpaces: Objects::nameSet(myVar.users) map (  (user) -> ("INDEX$$") :user.# ),
+		attributes:	Objects::nameSet(myVar.users) map (  (user) -> ("INDEX$$") :user.@ )
+	},
+	valueSet: {
+		keys: Objects::valueSet(myVar.users) map (  (user) -> ("INDEX$$") :user ),
+		nameSpaces: Objects::valueSet(myVar.users) map (  (user) -> ("INDEX$$") :user.# ),
+		attributes:	Objects::valueSet(myVar.users) map (  (user) -> ("INDEX$$") :user.@ )
+	},
+	entrySet: {
+		entrySet: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$") : user),
+		entrySetKeys: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$"): user.key),
+		entrySetValues: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$"): user.value),
+		entrySetAttributes: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$"): user.attributes)
+	}
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="3622dce5-0afb-4fd5-a978-02eb07890c48">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/dw
+
+var array1 = [1, "a", true]
+
+var object1 = {
+	one: "one1",
+	two: "two2"
+	
+}
+
+
+import dw::core::Objects
+var myVar = read('<users xmlns="http://test.com">
+                     <user1 name="Mariano" lastName="Achaval">MA</user1>
+                     <user2 name="Stacey" lastName="Duke">SD</user2>
+                  </users>', 'application/xml')
+output application/json
+---
+{ original: myVar,
+	keySet: {
+		
+		keys: Objects::keySet(myVar.users) map (  (user) -> ("INDEX$$") : user ),
+		nameSpaces: Objects::keySet(myVar.users) map (  (user) -> ("INDEX$$") :user.# ),
+		attributes:	Objects::keySet(myVar.users) map (  (user) -> ("INDEX$$") :user.@ )
+	},
+	nameSet: {
+		keys: Objects::nameSet(myVar.users) map (  (user) -> ("INDEX$$") :user ),
+		nameSpaces: Objects::nameSet(myVar.users) map (  (user) -> ("INDEX$$") :user.# ),
+		attributes:	Objects::nameSet(myVar.users) map (  (user) -> ("INDEX$$") :user.@ )
+	},
+	valueSet: {
+		keys: Objects::valueSet(myVar.users) map (  (user) -> ("INDEX$$") :user ),
+		nameSpaces: Objects::valueSet(myVar.users) map (  (user) -> ("INDEX$$") :user.# ),
+		attributes:	Objects::valueSet(myVar.users) map (  (user) -> ("INDEX$$") :user.@ )
+	},
+	entrySet: {
+		entrySet: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$") : user),
+		entrySetKeys: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$"): user.key),
+		entrySetValues: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$"): user.value),
+		entrySetAttributes: Objects::entrySet(myVar.users) map ( (user) -> ("INDEX$$"): user.attributes)
+	}
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="selectorTests" doc:id="f1e26e12-9026-4b24-9158-859bf3e9343a">
+		<ee:transform doc:name="Create Object From Array of Objects" doc:id="95dcfbe9-89fc-4a22-969c-9e8565df7036" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+
+var payload = 
+[
+ {
+    "firstname":"Annie",  
+    "lastname":"Point"
+  },  
+  {
+    "firstname":"Ed",
+    "lastname":"Mule"
+  }
+]
+
+
+---
+users:  {( payload map (object, index) -> {
+	fname: object.firstname,
+	lname: object.lastname
+	
+
+}
+	)}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Select Child" doc:id="08f1c9a7-ccfe-4e3f-9526-5bc42fe4276e">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var payload = 
+{
+  "findFlightResponse":{ 
+    "return": {
+      "airlineName": "United"
+    },
+    "return": {
+    "airlineName": "Delta"		
+    }   
+  }
+}
+
+---
+do{
+	var selectChild = payload.findFlightResponse.return
+	var selectFirstChild = payload.findFlightResponse.*return[0]
+	var selectAllChildren =  payload.findFlightResponse.*return
+	---
+	selectChild
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Select descendants" doc:id="de25ed57-d086-476d-a2a0-6bd5fd143791">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var payload = 
+{
+  "findFlightResponse":{ 
+    "return": {
+      "airlineName": "United"
+    },
+    "return": {
+    "airlineName": "Delta"		
+    }   
+  }
+}
+
+---
+do{
+	var all = payload..
+	var allByKey = payload..*return
+	var allReturnKeys =  (payload..).*return
+	var firstDesc = payload..return
+	var firstOfAllReturn =  (payload..).*return[0]
+	---
+	(payload..).return
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_Transform Message" doc:id="a4b412ce-4f0a-4a9d-b221-d2c84fb39e0e">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var payload = 
+{ 
+  "findFlightResponse": { 
+  	"return": {
+  		"airlineName": "American",
+  		"code":"AA231",
+  		"price":310.10,
+  		return: {
+	  		"one":"one1",
+	  		"two":"two2"
+	  	}
+  	},
+  	"return": {	  	
+  		"airlineName": "United",
+	  	"code":"UA40",
+	  	"price":220.00,
+	  	return: {
+	  		"hello":"world",
+	  		"return":"world"
+	  	}
+	} 
+  }
+}
+
+
+  
+---
+{
+	"var": "one",
+	first: (payload..),
+	recursive: (payload..).return
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_Transform Message" doc:id="17841094-4030-4555-b936-43dfdf7f6f46">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dwCoreArraysModuleTests" doc:id="7467cd25-5eb1-4d63-bfc3-3c0565a8fdfb" >
+		<ee:transform doc:name="Transform Message" doc:id="7fa38e91-2baa-480d-a09d-53f678bbf16b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+import dw::core::Arrays
+
+
+var array1 = (1 to 4) 
+---
+
+{ 
+    t1a: Arrays::some(   [1,5,3] , (v) ->  ((v mod 2) == 0) ),
+
+    t2: Arrays::every( [2,4,6] , (v) -> ( (v mod 2) == 0 )),
+    
+    t3: Arrays::countBy( [2,3,4,6] , (v) -> ( (v mod 3) == 0 )),
+    t4: Arrays::sumBy( 1 to 10 , (v) -> (v) )
+
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="b7231813-6c25-44d3-9e06-ce1ee72e69be" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import dw::core::Arrays
+
+---
+{ 
+    t1a: Arrays::some(   [1,5,3] , (v) ->  ((v mod 2) == 0) ),
+
+    t2: Arrays::every( [2,4,6] , (v) -> ( (v mod 2) == 0 ))
+    
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_Transform Message" doc:id="e01a92d0-2b31-469a-bbaa-72782d52662b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import * from dw::core::Arrays
+
+---
+{ 
+    t1a:  [1,5,3] some ( ($ mod 2 ) == 0 ),
+    t1b:  [1,5,3] some  (num) -> (num mod 2 ) == 0 ,
+    t1c: dw::core::Arrays::some( [1,5,3], (num) -> (num mod 2) == 1 )
+}
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Copy_of_Copy_of_Transform Message" doc:id="5e746507-0612-478c-be21-613e803d60da" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import * from dw::core::Arrays
+
+---
+{ 
+    t1:  [1,5,3] some (($ mod 2 )== 0),
+
+    t2: [1,3,5]  every (($ mod 1 ) == 0),
+    
+    t3: ["AAB", "ABA", "BAA"] countBy ( ($ contains "AA") ),
+    
+    t4: [{qty:10}, {qty:15}, {qty:20}] sumBy ($.qty / 10),
+    
+    t5: (1 to 5) divideBy 2  
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

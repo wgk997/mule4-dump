@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension-documentation>
+    <configs>
+        <config name="config">
+            <description><![CDATA[Default configuration]]></description>
+            <parameters/>
+        </config>
+    </configs>
+    <connections/>
+    <extension name="MUnit Tools">
+        <description><![CDATA[<p> MUnit Tools to perform testing on mule </p>]]></description>
+        <parameters/>
+    </extension>
+    <operations>
+        <operation name="assertThat">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="expression">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="is">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="message">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="fail">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="message">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="mockWhen">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="processor">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="withAttributes">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="thenReturn">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="runCustom">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="assertion">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="expression">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="params">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="verifyCall">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="processor">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="withAttributes">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="times">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="atLeast">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="atMost">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+    </operations>
+    <sources/>
+    <types>
+        <type name="org.mule.munit.assertion.api.MunitAssertion">
+            <description><![CDATA[]]></description>
+            <parameters/>
+        </type>
+        <type name="org.mule.munit.assertion.api.matchers.Diff">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="diffs">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="matches">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+        <type name="org.mule.munit.assertion.api.matchers.Matcher">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="expected">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="type">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+        <type name="org.mule.munit.common.behavior.BehaviorManager">
+            <description><![CDATA[]]></description>
+            <parameters/>
+        </type>
+        <type name="org.mule.munit.common.model.Attribute">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="attributeName">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="whereValue">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+        <type name="org.mule.munit.common.model.Event">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="payload">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="attributes">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="error">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="variables">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="sessionProperties">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="inboundProperties">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="outboundProperties">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="inboundAttachments">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="outboundAttachments">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+        <type name="org.mule.munit.tools.util.GetResourceFunctions">
+            <description><![CDATA[Utility functions to handle resources
+ 
+ @since 2.0.0
+ @author Mulesoft Inc.]]></description>
+            <parameters>
+                <parameter name="resourceAsByteArray">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="resourceAsReusableStream">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="resourceAsStream">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="resourceAsString">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </type>
+    </types>
+</extension-documentation>

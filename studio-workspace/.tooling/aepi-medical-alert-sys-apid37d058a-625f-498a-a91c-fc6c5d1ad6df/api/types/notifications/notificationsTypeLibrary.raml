@@ -1,0 +1,46 @@
+#%RAML 1.0 Library
+types:
+  
+  notificationsDataTypeForPostRequest:
+    type: !include notificationsDataType.raml
+
+  notificationsDataTypeForPostResponse:
+    type: object
+    properties:
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+        example: 
+          201          
+      message:
+        type: string
+        required: true      
+        example: 
+          "Added"
+      smsMessage:
+        type: string
+        example:
+          "Your test are complete"
+      notifications:
+        required: true
+        type: array
+        items:
+          !include notificationsStatusDataType.raml
+        example:
+          [
+            {
+              "to": "+19725550000",  
+              "status": "SENT"
+            },
+            {
+              "to": "+19725550001",  
+              "status": "SENT"
+            },
+            {
+              "to": "+19725550002",  
+              "status": "SENT"
+            }
+          ]
+

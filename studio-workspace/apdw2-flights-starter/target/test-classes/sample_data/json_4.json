@@ -1,0 +1,82 @@
+[
+  {
+    "price": 200.0,
+    "flightCode": "rree1000",
+    "availableSeats": 5,
+    "planeType": null,
+    "departureDate": "2016-01-20T00:00:00",
+    "origination": "MUA",
+    "airlineName": "American Airlines",
+    "destination": "CLE"
+  },
+  {
+    "price": 245.0,
+    "flightCode": "ER3kfd",
+    "availableSeats": 13,
+    "planeType": "Boeing 747",
+    "departureDate": "2015/08/11",
+    "origination": "MUA",
+    "airlineName": "United",
+    "destination": "CLE"
+  },
+  {
+    "price": 300.0,
+    "flightCode": "eefd0123",
+    "availableSeats": 7,
+    "planeType": "Boeing 747",
+    "departureDate": "2016-01-25T00:00:00",
+    "origination": "MUA",
+    "airlineName": "American Airlines",
+    "destination": "CLE"
+  },
+  {
+    "price": 308.0,
+    "flightCode": "A12342",
+    "availableSeats": 17,
+    "planeType": "BOEING 727",
+    "departureDate": "Jul 11, 2015",
+    "origination": "MUA",
+    "airlineName": "Delta",
+    "destination": "CLE"
+  },
+  {
+    "price": 420.0,
+    "flightCode": "A1B34S",
+    "availableSeats": 50,
+    "planeType": "BOEING 707",
+    "departureDate": "Jun 11, 2015",
+    "origination": "MUA",
+    "airlineName": "Delta",
+    "destination": "CLE"
+  },
+  {
+    "price": 736.0,
+    "flightCode": "A1ASD4",
+    "availableSeats": 40,
+    "planeType": "BOEING 757",
+    "departureDate": "Sep 11, 2015",
+    "origination": "MUA",
+    "airlineName": "Delta",
+    "destination": "CLE"
+  },
+  {
+    "price": 845.0,
+    "flightCode": "ER9fje",
+    "availableSeats": 32,
+    "planeType": "Boeing 727",
+    "departureDate": "2015/07/11",
+    "origination": "MUA",
+    "airlineName": "United",
+    "destination": "CLE"
+  },
+  {
+    "price": 954.0,
+    "flightCode": "ffee1112",
+    "availableSeats": 100,
+    "planeType": "Boeing 787",
+    "departureDate": "2016-01-20T00:00:00",
+    "origination": "MUA",
+    "airlineName": "American Airlines",
+    "destination": "CLE"
+  }
+]

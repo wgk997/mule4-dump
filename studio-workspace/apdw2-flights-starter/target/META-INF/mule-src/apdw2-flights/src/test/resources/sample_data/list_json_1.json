@@ -1,0 +1,92 @@
+[
+  {
+    "flightCode": "A1B2C4",
+    "availableSeats": 10,
+    "destination": "LAX",
+    "planeType": "BOEING 737",
+    "origination": "MUA",
+    "price": 199.99,
+    "departureDate": "Feb 11, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "ffee0192",
+    "availableSeats": 0,
+    "destination": "LAX",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 300,
+    "departureDate": "2018-01-20T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "ER45if",
+    "availableSeats": 52,
+    "destination": "LAX",
+    "planeType": "Boeing 737",
+    "origination": "MUA",
+    "price": 345.99,
+    "departureDate": "2018/02/11",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "ER45jd",
+    "availableSeats": 12,
+    "destination": "LAX",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 346,
+    "departureDate": "2018/04/11",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "ER0945",
+    "availableSeats": 0,
+    "destination": "LAX",
+    "planeType": "Boeing 707",
+    "origination": "MUA",
+    "price": 423,
+    "departureDate": "2018/06/11",
+    "airlineName": "United"
+  },
+  {
+    "flightCode": "A1QWER",
+    "availableSeats": 18,
+    "destination": "LAX",
+    "planeType": "BOEING 747",
+    "origination": "MUA",
+    "price": 496,
+    "departureDate": "Aug 11, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "rree0001",
+    "availableSeats": 0,
+    "destination": "LAX",
+    "planeType": "Boeing 787",
+    "origination": "MUA",
+    "price": 541,
+    "departureDate": "2018-01-20T00:00:00",
+    "airlineName": "American"
+  },
+  {
+    "flightCode": "A134DS",
+    "availableSeats": 40,
+    "destination": "LAX",
+    "planeType": "BOEING 777",
+    "origination": "MUA",
+    "price": 750,
+    "departureDate": "Apr 11, 2018",
+    "airlineName": "Delta"
+  },
+  {
+    "flightCode": "eefd4511",
+    "availableSeats": 100,
+    "destination": "LAX",
+    "planeType": "Boeing 777",
+    "origination": "MUA",
+    "price": 900,
+    "departureDate": "2018-01-15T00:00:00",
+    "airlineName": "American"
+  }
+]

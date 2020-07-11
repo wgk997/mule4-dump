@@ -1,0 +1,10 @@
+{
+  "diagnosis": {
+    "diagnosisCode": "XYZ",
+    "diagnosisStartDate": "2020-02-28T16:41:41.09",
+    "diagnosisEndDate": "2020-02-28T18:41:41.09",
+    "statusCode": "PRIMARY",
+    "shortDescription": "Lorem Epsom",
+    "longDescription": "Lorem Epsom Dollar ....."
+  }
+}

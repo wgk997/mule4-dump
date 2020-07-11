@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/diagnosisResponseGeneric",
+  "definitions": {
+    "diagnosisResponseGeneric": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "statusCode",
+        "message"
+      ],
+      "properties": {
+        "statusCode": {
+          "type": "number",
+          "minimum": 100.0,
+          "maximum": 599.0
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension-documentation>
+    <configs>
+        <config name="listenerConfig">
+            <description><![CDATA[Configuration element for a HttpListener.]]></description>
+            <parameters>
+                <parameter name="basePath">
+                    <description><![CDATA[Base path to use for all requests that reference this config.]]></description>
+                </parameter>
+                <parameter name="listenerInterceptors">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </config>
+        <config name="requestConfig">
+            <description><![CDATA[Configuration element for a HTTP requests.]]></description>
+            <parameters>
+                <parameter name="expirationPolicy">
+                    <description><![CDATA[Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.]]></description>
+                </parameter>
+                <parameter name="basePath">
+                    <description><![CDATA[Base path to use for all requests that reference this config.]]></description>
+                </parameter>
+                <parameter name="followRedirects">
+                    <description><![CDATA[Specifies whether to follow redirects or not. Default value is true.]]></description>
+                </parameter>
+                <parameter name="sendBodyMode">
+                    <description><![CDATA[Defines if the request should contain a body or not. If AUTO, it will depend on the method (GET, HEAD and OPTIONS will not send a body).]]></description>
+                </parameter>
+                <parameter name="requestStreamingMode">
+                    <description><![CDATA[Defines if the request should be sent using streaming or not. If this attribute is not present, the behavior will depend on the type of the payload (it will stream only for InputStream). If set to true, it will always stream. If set to false, it will never stream. As streaming is done the request will be sent user Transfer-Encoding: chunked.]]></description>
+                </parameter>
+                <parameter name="enableCookies">
+                    <description><![CDATA[If true, cookies received in HTTP responses will be stored, and sent in subsequent HTTP requests.]]></description>
+                </parameter>
+                <parameter name="responseTimeout">
+                    <description><![CDATA[Maximum time that the request element will block the execution of the flow waiting for the HTTP response. If this value is not present, the default response timeout from the Mule configuration will be used.]]></description>
+                </parameter>
+            </parameters>
+        </config>
+    </configs>
+    <connections>
+        <connection name="listener">
+            <description><![CDATA[Connection provider for a HttpListener, handles the creation of HttpServer instances.]]></description>
+            <parameters>
+                <parameter name="tlsContext">
+                    <description><![CDATA[Reference to a TLS config element. This will enable HTTPS for this config.]]></description>
+                </parameter>
+                <parameter name="protocol">
+                    <description><![CDATA[Protocol to use for communication. Valid values are HTTP and HTTPS. Default value is HTTP. When using HTTPS the HTTP communication is going to be secured using TLS / SSL. If HTTPS was configured as protocol then the user needs to configure at least the keystore in the tls:context child element of this listener-config.]]></description>
+                </parameter>
+                <parameter name="host">
+                    <description><![CDATA[Host where the requests will be sent.]]></description>
+                </parameter>
+                <parameter name="port">
+                    <description><![CDATA[Port where the requests will be received.]]></description>
+                </parameter>
+                <parameter name="usePersistentConnections">
+                    <description><![CDATA[If false, each connection will be closed after the first request is completed.]]></description>
+                </parameter>
+                <parameter name="connectionIdleTimeout">
+                    <description><![CDATA[The number of milliseconds that a connection can remain idle before it is closed. The value of this attribute is only used when persistent connections are enabled.]]></description>
+                </parameter>
+                <parameter name="reconnection">
+                    <description><![CDATA[When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy]]></description>
+                </parameter>
+            </parameters>
+        </connection>
+        <connection name="request">
+            <description><![CDATA[Connection provider for a HTTP request, handles the creation of HttpExtensionClient instances.]]></description>
+            <parameters>
+                <parameter name="proxyConfig">
+                    <description><![CDATA[Reusable configuration element for outbound connections through a proxy. A proxy element must define a host name and a port attributes, and optionally can define a username and a password.]]></description>
+                </parameter>
+                <parameter name="authentication">
+                    <description><![CDATA[Authentication method to use for the HTTP request.]]></description>
+                </parameter>
+                <parameter name="tlsContext">
+                    <description><![CDATA[Reference to a TLS config element. This will enable HTTPS for this config.]]></description>
+                </parameter>
+                <parameter name="protocol">
+                    <description><![CDATA[Protocol to use for communication. Valid values are HTTP and HTTPS. Default value is HTTP. When using HTTPS the HTTP communication is going to be secured using TLS / SSL. If HTTPS was configured as protocol then the user can customize the tls/ssl configuration by defining the tls:context child element of this listener-config. If not tls:context is defined then the default JVM certificates are going to be used to establish communication.]]></description>
+                </parameter>
+                <parameter name="host">
+                    <description><![CDATA[Host where the requests will be sent.]]></description>
+                </parameter>
+                <parameter name="port">
+                    <description><![CDATA[Port where the requests will be sent. If the protocol attribute is HTTP (default) then the default value is 80, if the protocol attribute is HTTPS then the default value is 443.]]></description>
+                </parameter>
+                <parameter name="usePersistentConnections">
+                    <description><![CDATA[If false, each connection will be closed after the first request is completed.]]></description>
+                </parameter>
+                <parameter name="maxConnections">
+                    <description><![CDATA[The maximum number of outbound connections that will be kept open at the same time. By default the number of connections is unlimited.]]></description>
+                </parameter>
+                <parameter name="connectionIdleTimeout">
+                    <description><![CDATA[The number of milliseconds that a connection can remain idle before it is closed. The value of this attribute is only used when persistent connections are enabled.]]></description>
+                </parameter>
+                <parameter name="responseBufferSize">
+                    <description><![CDATA[The space in bytes for the buffer where the HTTP response will be stored as it arrives.]]></description>
+                </parameter>
+                <parameter name="clientSocketProperties">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="reconnection">
+                    <description><![CDATA[When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy]]></description>
+                </parameter>
+            </parameters>
+        </connection>
+    </connections>
+    <extension name="HTTP">
+        <description><![CDATA[HTTP connector used to handle and perform HTTP requests. <p> This class only serves as an extension definition. It's configurations are divided on server (<http:listener-config>) and client (<http:requester-config>) capabilities.]]></description>
+        <parameters/>
+    </extension>
+    <operations>
+        <operation name="request">
+            <description><![CDATA[Consumes an HTTP service.]]></description>
+            <parameters>
+                <parameter name="method">
+                    <description><![CDATA[The HTTP method for the request.]]></description>
+                </parameter>
+                <parameter name="outputMimeType">
+                    <description><![CDATA[The mime type of the payload that this operation outputs.]]></description>
+                </parameter>
+                <parameter name="outputEncoding">
+                    <description><![CDATA[The encoding of the payload that this operation outputs.]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="path">
+                    <description><![CDATA[Path where the request will be sent.]]></description>
+                </parameter>
+                <parameter name="url">
+                    <description><![CDATA[URL where to send the request.]]></description>
+                </parameter>
+                <parameter name="followRedirects">
+                    <description><![CDATA[Specifies whether to follow redirects or not.]]></description>
+                </parameter>
+                <parameter name="sendBodyMode">
+                    <description><![CDATA[Defines if the request should contain a body or not.]]></description>
+                </parameter>
+                <parameter name="requestStreamingMode">
+                    <description><![CDATA[Defines if the request should be sent using streaming or not.]]></description>
+                </parameter>
+                <parameter name="responseTimeout">
+                    <description><![CDATA[Maximum time that the request element will block the execution of the flow waiting for the HTTP response.]]></description>
+                </parameter>
+                <parameter name="body">
+                    <description><![CDATA[The body of the response message]]></description>
+                </parameter>
+                <parameter name="headers">
+                    <description><![CDATA[HTTP headers the message should include.]]></description>
+                </parameter>
+                <parameter name="uriParams">
+                    <description><![CDATA[URI parameters that should be used to create the request.]]></description>
+                </parameter>
+                <parameter name="queryParams">
+                    <description><![CDATA[Query parameters the request should include.]]></description>
+                </parameter>
+                <parameter name="responseValidator">
+                    <description><![CDATA[Configures error handling of the response.]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="basicSecurityFilter">
+            <description><![CDATA[Authenticates received HTTP requests. Must be used after a listener component.]]></description>
+            <parameters>
+                <parameter name="realm">
+                    <description><![CDATA[Authentication realm.]]></description>
+                </parameter>
+                <parameter name="securityProviders">
+                    <description><![CDATA[The delegate-security-provider to use for authenticating. Use this in case you have multiple security managers defined in your configuration.]]></description>
+                </parameter>
+                <parameter name="attributes">
+                    <description><![CDATA[The HttpRequestAttributes coming from an HTTP listener source to check the 'Authorization' header.]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+        <operation name="loadStaticResource">
+            <description><![CDATA[Serves up static content for use with HTTP, using the request path to lookup the resource.]]></description>
+            <parameters>
+                <parameter name="resourceBasePath">
+                    <description><![CDATA[The resource base from where documents are served up. For example: /Users/maxthemule/resources]]></description>
+                </parameter>
+                <parameter name="defaultFile">
+                    <description><![CDATA[The default file to serve when a directory is specified. The default value is 'index.html'.]]></description>
+                </parameter>
+                <parameter name="attributes">
+                    <description><![CDATA[The HttpRequestAttributes coming from an HTTP listener source to check the required resources.]]></description>
+                </parameter>
+                <parameter name="target">
+                    <description><![CDATA[The name of a variable on which the operation's output will be placed]]></description>
+                </parameter>
+                <parameter name="targetValue">
+                    <description><![CDATA[An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+    </operations>
+    <sources>
+        <source name="listener">
+            <description><![CDATA[Represents a listener for HTTP requests.]]></description>
+            <parameters>
+                <parameter name="path">
+                    <description><![CDATA[Relative path from the path set in the HTTP Listener configuration]]></description>
+                </parameter>
+                <parameter name="allowedMethods">
+                    <description><![CDATA[Comma separated list of allowed HTTP methods by this listener. To allow all methods do not defined the attribute.]]></description>
+                </parameter>
+                <parameter name="responseStreamingMode">
+                    <description><![CDATA[Defines if the response should be sent using streaming or not. If this attribute is not present, the behavior will depend on the type of the payload (it will stream only for InputStream). If set to true, it will always stream. If set to false, it will never stream. As streaming is done the response will be sent user Transfer-Encoding: chunked.]]></description>
+                </parameter>
+                <parameter name="outputMimeType">
+                    <description><![CDATA[The mime type of the payload that this operation outputs.]]></description>
+                </parameter>
+                <parameter name="outputEncoding">
+                    <description><![CDATA[The encoding of the payload that this operation outputs.]]></description>
+                </parameter>
+                <parameter name="redeliveryPolicy">
+                    <description><![CDATA[Defines a policy for processing the redelivery of the same message]]></description>
+                </parameter>
+                <parameter name="streamingStrategy">
+                    <description><![CDATA[Configure if repeatable streams should be used and their behaviour]]></description>
+                </parameter>
+                <parameter name="reconnectionStrategy">
+                    <description><![CDATA[A retry strategy in case of connectivity errors]]></description>
+                </parameter>
+                <parameter name="body">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="headers">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="statusCode">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="reasonPhrase">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </source>
+    </sources>
+</extension-documentation>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+	<flow name="testAmericanDWTransformation" doc:id="8f2b83ce-1a67-412b-834b-d9b12583c54b">
+		<http:listener doc:name="Listener" doc:id="01ac4310-ddbe-404e-a771-31afce636acb" config-ref="HTTP_Listener_config" path="american-test1" />
+		<set-payload value='#[%dw 2.0
+output application/java
+---
+readUrl("classpath://examples/americanFlightsResponse.json")]' doc:name="Read sample american flights JSON" doc:id="dbb04e82-ae71-4b68-b866-90570ffe719f" />
+		<flow-ref doc:name="transformAmericanJsonToFlightObjects" doc:id="a8ba42f0-f02a-4174-b1e1-5ef3986d8deb" name="transformAmericanJsonToFlightObjects"/>
+		<set-payload value="#[output application/json --- payload]" doc:name="Set Payload" doc:id="9be91f33-9d84-4ec8-95ea-0870155abbe4" />
+	</flow>
+	<flow name="testTransformAmericanJsonToFlightObjectsFlow" doc:id="8c49a650-0216-4667-8df0-c7e3a8473125" >
+		<http:listener doc:name="Listener" doc:id="093e67fd-bb7d-4cd6-9649-ae67109a722d" config-ref="HTTP_8082_Listener_config1" path="american-test2"/>
+		<ee:transform doc:name="Transform Message" doc:id="c925f6be-1a34-4441-85e8-5c8bbbd06eeb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://examples/extra/americanFlightsResponse.json")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="transformAmericanJsonToFlightObjects" doc:id="8225466e-cb60-4e0e-a504-4a5ad076cdcf" name="transformAmericanJsonToFlightObjects"/>
+		<set-payload value="#[output application/json --- payload]" doc:name="Set Payload" doc:id="8f043087-e97c-4e08-8a12-fc72febf6207" />
+	</flow>
+
+	<flow name="mock-getFlightsOnAmericanToSFO-results" doc:id="792cb4dd-cb94-434d-b2b0-38ace86ad334" >
+		<http:listener doc:name="Listener" doc:id="36d47f47-1af2-44c0-81c4-0de9e9cc2a0e" config-ref="HTTP_8082_Listener_config1" path="/american"/>
+		<ee:transform doc:name="Read in sample american flights to SFO" doc:id="9ff03a86-ac7e-4007-b812-e5e2435cfe0d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://getFlightsOnAmericanToSFOResults.json")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="joinAirportDetailsToFlights" doc:id="1ef7a1d7-ffb7-4c95-9737-47e145898acb" name="joinAirportDetailsToFlights"/>
+	</flow>
+	<flow name="mock-getFlightsAllAirlines-to-LAX-results" doc:id="b3b93486-3b17-47d5-a498-5133b819592e" >
+		<http:listener doc:name="HTTP:8082 /" doc:id="5bf15160-86af-4fb6-bdd9-0963d6fc4146" config-ref="HTTP_8082_Listener_config1" path="/"/>
+		<ee:transform doc:name="Transform Message" doc:id="7ccd2c45-de92-4991-8ee0-00056be443f9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+readUrl("classpath://getFlightsAllAirlinesResult.dwl")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="joinAirportDetailsToFlights" doc:id="fc481f1e-7205-4e29-a346-05e48932b628" name="joinAirportDetailsToFlights"/>
+	</flow>
+	<flow name="dw-test" doc:id="d364ad7a-d8b9-44fa-83d7-5e95e729c98f">
+		<http:listener doc:name="HTTP: /dw-test" doc:id="1315de1d-42fc-4fdd-baa6-04f57e52f1cb" config-ref="HTTP_Listener_config" path="dw-test" />
+		<set-payload value="#[payload]" doc:name="Read all flights to LAX" doc:id="ff88d8bd-2fd5-4221-9c79-3ef4ce90715c" />
+		<flow-ref doc:name="joinAirportDetailsToFlights" doc:id="d1668718-3b2d-4ad7-9f83-bdf7f8ae44bf" name="joinAirportDetailsToFlights" />
+	</flow>
+</mule>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="AEPI CASE Management Process API"
+        prefix="aepicase-management-process-api"
+        namespace="http://www.mulesoft.org/schema/mule/aepicase-management-process-api"
+        doc:description="Get Update Cases, Procedure, Diagnosis, Procedures, Contact Trace"
+        xmlns="http://www.mulesoft.org/schema/mule/module"
+        xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+        xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+        xmlns:http="http://www.mulesoft.org/schema/mule/http"
+        
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+           http://www.mulesoft.org/schema/mule/module http://www.mulesoft.org/schema/mule/module/current/mule-module.xsd
+           http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+           
+           http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+
+    <property name="property_host" displayName="host" type="string" defaultValue="anypoint.mulesoft.com" summary="Host for consuming API"/>
+    <property name="property_port" displayName="port" type="string" defaultValue="443" summary="Port for consuming API"/>
+    <property name="property_basePath" displayName="basePath" type="string" defaultValue="/mocking/api/v1/links/53f8a543-ac6c-404d-9fd2-76480de9423f" summary="Basepath for consuming API"/>
+    <property name="property_protocol" displayName="protocol" type="string" defaultValue="HTTPS" summary="Protocol for consuming API"/>
+
+        <property name="property_proxyConfig" displayName="Proxy Config Reference" type="string" use="OPTIONAL" summary="Proxy config reference" tab="Proxy"/>
+        <property name="property_responseTimeout" displayName="Response timeout" type="string" defaultValue="10000" summary="Maximum time in milliseconds that the request element will block the execution of the flow waiting for the HTTP response."/>
+
+    
+    
+
+    <http:request-config
+name="aepicase-management-process-api-httpreq-config" xmlns:connection="true"
+responseTimeout="#[vars.property_responseTimeout]"
+basePath="#[vars.property_basePath]">
+<http:request-connection
+host="#[vars.property_host]"
+protocol="#[vars.property_protocol]"
+port="#[vars.property_port]"
+proxyConfig="#[vars.property_proxyConfig]"
+>
+</http:request-connection>
+</http:request-config>
+
+
+
+
+    <operation name="get-case-by-case-id"  >
+        <parameters>
+                                        <parameter name="case-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="client-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="client-secret"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="correlation-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                                    <parameter name="request-streaming-mode" displayName="Request streaming mode" type="request-streaming-mode-enum" use="OPTIONAL" tab="Advanced" />
+        </parameters>
+        <body>
+                <http:request config-ref="aepicase-management-process-api-httpreq-config"
+              path="/cases/{caseId}"
+              method="GET"
+              requestStreamingMode='#[vars["request-streaming-mode"]]'
+>
+                <mule:error-mapping sourceType="HTTP:PARSING" targetType="AEPICASE-MANAGEMENT-PROCESS-API:PARSING" />
+            <mule:error-mapping sourceType="HTTP:TIMEOUT" targetType="AEPICASE-MANAGEMENT-PROCESS-API:TIMEOUT" />
+            <mule:error-mapping sourceType="HTTP:SECURITY" targetType="AEPICASE-MANAGEMENT-PROCESS-API:SECURITY" />
+            <mule:error-mapping sourceType="HTTP:CONNECTIVITY" targetType="AEPICASE-MANAGEMENT-PROCESS-API:CONNECTIVITY" />
+            <mule:error-mapping sourceType="HTTP:BAD_REQUEST" targetType="AEPICASE-MANAGEMENT-PROCESS-API:BAD_REQUEST" />
+            <mule:error-mapping sourceType="HTTP:UNAUTHORIZED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:UNAUTHORIZED" />
+            <mule:error-mapping sourceType="HTTP:FORBIDDEN" targetType="AEPICASE-MANAGEMENT-PROCESS-API:FORBIDDEN" />
+            <mule:error-mapping sourceType="HTTP:METHOD_NOT_ALLOWED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:METHOD_NOT_ALLOWED" />
+            <mule:error-mapping sourceType="HTTP:NOT_FOUND" targetType="AEPICASE-MANAGEMENT-PROCESS-API:NOT_FOUND" />
+            <mule:error-mapping sourceType="HTTP:NOT_ACCEPTABLE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:NOT_ACCEPTABLE" />
+            <mule:error-mapping sourceType="HTTP:UNSUPPORTED_MEDIA_TYPE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:UNSUPPORTED_MEDIA_TYPE" />
+            <mule:error-mapping sourceType="HTTP:TOO_MANY_REQUESTS" targetType="AEPICASE-MANAGEMENT-PROCESS-API:TOO_MANY_REQUESTS" />
+            <mule:error-mapping sourceType="HTTP:INTERNAL_SERVER_ERROR" targetType="AEPICASE-MANAGEMENT-PROCESS-API:INTERNAL_SERVER_ERROR" />
+            <mule:error-mapping sourceType="HTTP:SERVICE_UNAVAILABLE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:SERVICE_UNAVAILABLE" />
+            <mule:error-mapping sourceType="HTTP:RETRY_EXHAUSTED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:RETRY_EXHAUSTED" />
+        
+            <http:headers>
+            <![CDATA[#[ ( { 'Accept': 'application/json' } ++ { 'client_id': vars['client-id'] } ++ { 'client_secret': vars['client-secret'] } ++ { 'correlation_id': vars['correlation-id'] } ) filterObject $ != null ]]]>
+        </http:headers>
+                <http:uri-params>
+            <![CDATA[#[ { 'caseId': vars['case-id'] } filterObject $ != null ]]]>
+        </http:uri-params>
+        </http:request>
+    <mule:set-payload value="#[payload]" mimeType="application/json" />
+        </body>
+                    <output type="get-case-by-case-id-response-type" />
+        
+        <errors>
+                            <error type="PARSING"/>
+                            <error type="TIMEOUT"/>
+                            <error type="SECURITY"/>
+                            <error type="CONNECTIVITY"/>
+                            <error type="BAD_REQUEST"/>
+                            <error type="UNAUTHORIZED"/>
+                            <error type="FORBIDDEN"/>
+                            <error type="METHOD_NOT_ALLOWED"/>
+                            <error type="NOT_FOUND"/>
+                            <error type="NOT_ACCEPTABLE"/>
+                            <error type="UNSUPPORTED_MEDIA_TYPE"/>
+                            <error type="TOO_MANY_REQUESTS"/>
+                            <error type="INTERNAL_SERVER_ERROR"/>
+                            <error type="SERVICE_UNAVAILABLE"/>
+                            <error type="RETRY_EXHAUSTED"/>
+                    </errors>
+    </operation>
+    <operation name="update-persons-by-case-id"  >
+        <parameters>
+                            <parameter name="update-persons-by-case-id-request-data" type="update-persons-by-case-id-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="case-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="client-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="client-secret"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="correlation-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                                    <parameter name="request-streaming-mode" displayName="Request streaming mode" type="request-streaming-mode-enum" use="OPTIONAL" tab="Advanced" />
+        </parameters>
+        <body>
+                <http:request config-ref="aepicase-management-process-api-httpreq-config"
+              path="/cases/{caseId}/persons"
+              method="PUT"
+              requestStreamingMode='#[vars["request-streaming-mode"]]'
+>
+                <mule:error-mapping sourceType="HTTP:PARSING" targetType="AEPICASE-MANAGEMENT-PROCESS-API:PARSING" />
+            <mule:error-mapping sourceType="HTTP:TIMEOUT" targetType="AEPICASE-MANAGEMENT-PROCESS-API:TIMEOUT" />
+            <mule:error-mapping sourceType="HTTP:SECURITY" targetType="AEPICASE-MANAGEMENT-PROCESS-API:SECURITY" />
+            <mule:error-mapping sourceType="HTTP:CONNECTIVITY" targetType="AEPICASE-MANAGEMENT-PROCESS-API:CONNECTIVITY" />
+            <mule:error-mapping sourceType="HTTP:BAD_REQUEST" targetType="AEPICASE-MANAGEMENT-PROCESS-API:BAD_REQUEST" />
+            <mule:error-mapping sourceType="HTTP:UNAUTHORIZED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:UNAUTHORIZED" />
+            <mule:error-mapping sourceType="HTTP:FORBIDDEN" targetType="AEPICASE-MANAGEMENT-PROCESS-API:FORBIDDEN" />
+            <mule:error-mapping sourceType="HTTP:METHOD_NOT_ALLOWED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:METHOD_NOT_ALLOWED" />
+            <mule:error-mapping sourceType="HTTP:NOT_FOUND" targetType="AEPICASE-MANAGEMENT-PROCESS-API:NOT_FOUND" />
+            <mule:error-mapping sourceType="HTTP:NOT_ACCEPTABLE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:NOT_ACCEPTABLE" />
+            <mule:error-mapping sourceType="HTTP:UNSUPPORTED_MEDIA_TYPE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:UNSUPPORTED_MEDIA_TYPE" />
+            <mule:error-mapping sourceType="HTTP:TOO_MANY_REQUESTS" targetType="AEPICASE-MANAGEMENT-PROCESS-API:TOO_MANY_REQUESTS" />
+            <mule:error-mapping sourceType="HTTP:INTERNAL_SERVER_ERROR" targetType="AEPICASE-MANAGEMENT-PROCESS-API:INTERNAL_SERVER_ERROR" />
+            <mule:error-mapping sourceType="HTTP:SERVICE_UNAVAILABLE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:SERVICE_UNAVAILABLE" />
+            <mule:error-mapping sourceType="HTTP:RETRY_EXHAUSTED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:RETRY_EXHAUSTED" />
+                <http:body>
+            <![CDATA[#[output application/json --- vars['update-persons-by-case-id-request-data']]
+]]>
+        </http:body>
+    
+            <http:headers>
+            <![CDATA[#[ ( { 'Accept': 'application/json' } ++ { 'client_id': vars['client-id'] } ++ { 'client_secret': vars['client-secret'] } ++ { 'correlation_id': vars['correlation-id'] } ) filterObject $ != null ]]]>
+        </http:headers>
+                <http:uri-params>
+            <![CDATA[#[ { 'caseId': vars['case-id'] } filterObject $ != null ]]]>
+        </http:uri-params>
+        </http:request>
+    <mule:set-payload value="#[payload]" mimeType="application/json" />
+        </body>
+                    <output type="update-persons-by-case-id-response-type" />
+        
+        <errors>
+                            <error type="PARSING"/>
+                            <error type="TIMEOUT"/>
+                            <error type="SECURITY"/>
+                            <error type="CONNECTIVITY"/>
+                            <error type="BAD_REQUEST"/>
+                            <error type="UNAUTHORIZED"/>
+                            <error type="FORBIDDEN"/>
+                            <error type="METHOD_NOT_ALLOWED"/>
+                            <error type="NOT_FOUND"/>
+                            <error type="NOT_ACCEPTABLE"/>
+                            <error type="UNSUPPORTED_MEDIA_TYPE"/>
+                            <error type="TOO_MANY_REQUESTS"/>
+                            <error type="INTERNAL_SERVER_ERROR"/>
+                            <error type="SERVICE_UNAVAILABLE"/>
+                            <error type="RETRY_EXHAUSTED"/>
+                    </errors>
+    </operation>
+    <operation name="update-diagnoses-by-case-id"  >
+        <parameters>
+                            <parameter name="update-diagnoses-by-case-id-request-data" type="update-diagnoses-by-case-id-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="case-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="client-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="client-secret"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                            <parameter name="correlation-id"
+                                        type="string"
+                                        use="REQUIRED"                    />
+                                    <parameter name="request-streaming-mode" displayName="Request streaming mode" type="request-streaming-mode-enum" use="OPTIONAL" tab="Advanced" />
+        </parameters>
+        <body>
+                <http:request config-ref="aepicase-management-process-api-httpreq-config"
+              path="/cases/{caseId}/diagnoses"
+              method="PUT"
+              requestStreamingMode='#[vars["request-streaming-mode"]]'
+>
+                <mule:error-mapping sourceType="HTTP:PARSING" targetType="AEPICASE-MANAGEMENT-PROCESS-API:PARSING" />
+            <mule:error-mapping sourceType="HTTP:TIMEOUT" targetType="AEPICASE-MANAGEMENT-PROCESS-API:TIMEOUT" />
+            <mule:error-mapping sourceType="HTTP:SECURITY" targetType="AEPICASE-MANAGEMENT-PROCESS-API:SECURITY" />
+            <mule:error-mapping sourceType="HTTP:CONNECTIVITY" targetType="AEPICASE-MANAGEMENT-PROCESS-API:CONNECTIVITY" />
+            <mule:error-mapping sourceType="HTTP:BAD_REQUEST" targetType="AEPICASE-MANAGEMENT-PROCESS-API:BAD_REQUEST" />
+            <mule:error-mapping sourceType="HTTP:UNAUTHORIZED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:UNAUTHORIZED" />
+            <mule:error-mapping sourceType="HTTP:FORBIDDEN" targetType="AEPICASE-MANAGEMENT-PROCESS-API:FORBIDDEN" />
+            <mule:error-mapping sourceType="HTTP:METHOD_NOT_ALLOWED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:METHOD_NOT_ALLOWED" />
+            <mule:error-mapping sourceType="HTTP:NOT_FOUND" targetType="AEPICASE-MANAGEMENT-PROCESS-API:NOT_FOUND" />
+            <mule:error-mapping sourceType="HTTP:NOT_ACCEPTABLE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:NOT_ACCEPTABLE" />
+            <mule:error-mapping sourceType="HTTP:UNSUPPORTED_MEDIA_TYPE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:UNSUPPORTED_MEDIA_TYPE" />
+            <mule:error-mapping sourceType="HTTP:TOO_MANY_REQUESTS" targetType="AEPICASE-MANAGEMENT-PROCESS-API:TOO_MANY_REQUESTS" />
+            <mule:error-mapping sourceType="HTTP:INTERNAL_SERVER_ERROR" targetType="AEPICASE-MANAGEMENT-PROCESS-API:INTERNAL_SERVER_ERROR" />
+            <mule:error-mapping sourceType="HTTP:SERVICE_UNAVAILABLE" targetType="AEPICASE-MANAGEMENT-PROCESS-API:SERVICE_UNAVAILABLE" />
+            <mule:error-mapping sourceType="HTTP:RETRY_EXHAUSTED" targetType="AEPICASE-MANAGEMENT-PROCESS-API:RETRY_EXHAUSTED" />
+                <http:body>
+            <![CDATA[#[output application/json --- vars['update-diagnoses-by-case-id-request-data']]
+]]>
+        </http:body>
+    
+            <http:headers>
+            <![CDATA[#[ ( { 'Accept': 'application/json' } ++ { 'client_id': vars['client-id'] } ++ { 'client_secret': vars['client-secret'] } ++ { 'correlation_id': vars['correlation-id'] } ) filterObject $ != null ]]]>
+        </http:headers>
+                <http:uri-params>
+            <![CDATA[#[ { 'caseId': vars['case-id'] } filterObject $ != null ]]]>
+        </http:uri-params>
+        </http:request>
+    <mule:set-payload value="#[payload]" mimeType="application/json" />
+        </body>
+                    <output type="update-diagnoses-by-case-id-response-type" />
+        
+        <errors>
+                            <error type="PARSING"/>
+                            <error type="TIMEOUT"/>
+                            <error type="SECURITY"/>
+                            <error type="CONNECTIVITY"/>
+                            <error type="BAD_REQUEST"/>
+                            <error type="UNAUTHORIZED"/>
+                            <error type="FORBIDDEN"/>
+                            <error type="METHOD_NOT_ALLOWED"/>
+                            <error type="NOT_FOUND"/>
+                            <error type="NOT_ACCEPTABLE"/>
+                            <error type="UNSUPPORTED_MEDIA_TYPE"/>
+                            <error type="TOO_MANY_REQUESTS"/>
+                            <error type="INTERNAL_SERVER_ERROR"/>
+                            <error type="SERVICE_UNAVAILABLE"/>
+                            <error type="RETRY_EXHAUSTED"/>
+                    </errors>
+    </operation>
+
+</module>

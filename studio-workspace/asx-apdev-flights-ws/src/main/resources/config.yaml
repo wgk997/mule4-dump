@@ -1,0 +1,22 @@
+http:
+  port: "8081"
+
+american:
+  host: "asx1-training4-american-api-sapkota.us-w2.cloudhub.io"
+  port: "80"
+  basepath: "/"
+  protocol: "HTTP"
+  client_id: "e3d5c2adbe074873a23862450d5d9e29"
+  client_secret: "231E74fBf2C44406a5dE73EB86C83449"
+  
+training:
+  host: "mu.learn.mulesoft.com"
+  port: "80"
+  basepath: "/"
+  protocol: "HTTP"
+  
+delta:
+  wsdl: "http://mu.learn.mulesoft.com/delta?wsdl"
+  service: "TicketServiceService"
+  port: "TicketServicePort"
+  

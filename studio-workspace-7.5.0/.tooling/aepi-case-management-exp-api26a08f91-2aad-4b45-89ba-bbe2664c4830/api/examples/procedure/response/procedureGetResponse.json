@@ -1,0 +1,27 @@
+{
+  "statusCode": 200,
+  "message": "OK",
+  
+  "case": {
+    "caseId": "as909012dop12",
+    "activatedDate": "2020-02-25",
+    "complaint": "LOREN EPSUM DOLLAR",
+    "assignedDr": 1,
+    "isolationAlert": false,
+    "severityCode" : "UNDETERMINED",
+    "statusCode": "INTAKE",
+    "symptomsCsv" : "drycough, fever, heartburn"
+  },
+  "procedure": [
+    {
+      "performedTimeStamp": "2020-02-28T16:41:41.09",
+      "procedureCode": "X-RAY",
+      "statusCode": "PENDING"
+    },
+      {
+      "performedTimeStamp": "2020-02-28T16:41:41.09",
+      "procedureCode": "CT-SCAN",
+      "statusCode": "COMPLETE"
+    }
+  ]
+}

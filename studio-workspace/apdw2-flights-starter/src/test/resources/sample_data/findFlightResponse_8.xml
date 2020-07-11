@@ -1,0 +1,15 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+
+<fl:findFlightResponse xmlns:fl="http://soap.training.mulesoft.com/" >
+    <fl:flight type="domestic">
+        <fl:airlineName>Delta</fl:airlineName>
+        <fl:code>UA40</fl:code>
+        <pr:price  xmlns:pr="http://soap.training.mulesoft.com/">400.0</pr:price>
+    </fl:flight>
+    <fl:flight  type="international">
+        <fl:airlineName>American</fl:airlineName>
+        <fl:code>AA203</fl:code>
+    </fl:flight >
+</fl:findFlightResponse>
+
+

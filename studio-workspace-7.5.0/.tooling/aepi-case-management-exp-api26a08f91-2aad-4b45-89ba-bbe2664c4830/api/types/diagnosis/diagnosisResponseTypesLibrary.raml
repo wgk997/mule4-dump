@@ -1,0 +1,70 @@
+#%RAML 1.0 Library
+usage: Used as the source of resources dataTypes related to the diagnosis
+types:
+  diagnosisResponseForGet:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      case:
+        required: true
+        type: !include ../case/caseDataType.raml
+      diagnosis:
+        required: true
+        type: array
+        items: !include diagnosisDataType.raml
+
+  diagnosisResponseForPost:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      case:
+        required: true
+        type: !include ../case/caseDataType.raml
+      diagnosis:
+        required: true
+        type: array
+        items: !include diagnosisDataType.raml
+  
+  diagnosisResponseForPut:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true
+      procedure:
+        required: true
+        type: array
+        items: !include diagnosisDataType.raml
+  
+  diagnosisResponseGeneric:
+    type: object
+    properties: 
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+      message:
+        type: string
+        required: true 
+  diagnosis:
+    type: !include diagnosisDataType.raml

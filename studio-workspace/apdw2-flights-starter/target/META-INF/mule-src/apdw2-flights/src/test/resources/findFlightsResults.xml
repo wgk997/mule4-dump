@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns2:findFlightResponse xmlns:ns2='http://soap.training.mulesoft.com/'>
+<return>
+    <airlineName>Delta</airlineName>
+    <code>A1B34S</code>
+    <departureDate>2018/06/11</departureDate>
+    <destination>CLE</destination>
+    <emptySeats>50</emptySeats>
+    <origin>MUA</origin>
+    <planeType>Boing 707</planeType>
+    <price>420.0</price>
+  </return>
+  <return>
+    <airlineName>Delta</airlineName>
+    <code>A1ASD4</code>
+    <departureDate>2017/09/11</departureDate>
+    <destination>CLE</destination>
+    <emptySeats>40</emptySeats>
+    <origin>MUA</origin>
+    <planeType>Boing 757</planeType>
+    <price>736.0</price>
+  </return>
+  <return>
+    <airlineName>Delta</airlineName>
+    <code>A12342</code>
+    <departureDate>2018/07/11</departureDate>
+    <destination>CLE</destination>
+    <emptySeats>17</emptySeats>
+    <origin>MUA</origin>
+    <planeType>Boing 727</planeType>
+    <price>308.0</price>
+  </return>
+  <return>
+    <airlineName>Delta</airlineName>
+    <code>A14444</code>
+    <departureDate>2017/09/21</departureDate>
+    <destination>CLE</destination>
+    <emptySeats>0</emptySeats>
+    <origin>MUA</origin> 
+    <planeType>Boing 777</planeType>
+    <price>1308.0</price>
+  </return>
+</ns2:findFlightResponse>

@@ -1,0 +1,55 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/c4def8ea-5d1c-4995-9b60-654979bb5b6d/ # 
+version: v1
+title: ASX-SAAS Shopping System API
+description: Store as a Service Shopping operation on a cart, and submitting a cart order.
+#######################################################################
+# WHO  WHEN      WHY
+# ASX  09-30-19  Add, Update, Delete Cart Items and PUT Sales Order
+#######################################################################
+
+types:
+  cart: !include dataTypes/cart.raml
+  item: !include dataTypes/item.raml
+
+uses:
+  lib: commonTraits.raml
+  
+/cart/{customerId}:
+  is: [lib.correlationRequired, lib.clientIdRequired]
+  get:
+    description: Cart contents
+    responses:
+      200:
+        body:
+          application/json:
+            type: cart
+            example: !include examples/cartGetResponse.json
+  put: 
+    description: replace entire contents of the shopping cart
+    body:
+      application/json:
+        type: item
+        example: !include examples/cartPutRequest.json
+    responses:
+      201:
+        body:
+          application/json:
+            type: cart
+            example: !include examples/cartPutResponse.json
+    
+/order:
+  is: [lib.correlationRequired, lib.clientIdRequired]
+  post:
+    description: Place an order.
+    body:
+      application/json:
+        type: item
+        example: !include examples/cartPutRequest.json
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Orders with 3 item has been processed"
+   

@@ -1,0 +1,42 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  diagnosisId:
+    type: string
+    required: false
+    example: b093i001111sjv3Bjx
+  diagnosisCode:
+    description: The diagnosis code based on symptoms
+    type: string
+    required: true
+    example: XYZ
+  diagnosisStartDate:
+    description: The timestamp of when the diagnosis was started
+    type: datetime-only
+    required: true
+    example: 2020-02-28T16:41:41.09
+  diagnosisEndDate:
+    description: The timestamp of when the diagnosis was ended
+    type: datetime-only
+    required: true
+    example: 2020-02-28T16:41:41.09
+  statusCode:
+    description: Latest status of the diagnosis
+    type: string
+    required: true
+    enum:
+      - PRIMARY
+      - SECONDARY
+      - INITIAL
+      - TREATED
+  shortDescription:
+    description: The short description of the diagnosis
+    maxLength: 255
+    type: string
+    required: false
+    example: Lorem Ipsom
+  longDescription:
+    description: The long description of the diagnosis
+    type: string
+    required: false
+    example: Lorem Ipsom Dolar ........ 

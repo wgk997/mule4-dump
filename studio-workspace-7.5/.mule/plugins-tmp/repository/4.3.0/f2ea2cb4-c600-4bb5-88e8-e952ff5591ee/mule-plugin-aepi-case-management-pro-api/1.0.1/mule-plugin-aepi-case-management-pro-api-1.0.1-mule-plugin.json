@@ -1,0 +1,2240 @@
+{
+  "minMuleVersion": "4.1.1",
+  "extensionModel": {
+    "types": [],
+    "messageSources": [],
+    "functions": [],
+    "configurations": [{
+      "externalLibraryModels": [],
+      "operations": [
+        {
+          "displayModel": {},
+          "kind": "operation",
+          "executionType": "CPU_LITE",
+          "description": "",
+          "modelProperties": {},
+          "parameterGroupModels": [
+            {
+              "name": "General",
+              "description": "",
+              "modelProperties": {},
+              "parameters": [
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "case-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "client-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "client-secret",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "correlation-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {"displayName": "Request streaming mode"},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "json",
+                    "annotations": {"enum": {
+                      "values": [
+                        "AUTO",
+                        "NEVER",
+                        "ALWAYS"
+                      ],
+                      "type": "[Ljava.lang.String;"
+                    }},
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "request-streaming-mode",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "role": "BEHAVIOUR",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": true
+                  },
+                  "name": "config-ref",
+                  "description": "The name of the configuration to be used to execute this component",
+                  "modelProperties": {},
+                  "allowedStereotypeModels": [{
+                    "parent": {
+                      "namespace": "MULE",
+                      "type": "MODULE_CONFIG"
+                    },
+                    "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+                    "type": "CONFIG"
+                  }],
+                  "type": {
+                    "format": "java",
+                    "annotations": {"typeId": "org.mule.runtime.extension.api.runtime.config.ConfigurationProvider"},
+                    "type": "Object",
+                    "fields": []
+                  },
+                  "required": false,
+                  "isComponentId": false,
+                  "expressionSupport": "NOT_SUPPORTED"
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "showInDsl": false
+            },
+            {
+              "name": "Output",
+              "description": "",
+              "modelProperties": {},
+              "parameters": [
+                {
+                  "displayModel": {"displayName": "Target Variable"},
+                  "role": "BEHAVIOUR",
+                  "description": "The name of a variable on which the operation's output will be placed",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "target",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {"displayName": "Target Value"},
+                  "role": "BEHAVIOUR",
+                  "defaultValue": "#[payload]",
+                  "description": "An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "REQUIRED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "targetValue",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "showInDsl": false
+            }
+          ],
+          "output": {
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "json",
+              "type": "Object",
+              "fields": [
+                {
+                  "model": {
+                    "item": {
+                      "type": "Object",
+                      "fields": [
+                        {
+                          "model": {"type": "String"},
+                          "key": {
+                            "name": "lastName",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {
+                            "annotations": {"pattern": "^[0-9]{5}([\\s-]{1}[0-9]{4})?$"},
+                            "type": "String"
+                          },
+                          "key": {
+                            "name": "zipCode",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {"name": "address2"}
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {
+                            "name": "city",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {
+                            "annotations": {"pattern": "^(\\d{3,})\\s?(\\w{0,5})\\s([a-zA-Z]{2,30})\\s([a-zA-Z]{2,15})\\.?\\s?(\\w{0,5})$"},
+                            "type": "String"
+                          },
+                          "key": {
+                            "name": "address1",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {
+                            "name": "firstName",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {
+                            "annotations": {"pattern": "^[2-9]\\d{2}\\d{3}\\d{4}$"},
+                            "type": "String"
+                          },
+                          "key": {
+                            "name": "phoneNumber",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {
+                            "type": "Object",
+                            "fields": [
+                              {
+                                "model": {"type": "Number"},
+                                "key": {
+                                  "name": "lng",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"enum": {
+                                    "values": [
+                                      "APPROXIMATE",
+                                      "ROOFTOP"
+                                    ],
+                                    "type": "[Ljava.lang.String;"
+                                  }},
+                                  "type": "String"
+                                },
+                                "key": {"name": "locationType"}
+                              },
+                              {
+                                "model": {"type": "Number"},
+                                "key": {
+                                  "name": "lat",
+                                  "required": "true"
+                                }
+                              }
+                            ],
+                            "open": {"type": "Any"}
+                          },
+                          "key": {
+                            "name": "geoLocation",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {"type": "Boolean"},
+                          "key": {
+                            "name": "isNotifyStatus",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {"name": "timeLastNotfied"}
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {"name": "id"}
+                        },
+                        {
+                          "model": {
+                            "annotations": {"enum": {
+                              "values": [
+                                "EMERGENCY_CONTACT",
+                                "PATIENT_DR",
+                                "PATIENT"
+                              ],
+                              "type": "[Ljava.lang.String;"
+                            }},
+                            "type": "String"
+                          },
+                          "key": {
+                            "name": "personType",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {
+                            "annotations": {"length": {"max": 1}},
+                            "type": "String"
+                          },
+                          "key": {"name": "mi"}
+                        }
+                      ],
+                      "open": {"type": "Any"}
+                    },
+                    "type": "Array"
+                  },
+                  "key": {
+                    "name": "person",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {
+                    "item": {
+                      "type": "Object",
+                      "fields": [
+                        {
+                          "model": {
+                            "annotations": {"length": {"max": 255}},
+                            "type": "String"
+                          },
+                          "key": {"name": "longDescription"}
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {
+                            "name": "diagnosisStartDate",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {
+                            "name": "diagnosisCode",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {"name": "id"}
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {
+                            "name": "diagnosisEndDate",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {
+                            "annotations": {"length": {"max": 255}},
+                            "type": "String"
+                          },
+                          "key": {"name": "shortDescription"}
+                        },
+                        {
+                          "model": {
+                            "annotations": {"enum": {
+                              "values": [
+                                "SECONDARY",
+                                "INITIAL",
+                                "PRIMARY",
+                                "TREATED"
+                              ],
+                              "type": "[Ljava.lang.String;"
+                            }},
+                            "type": "String"
+                          },
+                          "key": {
+                            "name": "statusCode",
+                            "required": "true"
+                          }
+                        }
+                      ],
+                      "open": {"type": "Any"}
+                    },
+                    "type": "Array"
+                  },
+                  "key": {
+                    "name": "diagnosis",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {
+                    "type": "Object",
+                    "fields": [
+                      {
+                        "model": {"type": "String"},
+                        "key": {
+                          "name": "traceEndDate",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {
+                          "item": {
+                            "type": "Object",
+                            "fields": [
+                              {
+                                "model": {
+                                  "annotations": {"length": {"min": 5}},
+                                  "type": "String"
+                                },
+                                "key": {
+                                  "name": "zip",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"length": {"max": 255}},
+                                  "type": "String"
+                                },
+                                "key": {
+                                  "name": "firstName",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"length": {"max": 255}},
+                                  "type": "String"
+                                },
+                                "key": {
+                                  "name": "lastName",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"length": {"max": 1}},
+                                  "type": "String"
+                                },
+                                "key": {"name": "middleInitial"}
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"length": {"max": 255}},
+                                  "type": "String"
+                                },
+                                "key": {"name": "address2"}
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"length": {"max": 255}},
+                                  "type": "String"
+                                },
+                                "key": {
+                                  "name": "city",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {
+                                  "type": "Object",
+                                  "fields": [
+                                    {
+                                      "model": {"type": "Number"},
+                                      "key": {
+                                        "name": "lng",
+                                        "required": "true"
+                                      }
+                                    },
+                                    {
+                                      "model": {
+                                        "annotations": {"enum": {
+                                          "values": [
+                                            "APPROXIMATE",
+                                            "ROOFTOP"
+                                          ],
+                                          "type": "[Ljava.lang.String;"
+                                        }},
+                                        "type": "String"
+                                      },
+                                      "key": {"name": "locationType"}
+                                    },
+                                    {
+                                      "model": {"type": "Number"},
+                                      "key": {
+                                        "name": "lat",
+                                        "required": "true"
+                                      }
+                                    }
+                                  ],
+                                  "open": {"type": "Any"}
+                                },
+                                "key": {
+                                  "name": "geoLocation",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {"type": "String"},
+                                "key": {
+                                  "name": "phone",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {"type": "String"},
+                                "key": {
+                                  "name": "contactDate",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"length": {"max": 255}},
+                                  "type": "String"
+                                },
+                                "key": {
+                                  "name": "address1",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {"type": "String"},
+                                "key": {
+                                  "name": "id",
+                                  "required": "true"
+                                }
+                              },
+                              {
+                                "model": {
+                                  "annotations": {"length": {"max": 2}},
+                                  "type": "String"
+                                },
+                                "key": {
+                                  "name": "state",
+                                  "required": "true"
+                                }
+                              }
+                            ],
+                            "open": {"type": "Any"}
+                          },
+                          "type": "Array"
+                        },
+                        "key": {
+                          "name": "traceContacts",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "String"},
+                        "key": {
+                          "name": "traceStartDate",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "String"},
+                        "key": {
+                          "name": "id",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "Boolean"},
+                        "key": {
+                          "name": "cdcReported",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "String"},
+                        "key": {
+                          "name": "cdcReportedTimestamp",
+                          "required": "true"
+                        }
+                      }
+                    ],
+                    "open": {"type": "Any"}
+                  },
+                  "key": {
+                    "name": "contactTrace",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {
+                    "item": {
+                      "type": "Object",
+                      "fields": [
+                        {
+                          "model": {"type": "String"},
+                          "key": {"name": "performedTimestamp"}
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {
+                            "name": "procedureCode",
+                            "required": "true"
+                          }
+                        },
+                        {
+                          "model": {"type": "String"},
+                          "key": {"name": "id"}
+                        },
+                        {
+                          "model": {
+                            "annotations": {"enum": {
+                              "values": [
+                                "COMPLETE",
+                                "PENDING"
+                              ],
+                              "type": "[Ljava.lang.String;"
+                            }},
+                            "type": "String"
+                          },
+                          "key": {
+                            "name": "statusCode",
+                            "required": "true"
+                          }
+                        }
+                      ],
+                      "open": {"type": "Any"}
+                    },
+                    "type": "Array"
+                  },
+                  "key": {
+                    "name": "procedure",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {"type": "String"},
+                  "key": {
+                    "name": "message",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {
+                    "type": "Object",
+                    "fields": [
+                      {
+                        "model": {
+                          "annotations": {"length": {
+                            "min": 1,
+                            "max": 100
+                          }},
+                          "type": "String"
+                        },
+                        "key": {
+                          "name": "complaint",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "String"},
+                        "key": {
+                          "name": "symptomsCsv",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "Boolean"},
+                        "key": {
+                          "name": "isolationAlert",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "String"},
+                        "key": {"name": "id"}
+                      },
+                      {
+                        "model": {"type": "Number"},
+                        "key": {"name": "assignedDr"}
+                      },
+                      {
+                        "model": {
+                          "annotations": {"enum": {
+                            "values": [
+                              "UNDETERMINED",
+                              "ROUTINE",
+                              "INFECTIOUS",
+                              "CRITICAL"
+                            ],
+                            "type": "[Ljava.lang.String;"
+                          }},
+                          "type": "String"
+                        },
+                        "key": {
+                          "name": "severityCode",
+                          "required": "true"
+                        }
+                      },
+                      {
+                        "model": {"type": "String"},
+                        "key": {"name": "activatedDate"}
+                      },
+                      {
+                        "model": {
+                          "annotations": {"length": {
+                            "min": 1,
+                            "max": 256
+                          }},
+                          "type": "String"
+                        },
+                        "key": {"name": "primaryDiagnosis"}
+                      },
+                      {
+                        "model": {
+                          "annotations": {"enum": {
+                            "values": [
+                              "CLOSED",
+                              "INTAKE",
+                              "ADMITTED",
+                              "DISCHARGED"
+                            ],
+                            "type": "[Ljava.lang.String;"
+                          }},
+                          "type": "String"
+                        },
+                        "key": {
+                          "name": "statusCode",
+                          "required": "true"
+                        }
+                      }
+                    ],
+                    "open": {"type": "Any"}
+                  },
+                  "key": {
+                    "name": "case",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {
+                    "annotations": {"range": {
+                      "from": 100,
+                      "to": 599
+                    }},
+                    "type": "Number"
+                  },
+                  "key": {
+                    "name": "statusCode",
+                    "required": "true"
+                  }
+                }
+              ],
+              "open": {"type": "Any"}
+            }
+          },
+          "outputAttributes": {
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "Void"
+            }
+          },
+          "supportsStreaming": false,
+          "requiresConnection": false,
+          "blocking": true,
+          "name": "get-case-by-case-id",
+          "stereotype": {
+            "parent": {
+              "parent": {
+                "namespace": "MULE",
+                "type": "PROCESSOR"
+              },
+              "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+              "type": "PROCESSOR"
+            },
+            "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+            "type": "GET-CASE-BY-CASE-ID"
+          },
+          "nestedComponents": [],
+          "transactional": false,
+          "notifications": [],
+          "errors": [
+            "AEPICASE-MANAGEMENT-PROCESS-API:BAD_REQUEST",
+            "AEPICASE-MANAGEMENT-PROCESS-API:SECURITY",
+            "AEPICASE-MANAGEMENT-PROCESS-API:NOT_ACCEPTABLE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:METHOD_NOT_ALLOWED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:NOT_FOUND",
+            "AEPICASE-MANAGEMENT-PROCESS-API:UNAUTHORIZED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:INTERNAL_SERVER_ERROR",
+            "AEPICASE-MANAGEMENT-PROCESS-API:FORBIDDEN",
+            "AEPICASE-MANAGEMENT-PROCESS-API:CONNECTIVITY",
+            "AEPICASE-MANAGEMENT-PROCESS-API:UNSUPPORTED_MEDIA_TYPE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:TOO_MANY_REQUESTS",
+            "AEPICASE-MANAGEMENT-PROCESS-API:RETRY_EXHAUSTED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:TIMEOUT",
+            "AEPICASE-MANAGEMENT-PROCESS-API:SERVICE_UNAVAILABLE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:PARSING"
+          ]
+        },
+        {
+          "displayModel": {},
+          "kind": "operation",
+          "executionType": "CPU_LITE",
+          "description": "",
+          "modelProperties": {},
+          "parameterGroupModels": [
+            {
+              "name": "General",
+              "description": "",
+              "modelProperties": {},
+              "parameters": [
+                {
+                  "displayModel": {},
+                  "role": "PRIMARY_CONTENT",
+                  "defaultValue": "#[payload]",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "json",
+                    "type": "Object",
+                    "fields": [{
+                      "model": {
+                        "type": "Object",
+                        "fields": [
+                          {
+                            "model": {
+                              "annotations": {"length": {"max": 255}},
+                              "type": "String"
+                            },
+                            "key": {"name": "longDescription"}
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {
+                              "name": "diagnosisStartDate",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {
+                              "name": "diagnosisCode",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {"name": "id"}
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {
+                              "name": "diagnosisEndDate",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {
+                              "annotations": {"length": {"max": 255}},
+                              "type": "String"
+                            },
+                            "key": {"name": "shortDescription"}
+                          },
+                          {
+                            "model": {
+                              "annotations": {"enum": {
+                                "values": [
+                                  "SECONDARY",
+                                  "INITIAL",
+                                  "PRIMARY",
+                                  "TREATED"
+                                ],
+                                "type": "[Ljava.lang.String;"
+                              }},
+                              "type": "String"
+                            },
+                            "key": {
+                              "name": "statusCode",
+                              "required": "true"
+                            }
+                          }
+                        ],
+                        "open": {"type": "Any"}
+                      },
+                      "key": {
+                        "name": "diagnosis",
+                        "required": "true"
+                      }
+                    }],
+                    "open": {"type": "Any"}
+                  },
+                  "required": false,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false
+                  },
+                  "name": "update-diagnoses-by-case-id-request-data",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "case-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "client-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "client-secret",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "correlation-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {"displayName": "Request streaming mode"},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "json",
+                    "annotations": {"enum": {
+                      "values": [
+                        "AUTO",
+                        "NEVER",
+                        "ALWAYS"
+                      ],
+                      "type": "[Ljava.lang.String;"
+                    }},
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "request-streaming-mode",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "role": "BEHAVIOUR",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": true
+                  },
+                  "name": "config-ref",
+                  "description": "The name of the configuration to be used to execute this component",
+                  "modelProperties": {},
+                  "allowedStereotypeModels": [{
+                    "parent": {
+                      "namespace": "MULE",
+                      "type": "MODULE_CONFIG"
+                    },
+                    "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+                    "type": "CONFIG"
+                  }],
+                  "type": {
+                    "format": "java",
+                    "annotations": {"typeId": "org.mule.runtime.extension.api.runtime.config.ConfigurationProvider"},
+                    "type": "Object",
+                    "fields": []
+                  },
+                  "required": false,
+                  "isComponentId": false,
+                  "expressionSupport": "NOT_SUPPORTED"
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "showInDsl": false
+            },
+            {
+              "name": "Output",
+              "description": "",
+              "modelProperties": {},
+              "parameters": [
+                {
+                  "displayModel": {"displayName": "Target Variable"},
+                  "role": "BEHAVIOUR",
+                  "description": "The name of a variable on which the operation's output will be placed",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "target",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {"displayName": "Target Value"},
+                  "role": "BEHAVIOUR",
+                  "defaultValue": "#[payload]",
+                  "description": "An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "REQUIRED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "targetValue",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "showInDsl": false
+            }
+          ],
+          "output": {
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "json",
+              "type": "Object",
+              "fields": [
+                {
+                  "model": {"type": "String"},
+                  "key": {
+                    "name": "message",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {
+                    "annotations": {"range": {
+                      "from": 100,
+                      "to": 599
+                    }},
+                    "type": "Number"
+                  },
+                  "key": {
+                    "name": "statusCode",
+                    "required": "true"
+                  }
+                }
+              ],
+              "open": {"type": "Any"}
+            }
+          },
+          "outputAttributes": {
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "Void"
+            }
+          },
+          "supportsStreaming": false,
+          "requiresConnection": false,
+          "blocking": true,
+          "name": "update-diagnoses-by-case-id",
+          "stereotype": {
+            "parent": {
+              "parent": {
+                "namespace": "MULE",
+                "type": "PROCESSOR"
+              },
+              "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+              "type": "PROCESSOR"
+            },
+            "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+            "type": "UPDATE-DIAGNOSES-BY-CASE-ID"
+          },
+          "nestedComponents": [],
+          "transactional": false,
+          "notifications": [],
+          "errors": [
+            "AEPICASE-MANAGEMENT-PROCESS-API:BAD_REQUEST",
+            "AEPICASE-MANAGEMENT-PROCESS-API:SECURITY",
+            "AEPICASE-MANAGEMENT-PROCESS-API:NOT_ACCEPTABLE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:METHOD_NOT_ALLOWED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:NOT_FOUND",
+            "AEPICASE-MANAGEMENT-PROCESS-API:UNAUTHORIZED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:INTERNAL_SERVER_ERROR",
+            "AEPICASE-MANAGEMENT-PROCESS-API:FORBIDDEN",
+            "AEPICASE-MANAGEMENT-PROCESS-API:CONNECTIVITY",
+            "AEPICASE-MANAGEMENT-PROCESS-API:UNSUPPORTED_MEDIA_TYPE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:TOO_MANY_REQUESTS",
+            "AEPICASE-MANAGEMENT-PROCESS-API:RETRY_EXHAUSTED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:TIMEOUT",
+            "AEPICASE-MANAGEMENT-PROCESS-API:SERVICE_UNAVAILABLE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:PARSING"
+          ]
+        },
+        {
+          "displayModel": {},
+          "kind": "operation",
+          "executionType": "CPU_LITE",
+          "description": "",
+          "modelProperties": {},
+          "parameterGroupModels": [
+            {
+              "name": "General",
+              "description": "",
+              "modelProperties": {},
+              "parameters": [
+                {
+                  "displayModel": {},
+                  "role": "PRIMARY_CONTENT",
+                  "defaultValue": "#[payload]",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "json",
+                    "type": "Object",
+                    "fields": [{
+                      "model": {
+                        "type": "Object",
+                        "fields": [
+                          {
+                            "model": {"type": "String"},
+                            "key": {
+                              "name": "lastName",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {
+                              "annotations": {"pattern": "^[0-9]{5}([\\s-]{1}[0-9]{4})?$"},
+                              "type": "String"
+                            },
+                            "key": {
+                              "name": "zipCode",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {"name": "address2"}
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {
+                              "name": "city",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {
+                              "annotations": {"pattern": "^(\\d{3,})\\s?(\\w{0,5})\\s([a-zA-Z]{2,30})\\s([a-zA-Z]{2,15})\\.?\\s?(\\w{0,5})$"},
+                              "type": "String"
+                            },
+                            "key": {
+                              "name": "address1",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {
+                              "name": "firstName",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {
+                              "annotations": {"pattern": "^[2-9]\\d{2}\\d{3}\\d{4}$"},
+                              "type": "String"
+                            },
+                            "key": {
+                              "name": "phoneNumber",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {
+                              "type": "Object",
+                              "fields": [
+                                {
+                                  "model": {"type": "Number"},
+                                  "key": {
+                                    "name": "lng",
+                                    "required": "true"
+                                  }
+                                },
+                                {
+                                  "model": {
+                                    "annotations": {"enum": {
+                                      "values": [
+                                        "APPROXIMATE",
+                                        "ROOFTOP"
+                                      ],
+                                      "type": "[Ljava.lang.String;"
+                                    }},
+                                    "type": "String"
+                                  },
+                                  "key": {"name": "locationType"}
+                                },
+                                {
+                                  "model": {"type": "Number"},
+                                  "key": {
+                                    "name": "lat",
+                                    "required": "true"
+                                  }
+                                }
+                              ],
+                              "open": {"type": "Any"}
+                            },
+                            "key": {
+                              "name": "geoLocation",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {"type": "Boolean"},
+                            "key": {
+                              "name": "isNotifyStatus",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {"name": "timeLastNotfied"}
+                          },
+                          {
+                            "model": {"type": "String"},
+                            "key": {"name": "id"}
+                          },
+                          {
+                            "model": {
+                              "annotations": {"enum": {
+                                "values": [
+                                  "EMERGENCY_CONTACT",
+                                  "PATIENT_DR",
+                                  "PATIENT"
+                                ],
+                                "type": "[Ljava.lang.String;"
+                              }},
+                              "type": "String"
+                            },
+                            "key": {
+                              "name": "personType",
+                              "required": "true"
+                            }
+                          },
+                          {
+                            "model": {
+                              "annotations": {"length": {"max": 1}},
+                              "type": "String"
+                            },
+                            "key": {"name": "mi"}
+                          }
+                        ],
+                        "open": {"type": "Any"}
+                      },
+                      "key": {
+                        "name": "person",
+                        "required": "true"
+                      }
+                    }],
+                    "open": {"type": "Any"}
+                  },
+                  "required": false,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": true,
+                    "allowsReferences": false
+                  },
+                  "name": "update-persons-by-case-id-request-data",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "case-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "client-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "client-secret",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": true,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "correlation-id",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "General",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {"displayName": "Request streaming mode"},
+                  "role": "BEHAVIOUR",
+                  "description": "",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "json",
+                    "annotations": {"enum": {
+                      "values": [
+                        "AUTO",
+                        "NEVER",
+                        "ALWAYS"
+                      ],
+                      "type": "[Ljava.lang.String;"
+                    }},
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "request-streaming-mode",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "role": "BEHAVIOUR",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": true
+                  },
+                  "name": "config-ref",
+                  "description": "The name of the configuration to be used to execute this component",
+                  "modelProperties": {},
+                  "allowedStereotypeModels": [{
+                    "parent": {
+                      "namespace": "MULE",
+                      "type": "MODULE_CONFIG"
+                    },
+                    "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+                    "type": "CONFIG"
+                  }],
+                  "type": {
+                    "format": "java",
+                    "annotations": {"typeId": "org.mule.runtime.extension.api.runtime.config.ConfigurationProvider"},
+                    "type": "Object",
+                    "fields": []
+                  },
+                  "required": false,
+                  "isComponentId": false,
+                  "expressionSupport": "NOT_SUPPORTED"
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "showInDsl": false
+            },
+            {
+              "name": "Output",
+              "description": "",
+              "modelProperties": {},
+              "parameters": [
+                {
+                  "displayModel": {"displayName": "Target Variable"},
+                  "role": "BEHAVIOUR",
+                  "description": "The name of a variable on which the operation's output will be placed",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "NOT_SUPPORTED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "target",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                },
+                {
+                  "displayModel": {"displayName": "Target Value"},
+                  "role": "BEHAVIOUR",
+                  "defaultValue": "#[payload]",
+                  "description": "An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable",
+                  "modelProperties": {},
+                  "type": {
+                    "format": "java",
+                    "type": "String"
+                  },
+                  "required": false,
+                  "expressionSupport": "REQUIRED",
+                  "hasDynamicType": false,
+                  "isConfigOverride": false,
+                  "dslConfiguration": {
+                    "allowTopLevelDefinition": false,
+                    "allowsInlineDefinition": false,
+                    "allowsReferences": false
+                  },
+                  "name": "targetValue",
+                  "layoutModel": {
+                    "password": false,
+                    "tabName": "Advanced",
+                    "query": false,
+                    "text": false
+                  },
+                  "allowedStereotypeModels": [],
+                  "isComponentId": false
+                }
+              ],
+              "exclusiveParametersModels": [],
+              "showInDsl": false
+            }
+          ],
+          "output": {
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "json",
+              "type": "Object",
+              "fields": [
+                {
+                  "model": {"type": "String"},
+                  "key": {
+                    "name": "message",
+                    "required": "true"
+                  }
+                },
+                {
+                  "model": {
+                    "annotations": {"range": {
+                      "from": 100,
+                      "to": 599
+                    }},
+                    "type": "Number"
+                  },
+                  "key": {
+                    "name": "statusCode",
+                    "required": "true"
+                  }
+                }
+              ],
+              "open": {"type": "Any"}
+            }
+          },
+          "outputAttributes": {
+            "hasDynamicType": false,
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "Void"
+            }
+          },
+          "supportsStreaming": false,
+          "requiresConnection": false,
+          "blocking": true,
+          "name": "update-persons-by-case-id",
+          "stereotype": {
+            "parent": {
+              "parent": {
+                "namespace": "MULE",
+                "type": "PROCESSOR"
+              },
+              "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+              "type": "PROCESSOR"
+            },
+            "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+            "type": "UPDATE-PERSONS-BY-CASE-ID"
+          },
+          "nestedComponents": [],
+          "transactional": false,
+          "notifications": [],
+          "errors": [
+            "AEPICASE-MANAGEMENT-PROCESS-API:BAD_REQUEST",
+            "AEPICASE-MANAGEMENT-PROCESS-API:SECURITY",
+            "AEPICASE-MANAGEMENT-PROCESS-API:NOT_ACCEPTABLE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:METHOD_NOT_ALLOWED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:NOT_FOUND",
+            "AEPICASE-MANAGEMENT-PROCESS-API:UNAUTHORIZED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:INTERNAL_SERVER_ERROR",
+            "AEPICASE-MANAGEMENT-PROCESS-API:FORBIDDEN",
+            "AEPICASE-MANAGEMENT-PROCESS-API:CONNECTIVITY",
+            "AEPICASE-MANAGEMENT-PROCESS-API:UNSUPPORTED_MEDIA_TYPE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:TOO_MANY_REQUESTS",
+            "AEPICASE-MANAGEMENT-PROCESS-API:RETRY_EXHAUSTED",
+            "AEPICASE-MANAGEMENT-PROCESS-API:TIMEOUT",
+            "AEPICASE-MANAGEMENT-PROCESS-API:SERVICE_UNAVAILABLE",
+            "AEPICASE-MANAGEMENT-PROCESS-API:PARSING"
+          ]
+        }
+      ],
+      "messageSources": [],
+      "name": "config",
+      "description": "",
+      "modelProperties": {},
+      "stereotype": {
+        "parent": {
+          "namespace": "MULE",
+          "type": "MODULE_CONFIG"
+        },
+        "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+        "type": "CONFIG"
+      },
+      "parameterGroupModels": [{
+        "name": "General",
+        "description": "",
+        "modelProperties": {},
+        "parameters": [
+          {
+            "displayModel": {
+              "summary": "Host for consuming API",
+              "displayName": "host"
+            },
+            "role": "BEHAVIOUR",
+            "defaultValue": "anypoint.mulesoft.com",
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "String"
+            },
+            "required": false,
+            "expressionSupport": "SUPPORTED",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": false,
+              "allowsReferences": false
+            },
+            "name": "property_host",
+            "layoutModel": {
+              "password": false,
+              "tabName": "General",
+              "query": false,
+              "text": false
+            },
+            "allowedStereotypeModels": [],
+            "isComponentId": false
+          },
+          {
+            "displayModel": {
+              "summary": "Port for consuming API",
+              "displayName": "port"
+            },
+            "role": "BEHAVIOUR",
+            "defaultValue": "443",
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "String"
+            },
+            "required": false,
+            "expressionSupport": "SUPPORTED",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": false,
+              "allowsReferences": false
+            },
+            "name": "property_port",
+            "layoutModel": {
+              "password": false,
+              "tabName": "General",
+              "query": false,
+              "text": false
+            },
+            "allowedStereotypeModels": [],
+            "isComponentId": false
+          },
+          {
+            "displayModel": {
+              "summary": "Basepath for consuming API",
+              "displayName": "basePath"
+            },
+            "role": "BEHAVIOUR",
+            "defaultValue": "/mocking/api/v1/links/53f8a543-ac6c-404d-9fd2-76480de9423f",
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "String"
+            },
+            "required": false,
+            "expressionSupport": "SUPPORTED",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": false,
+              "allowsReferences": false
+            },
+            "name": "property_basePath",
+            "layoutModel": {
+              "password": false,
+              "tabName": "General",
+              "query": false,
+              "text": false
+            },
+            "allowedStereotypeModels": [],
+            "isComponentId": false
+          },
+          {
+            "displayModel": {
+              "summary": "Protocol for consuming API",
+              "displayName": "protocol"
+            },
+            "role": "BEHAVIOUR",
+            "defaultValue": "HTTPS",
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "String"
+            },
+            "required": false,
+            "expressionSupport": "SUPPORTED",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": false,
+              "allowsReferences": false
+            },
+            "name": "property_protocol",
+            "layoutModel": {
+              "password": false,
+              "tabName": "General",
+              "query": false,
+              "text": false
+            },
+            "allowedStereotypeModels": [],
+            "isComponentId": false
+          },
+          {
+            "displayModel": {
+              "summary": "Proxy config reference",
+              "displayName": "Proxy Config Reference"
+            },
+            "role": "BEHAVIOUR",
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "String"
+            },
+            "required": false,
+            "expressionSupport": "SUPPORTED",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": false,
+              "allowsReferences": false
+            },
+            "name": "property_proxyConfig",
+            "layoutModel": {
+              "password": false,
+              "tabName": "Proxy",
+              "query": false,
+              "text": false
+            },
+            "allowedStereotypeModels": [{
+              "namespace": "HTTP",
+              "type": "HTTP_PROXY_CONFIG"
+            }],
+            "isComponentId": false
+          },
+          {
+            "displayModel": {
+              "summary": "Maximum time in milliseconds that the request element will block the execution of the flow waiting for the HTTP response.",
+              "displayName": "Response timeout"
+            },
+            "role": "BEHAVIOUR",
+            "defaultValue": "10000",
+            "description": "",
+            "modelProperties": {},
+            "type": {
+              "format": "java",
+              "type": "String"
+            },
+            "required": false,
+            "expressionSupport": "SUPPORTED",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": false,
+              "allowsReferences": false
+            },
+            "name": "property_responseTimeout",
+            "layoutModel": {
+              "password": false,
+              "tabName": "General",
+              "query": false,
+              "text": false
+            },
+            "allowedStereotypeModels": [],
+            "isComponentId": false
+          },
+          {
+            "role": "BEHAVIOUR",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": false,
+              "allowsReferences": false
+            },
+            "name": "name",
+            "description": "The identifier of this element used to reference it in other components",
+            "modelProperties": {},
+            "allowedStereotypeModels": [],
+            "type": {
+              "format": "java",
+              "type": "String"
+            },
+            "required": true,
+            "isComponentId": true,
+            "expressionSupport": "NOT_SUPPORTED"
+          },
+          {
+            "role": "BEHAVIOUR",
+            "description": "Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.",
+            "modelProperties": {
+              "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {"sequence": 4},
+              "org.mule.runtime.extension.api.property.QNameModelProperty": {"value": {
+                "localPart": "expiration-policy",
+                "prefix": "mule",
+                "namespaceURI": "http://www.mulesoft.org/schema/mule/core"
+              }}
+            },
+            "type": {
+              "format": "java",
+              "annotations": {
+                "typeDsl": {
+                  "allowTopLevelDefinition": false,
+                  "allowInlineDefinition": true
+                },
+                "description": {"value": "Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit."},
+                "typeId": "org.mule.runtime.extension.api.runtime.ExpirationPolicy"
+              },
+              "type": "Object",
+              "fields": [
+                {
+                  "annotations": {
+                    "description": {"value": "A scalar time value for the maximum amount of time a dynamic configuration instance should be allowed to be idle before it's considered eligible for expiration"},
+                    "expressionSupport": {"value": "NOT_SUPPORTED"}
+                  },
+                  "model": {
+                    "annotations": {
+                      "default": "5",
+                      "classInformation": {
+                        "implementedInterfaces": ["java.lang.Comparable"],
+                        "parent": "java.lang.Number",
+                        "classname": "java.lang.Long",
+                        "hasDefaultConstructor": false,
+                        "isInstantiable": false,
+                        "isFinal": true,
+                        "genericTypes": [],
+                        "isInterface": false,
+                        "isAbstract": false,
+                        "isMap": false
+                      },
+                      "int": {}
+                    },
+                    "type": "Number"
+                  },
+                  "key": {"name": "maxIdleTime"}
+                },
+                {
+                  "annotations": {
+                    "description": {"value": "A time unit that qualifies the maxIdleTime attribute"},
+                    "expressionSupport": {"value": "NOT_SUPPORTED"}
+                  },
+                  "model": {
+                    "annotations": {
+                      "default": "MINUTES",
+                      "enum": {
+                        "values": [
+                          "NANOSECONDS",
+                          "MICROSECONDS",
+                          "MILLISECONDS",
+                          "SECONDS",
+                          "MINUTES",
+                          "HOURS",
+                          "DAYS"
+                        ],
+                        "type": "[Ljava.lang.String;"
+                      }
+                    },
+                    "type": "String"
+                  },
+                  "key": {"name": "timeUnit"}
+                }
+              ]
+            },
+            "required": false,
+            "expressionSupport": "NOT_SUPPORTED",
+            "hasDynamicType": false,
+            "isConfigOverride": false,
+            "dslConfiguration": {
+              "allowTopLevelDefinition": false,
+              "allowsInlineDefinition": true,
+              "allowsReferences": false
+            },
+            "name": "expirationPolicy",
+            "layoutModel": {
+              "password": false,
+              "tabName": "Advanced",
+              "query": false,
+              "text": false
+            },
+            "allowedStereotypeModels": [],
+            "isComponentId": false
+          }
+        ],
+        "exclusiveParametersModels": [],
+        "showInDsl": false
+      }],
+      "connectionProviders": [{
+        "externalLibraryModels": [],
+        "connectionManagementType": "NONE",
+        "supportsConnectivityTesting": true,
+        "name": "connection",
+        "description": "",
+        "modelProperties": {},
+        "stereotype": {
+          "parent": {
+            "namespace": "MULE",
+            "type": "CONNECTION"
+          },
+          "namespace": "AEPICASE-MANAGEMENT-PROCESS-API",
+          "type": "CONNECTION"
+        },
+        "parameterGroupModels": []
+      }]
+    }],
+    "externalLibraries": [],
+    "description": "Get Update Cases, Procedure, Diagnosis, Procedures, Contact Trace",
+    "resources": [],
+    "subTypes": [],
+    "modelProperties": {"org.mule.runtime.extension.api.property.XmlExtensionModelProperty": {"namespacesDependencies": [
+      "http://www.mulesoft.org/schema/mule/documentation",
+      "http://www.mulesoft.org/schema/mule/http",
+      "http://www.w3.org/2001/XMLSchema-instance",
+      "http://www.mulesoft.org/schema/mule/core"
+    ]}},
+    "constructs": [],
+    "connectionProviders": [],
+    "version": "4.0.0",
+    "privilegedArtifacts": [],
+    "importedTypes": [],
+    "xmlDsl": {
+      "schemaVersion": "4.0.0",
+      "prefix": "aepicase-management-process-api",
+      "schemaLocation": "http://www.mulesoft.org/schema/mule/aepicase-management-process-api/current/mule-aepicase-management-process-api.xsd",
+      "namespace": "http://www.mulesoft.org/schema/mule/aepicase-management-process-api",
+      "xsdFileName": "mule-aepicase-management-process-api.xsd"
+    },
+    "operations": [],
+    "vendor": "MuleSoft",
+    "name": "AEPI CASE Management Process API",
+    "privilegedPackages": [],
+    "category": "COMMUNITY",
+    "notifications": [],
+    "errors": []
+  }
+}

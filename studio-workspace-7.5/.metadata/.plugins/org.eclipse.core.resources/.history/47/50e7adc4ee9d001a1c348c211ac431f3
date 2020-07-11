@@ -1,0 +1,25 @@
+# API Versioning
+api.version=v1
+api.name=aepi-case-management-pro-api
+
+# API Autodiscovery API key
+api.apiId=12345
+
+# Logging category
+logcat=com.avioconsulting.bc
+
+# HTTP
+http.host=0.0.0.0
+http.port=8081
+https.port=8082
+http.router.path=${api.name}/${api.version}
+
+#HTTPS SSL
+keystore.password=![2Vocx7IHjzOMQUnDuxd1GA==]
+
+healthcheck.https.configuration.reference=http-listener-config
+healthcheck.apiId=16001283
+log.healthcheck.category=com.avioconsulting.healthcheck
+healthcheck.flows=hc-general-health-flow,hc-db-health-flow
+healthcheck.flow.ok=OK
+healthcheck.flow.error=ERROR

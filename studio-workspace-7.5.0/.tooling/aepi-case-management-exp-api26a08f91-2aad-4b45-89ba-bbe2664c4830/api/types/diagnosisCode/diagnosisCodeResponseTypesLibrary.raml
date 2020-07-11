@@ -1,0 +1,22 @@
+#%RAML 1.0 Library
+types:
+  
+  diagnosisCodeResponseForGet:
+    type: object
+    properties:
+      statusCode:
+        type: number
+        minimum: 100
+        maximum: 599
+        required: true
+        example:
+          200
+      message:
+        type: string
+        required: true      
+        example:
+          OK     
+      diagnosisCodes:
+        required: true
+        type: array
+        items: !include diagnosisCodeDataType.raml 

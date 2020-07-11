@@ -1,0 +1,38 @@
+#%RAML 1.0
+title: aepi-medical-alert-sys-api
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/9124eb58-2c04-4f6c-971f-fd8ddb10ded3/ # baseUri: http://localhost:8081/
+version: v1
+description: This is the system layer which interacts with Twilio SMS service
+protocols:
+  - HTTPS
+
+#######################################################################
+# WHO  WHEN      WHY
+# RC   05-04-20  Initial API
+#######################################################################
+
+uses:
+  notificationsTypes: types/notifications/notificationsTypeLibrary.raml
+#  notificationQueries: queries/getnotification.raml
+
+  commonTraits: exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/commonTraits.raml
+
+resourceTypes:
+  collection: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/resourceTypes/collection.raml
+  item: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/aepi-common-library/1.0.3/resourceTypes/item.raml
+
+
+/notifications:
+  description: Used to send a SMS message to a cell phone
+  is: [commonTraits.clientIdRequired,commonTraits.correlationRequired,commonTraits.errorResponsesRequired]
+
+  type: 
+    item: 
+      postBodyJson:     !include examples/notificationsPostRequest.json
+      postBodyType:     notificationsTypes.notificationsDataTypeForPostRequest
+      postResponseJson: !include examples/notificationsPostResponse.json
+      postResponseType: notificationsTypes.notificationsDataTypeForPostResponse
+
+  post:
+    
+

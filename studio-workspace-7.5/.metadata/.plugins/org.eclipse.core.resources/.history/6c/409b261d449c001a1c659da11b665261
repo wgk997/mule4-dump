@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd">
+	<flow name="post:\notifications\(caseId):application\json:aepi-medical-alert-pro-api-config">
+        <avio-core:custom-logger doc:name="Log Start" doc:id="6ba07422-12cc-403e-9e92-9a4d77aa7987" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Start Processing Request for Post Notifications" tracePoint="START"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="caseId">
+            <ee:variables>
+                <ee:set-variable variableName="caseId">attributes.uriParams.'caseId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<ee:transform doc:name="smsMessage" doc:id="ddc2a436-1296-44ba-b513-ad2bcc475c02" >
+			<ee:variables >
+				<ee:set-variable variableName="smsMessage" ><![CDATA[payload.smsMessage]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		
+        <flow-ref doc:name="custom-choice-subflow" doc:id="176bd5e5-92a2-4377-a9ba-456e93256d9a" name="custom-choice-flow" />
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:name="final Response">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  statusCode: 201,
+  message: "Added",
+  smsMessage: vars.smsMessage,
+  notifications: 
+    vars.smsResult map {
+    	"to": $.cellNumbers,
+    	"status" : "SENT"
+    }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<avio-core:custom-logger doc:name="Log End" doc:id="99746ab6-946c-4ba5-b02e-fae74a84ee69" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="Completed Processing Request for Post Notifications" tracePoint="END"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d9dfb2f1-a42d-4284-8b72-f5cc122712d1" >
+				<avio-core:custom-logger doc:name="Log Error" doc:id="7074bebf-0a75-4188-80dd-7d7534c22c77" config-ref="avio-core-config" correlation_id="#[vars.headerAttributes.correlationId]" message="ERROR -While sending the otification " payload='#[write(payload, "application/json")]' category="${logcat}" logLocationInfo="true" level="ERROR"/>
+			</on-error-propagate>
+		</error-handler>
+    </flow>
+
+
+</mule>

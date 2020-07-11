@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="albums" format="json">
+      <types:shape format="weave" example="api/examples/album/albumsGetResponse.json"><![CDATA[%dw 2.0
+
+type albums = Array<{|  albumId: Number {"typeId": "int"},   albumTitle: String,   genre: String,   publicationDate: String,   artistId: Number {"typeId": "int"}|}> {"example": "[{\"albumId\":2,\"albumTitle\":\"Let It Be (CD)\",\"genre\":\"Rock\",\"publicationDate\":\"2000-05-18\",\"artistId\":1},{\"albumId\":1,\"albumTitle\":\"Let It Be\",\"genre\":\"Rock\",\"publicationDate\":\"1968-05-01\",\"artistId\":1}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="artists" format="json">
+      <types:shape format="weave" example="api/examples/artist/artistsGetResponse.json"><![CDATA[%dw 2.0
+
+type artists = Array<{|  artistName: String,   lastName: String,   firstName: String,   mi: String,   dateOfBirth: String,   artistId: Number {"typeId": "int"},   dateOfDeath: String|}> {"example": "[{\"artistName\":\"Telegraph Canyon\",\"lastName\":\"Hickman\",\"firstName\":\"John\",\"mi\":\"W\",\"dateOfBirth\":\"1988-01-29\",\"artistId\":8},{\"artistName\":\"Telegraph Canyon\",\"lastName\":\"Harrison\",\"firstName\":\"Ted\",\"dateOfBirth\":\"1982-03-21\",\"dateOfDeath\":\"2019-01-07\",\"artistId\":9}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="songs" format="json">
+      <types:shape format="weave" example="api/examples/song/songsGetResponse.json"><![CDATA[%dw 2.0
+
+type songs = Array<{|  songTitle: String,   genre: String,   publicationDate: String,   duration: String,   artistName: String,   albumName: String|}> {"example": "[{\"songTitle\":\"I May Kill Myself\",\"genre\":\"Other\",\"publicationDate\":\"1942-01-02\",\"duration\":\"13:52\",\"artistName\":\"Harry Carry\",\"albumName\":\"Harry Belts a Tune\"},{\"songTitle\":\"Don't Kill Yourself\",\"publicationDate\":\"2009-11-12\",\"genre\":\"Metal\",\"duration\":\"2:13\",\"artistName\":\"Will Meaning\",\"albumName\":\"Live and Let Live\"},{\"songTitle\":\"Hang in There, Don't Kill Yourself\",\"publicationDate\":\"2018-10-23\",\"genre\":\"Pop\",\"duration\":\"15:13\",\"artistName\":\"Avery Optimist\",\"albumName\":\"Left Side of Life\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="artist" format="json">
+      <types:shape format="weave" example="api/examples/artist/artistPatchRequest.json"><![CDATA[%dw 2.0
+
+type artist = {|
+  artistId: Number {"typeId": "int"}, 
+  artistName: String, 
+  lastName: String, 
+  firstName: String, 
+  dateOfBirth: String
+|} {"example": "{\"artistId\":5,\"artistName\":\"The Grateful Dead\",\"lastName\":\"Garcia\",\"firstName\":\"Gerry\",\"dateOfBirth\":\"1946-01-07\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="batchReport" format="json">
+      <types:shape format="weave" example="api/examples/album/albumsAddBatch.json"><![CDATA[%dw 2.0
+
+type batchReport = {|
+  totalRecords: Number {"typeId": "int"}, 
+  failedRecords: Number {"typeId": "int"}, 
+  successfulRecords: Number {"typeId": "int"}
+|} {"example": "{\"totalRecords\":15,\"failedRecords\":2,\"successfulRecords\":13}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="album" format="json">
+      <types:shape format="weave" example="api/examples/album/albumPatchRequest.json"><![CDATA[%dw 2.0
+
+type album = {|
+  albumTitle: String, 
+  genre: String, 
+  publicationDate: String, 
+  artistId: Number {"typeId": "int"}
+|} {"example": "{\"albumTitle\":\"Telegraph Canyon I\",\"genre\":\"Rock\",\"publicationDate\":\"2015-12-01\",\"artistId\":5}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="artistQueryParams" format="json">
+      <types:shape format="weave" example="api/examples/artist/artistQueryParams.json"><![CDATA[%dw 2.0
+
+type artistQueryParams = {|
+  firstName: String, 
+  lastName: String, 
+  dateOfBirth: String, 
+  artistName: String
+|} {"example": "{\"firstName\":\"John\",\"lastName\":\"Lennon\",\"dateOfBirth\":\"1940-10-08\",\"artistName\":\"The Beatles\"}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#30d931e8-00df-4e5f-abd1-945553c6bd13">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="albums"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d78dc412-c055-413c-aa9b-0d63eb31ff1c">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="artists"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b257c7cc-c53b-4b6d-baa8-91a984426d22">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="songs"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d8ec3d25-b2ba-4df4-94ed-683b54e1905d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="artist"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artist"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#447ce0be-b135-46bc-8ab2-a9573d7bb530">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artist"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#6fe13084-3be9-4c82-9df4-a0703b34f3e8">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artists"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c56d72d5-1966-487a-9edb-22475e927159">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artist"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4aa9e774-c229-485f-98ac-7cbf8b4d6b0b">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artists"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8e43e164-123f-41d0-85a2-edee9eaa5257">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="batchReport"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#06a7b77a-8ab0-4411-94e7-283f8a66bfce">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="album"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#507cfcec-e62a-42bd-8d0c-47ab2aae8f32">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="queryParamList" type="artistQueryParams"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d4f7571e-3316-4038-831e-cffeae30f247">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="artistQueryParams"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#669dd666-bf48-412b-a653-f3de320cea87">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="artists"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1b1cc18c-569b-493f-a22a-9ace98ba5186">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artist"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c996b038-6485-44fc-bd6d-b12fdd4a37aa">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="getArtistResponse" type="artists"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artist"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#14f6b28a-8a5f-4766-b809-57d274ba5136">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="albums"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1b1cc18c-569b-493f-a22a-9ace98ba5186">
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artist"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c996b038-6485-44fc-bd6d-b12fdd4a37aa">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:variables>
+          <types:variable name="getArtistResponse" type="artists"/>
+        </types:variables>
+      </types:input-event>
+    </types:processor-declaration>
+    <types:operation-declaration>
+      <types:inputs>
+        <types:parameter name="value" type="artist"/>
+      </types:inputs>
+    </types:operation-declaration>
+  </types:enrichment>
+</types:mule>

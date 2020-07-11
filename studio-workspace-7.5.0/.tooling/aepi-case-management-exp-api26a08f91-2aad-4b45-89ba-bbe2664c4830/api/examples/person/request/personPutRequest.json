@@ -1,0 +1,17 @@
+{
+  "person": {
+    "personId": "123sdsds1",
+    "personType": "EMERGENCY_CONTACT",
+    "firstName": "John",
+    "lastName": "Doe",
+    "mi": "R",
+    "phoneNumber": "5613435544",
+    "address1": "1234 Main Street",
+    "address2": "2A",
+    "city": "Denver",
+    "state": "NJ",
+    "zipCode": "12345",
+    "isNotifyStatus": false,
+    "timeLastNotified": "2020-02-28T16:41:41.09"
+  }
+}

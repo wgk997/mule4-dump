@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:avio-core="http://www.mulesoft.org/schema/mule/avio-core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/avio-core http://www.mulesoft.org/schema/mule/avio-core/current/mule-avio-core.xsd">
+	<sub-flow name="put-persons-flow" doc:id="6236ae92-29c8-4bcf-82d2-82c64ff0788c" >
+		
+		<avio-core:custom-logger doc:name="Log Start" doc:id="4e577aa8-8888-4f5d-b181-8b8252925991" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="START" category="${logcat}" message="Start processing request  for put-person"/>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:name="VARS: caseId">
+            <ee:variables>
+                <ee:set-variable variableName="caseId"><![CDATA[attributes.uriParams.'caseId']]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<choice doc:name="geoLocatiion exists ?" doc:id="628d41b4-7e5e-4284-8ddf-c270c27a9df8" >
+			<when expression='#[(payload.person.geoLocation != null &amp;&amp; payload.person.geoLocation != "")]'>
+				<ee:transform doc:name="VARS: address" doc:id="b75a4099-d219-49d7-9b42-d97e4c79565e">
+			<ee:variables>
+				<ee:set-variable variableName="address"><![CDATA[%dw 2.0
+output application/json
+var address1 = payload.location.address1 
+var address2 = payload.location.address2 
+var city = payload.location.city
+var state = payload.location.state
+var zip = payload.location.zip
+---
+
+(address1)? ""]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+				<flow-ref doc:name="get-location" doc:id="0b48d4ae-540f-462e-9eca-7bd523a38a03" name="get-location" />
+			</when>
+			<otherwise>
+				<avio-core:custom-logger doc:name="Custom logger" doc:id="bc028a1d-c098-496f-956b-4f391e7e8e7b" />
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="set request body" doc:id="96164954-743d-474a-a40a-35e13d3d5e68">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload.person map ( $ ++ {"geolocation" : vars.location})
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="a859d0bd-0043-4dea-9de7-694d66bb305f" >
+			<when expression="#[payload.person.id != null]">
+				<flow-ref doc:name="put-person" doc:id="7e6b3efd-ae59-4ae4-9bb8-74465c44d5e5" name="put-person"/>
+			</when>
+			<otherwise >
+				<flow-ref doc:name="post-person" doc:id="80033489-fb1c-43de-8a21-50e6935f9414" name="post-person"/>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="build response" doc:id="a6e3af62-6d8f-4ffe-846a-c995793a780d">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"statusCode": 200,
+	"message": "The person has been updated."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<avio-core:custom-logger doc:name="Log End" doc:id="3e5d6f56-49ea-4736-ad20-bdd735baf3da" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="END" category="${logcat}" message="Completed processing request for put-person"/>
+	</sub-flow>
+	<sub-flow name="get-location" doc:id="0c7b82c5-da94-48a5-9f90-63218811834d">
+		<avio-core:custom-logger doc:name="Log Start" doc:id="4a4f731f-8f49-4254-8207-f42a40f83d51" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="START" category="${logcat}" message="Start processing request  for get-location"/>
+		<try doc:name="Try" doc:id="613738ab-b0d9-4483-bf99-0383309faffd" >
+			<http:request method="GET" doc:name="get-location" doc:id="350519b6-ad5b-438c-ba1d-becfd344eb08" config-ref="location-sys-http-request-configuration" path="/location" target="location">
+				<http:headers ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : vars.headers.client_id,
+	client_secret: vars.headers.client_secret,
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"address" : "1600 Amphitheatre Parkway, Mountain View CA"
+}]]]></http:query-params>
+			</http:request>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="13588d71-2ff7-4540-b6dc-8e6d1e2467a6" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="79e087ab-ee1d-4047-aef7-619fa3a43319" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" level="ERROR" tracePoint="EXCEPTION" category="${logcat}" message="Error while processing get-location flow"/>
+					<set-variable value="get-location" doc:name="Set current-flow" doc:id="eaff439f-3915-4615-85a5-8be28214870f" variableName="currentFlow"/>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	<avio-core:custom-logger doc:name="Log End" doc:id="598b28f3-afaf-4be9-a1de-4f459372276e" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="END" category="${logcat}" message="Completed processing request for get-location"/>
+	</sub-flow>
+		<sub-flow name="put-person" doc:id="ec349b7d-2c7a-4562-8d33-f129fd8ecca4">
+		<avio-core:custom-logger doc:name="Log Start" doc:id="b8853022-f088-4804-a20a-32e9881881fd" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="START" category="${logcat}" message="Start processing request  for put-person"/>
+		
+		<try doc:name="Try" doc:id="42388ab6-3cd0-45b8-881b-7c3c6bd5d9d8" >
+			<http:request method="GET" doc:name="put-person" doc:id="1d61dea8-bd7b-4673-9085-04a7c4bacc3a" config-ref="er-intake-sys-http-request-configuration" path="cases/{caseId}/persons/{personId}">
+				<http:headers ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : vars.headers.client_id,
+	client_secret: vars.headers.client_secret,
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	caseId : vars.caseId,
+	personId : payload.person.id
+}]]]></http:uri-params>
+			</http:request>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7e8d5838-9a39-44f8-8033-1cf27ba5ff67" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="0822a985-3357-4244-a706-51c4c8c80967" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" level="ERROR" tracePoint="EXCEPTION" category="${logcat}" message="Error while put-person flow"/>
+					<set-variable value="put-person" doc:name="Set current-flow" doc:id="46641bde-5d73-4dd5-bf7a-099149df0be2" variableName="currentFlow"/>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+	<avio-core:custom-logger doc:name="Log End" doc:id="64e3316c-9751-4831-86a8-bbf680a5a22f" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="END" category="${logcat}" message="Completed processing request for put-person"/>
+	</sub-flow>
+		<sub-flow name="post-person" doc:id="1dd3ad18-125a-4447-bafe-2ee5eac15303">
+		<avio-core:custom-logger doc:name="Log Start" doc:id="94b06e57-509f-4bf1-bb66-9161c66b76a1" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="START" category="${logcat}" message="Start processing request  for post-person"/>
+		
+		<try doc:name="Try" doc:id="0d04884c-25dc-4cca-83f5-7d3f79452420" >
+			<http:request method="GET" doc:name="post-person" doc:id="a848d6a1-35af-4255-afa7-e03eb4a188a3" config-ref="case-management-sys-http-request-configuration" path="cases/{caseId}/persons">
+				<http:headers ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	client_id : vars.headers.client_id,
+	client_secret: vars.headers.client_secret,
+	correlation_id: vars.headers.correlationId
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	caseId : vars.caseId
+}]]]></http:uri-params>
+			</http:request>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bdfaef5b-d4e6-4378-9b75-6e9eb91ad070" >
+					<avio-core:custom-logger doc:name="Log Error" doc:id="7ccd9ff9-8dc2-49b1-a585-042a899ea745" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" level="ERROR" tracePoint="EXCEPTION" category="${logcat}" message="Error while post-person flow"/>
+					<set-variable value="post-person" doc:name="Set current-flow" doc:id="912d4d29-d208-47c5-b891-678c034f6919" variableName="currentFlow"/>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<avio-core:custom-logger doc:name="Log End" doc:id="586dac69-6fbb-4065-962e-e9dc50c45b1e" config-ref="avio-core-config" correlation_id="#[vars.headers.correlationId]" tracePoint="END" category="${logcat}" message="Completed processing request for post-person"/>
+	</sub-flow>
+</mule>

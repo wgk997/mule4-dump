@@ -1,0 +1,44 @@
+{
+  "flights": [
+    {
+      "destination": "SFO",
+      "price": "400.00",
+      "planeType": "BOEING 737",
+      "departureDate": "Oct 20, 2015",
+      "availableSeats": 40,
+      "totalSeats": 150
+    },
+    {
+      "destination": "LAX",
+      "price": "199.99",
+      "planeType": "BOEING 737",
+      "departureDate": "Oct 21, 2015",
+      "availableSeats": 10,
+      "totalSeats": 150
+    },
+    {
+      "destination": "PDX",
+      "price": "283.00",
+      "planeType": "BOEING 777",
+      "departureDate": "Oct 21, 2015",
+      "availableSeats": 30,
+      "totalSeats": 300
+    },
+    {
+      "destination": "PDX",
+      "price": "283.00",
+      "planeType": "BOEING 777",
+      "departureDate": "Oct 20, 2015",
+      "availableSeats": 0,
+      "totalSeats": 300
+    },
+    {
+      "destination": "PDX",
+      "price": "283.00",
+      "planeType": "BOEING 777",
+      "departureDate": "Oct 20, 2015",
+      "availableSeats": 23,
+      "totalSeats": 300
+    }
+  ]
+}

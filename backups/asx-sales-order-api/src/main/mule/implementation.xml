@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="main-get-sales-order" doc:id="a8a65125-712c-4d84-ae2d-826d2013364e" >
+		<logger level="INFO" doc:name="Log Start" doc:id="50d70882-a220-42ff-8ae6-577c414c603b" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ed4b6db9-fce2-427c-83ed-c9ec2968a871" >
+				<logger level="INFO" doc:name="Log Error" doc:id="e3344bc3-fbb1-49d5-9f83-3882c5f52e0e" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="main-post-sales-order" doc:id="ef5b23e7-dcc2-40fc-ad0e-a2cf9c6133b6" >
+		<logger level="INFO" doc:name="Log Start" doc:id="0da7aec1-9375-4afa-ba4c-ed26cd167a32" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="502c7162-35c6-459a-b578-c6e9aceaf402" >
+				<logger level="INFO" doc:name="Log Error" doc:id="93a39ced-c342-4a45-a1f2-98f84f28d73a" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>

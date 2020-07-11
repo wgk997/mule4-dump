@@ -1,0 +1,6 @@
+authenticated.users=[{"id"\:"4119b0ab-19af-4db0-bf26-267fcc33d544","token"\:"aec48929-a074-4d03-bb4b-79e601eefba1","userId"\:"asapkota-avio","email"\:"asapkota@avioconsulting.com","refreshToken"\:"","baseUrl"\:"https\://anypoint.mulesoft.com/","org"\:{"name"\:"AVIO Consulting","id"\:"26d53683-6746-4040-ad07-f671f8e2b27e","isMaster"\:true}}]
+current.token=aec48929-a074-4d03-bb4b-79e601eefba1
+current.user=asapkota-avio
+eclipse.preferences.version=1
+expiration.time=7
+org.mule.tooling.ui.properties.enable.api.dependencies=true

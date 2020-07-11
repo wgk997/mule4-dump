@@ -1,0 +1,69 @@
+#%RAML 1.0 DataType
+type: object
+properties: 
+  caseId:
+    type: string
+    required: false
+    example: a093i000001sjv3AAA
+  activatedDate:
+    type: date-only
+    required: false
+    example: "1951-01-07"
+  complaint:
+    type: string
+    minLength: 1
+    maxLength: 100
+    required: true
+    example: "Lorem Ipsom Dollar"
+  assignedDr:
+    type: string
+    required: false
+    example: j4k3j4k3kj433jjTT
+  isolationAlert: 
+    type: boolean
+    default: false
+    example: false
+  primaryDiagnosis:
+    type: string
+    required: false
+    minLength: 1
+    maxLength: 256
+    example: Lorem Ipsom Dolor
+  severityCode:
+    type: string
+    enum: 
+    - UNDETERMINED
+    - ROUTINE
+    - CRITICAL
+    - INFECTIOUS
+    example: INFECTIOUS
+    required: true
+  statusCode:
+    type: string
+    enum: 
+    - INTAKE
+    - DISCHARGED
+    - CLOSED
+    - ADMITTED
+    example: INTAKE
+    required: true
+  symptomsCsv:
+    type: array
+    example: ["drycough", "fever", "heartburn"]
+  patient:
+    type: !include ../person/personDataType.raml
+    required: true
+  emergencyContacts:
+    type: array
+    items:
+      type: !include ../person/personDataType.raml
+  diagnosis:
+    type: array
+    items:
+      type: !include ../diagnosis/diagnosisDataType.raml
+  procedure:
+    type: array
+    items:
+      type: !include ../procedure/procedureDataType.raml
+  contactTrace:
+    type: !include ../contactTrace/contactTraceDataType.raml

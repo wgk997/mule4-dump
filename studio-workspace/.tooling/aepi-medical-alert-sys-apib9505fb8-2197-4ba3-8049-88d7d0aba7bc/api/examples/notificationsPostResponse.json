@@ -1,0 +1,20 @@
+{
+  "statusCode": 201,
+  "message": "Added",
+  "smsMessage": "Your test are complete",
+  "notifications" : [
+    {
+      "to": "+19725550000",  
+      "status": "SENT"
+    },
+    {
+      "to": "+19725550001",  
+      "status": "SENT"
+    },
+    {
+      "to": "+19725550002",  
+      "status": "SENT"
+    }
+  ]
+}
+

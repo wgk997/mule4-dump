@@ -1,0 +1,20 @@
+#%RAML 1.0 Library
+usage: Staas system API
+traits:
+  correlationRequired:
+    headers:
+      correlation_id:
+        type: string
+        required: true
+  clientIdRequired:
+    headers:
+      client_id:
+        type: string
+      client_secret:
+        type: string
+    responses:
+      401:
+        description: Unauthorized or invalid client application credentials
+      500:
+        description: Bad response from authorization server, or WSDL SOAP Fault error
+  errorResponsesRequired: !include exchange_modules/f2ea2cb4-c600-4bb5-88e8-e952ff5591ee/avio-util-fragment/1.0.2/error-responses-trait.raml

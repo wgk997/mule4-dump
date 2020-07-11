@@ -1,0 +1,19 @@
+#%RAML 1.0 DataType
+type: object
+properties: 
+  salesOrderId: 
+    type: number
+    required: true
+    example: 2
+  customerId: 
+    type: number
+    required: true
+    example: 1
+  customerName:
+    type: string
+    required: true
+    example: "Hercules"
+  lineItems:
+    type: array
+    items: !include lineItems.raml
+

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="testifelseFlow" doc:id="71e3065c-359f-4851-8251-24cbd218ad74">
+		<ee:transform doc:name="Transform Message" doc:id="388219c8-1a99-4e5c-8aff-1e68884172bc">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var anInput = "OID: 101"
+import * from dw::core::Strings
+---
+if( anInput startsWith "ORDER") anInput[7 to -1]
+else if (anInput startsWith "OID") anInput[5 to -1]
+else anInput]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="97565f9e-8e7a-4c61-897f-ea7d0d4d7e53">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+var payload = {one: "ONE", oid: "101"}
+---
+if( payload is Array) payload[0]
+else if (payload is Object) { order: payload.oid } ++ (payload - "oid")
+else payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="matchMod03" doc:id="81301b2c-e0ad-421b-aa76-2c10eee886d9" >
+		<ee:transform doc:name="Transform Message" doc:id="3d7df08d-b4d3-40ed-9570-8226f4c4eb8d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"hello" match {
+	else -> ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="6742bc48-d673-491c-ba9a-47c17161a84d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+fun processInput( anInput ) =
+anInput match {
+	case is Array -> "input is an Array of size $( sizeOf( anInput ) )"
+	case obj if (obj is Object) -> {inputType: "Object"} ++ (obj default {} as Object)
+	case "SFO" -> "San Francisco"
+	case is Number -> anInput as String {format: "#,###.00"} as Number
+	else -> "input " ++ anInput as String ++ " is of type " ++ typeOf( anInput )
+}
+
+---
+processInput("hello")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="148120e3-6e05-499f-85fb-2f78b8fc5d69" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload = [{ID: "12"}]
+fun processObject(anObject) = anObject
+fun processArray(anArray) = anArray
+
+---
+using( valueForID =  payload[0]["ID"] )
+(
+	valueForID match {
+		case is Array -> processArray( valueForID ) default []
+		case valueForID is Object -> processObject( valueForID ) default {}
+		case 12 -> "$(valueForID) is the input $(valueForID)" //param needs :
+		case last if(true) -> last
+
+    }
+)   
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="9791c8d3-25f5-44eb-8376-0ef8f4f5b384" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload = [{ID: "12"}]
+fun processObject(anObject) = anObject
+fun processArray(anArray) = anArray
+
+---
+{( payload[0] )}["ID"]  match {
+	case is Array -> processArray( $ ) default []
+	case is Object -> processObject( $ ) default {}
+	case 12 -> "$($) is the input $($)" //param needs :
+	//case last if(true) -> last
+	else -> "The input goes to " ++ ($ default "")
+
+}
+ 
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="692596e8-084e-436a-8a1b-b57f2311cb72" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var payload = [{ID: "12"}]
+fun processObject(anObject) = anObject
+fun processArray(anArray) = anArray
+
+fun someFunction(anInput, anArg1, anArg2) =
+anArg1 ++ " " ++ anArg2 ++ ": " ++ write(anInput, "application/json")
+
+import dw::core::Strings
+
+fun matchInput ( payload ) =
+do{
+    var anArg1 = "MuleSoft"
+    var anArg2 = "Engineering"
+    ---
+  // someFunction(payload, anArg1, anArg2)
+  "delta"
+  
+}
+match {
+	case is Array -> "input is an Array of size $( sizeOf( $ ) )"   //confusing use of $ and $ "
+	case anObject if (anObject is Object) -> {inputType: "Object"} ++ anObject as Object //named parameter
+	case "SFO" -> "San Francisco" //direct substitution
+	case hasDelta if (hasDelta is String and lower(hasDelta) ~= "delta" ) -> upper( hasDelta ) //context for the selector match
+	case is Number -> $ as String {format: "#,###.00"} as Number //using the local named parameter $
+	else -> "input " ++ $ as String ++ " is of type " ++ typeOf($)
+}
+
+
+---
+matchInput({one: "ONE"})
+ 
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="tryAndFailTests" doc:id="99efbf77-a36a-419e-a0a9-eb723953fd8d" >
+		<ee:transform doc:name="Transform Message" doc:id="1f0d269f-6059-4c00-980d-b2745fcd8fbf" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/json
+
+import * from dw::Runtime
+
+ 
+ fun readAmericanJsonFile() =
+ readUrl(
+ 	         "classpath://examples/americanFlightsResponse.json", 
+ 	         "application/xml"
+ 	 )
+ 	 
+ 
+  	  	 
+fun readLocalFile2( fileName , format) =
+try( () -> 
+	readUrl("classpath://" ++ fileName, "application/" ++ format)
+)
+match {
+	case result if( not result.success) -> 
+     	result.error.kind match {
+
+		case "ReadExecutionException" ->  fail(
+		  "readLocalFile() could format the file " 
+		  ++ fileName ++ " as " ++ format ++". \n" 
+		  ++ write(result.error, "application/json")
+		)
+		case "InvalidLocationException" -> fail(
+		  "readLocalFile() could not find the file " 
+	      ++ fileName ++ ". \n" 
+	      ++ write(result.error, "application/json")
+		)
+		else -> result
+	}
+	else -> $.result
+}
+  
+  
+fun readLocalFile( fileName , format) =
+try( () -> 
+    readUrl("classpath://" ++ fileName, "application/" ++ format)
+)
+match {
+  case result if( not result.success) -> 
+    result.error.kind match {
+    	  case "InvalidLocationException" -> fail(
+        "readLocalFile() could not find the file " 
+        ++ fileName ++ ". \n" ++ write(result.error, "application/json")
+      )
+      case "UnknownContentTypeException" -> fail (
+        "readLocalFile() cannot format the " ++ fileName ++ " file using the passed format parameter " 
+        ++ format ++ ".\n" ++ write(result.error, "application/json")
+      )
+      case "ReadExecutionException" ->  
+      
+        //try again without the format
+        try( () -> readUrl("classpath://" ++ fileName) )
+        match {
+        	
+          //Still could not read in the file
+          case secondResult if( not secondResult.success ) -> fail(
+            "readLocalFile() cannot parse the file " ++ fileName ++ " in " ++ format 
+            ++ " or dw format.\n" ++ write(result.error, "application/json")
+          )
+          else -> $.result
+        }
+      else -> result
+    }
+  else -> $.result
+}  	 
+ ---
+//readLocalFile("examples/americanFlightsResponse.json","xll")
+
+readLocalFile("examples/americanFlightsResponse.json","xml")
+
+
+ 
+ 
+ ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="b7522fbc-170d-47ac-a866-d2ccbf08f4d0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/json
+
+import * from dw::Runtime
+
+var payload = {flight: "departed", date: now() }
+
+fun testFlightStatus(aFlight) = aFlight ~= "cancelled"
+---
+{
+	test1: failIf( payload.flight, (theFlight) -> theFlight ~= "cancelled", "This flight has been cancelled " ++ write(payload) ),
+	test2: failIf( payload.flight, testFlightStatus, "This flight has been cancelled " ++ write(payload) )
+}
+
+
+
+
+
+
+
+ 
+ 
+ ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
