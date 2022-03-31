@@ -28,7 +28,7 @@
         <httpConnectorVersion>1.4.2</httpConnectorVersion>
         <oauthProviderModuleVersion>1.0.5</oauthProviderModuleVersion>
         <springModuleVersion>1.2.0</springModuleVersion>
-        <springVersion>4.2.5.RELEASE</springVersion>
+        <springVersion>5.3.18</springVersion>
         <springSecurityVersion>4.0.4.RELEASE</springSecurityVersion>
         <muleObjectStoreConnectorVersion>1.1.3</muleObjectStoreConnectorVersion>
         <apiGatewayClientStore>1.0.0</apiGatewayClientStore>
